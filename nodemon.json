@@ -1,0 +1,6 @@
+{
+  "restartable": "rs",
+  "verbose": true,
+  "ignore": ["node_modules/**/node_modules", ".git"],
+  "ext": "js scss hbs json"
+}
