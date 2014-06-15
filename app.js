@@ -34,6 +34,7 @@ app.disable('x-powered-by');
 app.set('port', process.env.PORT || 1337);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+/*
 app.use(
 	sass.middleware({
 		src: path.join(__dirname, '/private'),
@@ -41,7 +42,7 @@ app.use(
 		debug: (process.env.NODE_ENV === 'development') ? true : false,
 		outputStyle: 'compressed'
 	})
-);
+); */
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(bodyParser());
@@ -83,7 +84,7 @@ if(process.env.NODE_ENV === 'development'){
 	app.use(morgan('dev'));
 }
 
-require(path.join(__dirname, '/routes/test'))(app); // Pass "app" to test route
+require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route
 
 // If no matching route was found, give 'em the 404
 
