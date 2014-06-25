@@ -1,10 +1,100 @@
 #list-wrap {
 	@extend .cf;
-	margin: 30px auto 0 auto;
+	margin: 30px auto;
 	width: 1160px;
 	background: #fff;
 	@include border-radius(4px);
 }
+
+#list-left {
+	float: left;
+	width: 960px;
+}
+#list-top {
+	display: none;
+	@extend .cf;
+	border-bottom: 2px solid $gray-l-3;
+}
+#list-filter-wrap {
+	float: left;
+	width: 600px;
+}
+#list-filter-input {
+	border: 0;
+	padding: 15px;
+	width: 600px;
+	font-size: 14px;
+}
+#list-sort {
+	@extend .cf;
+	border-bottom: 2px solid $gray-l-3;
+}
+.list-sort-hd {
+	float: left;
+	padding: 15px;
+	color: $gray-d-9;
+	font-weight: bold;
+	text-align: left;
+	border-right: 1px
+}
+#list-sort-title {
+	width: 665px;
+}
+#list-sort-progress {
+	width: 73px;
+	text-align: center;
+}
+#list-sort-rating {
+	width: 51px;
+	text-align: center;
+}
+#list-sort-type {
+	width: 51px;
+	text-align: center;
+}
+
+.list-itemstatus-wrap {
+	@extend .cf;
+	position: relative;
+	height: 0;
+	&.current {
+		& .list-itemstatus-tag {
+			background: $orange;
+		}
+		& .list-itemstatus-line {
+			background: $orange;
+		}
+	}
+}
+.list-itemstatus-tag {
+	float: left;
+	margin-top: -10px;
+	margin-left: -85px;
+	padding: 5px;
+	width: 65px;
+	height: 10px;
+	color: #fff;
+	font-size: 10px;
+	text-align: center;
+	text-transform: uppercase;
+	background: $blue;
+	@include border-radius(50px);
+	@include box-shadow(inset 0 1px 0 $w10);
+}
+.list-itemstatus-line {
+	float: left;
+	margin-top: -2px;
+	margin-left: -10px;
+	width: 970px;
+	height: 2px;
+	background: $blue;
+}
+
+// Dropdowns
+.list-progress-dd {
+
+}
+
 #list {
 	float: left;
 	width: 960px;
@@ -17,7 +107,7 @@
 	border-bottom: 1px solid $gray-l-3;
 
 	&:hover {
-		& .list-item-plusone {
+		& .list-item-plusone:not(.hidden) {
 			display: block;
 		}
 	}
@@ -51,6 +141,7 @@
 .list-item-progress {
 	@extend .cf;
 	@extend .ns;
+	position: relative;
 	cursor: pointer;
 	float: left;
 	padding: 15px;
@@ -77,6 +168,7 @@
 .list-item-rating {
 	@extend .cf;
 	@extend .ns;
+	position: relative;
 	cursor: pointer;
 	float: left;
 	padding: 15px;
@@ -180,3 +272,36 @@
 	background: $gray-l-3;
 	@include border-radius(02px);
 }
+
+// Boo
+
+.boo-container {
+	position: absolute;
+	z-index: 998;
+	bottom: -25px;
+	padding: 2px;
+	background: $b60;
+	@include border-radius(4px);
+	&:after {
+		bottom: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-color: rgba(255, 255, 255, 0);
+		border-bottom-color: $b60;
+		border-width: 4px;
+		margin-left: -4px;
+	}
+
+}
+.boo-content {
+	padding: 5px;
+	background: #fff;
+	@include border-radius(3px);
+}
+
+

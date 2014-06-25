@@ -86,8 +86,8 @@
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-color: rgba(255, 255, 255, 0);
-	border-bottom-color: #fff;
+	border-color: $b60;
+	border-bottom-color: $b60;
 	border-width: 10px;
 	margin-left: -10px;
 }
@@ -104,6 +104,20 @@
 	border-top-color: #fff;
 	border-width: 10px;
 	margin-left: -10px;
+}
+@mixin tt-arrow-right {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(255, 255, 255, 0);
+	border-top-color: #fff;
+	border-width: 10px;
+	margin-top: -10px;	
 }
 
 // Helpers

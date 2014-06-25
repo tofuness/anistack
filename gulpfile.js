@@ -12,7 +12,7 @@ var path = {
 		dest: 'public/css'
 	},
 	js: {
-		src: ['src/js/external/*.js', 'src/js/app.js'],
+		src: ['src/js/external/*.js', 'src/js/includes/*.js', 'src/js/app.js'],
 		files: 'src/js/**/*.js',
 		dest: 'public/js'
 	}
