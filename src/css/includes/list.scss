@@ -30,6 +30,8 @@
 	border-bottom: 2px solid $gray-l-3;
 }
 .list-sort-hd {
+	@extend .ns;
+	cursor: pointer;
 	float: left;
 	padding: 15px;
 	color: $gray-d-9;
@@ -199,6 +201,7 @@
 	float: right;
 	width: 200px;
 	min-height: 300px;
+	height: 100%;
 	background: #fff;
 	@include box-shadow(inset 1px 0 0 $gray-l-3);
 	@include border-top-right-radius(4px);

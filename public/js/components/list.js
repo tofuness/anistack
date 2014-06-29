@@ -3,67 +3,44 @@
 var listApp = React.createClass({
 	getInitialState: function(){
 		/*
-			1 - current
-			2 - completed
-			3 - planned
-			4 - on hold
-			5 - dropped
+			0 - current
+			1 - completed
+			2 - planned
+			3 - on hold
+			4 - dropped
 		*/
 		var user = {
 			username: 'Mochi Umai',
 			biography: 'Everything from code to pancakes. Solving the mysteries of design.',
-			animeList: [
-				{
-					title: 'Spice & Wolf',
-					total: 12,
-					type: 'TV',
-					progress: 6,
-					rating: 9,
-					status: 1
-				},
-				{
-					title: 'Yumekui Merry',
-					total: 12,
-					type: 'TV',
-					progress: 12,
-					rating: 8,
-					status: 2
-				},
-				{
-					title: 'Kill la Kill',
-					total: 24,
-					type: 'TV',
-					progress: 24,
-					rating: 7,
-					status: 2
-				},
-				{
-					title: 'Sket Dance',
-					total: 43,
-					type: 'TV',
-					progress: 2,
-					rating: 2,
-					status: 4
-				}
-			],
-			mangaList: []
+			animeList: [],
+			mangaList: [],
+			lastSort: ''
 		}
 		return user;
 	},
 	sortList: function(sortBy){
+		if(!sortBy) sortBy = 'title';
+
 		if(this.props.listType === 'anime'){
-			var animeList = this.state.animeList;
-			if(!sortBy) sortBy = 'title';
-			animeList.sort(function(a, b){
-				if(a.status === b.status){
-					return (a[sortBy] > b[sortBy]) ? true : false;
-				} else {
-					return (a.status > b.status) ? true : false;
-				}
-			});
+			var list = this.state.animeList;
+		} else {
+			var list = this.state.mangaList;
 		}
 
-		this.setState({ animeList: animeList });
+		_.each(list, function(listPart, index){
+			if(this.state.lastSort === sortBy){
+				list[index] = listPart.reverse(); // I think this should be faster that re-doing a sort.
+			} else {
+				list[index] = _.sortBy(listPart, function(listItem){
+					return listItem[sortBy];
+				});
+			}
+		}.bind(this));
+
+		this.setState({
+			animeList: list,
+			lastSort: sortBy
+		});
 	},
 	// THIS HAS TO BE DRIER
 	sortByTitle: function(){
@@ -79,7 +56,21 @@ var listApp = React.createClass({
 		this.sortList('type');
 	},
 	componentWillMount: function(){
-		this.sortList();
+		$.ajax({
+			//url: 'http://www.json-generator.com/api/json/get/ctjyrLfuUO?indent=2',
+			url: 'http://www.json-generator.com/api/json/get/cgaZMvksbS?indent=2',
+			type: 'get',
+			success: function(list){
+				var listArr = [];
+				list = _.groupBy(list, 'status');
+				_.each(list, function(listPart, index){
+					listArr.push(_.sortBy(listPart, function(listItem){ return listItem['status'] }));
+				});
+				this.setState({
+					animeList: listArr
+				});
+			}.bind(this)
+		});
 	},
 	render: function(){
 		return (
@@ -152,7 +143,6 @@ var listApp = React.createClass({
 var list = React.createClass({
 	mapStatus: function(statusValue){
 		var statusList = [
-			undefined,
 			'Current',
 			'Completed',
 			'Planned',
@@ -163,6 +153,7 @@ var list = React.createClass({
 		return statusList[statusValue];
 	},
 	render: function(){
+		/*
 		var lastStatus = 0;
 		return (
 			<div id="list">
@@ -188,12 +179,63 @@ var list = React.createClass({
 								</div>
 							);
 						} else {
-							return (<div key={i}><listItem item={item} /></div>);
+							return (
+								<div key={i}><listItem item={item} /></div>
+							);
 						}
 					}.bind(this))
 				}
 			</div>
 		)
+		*/
+		/*
+		var listDOM = [];
+		var lastStatus = 0;
+		this.props.list.forEach(function(listPart, i){
+			console.log(listPart);
+			listDOM.push(
+				<div className={
+					React.addons.classSet({
+						'list-itemstatus-wrap': true,
+						'current': (i === 0)
+					})
+				}>
+					<div className="list-itemstatus-tag">
+						{i}
+					</div>
+					<div className="list-itemstatus-line">
+					</div>
+				</div>
+			)
+			listDOM.push(listPart.map(function(item, i){ return(<div key={i}><listItem item={item} /></div>) }));
+		});
+		return (<div id="list">{listDOM}</div>); */
+
+		var listDOM = [];
+
+		if(this.props.list.length != 5) return (<div>Loading...</div>);
+
+		_.each(this.props.list, function(listPart, index){
+			console.log('going for listparts');
+			listDOM.push(
+				<div className={
+					React.addons.classSet({
+						'list-itemstatus-wrap': true,
+						'current': (index === 0) // Current
+					})
+				}>
+					<div className="list-itemstatus-tag">
+						{this.mapStatus(index)}
+					</div>
+					<div className="list-itemstatus-line">
+					</div>
+				</div>
+			)
+			listPart = listPart.map(function(item, i){ return(<div key={i}><listItem item={item} /></div>) });
+			listDOM.push(listPart);
+		}.bind(this));
+
+		return (<div>{listDOM}</div>);
 	}
 });
 
@@ -228,7 +270,7 @@ var listItem = React.createClass({
 							<span className="list-rating-icon icon-heart-full"></span>
 							<span className="list-rating-number">
 								{
-									(this.props.item.rating) ? this.props.item.rating / 2 : '&mdash;'
+									(this.props.item.rating) ? this.props.item.rating / 2 : '—'
 								}
 							</span>
 						</div>
