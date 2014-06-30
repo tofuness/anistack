@@ -9,9 +9,9 @@
 #list-left {
 	float: left;
 	width: 960px;
+	@include box-shadow(1px 0 0 $gray-l-3);
 }
 #list-top {
-	display: none;
 	@extend .cf;
 	border-bottom: 2px solid $gray-l-3;
 }

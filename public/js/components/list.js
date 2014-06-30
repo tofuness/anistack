@@ -14,7 +14,9 @@ var listApp = React.createClass({
 			biography: 'Everything from code to pancakes. Solving the mysteries of design.',
 			animeList: [],
 			mangaList: [],
-			lastSort: ''
+			lastSort: '', // Last thing we sorted by
+			filterText: '' // Filter for list
+
 		}
 		return user;
 	},
@@ -55,6 +57,11 @@ var listApp = React.createClass({
 	sortByType: function(){
 		this.sortList('type');
 	},
+	filterList: function(event){
+		this.setState({
+			filterText: event.target.value
+		});
+	},
 	componentWillMount: function(){
 		$.ajax({
 			//url: 'http://www.json-generator.com/api/json/get/ctjyrLfuUO?indent=2',
@@ -69,6 +76,7 @@ var listApp = React.createClass({
 				this.setState({
 					animeList: listArr
 				});
+				this.sortList();
 			}.bind(this)
 		});
 	},
@@ -78,7 +86,7 @@ var listApp = React.createClass({
 				<div id="list-left">
 					<div id="list-top">
 						<div id="list-filter-wrap">
-							<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." />
+							<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." onChange={this.filterList} />
 						</div>
 					</div>
 					<div id="list-sort">
@@ -95,7 +103,7 @@ var listApp = React.createClass({
 							Type
 						</div>
 					</div>
-					<list list={this.state.animeList} />
+					<list list={this.state.animeList} filterText={this.state.filterText} />
 				</div>
 				<div id="list-right">
 					<div id="list-profile">
@@ -153,89 +161,47 @@ var list = React.createClass({
 		return statusList[statusValue];
 	},
 	render: function(){
-		/*
-		var lastStatus = 0;
-		return (
-			<div id="list">
-				{	
-					this.props.list.map(function(item, i){
-						if(lastStatus != item.status){
-							lastStatus = item.status;
-							return (
-								<div key={i}>
-									<div className={
-										React.addons.classSet({
-											'list-itemstatus-wrap': true,
-											'current': (lastStatus === 1)
-										})
-									}>
-										<div className="list-itemstatus-tag">
-											{this.mapStatus(lastStatus)}
-										</div>
-										<div className="list-itemstatus-line">
-										</div>
-									</div>
-									<listItem item={item} />
-								</div>
-							);
-						} else {
-							return (
-								<div key={i}><listItem item={item} /></div>
-							);
-						}
-					}.bind(this))
-				}
-			</div>
-		)
-		*/
-		/*
 		var listDOM = [];
-		var lastStatus = 0;
-		this.props.list.forEach(function(listPart, i){
-			console.log(listPart);
-			listDOM.push(
-				<div className={
-					React.addons.classSet({
-						'list-itemstatus-wrap': true,
-						'current': (i === 0)
-					})
-				}>
-					<div className="list-itemstatus-tag">
-						{i}
-					</div>
-					<div className="list-itemstatus-line">
-					</div>
-				</div>
-			)
-			listDOM.push(listPart.map(function(item, i){ return(<div key={i}><listItem item={item} /></div>) }));
-		});
-		return (<div id="list">{listDOM}</div>); */
-
-		var listDOM = [];
-
+		
 		if(this.props.list.length != 5) return (<div>Loading...</div>);
 
 		_.each(this.props.list, function(listPart, index){
-			console.log('going for listparts');
-			listDOM.push(
-				<div className={
-					React.addons.classSet({
-						'list-itemstatus-wrap': true,
-						'current': (index === 0) // Current
-					})
-				}>
-					<div className="list-itemstatus-tag">
-						{this.mapStatus(index)}
+			var listLength = 0;
+			listPart = listPart.map(function(item, index){ // Change this to _id later
+				if(this.props.filterText != ''){
+					if(item.title.toLowerCase().indexOf(this.props.filterText) > -1){
+						listLength++;
+						return (<div key={index}><listItem item={item} /></div>)
+					} else {
+						return false;
+					}
+				} else {
+					listLength++;
+					return (<div key={index}><listItem item={item} /></div>);
+				}
+				
+			}.bind(this));
+
+			if(listLength){ // Only render things if list isn't empty
+				listDOM.push(
+					<div key={index + 'lel'} className={
+						React.addons.classSet({
+							'list-itemstatus-wrap': true,
+							'current': (index === 0) // Current
+						})
+					}>
+						<div className="list-itemstatus-tag">
+							{this.mapStatus(index)}
+						</div>
+						<div className="list-itemstatus-line">
+						</div>
 					</div>
-					<div className="list-itemstatus-line">
-					</div>
-				</div>
-			)
-			listPart = listPart.map(function(item, i){ return(<div key={i}><listItem item={item} /></div>) });
-			listDOM.push(listPart);
+				)
+				listDOM.push(listPart);
+			}
 		}.bind(this));
 
-		return (<div>{listDOM}</div>);
+		return (<div id="list">{listDOM}</div>);
 	}
 });
 
