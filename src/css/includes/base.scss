@@ -4,3 +4,12 @@ html {
 	font-family: sans-serif;
 	background: $bluegray-l-12;
 }
+p {
+	line-height: 2em;
+}
+i, em {
+	font-style: italic;
+}
+b, strong {
+	font-style: bold;
+}

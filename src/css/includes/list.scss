@@ -6,6 +6,111 @@
 	@include border-radius(4px);
 }
 
+#list-onboard {
+	padding: 120px 0;
+	text-align: center;
+}
+#onboard-welcome {
+	@extend .opensans;
+	padding-bottom: 60px;
+	font-size: 32px;
+	font-weight: bold;
+}
+#onboard-wrap {
+	@extend .cf;
+	margin: 0 auto;
+	width: 741px;
+}
+#onboard-left {
+	float: left;
+	@include border-top-left-radius(4px);
+	@include border-bottom-left-radius(4px);	
+}
+#onboard-right {
+	float: right;
+	@include border-top-right-radius(4px);
+	@include border-bottom-right-radius(4px);	
+}
+.onboard-option {
+	padding: 60px;
+	width: 250px;
+}
+#onboard-sep {
+	float: left;
+	width: 1px;
+	height: 334px;
+	background: $gray-l-3; 
+}
+.onboard-image {
+	@extend .ts15;
+	padding-bottom: 30px;
+	font-size: 32px;
+}
+.onboard-title {
+	padding-bottom: 15px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.onboard-desc {
+	line-height: 2em;
+}
+.onboard-tiny {
+	display: none; // WORK: Should we display this?
+	color: $gray-d-3;
+	font-size: 8px;
+}
+.onboard-btn {
+	@extend .ts10;
+	cursor: pointer;
+	display: block;
+	margin-top: 30px;
+	padding: 12px;
+	font-weight: bold;
+	@include border-radius(4px);
+	&:hover {
+		opacity: 0.8;
+	}
+	&:active {
+		opacity: 1;
+	}
+}
+#onboard-btn-new {
+	color: #fff;
+	background: $blue;
+	border: 2px solid $blue-d-3;
+	@include box-shadow(inset 0 1px 0 $w05);
+}
+#onboard-btn-sync {
+	border: 2px solid $black;
+	&:hover {
+		color: #fff;
+		background: $black;
+	}
+}
+#list-noresults {
+	color: $gray-d-9;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 344px;
+}
+#list-error {
+	margin: 0 auto;
+	padding: 120px 0;
+	width: 350px;
+	text-align: center;
+}
+#list-error-image {
+	padding-bottom: 30px;
+	color: $red;
+	font-size: 32px;
+}
+#list-error-title {
+	padding-bottom: 15px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
 #list-left {
 	float: left;
 	width: 960px;
@@ -235,8 +340,8 @@
 #list-profile-bio {
 	padding: 15px;
 	color: $gray-d-9;
-	line-height: 1.5em;
-	text-align: center;
+	font-size: 11px;
+	text-align: left;
 }
 .list-nav-item {
 	@extend .cf;
@@ -274,37 +379,6 @@
 	padding: 4px;
 	background: $gray-l-3;
 	@include border-radius(02px);
-}
-
-// Boo
-
-.boo-container {
-	position: absolute;
-	z-index: 998;
-	bottom: -25px;
-	padding: 2px;
-	background: $b60;
-	@include border-radius(4px);
-	&:after {
-		bottom: 100%;
-		left: 50%;
-		border: solid transparent;
-		content: " ";
-		height: 0;
-		width: 0;
-		position: absolute;
-		pointer-events: none;
-		border-color: rgba(255, 255, 255, 0);
-		border-bottom-color: $b60;
-		border-width: 4px;
-		margin-left: -4px;
-	}
-
-}
-.boo-content {
-	padding: 5px;
-	background: #fff;
-	@include border-radius(3px);
 }
 
 

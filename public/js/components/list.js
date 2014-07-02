@@ -2,6 +2,7 @@
 
 var listApp = React.createClass({
 	getInitialState: function(){
+
 		/*
 			0 - current
 			1 - completed
@@ -9,13 +10,16 @@ var listApp = React.createClass({
 			3 - on hold
 			4 - dropped
 		*/
+
 		var user = {
 			username: 'Mochi Umai',
-			biography: 'Everything from code to pancakes. Solving the mysteries of design.',
+			biography: 'Everything from code to pancakes. Solving the mysteries of design. I love playing games, especially TF2, so feel free to add me on steam: Mochi umai.',
 			animeList: [],
 			mangaList: [],
-			lastSort: '', // Last thing we sorted by
-			filterText: '' // Filter for list
+			lastSort: '', // ?: Last thing we sorted by. Used to check if we just need to reverse the sort.
+			filterText: '', // ?: String, used to filter the list
+			loaded: false,
+			loadError: false
 
 		}
 		return user;
@@ -31,7 +35,7 @@ var listApp = React.createClass({
 
 		_.each(list, function(listPart, index){
 			if(this.state.lastSort === sortBy){
-				list[index] = listPart.reverse(); // I think this should be faster that re-doing a sort.
+				list[index] = listPart.reverse(); // ?: There is no desc sort in underscore.js. So use reverse instead.
 			} else {
 				list[index] = _.sortBy(listPart, function(listItem){
 					return listItem[sortBy];
@@ -44,39 +48,57 @@ var listApp = React.createClass({
 			lastSort: sortBy
 		});
 	},
-	// THIS HAS TO BE DRIER
-	sortByTitle: function(){
-		this.sortList();
-	},
-	sortByProgress: function(){
-		this.sortList('progress');
-	},
-	sortByRating: function(){
-		this.sortList('rating');
-	},
-	sortByType: function(){
-		this.sortList('type');
-	},
 	filterList: function(event){
 		this.setState({
 			filterText: event.target.value
 		});
 	},
 	componentWillMount: function(){
+		/*
+		{
+			"status": 2, 
+			"rating": 7, 
+			"seriesTitle": "7446828a-b703-4a7f-986c-fa205e651b75", 
+			"progress": 18, 
+			"seriesTotal": 10, 
+			"seriesType": "ONA",
+			"seriesStatus": "airing"
+		}
+		*/
 		$.ajax({
-			//url: 'http://www.json-generator.com/api/json/get/ctjyrLfuUO?indent=2',
-			url: 'http://www.json-generator.com/api/json/get/cgaZMvksbS?indent=2',
+			//url: 'http://www.json-generator.com/api/json/get/ctjyrLfuUO?indent=2', // ?: 2000 dummy list entries
+			//url: 'http://www.json-generator.com/api/json/get/cgaZMvksbS?indent=2', // ?: 300 dummy list entries
+			url: 'http://www.json-generator.com/api/json/get/bOpRpkgPUy?indent=2', // ?: 0 empty list
 			type: 'get',
 			success: function(list){
-				var listArr = [];
-				list = _.groupBy(list, 'status');
-				_.each(list, function(listPart, index){
-					listArr.push(_.sortBy(listPart, function(listItem){ return listItem['status'] }));
-				});
+				if(list.length){
+					var listArr = [];
+					list = _.groupBy(list, 'status');
+					_.each(list, function(listPart, index){
+						listArr.push(_.sortBy(listPart, function(listItem){ return listItem['status'] }));
+					});
+
+					if(this.props.listType === 'anime'){
+						this.setState({
+							animeList: listArr
+						});
+					} else {
+						this.setState({
+							mangaList: listArr
+						});
+					}
+
+					this.sortList();					
+				}
 				this.setState({
-					animeList: listArr
+					loaded: true
 				});
-				this.sortList();
+			}.bind(this),
+			error: function(){
+				this.setState({
+					loaded: true,
+					loadError: true
+				});
 			}.bind(this)
 		});
 	},
@@ -90,20 +112,26 @@ var listApp = React.createClass({
 						</div>
 					</div>
 					<div id="list-sort">
-						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortByTitle}>
+						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'title')}>
 							Title
 						</div>
-						<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortByProgress}>
+						<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortList.bind(this, 'progress')}>
 							Progress
 						</div>
-						<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortByRating}>
+						<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortList.bind(this, 'rating')}>
 							Rating
 						</div>
-						<div id="list-sort-type" className="list-sort-hd" onClick={this.sortByType}>
+						<div id="list-sort-type" className="list-sort-hd" onClick={this.sortList.bind(this, 'type')}>
 							Type
 						</div>
 					</div>
-					<list list={this.state.animeList} filterText={this.state.filterText} />
+					<list 
+						list={this.state.animeList}
+						username={this.state.username}
+						filterText={this.state.filterText}
+						loaded={this.state.loaded}
+						error={this.state.loadError}
+					/>
 				</div>
 				<div id="list-right">
 					<div id="list-profile">
@@ -157,19 +185,21 @@ var list = React.createClass({
 			'On hold',
 			'Dropped'
 		];
-
 		return statusList[statusValue];
 	},
 	render: function(){
 		var listDOM = [];
-		
-		if(this.props.list.length != 5) return (<div>Loading...</div>);
 
 		_.each(this.props.list, function(listPart, index){
 			var listLength = 0;
-			listPart = listPart.map(function(item, index){ // Change this to _id later
+			listPart = listPart.map(function(item, index){ // FIX: Change this to _id later
 				if(this.props.filterText != ''){
-					if(item.title.toLowerCase().indexOf(this.props.filterText) > -1){
+					var filterCondition = (
+						item.title.toLowerCase().indexOf(this.props.filterText) > -1 ||
+						item.type.toLowerCase().indexOf(this.props.filterText) > -1
+					);
+
+					if(filterCondition){ // WORK: Needs to have more accuracy in the future
 						listLength++;
 						return (<div key={index}><listItem item={item} /></div>)
 					} else {
@@ -182,12 +212,12 @@ var list = React.createClass({
 				
 			}.bind(this));
 
-			if(listLength){ // Only render things if list isn't empty
+			if(listLength){ // ?: Only render list headers if list has items
 				listDOM.push(
-					<div key={index + 'lel'} className={
+					<div key={index + 'lel'} className={ // FIX: Let this have index as key one _id is used for listItems
 						React.addons.classSet({
 							'list-itemstatus-wrap': true,
-							'current': (index === 0) // Current
+							'current': (index === 0) // ?: When index is 0, the current listPart status is "current"
 						})
 					}>
 						<div className="list-itemstatus-tag">
@@ -200,15 +230,75 @@ var list = React.createClass({
 				listDOM.push(listPart);
 			}
 		}.bind(this));
+		
+		if(this.props.error){
+			listDOM.push(
+				<div id="list-error">
+					<div id="list-error-image" className="icon-support">
+					</div>
+					<div id="list-error-title">
+						Sorry! Herro is experiencing some problems.
+					</div>
+					<p id="list-error-desc">
+						We are already on the case and will resolve this issue as soon as possible.
+						Feel free to contact us if this issue persists.
+					</p>
+				</div>
+			);
+		} else if(!listDOM.length && this.props.list.length){
+			// ?: If listDOM is empty, but we still have list entries, then it means that we can't find anything that matches the filterText
+			listDOM.push(<div id="list-noresults">No matching entries were found</div>);
+		} else if(!this.props.list.length && this.props.loaded){
+			// ?: Empty list. Display a message that asks the user to make some list entries
+			listDOM.push(
+				<div id="list-onboard">
+					<div id="onboard-welcome">
+						Let's get started quickly.
+					</div>
+					<div id="onboard-wrap">
+						<div id="onboard-left" className="onboard-option">
+							<div className="onboard-image icon-book-2">
+							</div>
+							<div className="onboard-title">
+								Start adding entries to a new list
+							</div>
+							<div className="onboard-desc">
+								Super easy to do. We'll help you get started with tracking your favorite series in no time!
+							</div>
+							<a id="onboard-btn-new" className="onboard-btn">
+								Start with fresh list
+							</a>
+						</div>
+						<div id="onboard-sep">
+						</div>
+						<div id="onboard-right" className="onboard-option">
+							<div className="onboard-image icon-book-lines-2">
+							</div>
+							<div className="onboard-title">
+								Sync with an already existing list
+							</div>
+							<div className="onboard-desc">
+								If you already have a list, we can help you keep 
+								things synced across platforms.
+								<br />
+								<span className="onboard-tiny">
+									(even if you never ever will use something besides Herro....right?)
+								</span>
+							</div>
+							<a id="onboard-btn-sync" className="onboard-btn">
+								Sync from old list
+							</a>
+						</div>
+					</div>
+				</div>
+			);
+		}
 
 		return (<div id="list">{listDOM}</div>);
 	}
 });
 
 var listItem = React.createClass({
-	updateProgress: function(){
-
-	},
 	render: function(){
 		return (
 			<div className="list-item">
@@ -252,82 +342,3 @@ var listItem = React.createClass({
 	}
 });
 React.renderComponent(<listApp listType="anime" />, document.getElementById('list-wrap'));
-
-/*
-	<div id="list-wrap">
-		<div id="boo-progress" class="boo-container">
-			<div class="boo-content">
-				<input type="text" id="boo-progress-input" value="" autocomplete="off" />
-			</div>
-		</div>
-		<div id="list-left">
-			<div id="list-top">
-				<div id="list-filter-wrap">
-					<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." />
-				</div>
-				<div id="list-add-wrap">
-					<div id="list-add-btn">
-						Add Series
-					</div>
-				</div>
-			</div>
-			<div id="list-sort">
-				<div id="list-sort-title" class="list-sort-hd">
-					Title
-				</div>
-				<div id="list-sort-progress" class="list-sort-hd">
-					Progress
-				</div>
-				<div id="list-sort-rating" class="list-sort-hd">
-					Rating
-				</div>
-				<div id="list-sort-type" class="list-sort-hd">
-					Type
-				</div>
-			</div>
-			<div id="list">
-				<div class="list-itemstatus-wrap current">
-					<div class="list-itemstatus-tag">
-						Current
-					</div>
-					<div class="list-itemstatus-line">
-					</div>
-				</div>
-				<div class="list-item">
-					<div class="list-item-content">
-						<div class="list-item-left">
-							<div class="list-item-title">
-								Mikakunin De Shinkoukei
-							</div>
-						</div>
-						<div class="list-item-right">
-							<div class="list-item-plusone icon-plus">
-							</div>
-							<div class="list-item-progress">
-								<span class="list-progress-current">6</span>
-								<span class="list-progress-sep">/</span>
-								<span class="list-progress-total">12</span>
-							</div>
-							<div class="list-item-rating">
-								<span class="list-rating-icon icon-heart-empty"></span>
-								<span class="list-rating-number">&mdash;</span>
-							</div>
-							<div class="list-item-type">
-								<span class="list-type-icon tv">Special</span>
-							</div>
-						</div>
-					</div>
-					<div class="list-item-expanded">
-					</div>
-				</div>
-				<div class="list-itemstatus-wrap">
-					<div class="list-itemstatus-tag">
-						Completed
-					</div>
-					<div class="list-itemstatus-line">
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</div> */
