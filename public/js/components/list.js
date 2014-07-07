@@ -4,13 +4,38 @@ var listApp = React.createClass({
 	getInitialState: function(){
 
 		/*
-			0 - current
-			1 - completed
-			2 - planned
-			3 - on hold
-			4 - dropped
+			?: These integers are used to group together list items.
+
+			1 - current
+			2 - completed
+			3 - planned
+			4 - on hold
+			5 - dropped
 		*/
 
+		/*
+			WORK: Unless we want to display the manga list count,
+			we could just merge 'animeList' and 'mangaList' into 'list'
+			or something. Then we just have to assure that the API
+			spits out the same format for anime and manga.
+
+			Here is a suggestion on how the data should look:
+
+			{
+				"status": 1, 
+				"rating": 7, 
+				"progress": 12,
+				"seriesTitle": "Kill la Kill", 
+				"seriesTotal": 24, 
+				"seriesType": "TV",
+				"seriesStatus": "airing",
+				"seriesImage": "http://urltoimage.jpg",
+				"seriesGenres": [
+					"Action",
+					"Shounen"
+				]
+			}
+		*/
 		var user = {
 			username: 'Mochi Umai',
 			biography: 'Everything from code to pancakes. Solving the mysteries of design. I love playing games, especially TF2, so feel free to add me on steam: Mochi umai.',
@@ -18,14 +43,16 @@ var listApp = React.createClass({
 			mangaList: [],
 			lastSort: '', // ?: Last thing we sorted by. Used to check if we just need to reverse the sort.
 			filterText: '', // ?: String, used to filter the list
-			loaded: false,
-			loadError: false
+			loaded: false, // ?: Displays the actual list when true
+			loadError: false // ?: Displays error message if true
 
 		}
 		return user;
 	},
 	sortList: function(sortBy){
 		if(!sortBy) sortBy = 'title';
+
+		// FIX: As mentioned above, this type of logic separation won't hold
 
 		if(this.props.listType === 'anime'){
 			var list = this.state.animeList;
@@ -50,10 +77,38 @@ var listApp = React.createClass({
 	},
 	filterList: function(event){
 		this.setState({
-			filterText: event.target.value
+			filterText: event.target.value.toLowerCase() // WORK: toLowerCase() too damn spread out. Write a method?
 		});
 	},
-	componentWillMount: function(){
+	loadList: function(list){
+
+		// ?: Groups list objects by status and sorts them. Run only once
+
+		if(list.length){
+			var listArr = [];
+			list = _.groupBy(list, 'status');
+			_.each(list, function(listPart, index){
+				listArr.push(_.sortBy(listPart, function(listItem){ return listItem['status'] }));
+			});
+
+			// FIX: As mentioned above, this type of logic separation won't hold.
+
+			if(this.props.listType === 'anime'){
+				this.setState({
+					animeList: listArr
+				});
+			} else {
+				this.setState({
+					mangaList: listArr
+				});
+			}
+			this.sortList();				
+		}
+		this.setState({
+			loaded: true
+		});
+	},
+	componentDidMount: function(){
 		/*
 		{
 			"status": 2, 
@@ -65,34 +120,17 @@ var listApp = React.createClass({
 			"seriesStatus": "airing"
 		}
 		*/
+
+		// FIX: Add an offline source for test data => Development without Internet access
+
+		/*
 		$.ajax({
 			//url: 'http://www.json-generator.com/api/json/get/ctjyrLfuUO?indent=2', // ?: 2000 dummy list entries
-			//url: 'http://www.json-generator.com/api/json/get/cgaZMvksbS?indent=2', // ?: 300 dummy list entries
-			url: 'http://www.json-generator.com/api/json/get/bOpRpkgPUy?indent=2', // ?: 0 empty list
+			url: 'http://www.json-generator.com/api/json/get/cgaZMvksbS?indent=2', // ?: 300 dummy list entries
+			//url: 'http://www.json-generator.com/api/json/get/bOpRpkgPUy?indent=2', // ?: 0 empty list
 			type: 'get',
 			success: function(list){
-				if(list.length){
-					var listArr = [];
-					list = _.groupBy(list, 'status');
-					_.each(list, function(listPart, index){
-						listArr.push(_.sortBy(listPart, function(listItem){ return listItem['status'] }));
-					});
-
-					if(this.props.listType === 'anime'){
-						this.setState({
-							animeList: listArr
-						});
-					} else {
-						this.setState({
-							mangaList: listArr
-						});
-					}
-
-					this.sortList();					
-				}
-				this.setState({
-					loaded: true
-				});
+				this.loadList(list);
 			}.bind(this),
 			error: function(){
 				this.setState({
@@ -100,7 +138,42 @@ var listApp = React.createClass({
 					loadError: true
 				});
 			}.bind(this)
-		});
+		}); */
+
+		this.loadList([
+			{
+				status: 2, 
+				rating: 10, 
+				title: "Kill la Kill", 
+				progress: 24, 
+				total: 24, 
+				type: "TV"
+			},
+			{
+				status: 1, 
+				rating: 7, 
+				title: "Tamako Market", 
+				progress: 10, 
+				total: 12, 
+				type: "TV"
+			},
+			{
+				status: 1, 
+				rating: 0, 
+				title: "Garden of Words", 
+				progress: 0, 
+				total: 1, 
+				type: "Movie"
+			},
+			{
+				status: 2, 
+				rating: 8, 
+				title: "K-ON!", 
+				progress: 12, 
+				total: 12, 
+				type: "TV"
+			}
+		]);
 	},
 	render: function(){
 		return (
@@ -154,9 +227,13 @@ var listApp = React.createClass({
 								Anime List
 							</span>
 							<span className="list-nav-count">
+								// FIX: This currently doesn't display the list length
 								{this.state.animeList.length}
 							</span>
 						</a>
+
+						// WORK: Implement manga list as well
+
 						<a className="list-nav-item">
 							<span className="list-nav-text">
 								Manga List
@@ -178,6 +255,16 @@ var listApp = React.createClass({
 });
 var list = React.createClass({
 	mapStatus: function(statusValue){
+		
+		/*
+			?: Used to convert the 'index', under
+			the render function, to a string.
+
+			This function is right now pretty useless.
+		*/
+
+		// WORK: Can we solve this in another way?
+
 		var statusList = [
 			'Current',
 			'Completed',
@@ -189,6 +276,7 @@ var list = React.createClass({
 	},
 	render: function(){
 		var listDOM = [];
+		var totalListLength = 0;
 
 		_.each(this.props.list, function(listPart, index){
 			var listLength = 0;
@@ -199,7 +287,7 @@ var list = React.createClass({
 						item.type.toLowerCase().indexOf(this.props.filterText) > -1
 					);
 
-					if(filterCondition){ // WORK: Needs to have more accuracy in the future
+					if(filterCondition){ // WORK: Needs to have more fuzzyness in the future
 						listLength++;
 						return (<div key={index}><listItem item={item} /></div>)
 					} else {
@@ -209,7 +297,6 @@ var list = React.createClass({
 					listLength++;
 					return (<div key={index}><listItem item={item} /></div>);
 				}
-				
 			}.bind(this));
 
 			if(listLength){ // ?: Only render list headers if list has items
@@ -230,8 +317,15 @@ var list = React.createClass({
 				listDOM.push(listPart);
 			}
 		}.bind(this));
+
+		// WORK: Separate the 'listDOM.push(...)' logic into a separate function
 		
 		if(this.props.error){
+
+			// ?: If the componentWillMount (loading the list) call fails, this is displayed
+
+			// WORK: Maybe this should be more informative. E.g. direct the user to a status page.
+
 			listDOM.push(
 				<div id="list-error">
 					<div id="list-error-image" className="icon-support">
@@ -249,7 +343,7 @@ var list = React.createClass({
 			// ?: If listDOM is empty, but we still have list entries, then it means that we can't find anything that matches the filterText
 			listDOM.push(<div id="list-noresults">No matching entries were found</div>);
 		} else if(!this.props.list.length && this.props.loaded){
-			// ?: Empty list. Display a message that asks the user to make some list entries
+			// ?: Empty list. Display a message that asks the user to make some list entries, a.k.a onboarding
 			listDOM.push(
 				<div id="list-onboard">
 					<div id="onboard-welcome">
@@ -313,7 +407,7 @@ var listItem = React.createClass({
 							React.addons.classSet({
 								'list-item-plusone': true,
 								'icon-plus': true,
-								'hidden': (this.props.item.status === 2)
+								'hidden': (this.props.item.status === 2) // ?: Hide the 'plus-one' button if list item is under 'completed'
 							})
 						} onClick={this.updateProgress}>
 						</div>
@@ -323,10 +417,16 @@ var listItem = React.createClass({
 							<span className="list-progress-total">{this.props.item.total}</span>
 						</div>
 						<div className="list-item-rating">
-							<span className="list-rating-icon icon-heart-full"></span>
+							<span className={
+								React.addons.classSet({
+									"list-rating-icon": true,
+									"icon-heart-full": this.props.item.rating,
+									"icon-heart-empty": !this.props.item.rating
+								})
+							}></span>
 							<span className="list-rating-number">
 								{
-									(this.props.item.rating) ? this.props.item.rating / 2 : '—'
+									(this.props.item.rating) ? this.props.item.rating / 2 : '—' // ?: Divide score by two, or display m-dash
 								}
 							</span>
 						</div>

@@ -4,6 +4,13 @@ html {
 	font-family: sans-serif;
 	background: $bluegray-l-12;
 }
+p a, p a:visited {
+	color: $blue;
+	text-decoration: underline;
+	&:hover {
+		text-decoration: none;
+	}
+}
 p {
 	line-height: 2em;
 }
