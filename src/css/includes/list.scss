@@ -110,7 +110,6 @@
 	font-size: 14px;
 	font-weight: bold;
 }
-
 #list-left {
 	float: left;
 	width: 960px;
@@ -128,7 +127,7 @@
 	border: 0;
 	padding: 15px;
 	width: 600px;
-	font-size: 14px;
+	font-size: 12px;
 }
 #list-sort {
 	@extend .cf;
@@ -182,6 +181,7 @@
 	height: 10px;
 	color: #fff;
 	font-size: 10px;
+	font-weight: bold;
 	text-align: center;
 	text-transform: uppercase;
 	background: $blue;
