@@ -1,8 +1,10 @@
 html {
+	overflow-y: scroll;
 	color: $black;
 	font-size: 12px;
 	font-family: sans-serif;
 	background: $bluegray-l-12;
+	-webkit-font-smoothing: antialiased;
 }
 p a, p a:visited {
 	color: $blue;

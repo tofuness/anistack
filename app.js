@@ -76,6 +76,7 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route
+require(path.join(__dirname, '/routes/test'))(app); // Pass "app" to test route
 
 // If no matching route was found, give 'em the 404
 
