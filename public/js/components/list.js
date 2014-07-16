@@ -15,10 +15,9 @@ var listAction = {
 					listItem.itemProgress++;
 					listItem.itemStatus = 2;
 				}
-				PubSub.publishSync(constants.DATA_CHANGE, listStore);
+				PubSub.publish(constants.DATA_CHANGE);
 				break;
 			}
-			console.log('NO?')
 		}
 	},
 	updateRating: function(msg, data){
@@ -53,11 +52,13 @@ PubSub.subscribe(constants.UPDATE_PROGRESS, listAction.updateProgress);
 PubSub.subscribe(constants.UPDATE_RATING, listAction.updateRating);
 PubSub.subscribe(constants.UPDATE_STATUS, listAction.updateStatus);
 
-var listApp = React.createClass({
+var ReactClassSet = React.addons.classSet;
+var ReactTransGroup = React.addons.CSSTransitionGroup;
+
+var listAppComp = React.createClass({
 	getInitialState: function(){
 		var app = {
 			listData: [],
-			listDataSource: [],
 			listFilterText: '',
 			listLoaded: false,
 			listLoadError: false,
@@ -70,14 +71,13 @@ var listApp = React.createClass({
 		PubSub.subscribe(constants.DATA_CHANGE, this.loadList);
 		PubSub.subscribe(constants.LIST_ERROR, this.loadError);
 	},
-	loadList: function(msg, listData){
-		this.setState({
-			listDataSource: listData
-		});
+	loadList: function(msg){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
-		this.setState({
-			listLoaded: true
-		});
+		if(!this.state.listLoaded){
+			this.setState({
+				listLoaded: true
+			});
+		}
 	},
 	loadError: function(){
 		this.setState({
@@ -94,9 +94,9 @@ var listApp = React.createClass({
 			order = 'asc';
 		}
 
-		console.log('Sorting list by "' + sortBy + '" in an "' + order + 'ending" order');
+		//console.log('Sorting list by "' + sortBy + '" in an "' + order + 'ending" order');
 
-		var listSorted = (this.state.listDataSource);
+		var listSorted = listStore;
 
 		// WORK: Replace the objSort library with something faster (?)
 
@@ -139,7 +139,7 @@ var listApp = React.createClass({
 						Type
 					</div>
 				</div>
-				<list
+				<listComp
 					listData={this.state.listData}
 					listFilterText={this.state.listFilterText}
 					listLoaded={this.state.listLoaded}
@@ -150,14 +150,26 @@ var listApp = React.createClass({
 	}
 });
 
-var list = React.createClass({
+var listComp = React.createClass({
 	propTypes: {
 		listData: React.PropTypes.array,
 		listFilterText: React.PropTypes.string,
 		listLoaded: React.PropTypes.bool,
 		listLoadError: React.PropTypes.bool
 	},
+	mapStatus: function(number){
+		var status = [
+			undefined,
+			'Current',
+			'Completed',
+			'Planned',
+			'On Hold',
+			'Dropped'
+		]
+		return status[number];
+	},
 	render: function(){
+		console.log('Ran render at ' + new Date().getTime());
 		var listDOM = [];
 		var ifListLoaded = (this.props.listLoaded && !this.props.listLoadError);
 		var ifListEmpty = (ifListLoaded && this.props.listFilterText !== '');
@@ -179,17 +191,17 @@ var list = React.createClass({
 					listNode.push(<listItemComp itemData={listItem} key={index + '-item'} />);
 				}
 
-				if(lastStatus !== listItem.itemStatus && listNode.length){
+				if(lastStatus !== listItem.itemStatus && 'listNode.length'){
 					lastStatus = listItem.itemStatus;
 					listDOM.push(
 						<div key={index + '-status'} className={ // FIX: Let this have index as key one _id is used for listItems
-							React.addons.classSet({
+							ReactClassSet({
 								'list-itemstatus-wrap': true,
 								'current': (lastStatus === 1) // ?: When index is 0, the current listPart status is "current"
 							})
 						}>
 							<div className="list-itemstatus-tag">
-								{lastStatus}
+								{this.mapStatus(lastStatus)}
 							</div>
 							<div className="list-itemstatus-line">
 							</div>
@@ -231,7 +243,7 @@ var listItemComp = React.createClass({
 					</div>
 					<div className="list-item-right">
 						<div className={
-							React.addons.classSet({
+							ReactClassSet({
 								'list-item-plusone': true,
 								'icon-plus': true,
 								'hidden': (this.props.itemData.itemStatus === 2) // ?: Hide the 'plus-one' button if list item is under 'completed'
@@ -245,7 +257,7 @@ var listItemComp = React.createClass({
 						</div>
 						<div className="list-item-rating">
 							<span className={
-								React.addons.classSet({
+								ReactClassSet({
 									"list-rating-icon": true,
 									"icon-heart-full": this.props.itemData.itemRating,
 									"icon-heart-empty": !this.props.itemData.itemRating
@@ -334,4 +346,4 @@ var listOnBoard = React.createClass({
 	}
 });
 
-React.renderComponent(<listApp />, document.getElementById('list-left'));
+React.renderComponent(<listAppComp />, document.getElementById('list-left'));

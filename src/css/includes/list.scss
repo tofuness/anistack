@@ -211,6 +211,7 @@
 	@include border-bottom-left-radius(4px);
 }
 .list-item {
+	@extend .cf;
 	border-bottom: 1px solid $gray-l-3;
 
 	&:hover {
@@ -219,6 +220,22 @@
 		}
 	}
 }
+
+.example-enter {
+	@extend .ts30;
+	opacity: 0.1;
+}
+.example-enter.example-enter-active {
+	opacity: 1;
+}
+.example-leave {
+	@extend .ts30;
+	opacity: 1;
+}
+.example-leave.example-leave-active {
+	opacity: 0.1;
+}
+
 .list-item-content {
 	@extend .cf;
 	font-weight: bold;
