@@ -191,13 +191,13 @@ var listComp = React.createClass({
 					listNode.push(<listItemComp itemData={listItem} key={index + '-item'} />);
 				}
 
-				if(lastStatus !== listItem.itemStatus && 'listNode.length'){
+				if(lastStatus !== listItem.itemStatus && listNode.length){
 					lastStatus = listItem.itemStatus;
 					listDOM.push(
 						<div key={index + '-status'} className={ // FIX: Let this have index as key one _id is used for listItems
 							ReactClassSet({
 								'list-itemstatus-wrap': true,
-								'current': (lastStatus === 1) // ?: When index is 0, the current listPart status is "current"
+								'current': (lastStatus === 2) // ?: When index is 0, the current listPart status is "current"
 							})
 						}>
 							<div className="list-itemstatus-tag">
@@ -237,9 +237,9 @@ var listItemComp = React.createClass({
 			<div className="list-item">
 				<div className="list-item-content">
 					<div className="list-item-left">
-						<div className="list-item-title">
+						<a className="list-item-title" href="/">
 							{this.props.itemData.seriesTitle}
-						</div>
+						</a>
 					</div>
 					<div className="list-item-right">
 						<div className={
