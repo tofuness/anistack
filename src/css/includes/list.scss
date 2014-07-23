@@ -95,20 +95,36 @@
 	line-height: 337px;
 }
 #list-error {
+	@extend .ts30;
 	margin: 0 auto;
-	padding: 120px 0;
-	width: 350px;
+	padding: 142px 0;
+	width: 800px;
 	text-align: center;
+	background: url(/img/nooo.png) no-repeat;
+	background-size: 30%;
+	background-position: 0 360px;
+
+	&:hover {
+		background-position: 0 290px;
+	}
 }
 #list-error-image {
+	margin: 0 auto;
 	padding-bottom: 30px;
+	width: 350px;
 	color: $red;
 	font-size: 32px;
 }
 #list-error-title {
+	margin: 0 auto;
 	padding-bottom: 15px;
+	width: 350px;
 	font-size: 14px;
 	font-weight: bold;
+}
+#list-error-desc {
+	margin: 0 auto;
+	width: 350px;
 }
 #list-left {
 	float: left;
@@ -129,10 +145,14 @@
 	width: 600px;
 	font-size: 12px;
 }
+
+
 #list-sort {
 	@extend .cf;
+	position: relative;
 	border-bottom: 2px solid $gray-l-3;
 }
+
 .list-sort-hd {
 	@extend .ns;
 	cursor: pointer;
@@ -326,7 +346,6 @@
 #list-right {
 	float: right;
 	width: 200px;
-	min-height: 300px;
 	height: 100%;
 	background: #fff;
 	@include box-shadow(inset 1px 0 0 $gray-l-3);
@@ -346,7 +365,7 @@
 	@include border-radius(4px);
 }
 #list-profile-background {
-	height: 100px;
+	height: 150px;
 	background: url(/img/profilebg.jpg) center center no-repeat;
 	background-size: cover;
 	@include border-top-right-radius(4px);
@@ -396,10 +415,11 @@
 	line-height: 19px;
 }
 .list-nav-count {
+	display: block;
 	float: right;
 	padding: 4px;
 	background: $gray-l-3;
-	@include border-radius(02px);
+	@include border-radius(2px);
 }
 
 

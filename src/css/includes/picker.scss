@@ -1,0 +1,77 @@
+#thepicker {
+	padding-left: 800px;
+}
+.picker-wrap {
+	overflow: hidden;
+	width: 300px;
+	height: auto;
+	background: #fff;
+	border: 4px solid $b60;
+	@include border-radius(4px);
+}
+.picker-content {
+	@extend .cf;
+	margin-left: 0;
+	width: 900px;
+}
+.picker-step {
+	float: left;
+	width: 300px;
+}
+
+.picker-title {
+	display: none;
+	@extend .opensans;
+	padding: 15px;
+	font-size: 18px;
+	font-weight: 800;
+	text-align: center;
+	border-bottom: 1px solid $gray-l-3;
+}
+
+// Status
+
+.picker-status {
+	display: none;
+}
+.picker-status-item {
+	padding: 8px;
+	font-weight: bold;
+	border-bottom: 1px solid $gray-l-3;
+	&:last-child {
+		border-bottom: 0;
+	}
+}
+
+// Rating
+
+.picker-rating {
+	@extend .cf;
+	padding: 15px;
+}
+.picker-heart {
+	float: left;
+	padding-right: 10px;
+	color: $red;
+	font-size: 23px;
+	line-height: 20px;
+	&:last-child {
+		padding-right: 0;
+	}
+}
+
+.picker-bottom {
+	@extend .cf;
+	padding: 10px;
+	background: $gray-l-3;
+}
+.picker-skip {
+	@extend .opensans;
+	float: right;
+	padding: 6px 15px;
+	font-weight: 800;
+	text-align: center;
+	border: 2px solid $black;
+	text-transform: uppercase;
+	@include border-radius(50px);
+}

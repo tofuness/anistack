@@ -2,7 +2,7 @@
 
 // Actions and whatnot
 
-var listStore = null;
+var listStore = [];
 
 var listAction = {
 	updateProgress: function(msg, data){
@@ -41,7 +41,9 @@ $.ajax({
 	url: '/data/50.json',
 	success: function(listData){
 		listStore = listData;
-		PubSub.publishSync(constants.DATA_CHANGE, listData);
+		setTimeout(function(){
+			PubSub.publishSync(constants.DATA_CHANGE, listData);
+		}, 1000);
 	},
 	error: function(){
 		PubSub.publishSync(constants.LIST_ERROR);
@@ -118,25 +120,33 @@ var listAppComp = React.createClass({
 		});
 	},
 	render: function(){
+		var divStyle = {
+			display: (this.state.listLoaded && this.state.listData.length && !this.state.listLoadError) ? 'block' : 'none'
+		}
+
+		if(listStore.length) $('#anime-nav-count').text(listStore.length);
+
 		return (
 			<div>
-				<div id="list-top">
-					<div id="list-filter-wrap">
-						<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." onChange={this.filterList} />
+				<div style={divStyle}>
+					<div id="list-top">
+						<div id="list-filter-wrap">
+							<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." onChange={this.filterList} />
+						</div>
 					</div>
-				</div>
-				<div id="list-sort">
-					<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesTitle')}>
-						Title
-					</div>
-					<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemProgress')}>
-						Progress
-					</div>
-					<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemRating')}>
-						Rating
-					</div>
-					<div id="list-sort-type" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesType')}>
-						Type
+					<div id="list-sort">
+						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesTitle')}>
+							Title
+						</div>
+						<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemProgress')}>
+							Progress
+						</div>
+						<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemRating')}>
+							Rating
+						</div>
+						<div id="list-sort-type" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesType')}>
+							Type
+						</div>
 					</div>
 				</div>
 				<listComp
@@ -229,13 +239,25 @@ var listItemComp = React.createClass({
 		itemData: React.PropTypes.object,
 		itemIndex: React.PropTypes.number
 	},
+	getInitialState: function(){
+		return {
+			expanded: false
+		}
+	},
 	incrementProgress: function(){
 		PubSub.publish(constants.UPDATE_PROGRESS, this.props.itemData);
+	},
+	expandItem: function(event){
+		if(event.target.className.indexOf('list-item-content') > -1){
+			this.setState({
+				expanded: !this.state.expanded
+			});
+		}
 	},
 	render: function(){
 		return (
 			<div className="list-item">
-				<div className="list-item-content">
+				<div className="list-item-content" onClick={this.expandItem}>
 					<div className="list-item-left">
 						<a className="list-item-title" href="/">
 							{this.props.itemData.seriesTitle}
@@ -273,8 +295,6 @@ var listItemComp = React.createClass({
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>
 						</div>
 					</div>
-				</div>
-				<div className="list-item-expanded">
 				</div>
 			</div>
 		);

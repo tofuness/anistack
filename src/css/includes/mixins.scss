@@ -1,3 +1,22 @@
+/*
+
+PIXELS  EMS
+-------------
+95
+82
+59
+50
+37
+32
+23
+18
+14
+12
+9
+7
+
+*/
+
 @mixin box-shadow($shadow1, $shadow2: false, $shadow3: false, $shadow4: false, $shadow5: false) {
 
 	$params: $shadow1;
