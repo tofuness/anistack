@@ -2,6 +2,7 @@
 	padding-left: 800px;
 }
 .picker-wrap {
+	@extend .opensans;
 	overflow: hidden;
 	width: 300px;
 	height: auto;
@@ -11,8 +12,22 @@
 }
 .picker-content {
 	@extend .cf;
-	margin-left: 0;
+	@extend .ts30;
+	overflow: hidden;
 	width: 900px;
+	text-align: center;
+
+	&.step-1 {
+		height: 214px;
+	}
+	&.step-2 {
+		margin-left: -300px;
+		height: 126px;
+	}
+	&.step-3 {
+		margin-left: -600px;
+		height: 107px;
+	}
 }
 .picker-step {
 	float: left;
@@ -20,8 +35,6 @@
 }
 
 .picker-title {
-	display: none;
-	@extend .opensans;
 	padding: 15px;
 	font-size: 18px;
 	font-weight: 800;
@@ -32,41 +45,118 @@
 // Status
 
 .picker-status {
-	display: none;
+
 }
 .picker-status-item {
-	padding: 8px;
+	cursor: pointer;
+	padding: 15px;
+	font-size: 14px;
 	font-weight: bold;
+	line-height: 12px;
 	border-bottom: 1px solid $gray-l-3;
 	&:last-child {
 		border-bottom: 0;
 	}
+	&:hover {
+		background: $gray-hover;
+	}
+}
+
+// Progress
+
+.picker-progress {
+	@extend .cf;
+	display: inline-block;
+	padding: 15px;
+}
+.picker-progress-input {
+	float: left;
+	padding: 10px 5px;
+	width: 50px;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	border: 4px solid $gray-l-3;
+	@include border-radius(4px);
+	&:hover {
+		border: 4px solid $gray;
+	}
+	&:focus {
+		border: 4px solid $blue;
+	}
+}
+.picker-progress-sep {
+	float: left;
+	padding: 0 10px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 45px;
+}
+.picker-progress-total {
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 45px;
 }
 
 // Rating
 
 .picker-rating {
 	@extend .cf;
-	padding: 15px;
+	padding: 15px 0;
+	display: inline-block;
+}
+.picker-rating-number {
+	float: left;
+	padding: 0 15px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 23px;
+	border-left: 1px solid $gray-l-3;
 }
 .picker-heart {
+	cursor: pointer;
 	float: left;
-	padding-right: 10px;
+	padding-right: 15px;
 	color: $red;
 	font-size: 23px;
-	line-height: 20px;
-	&:last-child {
-		padding-right: 0;
+	line-height: 23px;
+	&:first-child {
+		padding-left: 15px;
 	}
 }
 
 .picker-bottom {
 	@extend .cf;
-	padding: 10px;
+	@extend .ts30;
+	overflow: hidden;
+	padding: 0 15px;
+	height: 0;
 	background: $gray-l-3;
+	&.show {
+		padding: 10px 15px;
+		height: 28px;
+	}
+}
+.picker-bullet-wrap {
+	@extend .cf;	
+	float: left;
+	padding-top: 8px;
+}
+.picker-bullet {
+	cursor: pointer;
+	margin-right: 10px;
+	float: left;
+	width: 10px;
+	height: 10px;
+	background: $b30;
+	@include border-radius(10px);
+	&.active {
+		background: $b80;
+	}
 }
 .picker-skip {
-	@extend .opensans;
+	cursor: pointer;
 	float: right;
 	padding: 6px 15px;
 	font-weight: 800;
