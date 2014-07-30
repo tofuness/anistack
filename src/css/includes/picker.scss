@@ -45,7 +45,7 @@
 // Status
 
 .picker-status {
-
+	width: 300px;
 }
 .picker-status-item {
 	cursor: pointer;
@@ -71,32 +71,35 @@
 }
 .picker-progress-input {
 	float: left;
-	padding: 10px 5px;
+	padding: 0;
 	width: 50px;
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
-	border: 4px solid $gray-l-3;
-	@include border-radius(4px);
+	line-height: 33px;
+	@include box-shadow(inset 0 -2px 0 $gray-l-3);
 	&:hover {
-		border: 4px solid $gray;
+		@include box-shadow(inset 0 -2px 0 $gray);
 	}
 	&:focus {
-		border: 4px solid $blue;
+		@include box-shadow(inset 0 -2px 0 $blue);
 	}
 }
 .picker-progress-sep {
 	float: left;
-	padding: 0 10px;
+	padding: 0 5px;
+	color: $gray;
 	font-size: 14px;
 	font-weight: bold;
-	line-height: 45px;
+	line-height: 33px;
 }
 .picker-progress-total {
 	float: left;
-	font-size: 14px;
+	width: 50px;
+	font-size: 18px;
 	font-weight: bold;
-	line-height: 45px;
+	text-align: center;
+	line-height: 33px;
 }
 
 // Rating
@@ -108,6 +111,7 @@
 }
 .picker-rating-number {
 	float: left;
+	margin-top: 15px;
 	padding: 0 15px;
 	font-size: 14px;
 	font-weight: bold;
@@ -117,12 +121,12 @@
 .picker-heart {
 	cursor: pointer;
 	float: left;
-	padding-right: 15px;
+	padding: 15px 15px 15px 0;
 	color: $red;
 	font-size: 23px;
-	line-height: 23px;
+	line-height: 20px;
 	&:first-child {
-		padding-left: 15px;
+		padding-left: 20px;
 	}
 }
 
@@ -139,7 +143,7 @@
 	}
 }
 .picker-bullet-wrap {
-	@extend .cf;	
+	@extend .cf;
 	float: left;
 	padding-top: 8px;
 }
@@ -164,4 +168,66 @@
 	border: 2px solid $black;
 	text-transform: uppercase;
 	@include border-radius(50px);
+}
+
+// Singles design
+
+.picker-rating-single {
+	@extend .cf;
+	//@extend .tsout;
+	z-index: $z-up;
+	position: absolute;
+	top: -7px;
+	left: -88px;
+	width: 263px;
+	background: #fff;
+	//opacity: 0;
+	//@include transform(scale(0));
+	@include border-radius(4px);
+	@include box-shadow(0 0 6px $b30);
+	&.visible {
+		//@extend .tsin;
+		//opacity: 1;
+		//@include transform(scale(1));
+	}
+}
+.picker-progress-single {
+	@extend .cf;
+	//@extend .tsout;
+	z-index: $z-up;
+	position: absolute;
+	top: -7px;
+	left: -22px;
+	padding: 10px;
+	width: 125px;
+	background: #fff;
+	//opacity: 0;
+	//@include transform(scale(0));
+	@include border-radius(4px);
+	@include box-shadow(0 0 6px $b30);
+
+	&.visible {
+		/*
+		@extend .tsin;
+		opacity: 1;
+		@include transform(scale(1)); */
+	}
+}
+
+.picker-done {
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	right: 53px;
+	bottom: 0;
+	text-align: center;
+	background: $w60;
+	@include border-radius(4px);
+	&.visible {
+		@extend .tsin;
+		visibility: visible;
+		opacity: 1;
+	}
 }

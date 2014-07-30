@@ -4,36 +4,69 @@
 
 var listStore = [];
 
+// FIX: Create a function that takes changed data, compare with before, and spits out correct data
+
 var listAction = {
-	updateProgress: function(msg, data){
+	updateItem: function(msg, data){
 		for(var i = 0; i < listStore.length; i++){
-			if(listStore[i].seriesTitle === data.seriesTitle){
-				var listItem = listStore[i];
-				if(listItem.itemProgress < listItem.seriesTotal - 1){
-					listItem.itemProgress++;
-				} else {
-					listItem.itemProgress++;
-					listItem.itemStatus = 2;
-				}
+			if(listStore[i].seriesTitle === data.seriesTitle){ // FIX: Change to _id
+				listStore[i] = data;
+				console.log(data);
 				PubSub.publish(constants.DATA_CHANGE);
 				break;
 			}
 		}
 	},
-	updateRating: function(msg, data){
+	_updateItem: function(msg, changedData){
+		for(var i = 0; i < listStore.length; i++){
+			if(listStore[i].seriesTitle === changedData.seriesTitle){
+				var beforeData = listStore[i];
 
-	},
-	updateStatus: function(msg, data){
+				// CASE: If user lower progress, from completed to uncompleted
 
+				if(
+					beforeData.itemStatus === 2 &&
+					changedData.itemProgress < beforeData.seriesTotal
+				){
+					changedData.itemStatus = 1;
+				}
+
+				// CASE: If user completes an item
+
+				if(changedData.itemProgress === beforeData.seriesTotal){
+					changedData.itemStatus = 2;
+				}
+
+				// CASE: If user moves an item from x to completed
+
+				if(
+					changedData.itemStatus === 2 &&
+					changedData.itemProgress < beforeData.seriesTotal
+				){
+					changedData.itemProgress = beforeData.seriesTotal;
+				}
+
+				// CASE: If user moves an item from completed to x
+
+				if(
+					changedData.itemStatus !== 2 &&
+					changedData.itemProgress === beforeData.seriesTotal
+				){
+					changedData.itemProgress = 0;
+				}
+
+				listStore[i] = changedData;
+				PubSub.publish(constants.DATA_CHANGE);
+				break;
+			}
+		}
 	}
 }
 
 var constants = {
 	DATA_CHANGE: 'DATA_CHANGE',
 	LIST_ERROR: 'LIST_ERROR',
-	UPDATE_PROGRESS: 'UPDATE_PROGRESS',
-	UPDATE_RATING: 'UPDATE_RATING',
-	UPDATE_STATUS: 'UPDATE_STATUS'
+	UPDATE_ITEM: 'UPDATE_ITEM'
 }
 
 $.ajax({
@@ -41,18 +74,14 @@ $.ajax({
 	url: '/data/50.json',
 	success: function(listData){
 		listStore = listData;
-		setTimeout(function(){
-			PubSub.publishSync(constants.DATA_CHANGE, listData);
-		}, 1000);
+		PubSub.publishSync(constants.DATA_CHANGE, listData);
 	},
 	error: function(){
 		PubSub.publishSync(constants.LIST_ERROR);
 	}
 });
 
-PubSub.subscribe(constants.UPDATE_PROGRESS, listAction.updateProgress);
-PubSub.subscribe(constants.UPDATE_RATING, listAction.updateRating);
-PubSub.subscribe(constants.UPDATE_STATUS, listAction.updateStatus);
+PubSub.subscribe(constants.UPDATE_ITEM, listAction._updateItem);
 
 var ReactClassSet = React.addons.classSet;
 var ReactTransGroup = React.addons.CSSTransitionGroup;
@@ -62,6 +91,7 @@ var listAppComp = React.createClass({
 		var app = {
 			listData: [],
 			listFilterText: '',
+			listFilterStatus: 1,
 			listLoaded: false,
 			listLoadError: false,
 			listLastSort: 'seriesTitle',
@@ -92,21 +122,15 @@ var listAppComp = React.createClass({
 
 		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
-		} else {
+		} else if(!order){
 			order = 'asc';
 		}
 
-		//console.log('Sorting list by "' + sortBy + '" in an "' + order + 'ending" order');
+		//console.log('Sorting list by "' + sortBy + '" in "' + order + 'ending" order');
 
 		var listSorted = listStore;
 
-		// WORK: Replace the objSort library with something faster (?)
-
-		if(order === 'desc'){
-			listSorted = listSorted.objSort('itemStatus', sortBy, -1);
-		} else {
-			listSorted = listSorted.objSort('itemStatus', sortBy);
-		}
+		listSorted = keysort(listSorted, 'itemStatus, ' + sortBy + ' ' + order + ', seriesTitle');
 		
 		this.setState({
 			listData: listSorted,
@@ -117,6 +141,11 @@ var listAppComp = React.createClass({
 	filterList: function(event){
 		this.setState({
 			listFilterText: event.target.value
+		});
+	},
+	filterStatus: function(status){
+		this.setState({
+			listFilterStatus: status
 		});
 	},
 	render: function(){
@@ -130,21 +159,71 @@ var listAppComp = React.createClass({
 			<div>
 				<div style={divStyle}>
 					<div id="list-top">
+						<div id="list-tabs-wrap">
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 0)
+								})
+							} onClick={this.filterStatus.bind(this, 0)}>
+								All
+							</div>
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 1)
+								})
+							} onClick={this.filterStatus.bind(this, 1)}>
+								Current
+							</div>
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 2)
+								})
+							} onClick={this.filterStatus.bind(this, 2)}>
+								Completed
+							</div>
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 3)
+								})
+							} onClick={this.filterStatus.bind(this, 3)}>
+								Planned
+							</div>
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 4)
+								})
+							} onClick={this.filterStatus.bind(this, 4)}>
+								On Hold
+							</div>
+							<div className={
+								ReactClassSet({
+									'list-tab': true,
+									'current': (this.state.listFilterStatus === 5)
+								})
+							} onClick={this.filterStatus.bind(this, 5)}>
+								Dropped
+							</div>
+						</div>
 						<div id="list-filter-wrap">
 							<input type="text" max-length="50" id="list-filter-input" placeholder="Filter by title..." onChange={this.filterList} />
 						</div>
 					</div>
 					<div id="list-sort">
-						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesTitle')}>
+						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesTitle', null)}>
 							Title
 						</div>
-						<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemProgress')}>
+						<div id="list-sort-progress" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemProgress', null)}>
 							Progress
 						</div>
-						<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemRating')}>
+						<div id="list-sort-rating" className="list-sort-hd" onClick={this.sortList.bind(this, 'itemRating', null)}>
 							Rating
 						</div>
-						<div id="list-sort-type" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesType')}>
+						<div id="list-sort-type" className="list-sort-hd" onClick={this.sortList.bind(this, 'seriesType', null)}>
 							Type
 						</div>
 					</div>
@@ -152,6 +231,7 @@ var listAppComp = React.createClass({
 				<listComp
 					listData={this.state.listData}
 					listFilterText={this.state.listFilterText}
+					listFilterStatus={this.state.listFilterStatus}
 					listLoaded={this.state.listLoaded}
 					listLoadError={this.state.listLoadError}
 				/>
@@ -179,7 +259,7 @@ var listComp = React.createClass({
 		return status[number];
 	},
 	render: function(){
-		console.log('Ran render at ' + new Date().getTime());
+
 		var listDOM = [];
 		var ifListLoaded = (this.props.listLoaded && !this.props.listLoadError);
 		var ifListEmpty = (ifListLoaded && this.props.listFilterText !== '');
@@ -190,10 +270,18 @@ var listComp = React.createClass({
 		if(ifListLoaded){
 			_.each(this.props.listData, function(listItem, index){
 				var listNode = [];
+				var filterStatus = this.props.listFilterStatus
+				if(filterStatus && filterStatus !== listItem.itemStatus){
+					return null;
+				}
 
 				if(this.props.listFilterText !== ''){
 					var filterText = this.props.listFilterText;
-					var filterCondition = (listItem.seriesTitle.toLowerCase().indexOf(filterText) > -1); 
+					var filterCondition = (
+						listItem.seriesTitle.toLowerCase().indexOf(filterText) > -1
+						|| listItem.seriesType.toLowerCase().indexOf(filterText) > -1
+					); 
+					
 					if(filterCondition){
 						listNode.push(<listItemComp itemData={listItem} key={index + '-item'} />);
 					}	
@@ -241,23 +329,53 @@ var listItemComp = React.createClass({
 	},
 	getInitialState: function(){
 		return {
-			expanded: false
+			ratingOpen: false,
+			progressOpen: false
 		}
 	},
 	incrementProgress: function(){
-		PubSub.publish(constants.UPDATE_PROGRESS, this.props.itemData);
+		var tempItem = _.clone(this.props.itemData);
+		tempItem.itemProgress += 1;
+		PubSub.publish(constants.UPDATE_ITEM, tempItem);
 	},
-	expandItem: function(event){
-		if(event.target.className.indexOf('list-item-content') > -1){
-			this.setState({
-				expanded: !this.state.expanded
-			});
-		}
+	open: function(picker, e){
+		if(this.state.ratingOpen && this.state.progressOpen) return false;
+		var ops = {};
+		ops[picker] = true;
+		this.setState(ops);
+	},
+	close: function(picker, e){
+		if(!this.state.ratingOpen && !this.state.progressOpen) return false;
+		var ops = {};
+		ops[picker] = false;
+		this.setState(ops);
 	},
 	render: function(){
+		// WORK: Not sure if we need to pass e.g. prevRating and itemData props (combine them)
+
+		var pickerProgress = null;
+		var pickerRating = null;
+
+		if(this.state.progressOpen){
+			pickerProgress = <pickerProgressComp 
+				visible={this.state.progressOpen}
+				itemData={this.props.itemData}
+				close={this.close.bind(this, 'progressOpen')}
+			/>;
+		}
+
+		if(this.state.ratingOpen){
+			pickerRating = 	<pickerRatingComp
+				visible={this.state.ratingOpen}
+				close={this.close.bind(this, 'ratingOpen')}
+				itemData={this.props.itemData}
+				prevRating={this.props.itemData.itemRating}
+			/>;
+		}
+
 		return (
 			<div className="list-item">
-				<div className="list-item-content" onClick={this.expandItem}>
+				<div className="list-item-content">
 					<div className="list-item-left">
 						<a className="list-item-title" href="/">
 							{this.props.itemData.seriesTitle}
@@ -272,12 +390,24 @@ var listItemComp = React.createClass({
 							})
 						} onClick={this.incrementProgress}>
 						</div>
-						<div className="list-item-progress">
-							<span className="list-progress-current">{this.props.itemData.itemProgress}</span>
+						<div 
+							className="list-item-progress"
+							onClick={this.open.bind(this, 'progressOpen')}
+						>
+							<span className="list-progress-current">
+								{
+									(this.props.itemData.itemProgress) ? this.props.itemData.itemProgress : '—'
+								}
+							</span>
 							<span className="list-progress-sep">/</span>
 							<span className="list-progress-total">{this.props.itemData.seriesTotal}</span>
+							{pickerProgress}
 						</div>
-						<div className="list-item-rating">
+						<div
+							className="list-item-rating"
+							onClick={this.open.bind(this, 'ratingOpen')}
+							onMouseLeave={this.close.bind(this, 'ratingOpen')}
+						>
 							<span className={
 								ReactClassSet({
 									"list-rating-icon": true,
@@ -290,6 +420,7 @@ var listItemComp = React.createClass({
 									(this.props.itemData.itemRating) ? this.props.itemData.itemRating / 2 : '—' // ?: Divide score by two, or display m-dash
 								}
 							</span>
+							{pickerRating}
 						</div>
 						<div className="list-item-type">
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>
