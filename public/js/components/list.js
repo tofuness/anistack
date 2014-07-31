@@ -263,22 +263,27 @@ var listComp = React.createClass({
 		return status[number];
 	},
 	componentDidMount: function(){
+		// ?: Greatly performance, but can be "choppy" for some browsers
+		// Makes sorting/searching much snappier.
 		if(this.state.occulsionCulling){
 			$(window).on('scroll', function(e){
 				var scrollTop = $(document).scrollTop().valueOf() - 218;
 
 				if(scrollTop < 0) scrollTop = 0;
 
+				// WORK: listBegin not working
+
 				var begin = (scrollTop / 43 | 0);
-				var end = begin + (window.innerHeight / 43 | 0 + 2) + 5;
+				var end = begin + 25;
+
+				console.log(begin);
+				//var end = begin + (window.innerHeight / 43 | 0 + 2) + 5;
 
 				this.setState({
 					scrollTop: scrollTop,
 					listBegin: begin,
 					listEnd: end
 				});
-
-				console.log(begin);
 
 			}.bind(this));
 		}
@@ -344,24 +349,27 @@ var listComp = React.createClass({
 		} else if(ifListOnBoard){
 			listDOM.push(<listOnBoard />);
 		}
-			
+		
+		// CLEAN: Needs some clean-up
+
 		if(this.state.occulsionCulling){
 			var listHeight = { 
 				'position': 'relative',
+				'padding-bottom': 15,
 				'height': (listDOM.length - lastStatusCount) * 43
 			}
-			var muchPadding = (this.state.listBegin - lastStatusCount) * 43;
-			var listPadding = {
-				'padding-top': (muchPadding < 0) ? 0 : muchPadding
-			}
 
-			listDOM = listDOM.slice(this.state.listBegin, this.state.listEnd);
+			listDOM = listDOM.slice(0, this.state.listEnd);
+		} else {
+			var listHeight = {
+				'padding-bottom': 15
+			}
 		}
 
 
 		// SHIIIIETT SOOOON, OCCLUSION CULLING
 
-		return (<div style={listHeight}><div style={listPadding}>{listDOM}</div></div>);
+		return (<div style={listHeight}>{listDOM}</div>);
 	}
 });
 

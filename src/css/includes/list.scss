@@ -260,9 +260,6 @@
 			display: block;
 		}
 	}
-	&:last-child {
-		margin-bottom: 15px;
-	}
 }
 .list-item-content {
 	@extend .cf;
