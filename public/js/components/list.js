@@ -7,17 +7,7 @@ var listStore = [];
 // FIX: Create a function that takes changed data, compare with before, and spits out correct data
 
 var listAction = {
-	updateItem: function(msg, data){
-		for(var i = 0; i < listStore.length; i++){
-			if(listStore[i].seriesTitle === data.seriesTitle){ // FIX: Change to _id
-				listStore[i] = data;
-				console.log(data);
-				PubSub.publish(constants.DATA_CHANGE);
-				break;
-			}
-		}
-	},
-	_updateItem: function(msg, changedData){
+	updateItem: function(msg, changedData){
 		for(var i = 0; i < listStore.length; i++){
 			if(listStore[i].seriesTitle === changedData.seriesTitle){
 				var beforeData = listStore[i];
@@ -71,7 +61,7 @@ var constants = {
 
 $.ajax({
 	type: 'get',
-	url: '/data/50.json',
+	url: '/data/300.json',
 	success: function(listData){
 		listStore = listData;
 		PubSub.publishSync(constants.DATA_CHANGE, listData);
@@ -81,7 +71,7 @@ $.ajax({
 	}
 });
 
-PubSub.subscribe(constants.UPDATE_ITEM, listAction._updateItem);
+PubSub.subscribe(constants.UPDATE_ITEM, listAction.updateItem);
 
 var ReactClassSet = React.addons.classSet;
 var ReactTransGroup = React.addons.CSSTransitionGroup;
@@ -98,6 +88,11 @@ var listAppComp = React.createClass({
 			listLastOrder: 'asc'
 		}
 		return app;
+	},
+	shouldComponentUpdate: function(nextProps, nextState){
+		// ?: Holy fuck, this should be implemented in React by default.
+		if(nextState === this.state) return false;
+		return true;
 	},
 	componentDidMount: function(){
 		PubSub.subscribe(constants.DATA_CHANGE, this.loadList);
@@ -247,6 +242,15 @@ var listComp = React.createClass({
 		listLoaded: React.PropTypes.bool,
 		listLoadError: React.PropTypes.bool
 	},
+	getInitialState: function(){
+		var comp = {
+			occulsionCulling: true,
+			scrollTop: 0,
+			listBegin: 0,
+			listEnd: 35
+		}
+		return comp;
+	},
 	mapStatus: function(number){
 		var status = [
 			undefined,
@@ -258,6 +262,27 @@ var listComp = React.createClass({
 		]
 		return status[number];
 	},
+	componentDidMount: function(){
+		if(this.state.occulsionCulling){
+			$(window).on('scroll', function(e){
+				var scrollTop = $(document).scrollTop().valueOf() - 218;
+
+				if(scrollTop < 0) scrollTop = 0;
+
+				var begin = (scrollTop / 43 | 0);
+				var end = begin + (window.innerHeight / 43 | 0 + 2) + 5;
+
+				this.setState({
+					scrollTop: scrollTop,
+					listBegin: begin,
+					listEnd: end
+				});
+
+				console.log(begin);
+
+			}.bind(this));
+		}
+	},
 	render: function(){
 
 		var listDOM = [];
@@ -266,6 +291,7 @@ var listComp = React.createClass({
 		var ifListError = (this.props.listLoaded && this.props.listLoadError);
 		var ifListOnBoard = (ifListLoaded && !this.props.listData.length && !this.props.listLoadError);
 		var lastStatus = null;
+		var lastStatusCount = 0; // ?: Could how many status bars we add
 
 		if(ifListLoaded){
 			_.each(this.props.listData, function(listItem, index){
@@ -291,6 +317,7 @@ var listComp = React.createClass({
 
 				if(lastStatus !== listItem.itemStatus && listNode.length){
 					lastStatus = listItem.itemStatus;
+					lastStatusCount++;
 					listDOM.push(
 						<div key={index + '-status'} className={ // FIX: Let this have index as key one _id is used for listItems
 							ReactClassSet({
@@ -317,8 +344,24 @@ var listComp = React.createClass({
 		} else if(ifListOnBoard){
 			listDOM.push(<listOnBoard />);
 		}
-		
-		return (<div>{listDOM}</div>);
+			
+		if(this.state.occulsionCulling){
+			var listHeight = { 
+				'position': 'relative',
+				'height': (listDOM.length - lastStatusCount) * 43
+			}
+			var muchPadding = (this.state.listBegin - lastStatusCount) * 43;
+			var listPadding = {
+				'padding-top': (muchPadding < 0) ? 0 : muchPadding
+			}
+
+			listDOM = listDOM.slice(this.state.listBegin, this.state.listEnd);
+		}
+
+
+		// SHIIIIETT SOOOON, OCCLUSION CULLING
+
+		return (<div style={listHeight}><div style={listPadding}>{listDOM}</div></div>);
 	}
 });
 
@@ -352,7 +395,7 @@ var listItemComp = React.createClass({
 	},
 	render: function(){
 		// WORK: Not sure if we need to pass e.g. prevRating and itemData props (combine them)
-
+		/*
 		var pickerProgress = null;
 		var pickerRating = null;
 
@@ -371,7 +414,7 @@ var listItemComp = React.createClass({
 				itemData={this.props.itemData}
 				prevRating={this.props.itemData.itemRating}
 			/>;
-		}
+		} */
 
 		return (
 			<div className="list-item">
@@ -401,7 +444,11 @@ var listItemComp = React.createClass({
 							</span>
 							<span className="list-progress-sep">/</span>
 							<span className="list-progress-total">{this.props.itemData.seriesTotal}</span>
-							{pickerProgress}
+							<pickerProgressComp 
+								visible={this.state.progressOpen}
+								itemData={this.props.itemData}
+								close={this.close.bind(this, 'progressOpen')}
+							/>
 						</div>
 						<div
 							className="list-item-rating"
@@ -420,7 +467,12 @@ var listItemComp = React.createClass({
 									(this.props.itemData.itemRating) ? this.props.itemData.itemRating / 2 : '—' // ?: Divide score by two, or display m-dash
 								}
 							</span>
-							{pickerRating}
+							<pickerRatingComp
+								visible={this.state.ratingOpen}
+								close={this.close.bind(this, 'ratingOpen')}
+								itemData={this.props.itemData}
+								prevRating={this.props.itemData.itemRating}
+							/>
 						</div>
 						<div className="list-item-type">
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>

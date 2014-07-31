@@ -174,7 +174,7 @@
 
 .picker-rating-single {
 	@extend .cf;
-	//@extend .tsout;
+	@extend .tsout;
 	z-index: $z-up;
 	position: absolute;
 	top: -7px;
@@ -182,18 +182,18 @@
 	width: 263px;
 	background: #fff;
 	//opacity: 0;
-	//@include transform(scale(0));
+	@include transform(scale(0));
 	@include border-radius(4px);
 	@include box-shadow(0 0 6px $b30);
 	&.visible {
-		//@extend .tsin;
+		@extend .tsin;
 		//opacity: 1;
-		//@include transform(scale(1));
+		@include transform(scale(1));
 	}
 }
 .picker-progress-single {
 	@extend .cf;
-	//@extend .tsout;
+	@extend .tsout;
 	z-index: $z-up;
 	position: absolute;
 	top: -7px;
@@ -202,15 +202,13 @@
 	width: 125px;
 	background: #fff;
 	//opacity: 0;
-	//@include transform(scale(0));
+	@include transform(scale(0));
 	@include border-radius(4px);
 	@include box-shadow(0 0 6px $b30);
 
 	&.visible {
-		/*
 		@extend .tsin;
-		opacity: 1;
-		@include transform(scale(1)); */
+		@include transform(scale(1));
 	}
 }
 

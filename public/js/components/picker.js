@@ -16,9 +16,6 @@ var pickerProgressComp = React.createClass({
 		}
 		return comp;
 	},
-	componentDidUpdate: function(){
-		console.log('asd');
-	},
 	previewProgress: function(e){
 		var inputValue = Number(e.target.value);
 
@@ -47,7 +44,6 @@ var pickerProgressComp = React.createClass({
 		return (
 			<div className={
 				ReactClassSet({
-					'scaleIn': true,
 					'picker-progress-single': true,
 					'visible': this.props.visible
 				})
@@ -173,7 +169,6 @@ var pickerRatingComp = React.createClass({
 		return (
 			<div className={
 				ReactClassSet({
-					'scaleIn': true,
 					'picker-rating-single': true,
 					'visible': this.props.visible
 				})
