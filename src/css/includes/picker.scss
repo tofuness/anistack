@@ -71,12 +71,13 @@
 }
 .picker-progress-input {
 	float: left;
-	padding: 0;
+	padding: 6px 0;
 	width: 50px;
+	color: $black;
 	font-size: 18px;
 	font-weight: bold;
+	font-family: sans-serif;
 	text-align: center;
-	line-height: 33px;
 	@include box-shadow(inset 0 -2px 0 $gray-l-3);
 	&:hover {
 		@include box-shadow(inset 0 -2px 0 $gray);

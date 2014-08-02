@@ -16,6 +16,9 @@ var pickerProgressComp = React.createClass({
 		}
 		return comp;
 	},
+	componentDidUpdate: function(){
+		if(this.props.visible) this.refs.progInput.getDOMNode().focus();
+	},
 	previewProgress: function(e){
 		var inputValue = Number(e.target.value);
 
@@ -26,15 +29,17 @@ var pickerProgressComp = React.createClass({
 		}
 	},
 	setProgress: function(e){
-		if(e.key === 'Enter' && this.state.progressPreview !== ''){
-			this.setState({
-				progressPreview: '',
-				progressNew: this.state.progressPreview
-			});
+		if(e.key === 'Enter' || e.type === 'blur'){
+			if(this.state.progressPreview !== ''){
+					this.setState({
+						progressPreview: '',
+						progressNew: this.state.progressPreview
+					});
 
-			var tempItem = _.clone(this.props.itemData);
-			tempItem.itemProgress = this.state.progressPreview;
-			PubSub.publish(constants.UPDATE_ITEM, tempItem);
+					var tempItem = _.clone(this.props.itemData);
+					tempItem.itemProgress = this.state.progressPreview;
+					PubSub.publish(constants.UPDATE_ITEM, tempItem);
+			}
 			this.props.close();
 		} else if(e.key === 'Escape'){
 			this.props.close();
@@ -50,10 +55,12 @@ var pickerProgressComp = React.createClass({
 			}>
 				<input 
 					ref="progInput"
+					placeholder={this.props.itemData.itemProgress}
 					className="picker-progress-input"
 					value={this.state.progressPreview}
 					onChange={this.previewProgress}
 					onKeyDown={this.setProgress}
+					onBlur={this.setProgress}
 				/>
 				<div className="picker-progress-sep">of</div>
 				<div className="picker-progress-total">
@@ -161,6 +168,7 @@ var pickerRatingComp = React.createClass({
 					onMouseMove={this.showPreview.bind(this, i)}
 					onMouseOut={this.resetPreview}
 					onClick={this.setRating}
+					onBlur={this.setRating}
 				>
 				</div>
 			)
