@@ -244,8 +244,10 @@ var listComp = React.createClass({
 	},
 	getInitialState: function(){
 		var comp = {
-			occulsionCulling: true,
+			// 	Occlusion culling only when the top sort/etc is visible
+			occlusionCulling: false,
 			scrollTop: 0,
+			listLoadRest: false,
 			listBegin: 0,
 			listEnd: 35
 		}
@@ -265,7 +267,7 @@ var listComp = React.createClass({
 	componentDidMount: function(){
 		// ?: Greatly performance, but can be "choppy" for some browsers
 		// Makes sorting/searching much snappier.
-		if(this.state.occulsionCulling){
+		if(this.state.occlusionCulling){
 			$(window).on('scroll', function(e){
 				var scrollTop = $(document).scrollTop().valueOf() - 218;
 
@@ -276,17 +278,26 @@ var listComp = React.createClass({
 				var begin = (scrollTop / 43 | 0);
 				var end = begin + 25;
 
-				console.log(begin);
 				//var end = begin + (window.innerHeight / 43 | 0 + 2) + 5;
-
 				this.setState({
 					scrollTop: scrollTop,
 					listBegin: begin,
 					listEnd: end
 				});
-
+			}.bind(this));
+		} else {
+			$(window).on('scroll', function(){
+				var scrollTop = $(document).scrollTop().valueOf();
+				if(scrollTop > 1200 && !this.state.listLoadRest){
+					this.setState({ listLoadRest: true });
+				} else if(this.state.listLoadRest && scrollTop < 1200){
+					this.setState({ listLoadRest: false });
+				}
 			}.bind(this));
 		}
+	},
+	componentDidUpdate: function(){
+		console.log('Woop');
 	},
 	render: function(){
 
@@ -353,17 +364,17 @@ var listComp = React.createClass({
 		// CLEAN: Needs some clean-up
 
 		if(this.state.occulsionCulling){
-			var listHeight = { 
-				'position': 'relative',
+			var listHeight = {
 				'padding-bottom': 15,
 				'height': (listDOM.length - lastStatusCount) * 43
 			}
-
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		} else {
 			var listHeight = {
-				'padding-bottom': 15
+				'padding-bottom': 15,
+				'height': (listDOM.length - lastStatusCount) * 43
 			}
+			if(!this.state.listLoadRest) listDOM = listDOM.slice(0, 50);
 		}
 
 

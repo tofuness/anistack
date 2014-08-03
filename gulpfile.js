@@ -4,6 +4,7 @@ var sass = require('gulp-sass');
 var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var jshint = require('gulp-jshint');
 
 var path = {
 	css: {

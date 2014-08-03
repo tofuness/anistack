@@ -373,7 +373,8 @@
 }
 #list-profile-background {
 	height: 150px;
-	background: url(/img/profilebg.jpg) center center no-repeat;
+	//background: url(/img/profilebg.jpg) center center no-repeat;
+	background: $black;
 	background-size: cover;
 	@include border-top-right-radius(4px);
 }

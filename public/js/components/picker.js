@@ -5,12 +5,12 @@ var ReactClassSet = React.addons.classSet;
 var pickerProgressComp = React.createClass({
 	propTypes: {
 		itemData: React.PropTypes.object,
+		visible: React.PropTypes.bool,
 		prevProgress: React.PropTypes.number
 	},
 	getInitialState: function(){
 		var comp = {
 			done: false,
-			visible: false,
 			progressPreview: '',
 			progressNew: ''
 		}
@@ -31,14 +31,12 @@ var pickerProgressComp = React.createClass({
 	setProgress: function(e){
 		if(e.key === 'Enter' || e.type === 'blur'){
 			if(this.state.progressPreview !== ''){
-					this.setState({
-						progressPreview: '',
-						progressNew: this.state.progressPreview
-					});
-
 					var tempItem = _.clone(this.props.itemData);
 					tempItem.itemProgress = this.state.progressPreview;
 					PubSub.publish(constants.UPDATE_ITEM, tempItem);
+					setTimeout(function(){
+						this.replaceState(this.getInitialState());
+					}.bind(this), 150);
 			}
 			this.props.close();
 		} else if(e.key === 'Escape'){
@@ -91,9 +89,7 @@ var pickerRatingComp = React.createClass({
 		setTimeout(function(){
 			this.props.close();
 			setTimeout(function(){
-				this.setState({
-					done: false
-				});
+				this.replaceState(this.getInitialState());
 			}.bind(this), 150);
 		}.bind(this), 200);
 	},
@@ -168,7 +164,6 @@ var pickerRatingComp = React.createClass({
 					onMouseMove={this.showPreview.bind(this, i)}
 					onMouseOut={this.resetPreview}
 					onClick={this.setRating}
-					onBlur={this.setRating}
 				>
 				</div>
 			)

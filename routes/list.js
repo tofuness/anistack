@@ -8,4 +8,9 @@ module.exports = function(app){
 	.get(function(req, res, next){
 		res.render('picker');
 	});
+
+	app.route('/list/search')
+	.get(function(req, res, next){
+		res.render('search');
+	});
 }
