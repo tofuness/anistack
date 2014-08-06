@@ -7,45 +7,47 @@ var listStore = [];
 // FIX: Create a function that takes changed data, compare with before, and spits out correct data
 
 var listAction = {
-	updateItem: function(msg, changedData){
+	updateItem: function(msg, nextData){
 		for(var i = 0; i < listStore.length; i++){
-			if(listStore[i].seriesTitle === changedData.seriesTitle){
+			if(listStore[i].seriesTitle === nextData.seriesTitle){
 				var beforeData = listStore[i];
 
-				// CASE: If user lower progress, from completed to uncompleted
+				if(beforeData.seriesTotal){
+					// CASE: If user lower progress, from completed to uncompleted
 
-				if(
-					beforeData.itemStatus === 2 &&
-					changedData.itemProgress < beforeData.seriesTotal
-				){
-					changedData.itemStatus = 1;
+					if(
+						beforeData.itemStatus === 2 &&
+						nextData.itemProgress < beforeData.seriesTotal
+					){
+						nextData.itemStatus = 1;
+					}
+
+					// CASE: If user completes an item
+
+					if(nextData.itemProgress === beforeData.seriesTotal){
+						nextData.itemStatus = 2;
+					}
+
+					// CASE: If user moves an item from x to completed
+
+					if(
+						nextData.itemStatus === 2 &&
+						nextData.itemProgress < beforeData.seriesTotal
+					){
+						nextData.itemProgress = beforeData.seriesTotal;
+					}
+
+					// CASE: If user moves an item from completed to x
+
+					if(
+						nextData.itemStatus !== 2 &&
+						nextData.itemProgress === beforeData.seriesTotal
+					){
+						nextData.itemProgress = 0;
+					}
 				}
 
-				// CASE: If user completes an item
-
-				if(changedData.itemProgress === beforeData.seriesTotal){
-					changedData.itemStatus = 2;
-				}
-
-				// CASE: If user moves an item from x to completed
-
-				if(
-					changedData.itemStatus === 2 &&
-					changedData.itemProgress < beforeData.seriesTotal
-				){
-					changedData.itemProgress = beforeData.seriesTotal;
-				}
-
-				// CASE: If user moves an item from completed to x
-
-				if(
-					changedData.itemStatus !== 2 &&
-					changedData.itemProgress === beforeData.seriesTotal
-				){
-					changedData.itemProgress = 0;
-				}
-
-				listStore[i] = changedData;
+				listStore[i] = nextData;
 				PubSub.publish(constants.DATA_CHANGE);
 				break;
 			}
@@ -53,15 +55,10 @@ var listAction = {
 	}
 }
 
-var constants = {
-	DATA_CHANGE: 'DATA_CHANGE',
-	LIST_ERROR: 'LIST_ERROR',
-	UPDATE_ITEM: 'UPDATE_ITEM'
-}
 
 $.ajax({
 	type: 'get',
-	url: '/data/300.json',
+	url: '/data/50.json',
 	success: function(listData){
 		listStore = listData;
 		PubSub.publishSync(constants.DATA_CHANGE, listData);
@@ -81,7 +78,7 @@ var listAppComp = React.createClass({
 		var app = {
 			listData: [],
 			listFilterText: '',
-			listFilterStatus: 1,
+			listFilterStatus: 0,
 			listLoaded: false,
 			listLoadError: false,
 			listLastSort: 'seriesTitle',
@@ -244,12 +241,16 @@ var listComp = React.createClass({
 	},
 	getInitialState: function(){
 		var comp = {
-			// 	Occlusion culling only when the top sort/etc is visible
-			occlusionCulling: false,
-			scrollTop: 0,
-			listLoadRest: false,
+			/* ?: Enabling hsr (occlusion culling) improves performance by A LOT! 
+			However, some flickering might occur, and this option should therefore only
+			be used for HUGE lists.
+
+			Alternatively, use the batchRendering option.
+			*/
+			hsr: false,
+			batchRendering: true,
 			listBegin: 0,
-			listEnd: 35
+			listEnd: 44
 		}
 		return comp;
 	},
@@ -264,43 +265,41 @@ var listComp = React.createClass({
 		]
 		return status[number];
 	},
+	componentDidUpdate: function(){
+		console.timeEnd('listComp');
+	},
 	componentDidMount: function(){
-		// ?: Greatly performance, but can be "choppy" for some browsers
-		// Makes sorting/searching much snappier.
-		if(this.state.occlusionCulling){
+		if(this.state.hsr){
 			$(window).on('scroll', function(e){
-				var scrollTop = $(document).scrollTop().valueOf() - 218;
-
+				var scrollTop = $(window).scrollTop() - $('#list-hsr').offset().top;
 				if(scrollTop < 0) scrollTop = 0;
 
-				// WORK: listBegin not working
+				var listItemHeight = 43; // ?: 43px
+				var listItemOnScreen = window.innerHeight / listItemHeight | 0;
+				var listBegin = (scrollTop / listItemHeight | 0);
+				var listEnd = listBegin + listItemOnScreen + 5;
 
-				var begin = (scrollTop / 43 | 0);
-				var end = begin + 25;
-
-				//var end = begin + (window.innerHeight / 43 | 0 + 2) + 5;
 				this.setState({
-					scrollTop: scrollTop,
-					listBegin: begin,
-					listEnd: end
+					listBegin: listBegin,
+					listEnd: listEnd
 				});
+
+				console.log('Begin: ' + listBegin + ' End: ' + listEnd);
 			}.bind(this));
-		} else {
-			$(window).on('scroll', function(){
-				var scrollTop = $(document).scrollTop().valueOf();
-				if(scrollTop > 1200 && !this.state.listLoadRest){
-					this.setState({ listLoadRest: true });
-				} else if(this.state.listLoadRest && scrollTop < 1200){
-					this.setState({ listLoadRest: false });
+		} else if(this.state.batchRendering){
+			$(window).on('scroll', function(e){
+				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
+				var listItemsOnScreen = window.innerHeight / 43 | 0;
+				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
+				var listEnd = listItemsOnScreen * listMulti * 1.5;
+
+				if(this.state.listEnd < listEnd || listMulti === 1){
+					this.setState({ listEnd: listEnd });
 				}
-			}.bind(this));
+			}.bind(this));	
 		}
 	},
-	componentDidUpdate: function(){
-		console.log('Woop');
-	},
 	render: function(){
-
 		var listDOM = [];
 		var ifListLoaded = (this.props.listLoaded && !this.props.listLoadError);
 		var ifListEmpty = (ifListLoaded && this.props.listFilterText !== '');
@@ -308,7 +307,7 @@ var listComp = React.createClass({
 		var ifListOnBoard = (ifListLoaded && !this.props.listData.length && !this.props.listLoadError);
 		var lastStatus = null;
 		var lastStatusCount = 0; // ?: Could how many status bars we add
-
+		console.time('listComp');
 		if(ifListLoaded){
 			_.each(this.props.listData, function(listItem, index){
 				var listNode = [];
@@ -360,27 +359,20 @@ var listComp = React.createClass({
 		} else if(ifListOnBoard){
 			listDOM.push(<listOnBoard />);
 		}
-		
-		// CLEAN: Needs some clean-up
 
-		if(this.state.occulsionCulling){
-			var listHeight = {
+		if((this.state.hsr || this.state.batchRendering) && lastStatusCount > 0){
+			var listStyle = {
 				'padding-bottom': 15,
 				'height': (listDOM.length - lastStatusCount) * 43
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
-		} else {
-			var listHeight = {
-				'padding-bottom': 15,
-				'height': (listDOM.length - lastStatusCount) * 43
-			}
-			if(!this.state.listLoadRest) listDOM = listDOM.slice(0, 50);
 		}
 
-
-		// SHIIIIETT SOOOON, OCCLUSION CULLING
-
-		return (<div style={listHeight}>{listDOM}</div>);
+		return (
+			<div id="list-hsr" style={listStyle}>
+				{listDOM}
+			</div>
+		);
 	}
 });
 
@@ -391,6 +383,7 @@ var listItemComp = React.createClass({
 	},
 	getInitialState: function(){
 		return {
+			loadPickers: false,
 			ratingOpen: false,
 			progressOpen: false
 		}
@@ -412,28 +405,31 @@ var listItemComp = React.createClass({
 		ops[picker] = false;
 		this.setState(ops);
 	},
+	loadPickers: function(){
+		if(!this.state.loadPickers) this.setState({ loadPickers: true });
+	},
 	render: function(){
 		// WORK: Not sure if we need to pass e.g. prevRating and itemData props (combine them)
-		/*
 		var pickerProgress = null;
 		var pickerRating = null;
 
-		if(this.state.progressOpen){
-			pickerProgress = <pickerProgressComp 
-				visible={this.state.progressOpen}
-				itemData={this.props.itemData}
-				close={this.close.bind(this, 'progressOpen')}
-			/>;
-		}
+		if(this.state.loadPickers){
+			// ?: Load these onMouseEnter (see below), 
+			// which improves the inital load + sorting by 100%~
 
-		if(this.state.ratingOpen){
-			pickerRating = 	<pickerRatingComp
-				visible={this.state.ratingOpen}
-				close={this.close.bind(this, 'ratingOpen')}
-				itemData={this.props.itemData}
-				prevRating={this.props.itemData.itemRating}
-			/>;
-		} */
+			pickerProgress = (<pickerProgressComp 
+								visible={this.state.progressOpen}
+								itemData={this.props.itemData}
+								close={this.close.bind(this, 'progressOpen')}
+							/>);
+
+			pickerRating = (<pickerRatingComp
+								visible={this.state.ratingOpen}
+								close={this.close.bind(this, 'ratingOpen')}
+								itemData={this.props.itemData}
+								prevRating={this.props.itemData.itemRating}
+							/>);
+		}
 
 		return (
 			<div className="list-item">
@@ -455,6 +451,7 @@ var listItemComp = React.createClass({
 						<div 
 							className="list-item-progress"
 							onClick={this.open.bind(this, 'progressOpen')}
+							onMouseEnter={this.loadPickers}
 						>
 							<span className="list-progress-current">
 								{
@@ -462,16 +459,19 @@ var listItemComp = React.createClass({
 								}
 							</span>
 							<span className="list-progress-sep">/</span>
-							<span className="list-progress-total">{this.props.itemData.seriesTotal}</span>
-							<pickerProgressComp 
-								visible={this.state.progressOpen}
-								itemData={this.props.itemData}
-								close={this.close.bind(this, 'progressOpen')}
-							/>
+							<span className="list-progress-total">
+								{
+									(this.props.itemData.seriesTotal) ? this.props.itemData.seriesTotal : '—'
+								}
+							</span>
+							{
+								pickerProgress
+							}
 						</div>
 						<div
 							className="list-item-rating"
 							onClick={this.open.bind(this, 'ratingOpen')}
+							onMouseEnter={this.loadPickers}
 							onMouseLeave={this.close.bind(this, 'ratingOpen')}
 						>
 							<span className={
@@ -486,12 +486,9 @@ var listItemComp = React.createClass({
 									(this.props.itemData.itemRating) ? this.props.itemData.itemRating / 2 : '—' // ?: Divide score by two, or display m-dash
 								}
 							</span>
-							<pickerRatingComp
-								visible={this.state.ratingOpen}
-								close={this.close.bind(this, 'ratingOpen')}
-								itemData={this.props.itemData}
-								prevRating={this.props.itemData.itemRating}
-							/>
+							{
+								pickerRating
+							}
 						</div>
 						<div className="list-item-type">
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>

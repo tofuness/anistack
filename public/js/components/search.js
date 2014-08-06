@@ -69,12 +69,19 @@ var searchResComp = React.createClass({
 		return comp;
 	},
 	componentDidMount: function(){
-
+		PubSub.subscribe(constants.CLOSE_PICKERS, this.close);
 	},
 	togglePicker: function(e){
 		if(this.state.added) return false;
+		PubSub.publishSync(constants.CLOSE_PICKERS);
 		this.setState({
 			pickerVisible: !this.state.pickerVisible
+		});
+	},
+	close: function(){
+		if(this.state.added || !this.state.pickerVisible) return false;
+		this.setState({
+			pickerVisible: false
 		});
 	},
 	finish: function(){

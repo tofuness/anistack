@@ -6,7 +6,7 @@
 	@extend .tsout;
 	position: relative;
 	z-index: $z-up;
-	@include transform-origin(center right);
+	@include transform-origin(0 center);
 	@include transform(scale(0));
 	&.visible {
 		@extend .tsin;
@@ -110,7 +110,7 @@
 .picker-progress-sep {
 	float: left;
 	padding: 0 5px;
-	color: $gray;
+	color: $gray-d-9;
 	font-size: 14px;
 	font-weight: bold;
 	line-height: 33px;
@@ -118,6 +118,7 @@
 .picker-progress-total {
 	float: left;
 	width: 50px;
+	color: $gray-d-9;
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
@@ -246,6 +247,7 @@
 	bottom: 0;
 	text-align: center;
 	background: $w60;
+	z-index: $z-up;
 	@include border-radius(4px);
 	&.visible {
 		@extend .tsin;

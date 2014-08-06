@@ -1,6 +1,10 @@
 #top {
+	position: fixed;
+	top: 0;
 	width: 100%;
 	background: #fff;
+	z-index: $z-up;
+	@include box-shadow(0 0px 3px $b30);
 }
 #top-nav-wrap {
 	margin: 0 auto;

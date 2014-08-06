@@ -17,12 +17,23 @@ var pickerProgressComp = React.createClass({
 		return comp;
 	},
 	componentDidUpdate: function(){
-		if(this.props.visible) this.refs.progInput.getDOMNode().focus();
+		if(this.props.visible && this){
+			this.refs.progInput.getDOMNode().focus();
+		}
+	},
+	componentWillReceiveProps: function(nextProps){
+		if(!this.props.visible && nextProps.visible){
+			this.replaceState(this.getInitialState());
+		}
 	},
 	previewProgress: function(e){
 		var inputValue = Number(e.target.value);
 
-		if(!isNaN(inputValue) && inputValue <= this.props.itemData.seriesTotal){
+		if(
+			!isNaN(inputValue) &&
+			(inputValue <= this.props.itemData.seriesTotal ||
+			!this.props.itemData.seriesTotal)
+		){
 			this.setState({
 				progressPreview: inputValue
 			});
@@ -31,12 +42,9 @@ var pickerProgressComp = React.createClass({
 	setProgress: function(e){
 		if(e.key === 'Enter' || e.type === 'blur'){
 			if(this.state.progressPreview !== ''){
-					var tempItem = _.clone(this.props.itemData);
-					tempItem.itemProgress = this.state.progressPreview;
-					PubSub.publish(constants.UPDATE_ITEM, tempItem);
-					setTimeout(function(){
-						this.replaceState(this.getInitialState());
-					}.bind(this), 150);
+				var tempItem = _.clone(this.props.itemData);
+				tempItem.itemProgress = this.state.progressPreview;
+				PubSub.publishSync(constants.UPDATE_ITEM, tempItem);
 			}
 			this.props.close();
 		} else if(e.key === 'Escape'){
@@ -53,6 +61,7 @@ var pickerProgressComp = React.createClass({
 			}>
 				<input 
 					ref="progInput"
+					maxLength="3"
 					placeholder={this.props.itemData.itemProgress}
 					className="picker-progress-input"
 					value={this.state.progressPreview}
@@ -62,7 +71,9 @@ var pickerProgressComp = React.createClass({
 				/>
 				<div className="picker-progress-sep">of</div>
 				<div className="picker-progress-total">
-				{this.props.itemData.seriesTotal}
+					{
+						(this.props.itemData.seriesTotal) ? this.props.itemData.seriesTotal : '—'
+					}
 				</div>
 			</div>
 
@@ -85,13 +96,10 @@ var pickerRatingComp = React.createClass({
 		}
 		return comp;
 	},
-	closePicker: function(){
-		setTimeout(function(){
-			this.props.close();
-			setTimeout(function(){
-				this.replaceState(this.getInitialState());
-			}.bind(this), 150);
-		}.bind(this), 200);
+	componentWillReceiveProps: function(nextProps){
+		if(!this.props.visible && nextProps.visible){
+			this.replaceState(this.getInitialState());
+		}
 	},
 	showPreview: function(rating, e){
 		// WORK: This looks horrible
@@ -138,9 +146,10 @@ var pickerRatingComp = React.createClass({
 		var tempItem = _.clone(this.props.itemData);
 
 		tempItem.itemRating = this.state.ratingPreview;
-		PubSub.publish(constants.UPDATE_ITEM, tempItem);
-
-		this.closePicker();
+		PubSub.publishSync(constants.UPDATE_ITEM, tempItem);
+		setTimeout(function(){
+			this.props.close();
+		}.bind(this), 150);
 	},
 	render: function(){
 		var heartNodes = [];

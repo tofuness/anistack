@@ -1,6 +1,6 @@
 #list-wrap {
 	@extend .cf;
-	margin: 30px auto;
+	margin: 90px auto 30px auto;
 	width: 1160px;
 	background: #fff;
 	@include border-radius(4px);
@@ -91,18 +91,13 @@
 	line-height: 337px;
 }
 #list-error {
-	@extend .ts30;
 	margin: 0 auto;
 	padding: 167px 0;
 	width: 800px;
 	text-align: center;
 	background: url(/img/nooo.png) no-repeat;
 	background-size: 30%;
-	background-position: 0 390px;
-
-	&:hover {
-		background-position: 0 340px;
-	}
+	background-position: 0 340px;
 }
 #list-error-image {
 	margin: 0 auto;
