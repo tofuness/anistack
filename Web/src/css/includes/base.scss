@@ -1,0 +1,30 @@
+html {
+	overflow-y: scroll;
+	color: $black;
+	font-size: 12px;
+	font-family: sans-serif;
+	background: $bluegray-l-12;
+	vertical-align: baseline;
+}
+body {
+	-webkit-font-smoothing: antialiased;
+}
+p a, p a:visited {
+	color: $blue;
+	text-decoration: underline;
+	&:hover {
+		text-decoration: none;
+	}
+}
+p {
+	line-height: 2em;
+}
+i, em {
+	font-style: italic;
+}
+b, strong {
+	font-style: bold;
+}
+input {
+	padding: 0;
+}
