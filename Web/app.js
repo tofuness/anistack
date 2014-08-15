@@ -84,7 +84,7 @@ require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route
 // If no matching route was found, give 'em the 404
 
 app.use(function(req, res, next){
-	res.send(404, '404');
+	res.status(404).send('404');
 });
 
 http.createServer(app).listen(app.get('port'), function(){

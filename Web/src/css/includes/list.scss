@@ -233,17 +233,25 @@
 	background: $blue;
 }
 
-.list-item-airing {
+.list-item-icons {
+	@extend .cf;
 	float: left;
 	width: 0;
 	height: 0;
 }
 .list-item-airing-icon {
+	float: left;
 	margin: 14px 0 0 -28px;
 	color: $blue;
 	font-size: 16px;
 	text-shadow: 0 1px 0 $w30;
-
+}
+.list-item-tag-icon {
+	float: left;
+	margin: 14px 0 0 -54px;
+	color: $blue;
+	font-size: 16px;
+	text-shadow: 0 1px 0 $w30;
 }
 
 #list {
@@ -255,7 +263,9 @@
 	@include border-bottom-left-radius(4px);
 }
 .list-item {
+	cursor: pointer;
 	@extend .cf;
+	@extend .ns;
 	border-bottom: 1px solid $gray-l-3;
 
 	&:hover {
@@ -350,6 +360,18 @@
 	display: block;
 	color: $gray-d-9;
 	text-align: center;
+}
+
+/* Expanded content */
+
+.list-item-expansion {
+	overflow: hidden;
+	opacity: 0;
+	height: 0;
+}
+.list-expanded-content {
+	padding: 15px;
+	background: $gray-l-3;
 }
 
 

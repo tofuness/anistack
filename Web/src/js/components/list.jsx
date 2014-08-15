@@ -380,7 +380,8 @@ var listItemComp = React.createClass({
 		return {
 			loadPickers: false,
 			ratingOpen: false,
-			progressOpen: false
+			progressOpen: false,
+			expanded: false
 		}
 	},
 	incrementProgress: function(){
@@ -402,6 +403,19 @@ var listItemComp = React.createClass({
 	},
 	loadPickers: function(){
 		if(!this.state.loadPickers) this.setState({ loadPickers: true });
+	},
+	toggleExpand: function(){
+		console.log('EXPAND');
+		$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
+			opacity: (this.state.expanded) ? 0 : 1,
+			height: (this.state.expanded) ? 0 : '50px'
+		}, {
+			duration: 150,
+			easing: (this.state.expanded) ? [600, 20] : [0.1, 0.885, 0.07, 1.09]
+		});
+		this.setState({
+			expanded: !this.state.expanded
+		});
 	},
 	render: function(){
 		// WORK: Not sure if we need to pass e.g. prevRating and itemData props (combine them)
@@ -427,9 +441,11 @@ var listItemComp = React.createClass({
 		}
 
 		return (
-			<div className="list-item">
-				<div className="list-item-airing">
+			<div className="list-item" onClick={this.toggleExpand}>
+				<div className="list-item-icons">
 					<div className="icon-podcast-2 list-item-airing-icon">
+					</div>
+					<div className="icon-tag list-item-tag-icon">
 					</div>
 				</div>
 				<div className="list-item-content">
@@ -492,6 +508,11 @@ var listItemComp = React.createClass({
 						<div className="list-item-type">
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>
 						</div>
+					</div>
+				</div>
+				<div className="list-item-expansion" ref="itemExpand">
+					<div className="list-expanded-content">
+					s
 					</div>
 				</div>
 			</div>
