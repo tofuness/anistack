@@ -5,22 +5,22 @@ var listAction = {
 	updateItem: function(msg, nextData){
 		for(var i = 0; i < listStore.length; i++){
 			if(listStore[i].seriesTitle === nextData.seriesTitle){
-				var beforeData = listStore[i];
+				var prevData = listStore[i];
 
-				if(beforeData.seriesTotal){ // Else we just have a server-side hard-cap at 9999
+				if(prevData.seriesTotal > 0){ // Else we just have a server-side hard-cap at 9999
 
 					// CASE: If user lower progress, from completed to uncompleted
 
 					if(
-						beforeData.itemStatus === 2 &&
-						nextData.itemProgress < beforeData.seriesTotal
+						prevData.itemStatus === 2 &&
+						nextData.itemProgress < prevData.seriesTotal
 					){
 						nextData.itemStatus = 1;
 					}
 
 					// CASE: If user completes an item
 
-					if(nextData.itemProgress === beforeData.seriesTotal){
+					if(nextData.itemProgress === prevData.seriesTotal){
 						nextData.itemStatus = 2;
 					}
 
@@ -28,16 +28,16 @@ var listAction = {
 
 					if(
 						nextData.itemStatus === 2 &&
-						nextData.itemProgress < beforeData.seriesTotal
+						nextData.itemProgress < prevData.seriesTotal
 					){
-						nextData.itemProgress = beforeData.seriesTotal;
+						nextData.itemProgress = prevData.seriesTotal;
 					}
 
 					// CASE: If user moves an item from completed to x
 
 					if(
 						nextData.itemStatus !== 2 &&
-						nextData.itemProgress === beforeData.seriesTotal
+						nextData.itemProgress === prevData.seriesTotal
 					){
 						nextData.itemProgress = 0;
 					}
@@ -271,7 +271,7 @@ var listComp = React.createClass({
 				var scrollTop = $(window).scrollTop() - $('#list-hsr').offset().top;
 				if(scrollTop < 0) scrollTop = 0;
 
-				var listItemHeight = 43; // ?: 43px
+				var listItemHeight = 46;
 				var listItemOnScreen = window.innerHeight / listItemHeight | 0;
 				var listBegin = (scrollTop / listItemHeight | 0);
 				var listEnd = listBegin + listItemOnScreen + 5;
@@ -280,13 +280,11 @@ var listComp = React.createClass({
 					listBegin: listBegin,
 					listEnd: listEnd
 				});
-
-				console.log('Begin: ' + listBegin + ' End: ' + listEnd);
 			}.bind(this));
 		} else if(this.state.batchRendering){
 			$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
-				var listItemsOnScreen = window.innerHeight / 43 | 0;
+				var listItemsOnScreen = window.innerHeight / 46 | 0;
 				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
@@ -360,7 +358,7 @@ var listComp = React.createClass({
 		if((this.state.hsr || this.state.batchRendering) && lastStatusCount > 0){
 			var listStyle = {
 				'padding-bottom': 15,
-				'height': (listDOM.length - lastStatusCount) * 43
+				'height': (listDOM.length - lastStatusCount) * 46
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -430,6 +428,10 @@ var listItemComp = React.createClass({
 
 		return (
 			<div className="list-item">
+				<div className="list-item-airing">
+					<div className="icon-podcast-2 list-item-airing-icon">
+					</div>
+				</div>
 				<div className="list-item-content">
 					<div className="list-item-left">
 						<a className="list-item-title" href="/">

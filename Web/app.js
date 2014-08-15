@@ -11,7 +11,6 @@ console.log('✓ Running application: ' + process.env.NODE_ENV);
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var sass = require('node-sass');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
@@ -36,7 +35,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
-app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(session({ 
@@ -47,7 +49,9 @@ app.use(session({
 	}),
 	cookie: {
 		maxAge: 1209600 * 1000
-	}
+	},
+	resave: true,
+	saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());

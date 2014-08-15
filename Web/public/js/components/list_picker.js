@@ -42,7 +42,7 @@ var pickerProgressComp = React.createClass({displayName: 'pickerProgressComp',
 			!this.props.itemData.seriesTotal)
 		){
 			this.setState({
-				progressPreview: inputValue
+				progressPreview: Number(inputValue)
 			});
 		}
 	},

@@ -132,9 +132,8 @@
 #list-filter-input {
 	// WORK: Not sure why this isn't the same height as the element below
 	border: 0;
-	padding: 14px;
+	padding: 15px;
 	width: 100%;
-	height: 42px;
 	font-size: 12px;
 }
 
@@ -148,7 +147,7 @@
 	width: 16.667%;
 	color: $bluegray;
 	font-weight: bold;
-	line-height: 42px;
+	line-height: 45px;
 	text-align: center;
 	background: $gray-l-3;
 	@include box-shadow(inset 0 -2px 0 $bluegray-l-12);
@@ -212,13 +211,14 @@
 .list-itemstatus-tag {
 	float: left;
 	margin-top: -10px;
-	margin-left: -85px;
+	margin-left: -90px;
 	padding: 5px;
 	width: 65px;
 	height: 10px;
 	color: #fff;
 	font-size: 10px;
 	font-weight: bold;
+	line-height: 10px;
 	text-align: center;
 	text-transform: uppercase;
 	background: $blue;
@@ -227,14 +227,22 @@
 .list-itemstatus-line {
 	float: left;
 	margin-top: -2px;
-	margin-left: -10px;
-	width: 970px;
+	margin-left: -15px;
+	width: 975px;
 	height: 2px;
 	background: $blue;
 }
 
-// Dropdowns
-.list-progress-dd {
+.list-item-airing {
+	float: left;
+	width: 0;
+	height: 0;
+}
+.list-item-airing-icon {
+	margin: 14px 0 0 -28px;
+	color: $blue;
+	font-size: 16px;
+	text-shadow: 0 1px 0 $w30;
 
 }
 
@@ -419,6 +427,7 @@
 }
 .list-nav-text {
 	font-size: 11px;
+	line-height: 23px;
 }
 .list-nav-count {
 	display: block;

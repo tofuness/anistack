@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var sass = require('gulp-sass');
 var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
@@ -44,7 +43,7 @@ gulp.task('uglify', function(){
 		this.emit('end');
 	}))
 	.pipe(concat('app.js'))
-	.pipe(uglify())
+	//.pipe(uglify())
 	.pipe(gulp.dest(path.js.dest));
 });
 

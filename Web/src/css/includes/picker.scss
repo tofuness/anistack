@@ -88,7 +88,7 @@
 .picker-progress {
 	@extend .cf;
 	display: inline-block;
-	padding: 30px 0;
+	padding: 26px 0;
 }
 .picker-progress-input {
 	float: left;
@@ -113,7 +113,7 @@
 	color: $gray-d-9;
 	font-size: 14px;
 	font-weight: bold;
-	line-height: 33px;
+	line-height: 34px;
 }
 .picker-progress-total {
 	float: left;
@@ -122,14 +122,14 @@
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
-	line-height: 33px;
+	line-height: 34px;
 }
 
 // Rating
 
 .picker-rating {
 	@extend .cf;
-	padding: 19px 0;
+	padding: 16px 0;
 	display: inline-block;
 }
 .picker-rating-number {
@@ -147,7 +147,7 @@
 	padding: 15px 15px 15px 0;
 	color: $red;
 	font-size: 23px;
-	line-height: 20px;
+	line-height: 18px;
 	&:first-child {
 		padding-left: 20px;
 	}
@@ -187,7 +187,7 @@
 	cursor: pointer;
 	float: right;
 	margin-bottom: -15px;
-	padding: 6px 15px;
+	padding: 4px 15px;
 	font-weight: 800;
 	text-align: center;
 	border: 2px solid $black;
@@ -202,17 +202,15 @@
 	@extend .tsout;
 	z-index: $z-up;
 	position: absolute;
-	top: -7px;
+	top: -6px;
 	left: -88px;
 	width: 263px;
 	background: #fff;
-	//opacity: 0;
 	@include transform(scale(0));
 	@include border-radius(4px);
 	@include box-shadow(0 0 6px $b30);
 	&.visible {
 		@extend .tsin;
-		//opacity: 1;
 		@include transform(scale(1));
 	}
 }
@@ -221,16 +219,14 @@
 	@extend .tsout;
 	z-index: $z-up;
 	position: absolute;
-	top: -7px;
+	top: -6px;
 	left: -22px;
 	padding: 10px;
 	width: 125px;
 	background: #fff;
-	//opacity: 0;
 	@include transform(scale(0));
 	@include border-radius(4px);
 	@include box-shadow(0 0 6px $b30);
-
 	&.visible {
 		@extend .tsin;
 		@include transform(scale(1));
