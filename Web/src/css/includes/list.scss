@@ -366,17 +366,19 @@
 
 .list-item-exp {
 	overflow: hidden;
-	opacity: 0;
 	height: 0;
 	background: url(/img/sao.jpg) center center no-repeat;
 	background-size: cover;
 }
+.list-exp-content-wrap {
+	padding: 0 15px;
+	height: 100%;
+	@include linear-gradient(transparent, rgba(99, 114, 124, 0.8));
+	@include box-shadow(inset 0 1px 4px -1px $b30);
+}
 .list-exp-content {
 	@extend .cf;
-	padding: 15px;
-	height: 100%;
-	@include linear-gradient(transparent, rgba(99, 114, 124, 0.9));
-	@include box-shadow(inset 0 1px 4px -1px $b30);
+	opacity: 0;
 }
 .list-exp-image {
 	float: left;
@@ -391,7 +393,6 @@
 }
 .list-exp-title {
 	@extend .nunito;
-	margin-bottom: 1em;
 	padding-left: 15px;
 	color: #fff;
 	font-size: 18px;
@@ -399,6 +400,7 @@
 	text-transform: uppercase;
 }
 .list-exp-desc {
+	margin-top: 1em;
 	padding-left: 15px;
 	width: 500px;
 	color: $bluegray-l-12;

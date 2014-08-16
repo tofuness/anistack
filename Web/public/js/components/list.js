@@ -319,10 +319,10 @@ var listComp = React.createClass({displayName: 'listComp',
 					); 
 					
 					if(filterCondition){
-						listNode.push(listItemComp({itemData: listItem, key: index + '-item'}));
+						listNode.push(listItemComp({itemData: listItem, key: listItem.seriesTitle + '-item'}));
 					}	
 				} else {
-					listNode.push(listItemComp({itemData: listItem, key: index + '-item'}));
+					listNode.push(listItemComp({itemData: listItem, key: listItem.seriesTitle + '-item'}));
 				}
 
 				if(lastStatus !== listItem.itemStatus && listNode.length){
@@ -398,22 +398,36 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 	close: function(picker, e){
 		if(!this.state.ratingOpen && !this.state.progressOpen) return false;
 		var ops = { expanded: true };
-		this.toggleExpand();
 		ops[picker] = false;
 		this.setState(ops);
-
 	},
 	loadPickers: function(){
 		if(!this.state.loadPickers) this.setState({ loadPickers: true });
 	},
 	toggleExpand: function(e){
 		if(!e || e.target.className.indexOf('list-item-content') > -1){
-			$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
+			$(this.refs.itemExpandContent.getDOMNode()).velocity('stop', true).velocity({
 				opacity: (this.state.expanded) ? 0 : 1,
+				paddingTop: (this.state.expanded) ? 0 : '15px'
+			}, {
+				delay: (this.state.expanded) ? 0 : 150,
+				duration: (this.state.expanded) ? 200 : 450,
+				easing: [0.165, 0.84, 0.44, 1],
+				queue: false
+			});
+
+			$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
 				height: (this.state.expanded) ? 0 : '230px'
 			}, {
-				duration: 200,
-				easing: (this.state.expanded) ? [0.23, 1, 0.32, 1] : [0.19, 1, 0.22, 1]
+				duration: (this.state.expanded) ? 200 : 400,
+				easing: (this.state.expanded) ? [0.645, 0.045, 0.355, 1] : [0.1, 0.885, 0.07, 1.09],
+				queue: false
+			}).velocity({
+				backgroundPositionY: (this.state.expanded) ? '50%' : '40%'
+			}, {
+				duration: 600,
+				easing: [0.165, 0.84, 0.44, 1],
+				queue: false
 			});
 			this.setState({
 				expanded: !this.state.expanded
@@ -514,15 +528,17 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 					)
 				), 
 				React.DOM.div({className: "list-item-exp", ref: "itemExpand"}, 
-					React.DOM.div({className: "list-exp-content"}, 
-						React.DOM.div({className: "list-exp-image"}
-						), 
-						React.DOM.div({className: "list-exp-general"}, 
-							React.DOM.div({className: "list-exp-title"}, 
-								"Sword Art Online"
+					React.DOM.div({className: "list-exp-content-wrap"}, 
+						React.DOM.div({className: "list-exp-content", ref: "itemExpandContent"}, 
+							React.DOM.div({className: "list-exp-image"}
 							), 
-							React.DOM.div({className: "list-exp-desc"}, 
-								"In the near future, a Virtual Reality Massive Multiplayer Online Role-Playing Game (VRMMORPG) called Sword Art Online has been released where players control their avatars with their bodies using a piece of technology called: Nerve Gear. One day, players discover they cannot log out, as the game creator is holding them captive unless they reach the 100th floor of the game's tower and defeat the final boss. However, if they die in the game, they die in real life. Their struggle for survival starts now..."
+							React.DOM.div({className: "list-exp-general"}, 
+								React.DOM.div({className: "list-exp-title"}, 
+									"Sword Art Online"
+								), 
+								React.DOM.div({className: "list-exp-desc"}, 
+									"In the near future, a Virtual Reality Massive Multiplayer Online Role-Playing Game (VRMMORPG) called Sword Art Online has been released where players control their avatars with their bodies using a piece of technology called: Nerve Gear. One day, players discover they cannot log out, as the game creator is holding them captive unless they reach the 100th floor of the game's tower and defeat the final boss. However, if they die in the game, they die in real life. Their struggle for survival starts now..."
+								)
 							)
 						)
 					)

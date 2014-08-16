@@ -1,0 +1,15 @@
+{
+  "name": "HerroAPI",
+  "version": "0.0.0",
+  "description": "HTTP API for Herro, utilizing Cayley and MongoDB",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dennis Jin <desuvader@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "~3.8.14",
+    "neo4j": "~1.1.0"
+  }
+}
