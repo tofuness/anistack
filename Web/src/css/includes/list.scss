@@ -263,9 +263,7 @@
 	@include border-bottom-left-radius(4px);
 }
 .list-item {
-	cursor: pointer;
 	@extend .cf;
-	@extend .ns;
 	border-bottom: 1px solid $gray-l-3;
 
 	&:hover {
@@ -276,6 +274,8 @@
 }
 .list-item-content {
 	@extend .cf;
+	@extend .ns;
+	cursor: pointer;
 	font-weight: bold;
 }
 .list-item-left {
@@ -364,14 +364,46 @@
 
 /* Expanded content */
 
-.list-item-expansion {
+.list-item-exp {
 	overflow: hidden;
 	opacity: 0;
 	height: 0;
+	background: url(/img/sao.jpg) center center no-repeat;
+	background-size: cover;
 }
-.list-expanded-content {
+.list-exp-content {
+	@extend .cf;
 	padding: 15px;
-	background: $gray-l-3;
+	height: 100%;
+	@include linear-gradient(transparent, rgba(99, 114, 124, 0.9));
+	@include box-shadow(inset 0 1px 4px -1px $b30);
+}
+.list-exp-image {
+	float: left;
+	width: 150px;
+	height: 200px;
+	background: url(/img/sao.jpg) center center no-repeat;
+	background-size: cover;
+	@include border-radius(4px);
+}
+.list-exp-general {
+	float: left;
+}
+.list-exp-title {
+	@extend .nunito;
+	margin-bottom: 1em;
+	padding-left: 15px;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+.list-exp-desc {
+	padding-left: 15px;
+	width: 500px;
+	color: $bluegray-l-12;
+	font-size: 11px;
+	line-height: 2em;
 }
 
 

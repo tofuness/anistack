@@ -397,25 +397,28 @@ var listItemComp = React.createClass({
 	},
 	close: function(picker, e){
 		if(!this.state.ratingOpen && !this.state.progressOpen) return false;
-		var ops = {};
+		var ops = { expanded: true };
+		this.toggleExpand();
 		ops[picker] = false;
 		this.setState(ops);
+
 	},
 	loadPickers: function(){
 		if(!this.state.loadPickers) this.setState({ loadPickers: true });
 	},
-	toggleExpand: function(){
-		console.log('EXPAND');
-		$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
-			opacity: (this.state.expanded) ? 0 : 1,
-			height: (this.state.expanded) ? 0 : '50px'
-		}, {
-			duration: 150,
-			easing: (this.state.expanded) ? [600, 20] : [0.1, 0.885, 0.07, 1.09]
-		});
-		this.setState({
-			expanded: !this.state.expanded
-		});
+	toggleExpand: function(e){
+		if(!e || e.target.className.indexOf('list-item-content') > -1){
+			$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
+				opacity: (this.state.expanded) ? 0 : 1,
+				height: (this.state.expanded) ? 0 : '230px'
+			}, {
+				duration: 200,
+				easing: (this.state.expanded) ? [0.23, 1, 0.32, 1] : [0.19, 1, 0.22, 1]
+			});
+			this.setState({
+				expanded: !this.state.expanded
+			});
+		}
 	},
 	render: function(){
 		// WORK: Not sure if we need to pass e.g. prevRating and itemData props (combine them)
@@ -441,14 +444,14 @@ var listItemComp = React.createClass({
 		}
 
 		return (
-			<div className="list-item" onClick={this.toggleExpand}>
+			<div className="list-item">
 				<div className="list-item-icons">
 					<div className="icon-podcast-2 list-item-airing-icon">
 					</div>
 					<div className="icon-tag list-item-tag-icon">
 					</div>
 				</div>
-				<div className="list-item-content">
+				<div className="list-item-content" onClick={this.toggleExpand}>
 					<div className="list-item-left">
 						<a className="list-item-title" href="/">
 							{this.props.itemData.seriesTitle}
@@ -510,9 +513,18 @@ var listItemComp = React.createClass({
 						</div>
 					</div>
 				</div>
-				<div className="list-item-expansion" ref="itemExpand">
-					<div className="list-expanded-content">
-					s
+				<div className="list-item-exp" ref="itemExpand">
+					<div className="list-exp-content">
+						<div className="list-exp-image">
+						</div>
+						<div className="list-exp-general">
+							<div className="list-exp-title">
+								Sword Art Online
+							</div>
+							<div className="list-exp-desc">
+								In the near future, a Virtual Reality Massive Multiplayer Online Role-Playing Game (VRMMORPG) called Sword Art Online has been released where players control their avatars with their bodies using a piece of technology called: Nerve Gear. One day, players discover they cannot log out, as the game creator is holding them captive unless they reach the 100th floor of the game's tower and defeat the final boss. However, if they die in the game, they die in real life. Their struggle for survival starts now...
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
