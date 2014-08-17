@@ -244,7 +244,7 @@ var listComp = React.createClass({
 
 			Alternatively, use the batchRendering option.
 			*/
-			hsr: false,
+			hsr: false, // WORK: Should maybe be removed
 			batchRendering: true,
 			listBegin: 0,
 			listEnd: 44
@@ -268,6 +268,7 @@ var listComp = React.createClass({
 	componentDidMount: function(){
 		if(this.state.hsr){
 			$(window).on('scroll', function(e){
+				// ?: Loads indivitual list items on scroll
 				var scrollTop = $(window).scrollTop() - $('#list-hsr').offset().top;
 				if(scrollTop < 0) scrollTop = 0;
 
@@ -282,6 +283,7 @@ var listComp = React.createClass({
 				});
 			}.bind(this));
 		} else if(this.state.batchRendering){
+			// ?: Loads parts of the list on scroll
 			$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 				var listItemsOnScreen = window.innerHeight / 46 | 0;
@@ -358,7 +360,7 @@ var listComp = React.createClass({
 		if((this.state.hsr || this.state.batchRendering) && lastStatusCount > 0){
 			var listStyle = {
 				'padding-bottom': 15,
-				'height': (listDOM.length - lastStatusCount) * 46
+				'min-height': (listDOM.length - lastStatusCount) * 46
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -406,7 +408,10 @@ var listItemComp = React.createClass({
 	},
 	toggleExpand: function(e){
 		if(!e || e.target.className.indexOf('list-item-content') > -1){
-			$(this.refs.itemExpandContent.getDOMNode()).velocity('stop', true).velocity({
+			//?: Below is the animation for the expandion part from a list item.
+			// Super fragile.
+
+			$(this.refs.itemExpandLeft.getDOMNode()).velocity('stop', true).velocity({
 				opacity: (this.state.expanded) ? 0 : 1,
 				paddingTop: (this.state.expanded) ? 0 : '15px'
 			}, {
@@ -416,16 +421,26 @@ var listItemComp = React.createClass({
 				queue: false
 			});
 
+			$(this.refs.itemExpandRight.getDOMNode()).velocity('stop', true).velocity({
+				opacity: (this.state.expanded) ? 0 : 1,
+				paddingTop: (this.state.expanded) ? 0 : '15px'
+			}, {
+				delay: (this.state.expanded) ? 0 : 250,
+				duration: (this.state.expanded) ? 200 : 450,
+				easing: [0.165, 0.84, 0.44, 1],
+				queue: false
+			});
+
 			$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
 				height: (this.state.expanded) ? 0 : '230px'
 			}, {
 				duration: (this.state.expanded) ? 200 : 400,
-				easing: (this.state.expanded) ? [0.645, 0.045, 0.355, 1] : [0.1, 0.885, 0.07, 1.09],
+				easing: (this.state.expanded) ? [0.645, 0.045, 0.355, 1] : [0.165, 0.84, 0.44, 1],
 				queue: false
 			}).velocity({
 				backgroundPositionY: (this.state.expanded) ? '50%' : '40%'
 			}, {
-				duration: 600,
+				duration: 700,
 				easing: [0.165, 0.84, 0.44, 1],
 				queue: false
 			});
@@ -467,7 +482,7 @@ var listItemComp = React.createClass({
 				</div>
 				<div className="list-item-content" onClick={this.toggleExpand}>
 					<div className="list-item-left">
-						<a className="list-item-title" href="/">
+						<a className="list-item-title" href="/list/search">
 							{this.props.itemData.seriesTitle}
 						</a>
 					</div>
@@ -496,9 +511,7 @@ var listItemComp = React.createClass({
 									(this.props.itemData.seriesTotal) ? this.props.itemData.seriesTotal : '—'
 								}
 							</span>
-							{
-								pickerProgress
-							}
+							{ pickerProgress }
 						</div>
 						<div
 							className="list-item-rating"
@@ -518,9 +531,7 @@ var listItemComp = React.createClass({
 									(this.props.itemData.itemRating) ? this.props.itemData.itemRating / 2 : '—' // ?: Divide score by two, or display m-dash
 								}
 							</span>
-							{
-								pickerRating
-							}
+							{ pickerRating }
 						</div>
 						<div className="list-item-type">
 							<span className="list-type-icon tv">{this.props.itemData.seriesType}</span>
@@ -528,16 +539,38 @@ var listItemComp = React.createClass({
 					</div>
 				</div>
 				<div className="list-item-exp" ref="itemExpand">
-					<div className="list-exp-content-wrap">
-						<div className="list-exp-content" ref="itemExpandContent">
+					<div className="list-exp-wrap">
+						<div className="list-exp-left" ref="itemExpandLeft">
 							<div className="list-exp-image">
 							</div>
-							<div className="list-exp-general">
-								<div className="list-exp-title">
-									Sword Art Online
+							<div className="list-exp-info">
+								<div className="list-exp-header">
+									Latest updates
 								</div>
-								<div className="list-exp-desc">
-									In the near future, a Virtual Reality Massive Multiplayer Online Role-Playing Game (VRMMORPG) called Sword Art Online has been released where players control their avatars with their bodies using a piece of technology called: Nerve Gear. One day, players discover they cannot log out, as the game creator is holding them captive unless they reach the 100th floor of the game's tower and defeat the final boss. However, if they die in the game, they die in real life. Their struggle for survival starts now...
+								<div className="list-exp-header">
+									Personal Notes
+								</div>
+								<div className="list-exp-note">
+									Comes out on Fridays. Watch the episodes with Commie subs.
+								</div>
+							</div>
+						</div>
+						<div className="list-exp-right" ref="itemExpandRight">
+							<div className="list-exp-status-wrap">
+								<div className="list-exp-status">
+									Current
+								</div>
+								<div className="list-exp-status">
+									Completed
+								</div>
+								<div className="list-exp-status">
+									Planned
+								</div>
+								<div className="list-exp-status">
+									On Hold
+								</div>
+								<div className="list-exp-status">
+									Dropped
 								</div>
 							</div>
 						</div>
@@ -593,19 +626,17 @@ var listOnBoard = React.createClass({
 						<div className="onboard-image icon-book-lines-2">
 						</div>
 						<div className="onboard-title">
-							Sync with an already existing list
+							Import from an old list
 						</div>
 						<div className="onboard-desc">
-							If you already have a list, we can help you keep 
-							things synced across platforms.
-							<br />
-							<span className="onboard-tiny">
-								(even if you never ever will use something besides Herro....right?)
-							</span>
+							If you had a list before, we can help you import it to your shiny new list.
 						</div>
 						<a id="onboard-btn-sync" className="onboard-btn">
 							Sync from old list
 						</a>
+						<span className="onboard-tiny">
+							Import from MyAnimeList, Anime-Planet, Hummingbird and AniList
+						</span>
 					</div>
 				</div>
 			</div>

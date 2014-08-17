@@ -1,0 +1,48 @@
+html, body {
+	font-size: 12px;
+	font-family: sans-serif;
+}
+.lato {
+	font-family: 'Lato', sans-serif;
+}
+
+#top {
+	@extend .cf;
+	padding: 15px 0;
+	width: 100%;
+	background: $bluegray-d-3;
+}
+#top-logo {
+	@extend .cf;
+	float: left;
+	margin-left: 15px;
+	padding: 5px 8px;
+}
+#top-logo-text {
+	@extend .lato;
+	cursor: pointer;
+	float: left;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 300;
+	letter-spacing: 0.5em;
+	text-transform: uppercase;
+}
+#top-version {
+	float: left;
+	margin: 1px 0 0 15px;
+	padding: 3px 6px;
+	color: #fff;
+	font-size: 11px;
+	background: $bluegray;
+	@include border-radius(4px);
+}
+#middle {
+	height: 800px;
+}
+#editor {
+height: 800px;
+}
+#editor-value {
+	display: none;
+}

@@ -1,8 +1,7 @@
-// Run app in development mode by default
+// ?: Load environment variables
 
-if(!process.env.NODE_ENV){
-	process.env.NODE_ENV = 'development';
-}
+var dotenv = require('dotenv');
+dotenv.load();
 
 console.log('✓ Running application: ' + process.env.NODE_ENV);
 
@@ -24,7 +23,6 @@ var MongoStore = require('connect-mongo')(session);
 
 // Access application through app
 
-//var db = require(path.join(__dirname, '/models/db.js'));
 var app = express();
 
 // Configure server
@@ -37,12 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+	extended: true
 }));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(session({ 
-	secret: '!@@]|&c1YyuzD~1G)I/5){HJTvxN|PFIY#%:4@oeJvOv<&22)}5m;L7jG=c8GNq',
+	secret: process.env.SESSION_SECRET,
 	store: new MongoStore({
 		db: 'herro',
 		clear_interval: 60
@@ -70,13 +68,15 @@ app.use(function(req, res, next){
 
 if(process.env.NODE_ENV === 'development'){
 	// Display all kinds of logs for development mode
-
 	console.log('✓ Loaded log modules');
-
 	var morgan = require('morgan');
 	var prettyError = require('pretty-error');
 	prettyError.start();
 	app.use(morgan('dev'));
+}
+if(process.env.NODE_ENV === 'production'){
+	console.log('✓ Loaded Sentry Log')
+	app.use(raven.middleware.express(process.env.SENTRY_URL));
 }
 
 require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route

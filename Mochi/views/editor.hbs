@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Mochi Editor</title>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:300,400,900" media="all" />
+	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="/js/app.js"></script>
+</head>
+<body>
+	<div id="top">
+		<div id="top-logo">
+			<div id="top-logo-text">Mochi</div><div id="top-version">ver {{ version }}</div>
+		</div>
+	</div>
+	<div id="middle">
+		<div id="editor">
+		</div>
+	</div>
+<div id="editor-value">
+/*
+	Everything, but the titles, in lowercase please
+	Types: tv, movie, ova, ona, special, music
+*/
+
+{
+	series_title_english: '',
+	series_title_japanese: '',
+	series_title_romanji: '',
+	series_type: '', // Required
+	series_date_start: '',
+	series_date_end: '',
+	series_synopsis: '',
+	series_episodes_total: 0, // Required
+	series_image_original: '',
+	series_image_processed: '',
+	series_gallery: [],
+	series_genres: [],
+	series_external_links: []
+}
+</div>
+</body>
+</html>

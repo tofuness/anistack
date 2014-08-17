@@ -7,7 +7,7 @@
 }
 
 #list-onboard {
-	padding: 120px 0;
+	padding: 100px 0;
 	text-align: center;
 }
 #onboard-welcome {
@@ -55,9 +55,11 @@
 	line-height: 2em;
 }
 .onboard-tiny {
-	display: none; // WORK: Should we display this?
-	color: $gray-d-3;
-	font-size: 8px;
+	display: block;
+	padding-top: 15px;
+	color: $gray-d-9;
+	font-size: 11px;
+	line-height: 2em;
 }
 .onboard-btn {
 	cursor: pointer;
@@ -92,12 +94,12 @@
 }
 #list-error {
 	margin: 0 auto;
-	padding: 167px 0;
+	padding: 184px 0;
 	width: 800px;
 	text-align: center;
 	background: url(/img/nooo.png) no-repeat;
 	background-size: 30%;
-	background-position: 0 340px;
+	background-position: 0 385px;
 }
 #list-error-image {
 	margin: 0 auto;
@@ -298,7 +300,7 @@
 	cursor: pointer;
 	display: none;
 	float: left;
-	margin: 12px 15px 0 0;
+	margin: 14px 15px 0 0;
 	height: 12px;
 	color: $gray-d-3;
 	font-size: 16px;
@@ -370,15 +372,16 @@
 	background: url(/img/sao.jpg) center center no-repeat;
 	background-size: cover;
 }
-.list-exp-content-wrap {
-	padding: 0 15px;
+.list-exp-wrap {
 	height: 100%;
 	@include linear-gradient(transparent, rgba(99, 114, 124, 0.8));
 	@include box-shadow(inset 0 1px 4px -1px $b30);
 }
-.list-exp-content {
+.list-exp-left {
 	@extend .cf;
+	float: left;
 	opacity: 0;
+	padding-left: 15px;
 }
 .list-exp-image {
 	float: left;
@@ -388,24 +391,50 @@
 	background-size: cover;
 	@include border-radius(4px);
 }
-.list-exp-general {
+.list-exp-info {
 	float: left;
-}
-.list-exp-title {
-	@extend .nunito;
 	padding-left: 15px;
-	color: #fff;
-	font-size: 18px;
-	font-weight: 400;
-	text-transform: uppercase;
+	width: 400px;
 }
-.list-exp-desc {
-	margin-top: 1em;
-	padding-left: 15px;
-	width: 500px;
-	color: $bluegray-l-12;
+.list-exp-header {
+	padding: 10px 0;
+	color: $w80;
 	font-size: 11px;
+	font-weight: bold;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	@include box-shadow(inset 0 1px 0 $w80);
+}
+.list-exp-note {
+	width: 400px;
+	color: $w80;
 	line-height: 2em;
+}
+.list-exp-right {
+	opacity: 0;
+	float: right;
+}
+.list-exp-status-wrap {
+	padding-right: 15px;
+	width: 250px;
+}
+.list-exp-status {
+	padding-left: 15px;
+	height: 39px;
+	font-weight: bold;
+	text-align: left;
+	line-height: 39px;
+	background: #fff;
+	border-top: 1px solid $gray-l-3;
+	&:first-child {
+		border-top: 0;
+		@include border-top-right-radius(4px);
+		@include border-top-left-radius(4px);
+	}
+	&:last-child {
+		@include border-bottom-right-radius(4px);
+		@include border-bottom-left-radius(4px);
+	}
 }
 
 

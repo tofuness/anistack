@@ -244,7 +244,7 @@ var listComp = React.createClass({displayName: 'listComp',
 
 			Alternatively, use the batchRendering option.
 			*/
-			hsr: false,
+			hsr: false, // WORK: Should maybe be removed
 			batchRendering: true,
 			listBegin: 0,
 			listEnd: 44
@@ -268,6 +268,7 @@ var listComp = React.createClass({displayName: 'listComp',
 	componentDidMount: function(){
 		if(this.state.hsr){
 			$(window).on('scroll', function(e){
+				// ?: Loads indivitual list items on scroll
 				var scrollTop = $(window).scrollTop() - $('#list-hsr').offset().top;
 				if(scrollTop < 0) scrollTop = 0;
 
@@ -282,6 +283,7 @@ var listComp = React.createClass({displayName: 'listComp',
 				});
 			}.bind(this));
 		} else if(this.state.batchRendering){
+			// ?: Loads parts of the list on scroll
 			$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 				var listItemsOnScreen = window.innerHeight / 46 | 0;
@@ -358,7 +360,7 @@ var listComp = React.createClass({displayName: 'listComp',
 		if((this.state.hsr || this.state.batchRendering) && lastStatusCount > 0){
 			var listStyle = {
 				'padding-bottom': 15,
-				'height': (listDOM.length - lastStatusCount) * 46
+				'min-height': (listDOM.length - lastStatusCount) * 46
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -406,7 +408,10 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 	},
 	toggleExpand: function(e){
 		if(!e || e.target.className.indexOf('list-item-content') > -1){
-			$(this.refs.itemExpandContent.getDOMNode()).velocity('stop', true).velocity({
+			//?: Below is the animation for the expandion part from a list item.
+			// Super fragile.
+
+			$(this.refs.itemExpandLeft.getDOMNode()).velocity('stop', true).velocity({
 				opacity: (this.state.expanded) ? 0 : 1,
 				paddingTop: (this.state.expanded) ? 0 : '15px'
 			}, {
@@ -416,16 +421,26 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 				queue: false
 			});
 
+			$(this.refs.itemExpandRight.getDOMNode()).velocity('stop', true).velocity({
+				opacity: (this.state.expanded) ? 0 : 1,
+				paddingTop: (this.state.expanded) ? 0 : '15px'
+			}, {
+				delay: (this.state.expanded) ? 0 : 250,
+				duration: (this.state.expanded) ? 200 : 450,
+				easing: [0.165, 0.84, 0.44, 1],
+				queue: false
+			});
+
 			$(this.refs.itemExpand.getDOMNode()).velocity('stop', true).velocity({
 				height: (this.state.expanded) ? 0 : '230px'
 			}, {
 				duration: (this.state.expanded) ? 200 : 400,
-				easing: (this.state.expanded) ? [0.645, 0.045, 0.355, 1] : [0.1, 0.885, 0.07, 1.09],
+				easing: (this.state.expanded) ? [0.645, 0.045, 0.355, 1] : [0.165, 0.84, 0.44, 1],
 				queue: false
 			}).velocity({
 				backgroundPositionY: (this.state.expanded) ? '50%' : '40%'
 			}, {
-				duration: 600,
+				duration: 700,
 				easing: [0.165, 0.84, 0.44, 1],
 				queue: false
 			});
@@ -467,7 +482,7 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 				), 
 				React.DOM.div({className: "list-item-content", onClick: this.toggleExpand}, 
 					React.DOM.div({className: "list-item-left"}, 
-						React.DOM.a({className: "list-item-title", href: "/"}, 
+						React.DOM.a({className: "list-item-title", href: "/list/search"}, 
 							this.props.itemData.seriesTitle
 						)
 					), 
@@ -496,9 +511,7 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 									(this.props.itemData.seriesTotal) ? this.props.itemData.seriesTotal : '—'
 								
 							), 
-							
-								pickerProgress
-							
+							pickerProgress 
 						), 
 						React.DOM.div({
 							className: "list-item-rating", 
@@ -518,9 +531,7 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 									(this.props.itemData.itemRating) ? this.props.itemData.itemRating / 2 : '—'// ?: Divide score by two, or display m-dash
 								
 							), 
-							
-								pickerRating
-							
+							pickerRating 
 						), 
 						React.DOM.div({className: "list-item-type"}, 
 							React.DOM.span({className: "list-type-icon tv"}, this.props.itemData.seriesType)
@@ -528,16 +539,38 @@ var listItemComp = React.createClass({displayName: 'listItemComp',
 					)
 				), 
 				React.DOM.div({className: "list-item-exp", ref: "itemExpand"}, 
-					React.DOM.div({className: "list-exp-content-wrap"}, 
-						React.DOM.div({className: "list-exp-content", ref: "itemExpandContent"}, 
+					React.DOM.div({className: "list-exp-wrap"}, 
+						React.DOM.div({className: "list-exp-left", ref: "itemExpandLeft"}, 
 							React.DOM.div({className: "list-exp-image"}
 							), 
-							React.DOM.div({className: "list-exp-general"}, 
-								React.DOM.div({className: "list-exp-title"}, 
-									"Sword Art Online"
+							React.DOM.div({className: "list-exp-info"}, 
+								React.DOM.div({className: "list-exp-header"}, 
+									"Latest updates"
 								), 
-								React.DOM.div({className: "list-exp-desc"}, 
-									"In the near future, a Virtual Reality Massive Multiplayer Online Role-Playing Game (VRMMORPG) called Sword Art Online has been released where players control their avatars with their bodies using a piece of technology called: Nerve Gear. One day, players discover they cannot log out, as the game creator is holding them captive unless they reach the 100th floor of the game's tower and defeat the final boss. However, if they die in the game, they die in real life. Their struggle for survival starts now..."
+								React.DOM.div({className: "list-exp-header"}, 
+									"Personal Notes"
+								), 
+								React.DOM.div({className: "list-exp-note"}, 
+									"Comes out on Fridays. Watch the episodes with Commie subs."
+								)
+							)
+						), 
+						React.DOM.div({className: "list-exp-right", ref: "itemExpandRight"}, 
+							React.DOM.div({className: "list-exp-status-wrap"}, 
+								React.DOM.div({className: "list-exp-status"}, 
+									"Current"
+								), 
+								React.DOM.div({className: "list-exp-status"}, 
+									"Completed"
+								), 
+								React.DOM.div({className: "list-exp-status"}, 
+									"Planned"
+								), 
+								React.DOM.div({className: "list-exp-status"}, 
+									"On Hold"
+								), 
+								React.DOM.div({className: "list-exp-status"}, 
+									"Dropped"
 								)
 							)
 						)
@@ -593,18 +626,16 @@ var listOnBoard = React.createClass({displayName: 'listOnBoard',
 						React.DOM.div({className: "onboard-image icon-book-lines-2"}
 						), 
 						React.DOM.div({className: "onboard-title"}, 
-							"Sync with an already existing list"
+							"Import from an old list"
 						), 
 						React.DOM.div({className: "onboard-desc"}, 
-							"If you already have a list, we can help you keep" + ' ' + 
-							"things synced across platforms.", 
-							React.DOM.br(null), 
-							React.DOM.span({className: "onboard-tiny"}, 
-								"(even if you never ever will use something besides Herro....right?)"
-							)
+							"If you had a list before, we can help you import it to your shiny new list."
 						), 
 						React.DOM.a({id: "onboard-btn-sync", className: "onboard-btn"}, 
 							"Sync from old list"
+						), 
+						React.DOM.span({className: "onboard-tiny"}, 
+							"Import from MyAnimeList, Anime-Planet, Hummingbird and AniList"
 						)
 					)
 				)
