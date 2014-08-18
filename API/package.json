@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "mongoose": "~3.8.14",
-    "neo4j": "~1.1.0"
+    "neo4j": "~1.1.0",
+    "slugin": "0.0.11",
+    "underscore": "~1.6.0",
+    "mongoose-validatefilter": "0.0.18"
   }
 }

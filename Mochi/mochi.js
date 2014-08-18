@@ -16,6 +16,16 @@ var app = express();
 
 // Configure server
 
+var hbs = require('hbs');
+
+hbs.registerPartials('./views/partials', function(err){
+	if(err) return console.log('✗ Could not load HBS partials: ' + err);
+	console.log('✓ Loaded HBS partials');
+});
+
+var Swag = require('swag');
+Swag.registerHelpers(hbs);
+
 app.disable('x-powered-by');
 app.set('port', process.env.PORT || 1338);
 app.set('views', path.join(__dirname, 'views'));

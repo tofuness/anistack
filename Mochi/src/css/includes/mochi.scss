@@ -27,6 +27,7 @@ html, body {
 	font-weight: 300;
 	letter-spacing: 0.5em;
 	text-transform: uppercase;
+	text-decoration: none;
 }
 #top-version {
 	float: left;
@@ -38,11 +39,102 @@ html, body {
 	@include border-radius(4px);
 }
 #middle {
-	height: 800px;
+	position: absolute;
+	top: 124px;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 #editor {
-height: 800px;
+	height: 100%;
 }
 #editor-value {
 	display: none;
+}
+#editor-controls {
+	@extend .cf;
+	padding: 0 15px;
+	height: 62px;
+	background: $gray-l-3;
+}
+#editor-back {
+	cursor: pointer;
+	float: left;
+	margin-top: 14px;
+	padding: 10px;
+	color: $gray-d-9;
+	font-size: 11px;
+	font-weight: bold;
+	background: $gray;
+	text-transform: uppercase;
+	text-decoration: none;
+	@include border-radius(4px);
+	&:hover {
+		opacity: 0.8;
+	}
+}
+#document-delete {
+	cursor: pointer;
+	float: left;
+	margin: 14px 0 0 14px;
+	padding: 10px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	background: $red;
+	text-transform: uppercase;
+	text-decoration: none;
+	@include border-radius(4px);
+	&:hover {
+		opacity: 0.8;
+	}
+}
+#document-add {
+	cursor: pointer;
+	float: right;
+	margin: 14px 14px 0 0;
+	padding: 10px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	background: $blue;
+	text-transform: uppercase;
+	text-decoration: none;
+	@include border-radius(4px);
+	&:hover {
+		opacity: 0.8;
+	}
+}
+#search {
+	float: left;
+	height: 62px;
+}
+#search-input {
+	padding: 15px;
+	width: 500px;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 32px;
+}
+.list-result {
+	@extend .cf;
+	display: block;
+	border-top: 1px solid $gray;
+}
+.list-result-col {
+	float: left;
+	overflow: hidden;
+	width: 24.999%;
+	height: 62px;
+	background: $gray-l-3;
+	box-shadow: inset -1px 0 0 $gray;
+	&:last-child {
+		box-shadow: 0;
+	}
+}
+.list-result-hd {
+	padding-left: 15px;
+	line-height: 62px;
+	color: $black;
+	font-weight: bold;
 }
