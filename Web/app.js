@@ -70,16 +70,21 @@ if(process.env.NODE_ENV === 'development'){
 	// Display all kinds of logs for development mode
 	console.log('✓ Loaded log modules');
 	var morgan = require('morgan');
-	var prettyError = require('pretty-error');
-	prettyError.start();
 	app.use(morgan('dev'));
 }
 if(process.env.NODE_ENV === 'production'){
 	console.log('✓ Loaded Sentry Log')
+	var raven = require('raven');
 	app.use(raven.middleware.express(process.env.SENTRY_URL));
 }
 
 require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route
+
+app.use(function(err, req, res, next){
+	if(err) return next();
+	console.log(err);
+	res.status(500).end(err);
+});
 
 // If no matching route was found, give 'em the 404
 

@@ -13,6 +13,12 @@
     "neo4j": "~1.1.0",
     "slugin": "0.0.11",
     "underscore": "~1.6.0",
-    "mongoose-validatefilter": "0.0.18"
+    "mongoose-validatefilter": "0.0.18",
+    "express": "~4.8.5",
+    "body-parser": "~1.6.5",
+    "cors": "~2.4.1",
+    "dotenv": "~0.4.0",
+    "raven": "~0.7.0",
+    "morgan": "~1.2.3"
   }
 }

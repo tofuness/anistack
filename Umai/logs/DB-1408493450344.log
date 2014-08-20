@@ -1,0 +1,147 @@
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Deko_Boko_Friends
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_data.animes.$series_title_main_1  dup key: { : "Bleach" }
+/wiki/Bleach_(manga)
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/The_World_of_Golden_Eggs
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Lovely_Idol
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Fresh_Pretty_Cure!
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Magic_Kaito
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Sengoku_Paradise
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Aikatsu!
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Chiisai_Oyaji_Nikki
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Battle_Spirits:_Saikyou_Ginga_Ultimate_Zero
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Heroes:_Legend_of_the_Battle_Disks
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Bakumatsu_Rock
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Blue_Spring_Ride
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Cross_Ange
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Dai-Shogun_-_Great_Revolution
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Denkigai_no_Honya-san
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Dragon_Collection
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Girl_Friend_Beta
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Grisaia_no_Kajitsu
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Hanayamata
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/HappinessCharge_PreCure!
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Hero_Bank
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/In%C5%8D-Battle_wa_Nichij%C5%8D-kei_no_Naka_de
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Lady_Jewelpet
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Love_Stage!!
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Madan_no_%C5%8C_to_Vanadis
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Magimoji_Rurumo
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Majin_Bone
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Minna_Atsumare!_Falcom_Gakuen
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Mobile_Suit_Gundam-san
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Monster_Retsuden_Oreca_Battle
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Meshimase_Lodoss-t%C5%8D_Senki:_Sorette_Oishii_no%3F
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Nobunaga_Concerto
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Notari_Matsutar%C5%8D
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Orenchi_no_Furo_Jij%C5%8D
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Parasyte
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/PriPara
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Sabagebu!
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Shigatsu_wa_Kimi_no_Uso
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Sora_no_Method
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/The_Seven_Deadly_Sins_(manga)
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Strange%2B
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Terra_Formars
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Tsubu_Doll
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Trinity_Seven
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Ushinawareta_Mirai_o_Motomete
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/World_Trigger
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Y%C5%ABki_Y%C5%ABna_wa_Y%C5%ABsha_de_Aru
+
+ValidationError: Path `series_episodes_total` is required.
+/wiki/Z/X
+

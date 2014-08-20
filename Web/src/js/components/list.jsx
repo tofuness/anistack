@@ -415,7 +415,7 @@ var listItemComp = React.createClass({
 				opacity: (this.state.expanded) ? 0 : 1,
 				paddingTop: (this.state.expanded) ? 0 : '15px'
 			}, {
-				delay: (this.state.expanded) ? 0 : 150,
+				delay: (this.state.expanded) ? 0 : 70,
 				duration: (this.state.expanded) ? 200 : 450,
 				easing: [0.165, 0.84, 0.44, 1],
 				queue: false

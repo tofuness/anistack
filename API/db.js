@@ -4,7 +4,7 @@ var slugin = require('slugin');
 var _ = require('underscore');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
-mongoose.connect('mongodb://localhost:27017/herro_dev');
+mongoose.connect('mongodb://localhost:27017/herro_data');
 
 var validators = {
 	anime: new mongooseValidateFilter.validate(),
@@ -23,13 +23,15 @@ var filter = {
 			} else {
 				done(null);
 			}
-		},
-		genres: function(genresArr, done){
-			if(genresArr.length){
-				genresArr = _.uniq(genresArr.map(function(genre){
-					return genre.toLowerCase();
+		}
+	},
+	general: {
+		lowerCaseUniq: function(arr, done){
+			if(arr.length){
+				arr = _.uniq(arr.map(function(item){
+					return item.toLowerCase();
 				}));
-				done(genresArr);
+				done(arr);
 			} else {
 				done([]);
 			}
@@ -58,7 +60,7 @@ validators.anime.add('series_type', {
 });
 
 filters.anime.add('series_type', 'lowercase');
-filters.anime.add('series_genres', filter.anime.genres);
+filters.anime.add('series_genres', filter.general.lowerCaseUniq);
 filters.anime.add('series_date_start', filter.anime.date);
 filters.anime.add('series_date_end', filter.anime.date);
 
@@ -67,12 +69,18 @@ filters.anime.add('series_date_end', filter.anime.date);
 validators.user.add('email', {
 	type: 'email',
 	minLength: 5,
-	maxLength: 80
+	maxLength: 80,
+	msg: 'email did not pass validation'
 });
 filters.user.add('email', 'lowercase');
 
 
 var AnimeSchema = new Schema({
+	series_title_main: { // Straight from Wikipedia
+		type: String,
+		required: true,
+		unique: true
+	},
 	series_title_english: {
 		type: String
 	},
@@ -82,6 +90,7 @@ var AnimeSchema = new Schema({
 	series_title_romanji: {
 		type: String
 	},
+	series_title_abbr: [ String ], // Abbriviations should be added as "tags"
 	series_slug: {
 		type: String,
 		required: true,
@@ -115,19 +124,25 @@ var AnimeSchema = new Schema({
 	series_image_processed: {
 		type: String
 	},
-	series_gallery: [ String ],
-	series_genres: [{
-		type: String,
-		lowercase: true
+	series_genres: [ String ],
+	series_studios: [{
+		_id: false,
+		title: String,
+		url: String // Wikipedia URLs
 	}],
-	series_external_links: [ String ]
+	series_gallery: [ String ],
+	series_wiki_url: String,
+	series_external_links: [{
+		_id: false,
+		title: String,
+		url: String
+	}]
 });
 
 AnimeSchema.plugin(slugin, {
 	slugName: 'series_slug',
 	source: [
-		'series_title_english',
-		'series_title_romanji'
+		'series_title_main'
 	]
 });
 
