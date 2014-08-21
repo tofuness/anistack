@@ -1,7 +1,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var async = require('async');
-var underscore = require('underscore');
+var _ = require('underscore');
 
 var db = require('../API/db.js');
 var Anime = db.Anime;

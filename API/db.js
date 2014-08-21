@@ -90,7 +90,7 @@ var AnimeSchema = new Schema({
 	series_title_romanji: {
 		type: String
 	},
-	series_title_abbr: [ String ], // Abbriviations should be added as "tags"
+	series_title_synonyms: [ String ], // Abbriviations should be added as "tags"
 	series_slug: {
 		type: String,
 		required: true,
@@ -132,6 +132,10 @@ var AnimeSchema = new Schema({
 	}],
 	series_gallery: [ String ],
 	series_wiki_url: String,
+	series_external_ids: {
+		myanimelist: Number,
+		anidb: Number
+	},
 	series_external_links: [{
 		_id: false,
 		title: String,

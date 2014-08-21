@@ -111,7 +111,9 @@ module.exports = function(app){
 		} else {
 			var searchQuery = {}
 		}
-		collection.find(searchQuery, function(err, docs){
+		collection.find(searchQuery)
+			.sort({ series_title_main: 1 })
+			.exec(function(err, docs){
 			if(err){
 				next();
 			} else {

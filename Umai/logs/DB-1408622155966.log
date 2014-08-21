@@ -1,0 +1,9 @@
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_data.animes.$series_title_main_1  dup key: { : "Argento Soma" }
+/wiki/Argento_Soma
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_data.animes.$series_title_main_1  dup key: { : "Baby Felix" }
+/wiki/Baby_Felix
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_data.animes.$series_title_main_1  dup key: { : "Boys Be..." }
+/wiki/Boys_Be...
+

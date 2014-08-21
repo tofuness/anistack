@@ -12,6 +12,8 @@
     "underscore": "~1.6.0",
     "request": "~2.40.0",
     "cheerio": "~0.17.0",
-    "async": "~0.9.0"
+    "async": "~0.9.0",
+    "natural": "~0.1.28",
+    "scraperjs": "~0.2.2"
   }
 }
