@@ -6,8 +6,6 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var raven = require('raven'); // https://getsentry.com/welcome/
 var morgan = require('morgan'); // Normal logs
-var _ = require('underscore');
-
 
 var app = express();
 
@@ -25,13 +23,15 @@ if(process.env.NODE_ENV === 'production'){
 	app.use(raven.middleware.express(process.env.SENTRY_URL));
 }
 
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 
 require(path.join(__dirname, '/routes/series'))(app);
+require(path.join(__dirname, '/routes/list'))(app);
 
 app.use(function(err, req, res, next){
 	if(err){
 		// Do error handling
+		res.status(500).json({ message: err.message, status: "error" });
 	}
 	next();
 });

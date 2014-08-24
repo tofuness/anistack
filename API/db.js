@@ -1,18 +1,22 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var slugin = require('slugin');
-var _ = require('underscore');
+var bcryptjs = require('bcryptjs');
+var _ = require('lodash');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
 mongoose.connect('mongodb://localhost:27017/herro_dev');
 
 var validators = {
 	anime: new mongooseValidateFilter.validate(),
-	user: new mongooseValidateFilter.validate()
+	user: new mongooseValidateFilter.validate(),
+	list: new mongooseValidateFilter.validate()
 }
+
 var filters = {
 	anime: new mongooseValidateFilter.filter(),
-	user: new mongooseValidateFilter.filter()
+	user: new mongooseValidateFilter.filter(),
+	list: new mongooseValidateFilter.filter()
 }
 
 var filter = {
@@ -44,6 +48,14 @@ var filter = {
 			done(_.intersection(genreArr, filter.anime.allowedGenres));
 		}
 	},
+	user: {
+		password: function(passwordStr, done){
+			bcryptjs.hash(passwordStr, 16, function(err, hash){
+				if(err) throw new Error('bcrypt hash failed');
+				return done(hash);
+			});
+		}
+	},
 	general: {
 		lowerCaseUniq: function(arr, done){
 			if(arr.length){
@@ -60,9 +72,39 @@ var filter = {
 
 var validate = {
 	anime: {
-		type: function(typeString, done){
-			typeString = typeString.toLowerCase();
-			if(['tv', 'ova', 'ona', 'movie', 'special', 'music'].indexOf(typeString) > -1){
+		type: function(typeStr, done){
+			typeStr = typeStr.toLowerCase();
+			if(['tv', 'ova', 'ona', 'movie', 'special', 'music'].indexOf(typeStr) > -1){
+				done(true);
+			} else {
+				done(false);
+			}
+		}
+	},
+	user: {
+		username: function(usernameStr, done){
+			this.findOne({
+				username: new RegExp(usernameStr, 'i')
+			}, function(err, doc){
+				if(err) return done(false);
+				return done(!doc);
+			});
+		}
+	},
+	list: {
+		anime: function(_anime, done){
+			console.log(this.item_progress);
+			Anime.findOne({
+				_id: _anime
+			}, function(err, doc){
+				if(err) return done(false);
+				return done(doc);
+			});
+		},
+
+		status: function(statusStr){
+			statusStr = statusStr.toLowerCase();
+			if(['current', 'completed', 'planned', 'onhold', 'dropped'].indexOf(statusStr) > -1){
 				done(true);
 			} else {
 				done(false);
@@ -77,6 +119,7 @@ validators.anime.add('series_type', {
 	callback: validate.anime.type,
 	msg: 'series_type did not pass validation'
 });
+
 validators.anime.add('series_episodes_total', {
 	min: 0,
 	max: 9999,
@@ -89,6 +132,10 @@ filters.anime.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for UserSchema
 
+validators.user.add('username', {
+	callback: validate.user.username
+})
+
 validators.user.add('email', {
 	type: 'email',
 	minLength: 5,
@@ -98,6 +145,30 @@ validators.user.add('email', {
 
 filters.user.add('email', 'lowercase');
 
+// Validation/Filters for ListItemSchema
+
+validators.list.add('_anime', {
+	callback: validate.list.anime
+});
+
+validators.list.add('item_progress', {
+	min: 0,
+	max: 10,
+	msg: 'item_progress did not pass validation'
+});
+
+validators.list.add('item_rating', {
+	min: 0,
+	max: 10,
+	msg: 'item_rating did not pass validation'
+});
+
+validators.list.add('item_status', {
+	callback: validate.list.status,
+	msg: 'item_status did not pass validation'
+});
+
+// Schemas
 
 var AnimeSchema = new Schema({
 	series_title_main: { // Straight from Wikipedia
@@ -169,13 +240,15 @@ var StudioSchema = new Schema({
 	}
 });
 
-var AnimeListItemSchema = new Schema({
-	_id: {
-		// ?: Anime or Manga _id
+var ListItemSchema = new Schema({
+	_anime: {
 		type: Schema.Types.ObjectId,
-		required: true
+		unique: true
 	},
-	_anime: Schema.Types.ObjectId,
+	_manga: {
+		type: Schema.Types.ObjectId,
+		unique: true
+	},
 	item_progress: {
 		type: Number,
 		min: 0,
@@ -190,31 +263,7 @@ var AnimeListItemSchema = new Schema({
 	},
 	item_status: {
 		type: String,
-		required: true
-	}
-});
-
-var MangaListItemSchema = new Schema({
-	_id: {
-		// ?: Anime or Manga _id
-		type: Schema.Types.ObjectId,
-		required: true
-	},
-	_manga: Schema.Types.ObjectId,
-	item_progress: {
-		type: Number,
-		min: 0,
-		max: 9999,
-		default: 0
-	},
-	item_rating: {
-		type: Number,
-		min: 0,
-		max: 10,
-		default: 0
-	},
-	item_status: {
-		type: String,
+		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
 		required: true
 	}
 });
@@ -296,7 +345,6 @@ var UserSchema = new Schema({
 	email: {
 		type: String,
 		lowercase: true,
-		required: true,
 		unique: true
 	},
 	avatar: {
@@ -307,18 +355,20 @@ var UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	anime_list: [ AnimeListItemSchema ],
-	manga_list: [ MangaListItemSchema ],
-	activity_feed: [ ActivityItemSchema ]
+	anime_list: [ ListItemSchema ],
+	manga_list: [ ListItemSchema ],
+	activity_feed: [ ActivityItemSchema ],
+	API_key: String
 });
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
 mongooseValidateFilter.validateFilter(UserSchema, validators.user, filters.user);
+mongooseValidateFilter.validateFilter(ListItemSchema, validators.list, filters.list);
+
+var Anime = mongoose.model('Anime', AnimeSchema);
+var User = mongoose.model('User', UserSchema);
 
 module.exports = {
-	Anime: mongoose.model('Anime', AnimeSchema),
-	User: mongoose.model('User', UserSchema),
-	Schema: {
-		Anime: AnimeSchema
-	}
+	Anime: Anime,
+	User: User
 }

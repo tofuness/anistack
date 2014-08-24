@@ -20,7 +20,7 @@ var getQ = async.queue(function(task, callback){
 		}
 
 		animeJSON = JSON.parse(body);
-
+		console.log(animeJSON.name);
 		var anime = new Anime({
 			series_title_main: animeJSON.name,
 			series_title_english: animeJSON.english[0],
@@ -36,8 +36,6 @@ var getQ = async.queue(function(task, callback){
 				myanimelist: animeJSON.myanimelist_id
 			}
 		});
-
-		console.log(anime);
 
 		Anime.createOne(anime, function(err, doc){
 			if(err){
@@ -57,15 +55,9 @@ var getQ = async.queue(function(task, callback){
 	});
 }, 1);
 
-getQ.push({
-	url: 'http://shikimori.org/api/animes/11757',
-	index: 11757
-});
-
-/*
-for (var i = 4000, len = 26200; i < len; i++) {
+for (var i = 16350, len = 26200; i < len; i++) {
 	getQ.push({
 		url: 'http://shikimori.org/api/animes/' + i,
 		index: i
 	});
-} */
+}

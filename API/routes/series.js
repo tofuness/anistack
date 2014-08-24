@@ -1,9 +1,11 @@
 var db = require('../db.js');
 var Anime = db.Anime;
-var _ = require('underscore');
+var _ = require('lodash');
 
 module.exports = function(app){
 	var Collection;
+
+	// ?: Sets the collection type
 
 	app.route('/:collection(anime|manga)*')
 	.all(function(req, res, next){
@@ -15,19 +17,23 @@ module.exports = function(app){
 		next();
 	});
 
+	// ?: Get all anime/manga
+
 	app.route('/:collection(anime|manga)/all')
 	.get(function(req, res, next){
 		Collection.find({},function(err, docs){
-			if(err) return next(err);
+			if(err) return next(new Error(err));
 			res.status(200).json({ series: docs, count: docs.length });
 		});
 	});
 
+	// ?: Random thing used for testing
+
 	app.route('/:collection(anime|manga)/test')
 	.get(function(req, res, next){
-		// List all genres
 
-		/*
+		// ?: List all genres
+
 		Collection.find({},function(err, docs){
 			if(err) return next(err);
 			var docsLen = docs.length;
@@ -37,26 +43,21 @@ module.exports = function(app){
 			}
 			res.status(200).json(_.uniq(uniqueGenres).sort());
 		});
-		*/
-		
-		// List all image references + _id
-
-		Collection.find({}, { _id: 1, series_image_reference: 1 }, function(err, docs){
-			if(err) return next(err);
-			res.status(200).json(docs);
-		});
 	});
+
+	// ?: Get one anime/manga by _id
 
 	app.route('/:collection(anime|manga)/:_id')
 	.get(function(req, res, next){
 		Collection.findOne({
 			_id: req.param('_id')
 		}, function(err, doc){
-			if(err) return next(err);
-			if(!doc) return next();
+			if(err) return next(new Error(err));
 			res.status(200).json(doc);
 		});
 	});
+
+	// ?: Search for anime/manga, returns max 10 results
 
 	app.route('/:collection(anime|manga)/search/:query')
 	.get(function(req, res, next){
@@ -66,14 +67,15 @@ module.exports = function(app){
 				{ series_title_main: new RegExp(searchQuery, 'gi') },				
 				{ series_title_english: new RegExp(searchQuery, 'gi') },				
 				{ series_title_romanji: new RegExp(searchQuery, 'gi') },
-				{ series_title_japanese: new RegExp(searchQuery, 'gi') }
+				{ series_title_japanese: new RegExp(searchQuery, 'gi') },
+				{ series_title_synonyms: new RegExp(searchQuery, 'gi') },
 			]
 		}
 		Collection.find(searchConditions)
 		.sort({ series_date_start: -1 })
 		.limit(10)
 		.exec(function(err, docs){
-			if(err) return next(err);
+			if(err) return next(new Error(err));
 			res.status(200).json(docs);
 		});
 	});
