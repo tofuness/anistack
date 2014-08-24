@@ -14,6 +14,6 @@
     "cheerio": "~0.17.0",
     "async": "~0.9.0",
     "natural": "~0.1.28",
-    "scraperjs": "~0.2.2"
+    "progress-bar": "~0.1.1"
   }
 }

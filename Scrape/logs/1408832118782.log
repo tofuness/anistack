@@ -1,0 +1,27 @@
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Kanariya wa Kago no Naka" }
+ URL: http://shikimori.org/api/animes/4000
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Dream Hunter REM" }
+ URL: http://shikimori.org/api/animes/4003
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Inda no Himekishi Janne" }
+ URL: http://shikimori.org/api/animes/4004
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Heisa Byoutou" }
+ URL: http://shikimori.org/api/animes/4009
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Alignment You! You! The Animation" }
+ URL: http://shikimori.org/api/animes/4010
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Binetsukko b37C" }
+ URL: http://shikimori.org/api/animes/4011
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "First Squad" }
+ URL: http://shikimori.org/api/animes/4012
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Paul no Miracle Daisakusen" }
+ URL: http://shikimori.org/api/animes/4013
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Choujin Locke: Lord Leon" }
+ URL: http://shikimori.org/api/animes/4014
+

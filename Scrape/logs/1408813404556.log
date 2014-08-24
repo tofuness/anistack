@@ -1,0 +1,51 @@
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Air" }
+ URL: http://shikimori.org/api/animes/713
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Appleseed" }
+ URL: http://shikimori.org/api/animes/937
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Kishin Houkou Demonbane" }
+ URL: http://shikimori.org/api/animes/1067
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Ginga Tetsudou 999" }
+ URL: http://shikimori.org/api/animes/1491
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Uchuu Senkan Yamato" }
+ URL: http://shikimori.org/api/animes/1650
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Hana Yori Dango" }
+ URL: http://shikimori.org/api/animes/2071
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Flanders no Inu" }
+ URL: http://shikimori.org/api/animes/2623
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Doraemon: Doraemon Comes Back" }
+ URL: http://shikimori.org/api/animes/2651
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Aoki Densetsu Shoot!" }
+ URL: http://shikimori.org/api/animes/2682
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Candy Candy" }
+ URL: http://shikimori.org/api/animes/2800
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Ie Naki Ko" }
+ URL: http://shikimori.org/api/animes/2831
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Ninku" }
+ URL: http://shikimori.org/api/animes/2851
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Ashita no Joe" }
+ URL: http://shikimori.org/api/animes/2920
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Ashita no Joe 2" }
+ URL: http://shikimori.org/api/animes/2922
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Kagaku Ninja-Tai Gatchaman" }
+ URL: http://shikimori.org/api/animes/3153
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Kingyo Chuuihou!" }
+ URL: http://shikimori.org/api/animes/3155
+
+MongoError: insertDocument :: caused by :: 11000 E11000 duplicate key error index: herro_dev.animes.$series_title_main_1  dup key: { : "Jarinko Chie" }
+ URL: http://shikimori.org/api/animes/3946
+

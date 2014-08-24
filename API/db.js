@@ -4,7 +4,7 @@ var slugin = require('slugin');
 var _ = require('underscore');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
-mongoose.connect('mongodb://localhost:27017/herro_data');
+mongoose.connect('mongodb://localhost:27017/herro_dev');
 
 var validators = {
 	anime: new mongooseValidateFilter.validate(),
@@ -17,12 +17,31 @@ var filters = {
 
 var filter = {
 	anime: {
+		allowedGenres: [
+			'action', 'adventure', 'comedy',
+			'demons', 'drama', 'ecchi',
+			'fantasy', 'game', 'harem',
+			'hentai', 'historical', 'horror',
+			'josei', 'kids', 'magic',
+			'martial arts', 'mecha', 'military',
+			'music', 'mystery', 'parody',
+			'police', 'psychological', 'romance',
+			'samurai', 'school', 'sci-fi',
+			'seinen', 'shoujo', 'shoujo ai',
+			'shounen', 'shounen ai', 'slice of life',
+			'space', 'sports', 'super power',
+			'supernatural', 'thriller', 'campire',
+			'yaoi', 'yuri'
+		],
 		date: function(dateString, done){
-			if(dateString.length > 8){ // We don't want some random shit
+			if(Date.parse(dateString) !== 0){
 				done(dateString);
 			} else {
 				done(null);
 			}
+		},
+		genres: function(genreArr, done){
+			done(_.intersection(genreArr, filter.anime.allowedGenres));
 		}
 	},
 	general: {
@@ -58,11 +77,15 @@ validators.anime.add('series_type', {
 	callback: validate.anime.type,
 	msg: 'series_type did not pass validation'
 });
+validators.anime.add('series_episodes_total', {
+	min: 0,
+	max: 9999,
+	msg: 'series_episodes_total did not pass validation'
+});
 
 filters.anime.add('series_type', 'lowercase');
 filters.anime.add('series_genres', filter.general.lowerCaseUniq);
-filters.anime.add('series_date_start', filter.anime.date);
-filters.anime.add('series_date_end', filter.anime.date);
+filters.anime.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for UserSchema
 
@@ -72,6 +95,7 @@ validators.user.add('email', {
 	maxLength: 80,
 	msg: 'email did not pass validation'
 });
+
 filters.user.add('email', 'lowercase');
 
 
@@ -81,15 +105,9 @@ var AnimeSchema = new Schema({
 		required: true,
 		unique: true
 	},
-	series_title_english: {
-		type: String
-	},
-	series_title_japanese: {
-		type: String
-	},
-	series_title_romanji: {
-		type: String
-	},
+	series_title_english: String,
+	series_title_japanese: String,
+	series_title_romanji: String,
 	series_title_synonyms: [ String ], // Abbriviations should be added as "tags"
 	series_slug: {
 		type: String,
@@ -103,35 +121,21 @@ var AnimeSchema = new Schema({
 		enum: ['tv', 'ova', 'ona', 'movie', 'special', 'music'],
 		required: true
 	},
-	series_date_start: {
-		type: Date
-	},
-	series_date_end: {
-		type: Date
-	},
-	series_synopsis: {
-		type: String
-	},
+	series_date_start: Date,
+	series_date_end: Date,
+	series_description: String,
 	series_episodes_total: {
 		type: Number,
 		min: 0,
 		max: 9999,
 		required: true
 	},
-	series_image_original: {
-		type: String
-	},
-	series_image_processed: {
-		type: String
-	},
+	series_image_original: String,
+	series_image_processed: String,
+	series_image_reference: String,
 	series_genres: [ String ],
-	series_studios: [{
-		_id: false,
-		title: String,
-		url: String // Wikipedia URLs
-	}],
 	series_gallery: [ String ],
-	series_wiki_url: String,
+	series_studios: [ Schema.Types.ObjectId ],
 	series_external_ids: {
 		myanimelist: Number,
 		anidb: Number
@@ -150,12 +154,53 @@ AnimeSchema.plugin(slugin, {
 	]
 });
 
-var ListItemSchema = new Schema({
+var StudioSchema = new Schema({
+	studio_title: {
+		type: String,
+		required: true
+	},
+	studio_image_original: String,
+	studio_image_processed: String,
+	studio_description: String,
+	// ?: Does the "studio" actually do anime, or do they just license?
+	studio_animates: {
+		type: Boolean,
+		required: true
+	}
+});
+
+var AnimeListItemSchema = new Schema({
 	_id: {
 		// ?: Anime or Manga _id
 		type: Schema.Types.ObjectId,
 		required: true
 	},
+	_anime: Schema.Types.ObjectId,
+	item_progress: {
+		type: Number,
+		min: 0,
+		max: 9999,
+		default: 0
+	},
+	item_rating: {
+		type: Number,
+		min: 0,
+		max: 10,
+		default: 0
+	},
+	item_status: {
+		type: String,
+		required: true
+	}
+});
+
+var MangaListItemSchema = new Schema({
+	_id: {
+		// ?: Anime or Manga _id
+		type: Schema.Types.ObjectId,
+		required: true
+	},
+	_manga: Schema.Types.ObjectId,
 	item_progress: {
 		type: Number,
 		min: 0,
@@ -262,8 +307,8 @@ var UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	anime_list: [ ListItemSchema ],
-	manga_list: [ ListItemSchema ],
+	anime_list: [ AnimeListItemSchema ],
+	manga_list: [ MangaListItemSchema ],
 	activity_feed: [ ActivityItemSchema ]
 });
 

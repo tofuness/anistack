@@ -25,14 +25,15 @@ if(process.env.NODE_ENV === 'production'){
 	app.use(raven.middleware.express(process.env.SENTRY_URL));
 }
 
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 
 require(path.join(__dirname, '/routes/series'))(app);
 
 app.use(function(err, req, res, next){
-	if(err) return next();
-	console.log(err);
-	res.status(500).end(err);
+	if(err){
+		// Do error handling
+	}
+	next();
 });
 
 app.use(function(req, res, next){

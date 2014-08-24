@@ -19,12 +19,15 @@ module.exports = function(app){
 	.get(function(req, res, next){
 		Collection.find({},function(err, docs){
 			if(err) return next(err);
-			res.status(200).json(docs);
+			res.status(200).json({ series: docs, count: docs.length });
 		});
 	});
 
 	app.route('/:collection(anime|manga)/test')
 	.get(function(req, res, next){
+		// List all genres
+
+		/*
 		Collection.find({},function(err, docs){
 			if(err) return next(err);
 			var docsLen = docs.length;
@@ -33,6 +36,25 @@ module.exports = function(app){
 				uniqueGenres = uniqueGenres.concat(docs[i].series_genres);
 			}
 			res.status(200).json(_.uniq(uniqueGenres).sort());
+		});
+		*/
+		
+		// List all image references + _id
+
+		Collection.find({}, { _id: 1, series_image_reference: 1 }, function(err, docs){
+			if(err) return next(err);
+			res.status(200).json(docs);
+		});
+	});
+
+	app.route('/:collection(anime|manga)/:_id')
+	.get(function(req, res, next){
+		Collection.findOne({
+			_id: req.param('_id')
+		}, function(err, doc){
+			if(err) return next(err);
+			if(!doc) return next();
+			res.status(200).json(doc);
 		});
 	});
 
@@ -48,7 +70,8 @@ module.exports = function(app){
 			]
 		}
 		Collection.find(searchConditions)
-		.limit(1)
+		.sort({ series_date_start: -1 })
+		.limit(10)
 		.exec(function(err, docs){
 			if(err) return next(err);
 			res.status(200).json(docs);
