@@ -57,7 +57,7 @@ module.exports = function(app){
 		});
 	});
 
-	// ?: Search for anime/manga, returns max 10 results
+	// ?: Search for anime/manga, returns max 15 results, sorted by date in desc order
 
 	app.route('/:collection(anime|manga)/search/:query')
 	.get(function(req, res, next){
@@ -73,7 +73,7 @@ module.exports = function(app){
 		}
 		Collection.find(searchConditions)
 		.sort({ series_date_start: -1 })
-		.limit(10)
+		.limit(15)
 		.exec(function(err, docs){
 			if(err) return next(new Error(err));
 			res.status(200).json(docs);

@@ -40,13 +40,13 @@ module.exports = function(app){
 		if(!req.body._id) return next(new Error('No _id was sent'));
 
 		var ListItem = {
+			_id: req.body._id,
 			item_progress: req.body.progress || 0,
 			item_rating: req.body.rating || 0,
 			item_status: req.body.status || 'current'
 		}
-		ListItem['_' + listType] = req.body._id;
 
-		var updateList = (listType === 'anime') ? { anime_list: ListItem } : { manga_list: ListItem };
+		var addListItem = (listType === 'anime') ? { anime_list: ListItem } : { manga_list: ListItem };
 
 		User.updateOne({
 			$or: [
@@ -54,14 +54,54 @@ module.exports = function(app){
 				{ username: req.param('username') }
 			]
 		}, {
-			$addToSet: updateList
+			$addToSet: addListItem
+		}, function(err, status){
+			if(err) return next(new Error(err));
+			return res.status(200).json({ status: 'ok', message: 'Added list entry' });
 		});
 	});
 
-	app.route('/list/:list(anime|manga)/remove/:username')
+	app.route('/list/:list(anime|manga)/update/:username')
 	.post(function(req, res, next){
 		if(!req.body._id) return next(new Error('No _id was sent'));
-		
-		
+
+		var ListItem = {};
+		if(req.body.progress) ListItem[listType + '_list.$.progress'] = req.body.progress;
+		if(req.body.rating) ListItem[listType + '_list.$.rating'] = req.body.rating;
+		if(req.body.status) ListItem[listType + '_list.$.status'] = req.body.status;
+
+		var updateConditions = {};
+
+		updateConditions['$or'] = [ { _id: req.param('username') }, { username: req.param('username') } ];
+
+		if(listType === 'anime'){
+			updateConditions['anime_list._id'] = req.body._id;
+		} else {
+			updateConditions['manga_list._id'] = req.body._id;
+		}
+
+		User.updateOne(updateConditions,{ $set: ListItem }, function(err, status){
+			if(err) return next(new Error(err));
+			return res.status(200).json({ status: 'ok', message: 'Updated list entry' });
+		});
+	});
+
+	app.route('/list/:list(anime|manga)/delete/:username')
+	.post(function(req, res, next){
+		if(!req.body._id) return next(new Error('No _id was sent'));
+
+		var removeListItem = (listType === 'anime') ? { anime_list: { _id: req.body._id } } : { manga_list: { _id: req.body._id } };
+
+		User.updateOne({
+			$or: [
+				{ _id: req.param('username') },
+				{ username: req.param('username') }
+			]
+		}, {
+			$pull: removeListItem
+		}, function(err, status){
+			if(err) return next(new Error(err));
+			return res.status(200).json({ status: 'ok', message: 'Deleted list entry' });
+		});
 	});
 }

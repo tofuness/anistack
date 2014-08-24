@@ -240,12 +240,32 @@ var StudioSchema = new Schema({
 	}
 });
 
-var ListItemSchema = new Schema({
-	_anime: {
+var AnimeListItemSchema = new Schema({
+	_id: {
 		type: Schema.Types.ObjectId,
 		unique: true
 	},
-	_manga: {
+	item_progress: {
+		type: Number,
+		min: 0,
+		max: 9999,
+		default: 0
+	},
+	item_rating: {
+		type: Number,
+		min: 0,
+		max: 10,
+		default: 0
+	},
+	item_status: {
+		type: String,
+		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
+		required: true
+	}
+});
+
+var MangaListItemSchema = new Schema({
+	_id: {
 		type: Schema.Types.ObjectId,
 		unique: true
 	},
@@ -355,15 +375,16 @@ var UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	anime_list: [ ListItemSchema ],
-	manga_list: [ ListItemSchema ],
+	anime_list: [ AnimeListItemSchema ],
+	manga_list: [ MangaListItemSchema ],
 	activity_feed: [ ActivityItemSchema ],
 	API_key: String
 });
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
 mongooseValidateFilter.validateFilter(UserSchema, validators.user, filters.user);
-mongooseValidateFilter.validateFilter(ListItemSchema, validators.list, filters.list);
+mongooseValidateFilter.validateFilter(AnimeListItemSchema, validators.list, filters.list);
+mongooseValidateFilter.validateFilter(MangaListItemSchema, validators.list, filters.list);
 
 var Anime = mongoose.model('Anime', AnimeSchema);
 var User = mongoose.model('User', UserSchema);
