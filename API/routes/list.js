@@ -61,6 +61,8 @@ module.exports = function(app){
 		});
 	});
 
+	// ?: Update anime/manga in user's list
+
 	app.route('/list/:list(anime|manga)/update/:username')
 	.post(function(req, res, next){
 		if(!req.body._id) return next(new Error('No _id was sent'));
@@ -85,6 +87,8 @@ module.exports = function(app){
 			return res.status(200).json({ status: 'ok', message: 'Updated list entry' });
 		});
 	});
+
+	// ?: Remove anime/manga from user's list
 
 	app.route('/list/:list(anime|manga)/delete/:username')
 	.post(function(req, res, next){
