@@ -55,7 +55,7 @@ var getQ = async.queue(function(task, callback){
 	});
 }, 1);
 
-for (var i = 16350, len = 26200; i < len; i++) {
+for (var i = 18000, len = 26200; i < len; i++) {
 	getQ.push({
 		url: 'http://shikimori.org/api/animes/' + i,
 		index: i

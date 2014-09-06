@@ -386,6 +386,9 @@ var listItemComp = React.createClass({
 			expanded: false
 		}
 	},
+	componentDidUpdate: function(){
+		console.log('componentDidUpdate');
+	},
 	incrementProgress: function(){
 		var tempItem = _.clone(this.props.itemData);
 		tempItem.itemProgress += 1;
@@ -444,6 +447,7 @@ var listItemComp = React.createClass({
 				easing: [0.165, 0.84, 0.44, 1],
 				queue: false
 			});
+
 			this.setState({
 				expanded: !this.state.expanded
 			});

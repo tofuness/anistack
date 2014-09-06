@@ -78,7 +78,14 @@ if(process.env.NODE_ENV === 'production'){
 	app.use(raven.middleware.express(process.env.SENTRY_URL));
 }
 
-require(path.join(__dirname, '/routes/list'))(app); // Pass "app" to test route
+// Helpers
+
+require(path.join(__dirname, '/helpers/hbs'));
+
+// Routes
+
+require(path.join(__dirname, '/routes/list'))(app);
+require(path.join(__dirname, '/routes/logreg'))(app);
 
 app.use(function(err, req, res, next){
 	if(err) return next();

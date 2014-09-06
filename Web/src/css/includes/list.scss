@@ -267,6 +267,7 @@
 }
 .list-item {
 	@extend .cf;
+	min-height: 45px;
 	border-bottom: 1px solid $gray-l-3;
 
 	&:hover {
