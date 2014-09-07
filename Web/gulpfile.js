@@ -4,11 +4,17 @@ var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var react = require('gulp-react');
+var cssmin = require('gulp-cssmin');
 
 var path = {
-	css: {
+	scss: {
 		src: 'src/css/app.scss',
 		files: 'src/css/**/*.scss',
+		dest: 'public/css'
+	},
+	css: {
+		src: 'src/css/external/*.css',
+		files: 'src/css/external/*.css',
 		dest: 'public/css'
 	},
 	js: {
@@ -24,7 +30,7 @@ var path = {
 }
 
 gulp.task('sass', function(){
-	return gulp.src(path.css.src)
+	return gulp.src(path.scss.src)
 		.pipe(plumber(function(err){
 			console.log(err.message);
 			this.emit('end'); // https://github.com/floatdrop/gulp-plumber/issues/8#issuecomment-41465386
@@ -32,7 +38,20 @@ gulp.task('sass', function(){
 		.pipe(sass({
 			outputStyle: 'compressed'
 		}))
-		.pipe(gulp.dest(path.css.dest));
+		.pipe(gulp.dest(path.scss.dest));
+});
+
+gulp.task('css', function(){
+	return gulp.src(path.css.src)
+	.pipe(plumber(function(err){
+		console.log(err.message);
+		this.emit('end'); // https://github.com/floatdrop/gulp-plumber/issues/8#issuecomment-41465386
+	}))
+	.pipe(cssmin({
+		noAdvanced: true
+	}))
+	.pipe(concat('external.css'))
+	.pipe(gulp.dest(path.css.dest));g
 });
 
 gulp.task('uglify', function(){
@@ -57,9 +76,10 @@ gulp.task('react', function(){
 });
 
 gulp.task('watch', function(){
-	gulp.watch(path.css.files, ['sass']);
+	gulp.watch(path.scss.files, ['sass']);
+	gulp.watch(path.scss.files, ['css']);
 	gulp.watch(path.js.files, ['uglify']);
 	gulp.watch(path.react.files, ['react']);
 });
 
-gulp.task('default', ['sass', 'uglify', 'react', 'watch']);
+gulp.task('default', ['sass', 'css', 'uglify', 'react', 'watch']);

@@ -3,17 +3,23 @@
 var loginForm = React.createClass({
 	render: function(){
 		return (
-			<form id="login-form" class="logreg-form">
-				<div className="logreg-input-wrap">
-					<input class="logreg-input" type="text" placeholder="Username" name="username" /> 
+			<form id="login-form" className="logreg-form">
+				<div id="logreg-form-logo"></div>
+				<div className="logreg-section-wrap">
+					<div className="logreg-legend">Username</div>
+					<input className="logreg-input" type="text" name="username" /> 
 				</div>
-				<div className="logreg-input-wrap">
-					<input class="logreg-input" type="password" placeholder="Password" name="password" /> 
+				<div className="logreg-section-wrap">
+					<div className="logreg-legend">Password <a className="logreg-legend-link" href="/forgot">Forgot your Password?</a></div>
+					<input className="logreg-input" type="password" name="password" /> 
 				</div>
-				<div className="logreg-input-wrap">
-					<a href="" class="logreg-link-left">Forgot password?</a><div id="logreg-submit">Login</div>
+				<div className="logreg-section-wrap">
+					<div id="logreg-submit">Log in</div>
 				</div>
-			</form>		
+				<div className="logreg-section-wrap">
+					<a className="logreg-link" href="/register">or Register for Free</a>
+				</div>
+			</form>
 		)
 	}
 });

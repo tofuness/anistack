@@ -1,0 +1,109 @@
+#logreg-bg {
+	position: absolute;
+	top: 50px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: url(/img/login/anonatsu.jpg) center center fixed;
+	background-size: cover;
+}
+#logreg-bg-ovl {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	@include linear-gradient(transparent, rgba(99, 114, 124, 0.7));
+}
+.logreg-form {
+	@extend .opensans;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -175px;
+}
+#logreg-form-logo {
+	margin-bottom: 30px;
+	width: 350px;
+	height: 21px;
+	background: url(/img/login/logo.png) center center no-repeat;
+}
+#logreg-form-hd {
+	color: #fff;
+	font-size: 23px;
+	font-weight: 700;
+	text-align: left;
+}
+#logreg-form-desc {
+	padding: 10px 0 15px 0;
+	width: 350px;
+	color: $w70;
+	text-align: left;
+	line-height: 1.5em;
+	border-bottom: 1px dotted $w30;
+}
+#register-form {
+	margin-top: -224px;
+}
+#login-form {
+	margin-top: -152px;
+}
+.logreg-section-wrap {
+	@extend .cf;
+	padding-bottom: 15px;
+	&:last-child {
+		padding-bottom: 0;
+	}
+}
+.logreg-legend {
+	@extend .cf;
+	padding-bottom: 5px;
+	color: #fff;
+}
+.logreg-input {
+	width: 350px;
+	padding: 15px;
+	font-size: 14px;
+	font-weight: 800;
+	background: #fff;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 2px $b10);
+}
+.logreg-legend-link {
+	float: right;
+	color: $w70;
+	text-decoration: none;
+	&:hover {
+		@include box-shadow(0 1px 0 $w60);
+	}
+}
+.logreg-legend-desc {
+	float: right;
+	color: $w70;
+	text-decoration: none;
+}
+.logreg-link {
+	margin: 0 auto;
+	display: block;
+	width: 110px;
+	color: $w70;
+	text-align: center;
+	text-decoration: none;
+	&:hover {
+		@include box-shadow(0 1px 0 $w60);
+	}
+}
+#logreg-submit {
+	@extend .opensans;
+	cursor: pointer;
+	width: 350px;
+	line-height: 49px;
+	color: #fff;
+	font-weight: 800;
+	background: $blue;
+	text-align: center;
+	text-transform: uppercase;
+	text-shadow: 0 -1px 0 $b15;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 2px $b10, inset 0 1px 0 $w15);
+}

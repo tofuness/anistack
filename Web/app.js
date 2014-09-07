@@ -25,7 +25,7 @@ var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
-// Configure server
+// Configure http.ServerResponse(req);
 
 app.disable('x-powered-by');
 app.set('port', process.env.PORT || 1337);
@@ -68,14 +68,23 @@ app.use(function(req, res, next){
 
 if(process.env.NODE_ENV === 'development'){
 	// Display all kinds of logs for development mode
-	console.log('✓ Loaded log modules');
+	console.log('✓ Loaded morgan module');
 	var morgan = require('morgan');
 	app.use(morgan('dev'));
+
+	process.send({ cmd: 'NODE_DEV', required: './views/partials/header.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/partials/footer.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/login.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/list.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/search.hbs' });
 }
 if(process.env.NODE_ENV === 'production'){
 	console.log('✓ Loaded Sentry Log')
 	var raven = require('raven');
 	app.use(raven.middleware.express(process.env.SENTRY_URL));
+
+	console.log('✓ Enabled trust proxy. Now accepting X-Forwarded-* headers.');
+	app.enable('trust proxy');
 }
 
 // Helpers
