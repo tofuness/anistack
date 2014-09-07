@@ -50,6 +50,7 @@
 }
 .logreg-section-wrap {
 	@extend .cf;
+	position: relative;
 	padding-bottom: 15px;
 	&:last-child {
 		padding-bottom: 0;
@@ -81,6 +82,18 @@
 	float: right;
 	color: $w70;
 	text-decoration: none;
+}
+.logreg-input-error {
+	@extend .ts15;
+	opacity: 0;
+	position: absolute;
+	top: 36px;
+	right: 15px;
+	color: $red;
+	font-size: 18px;
+	&.visible {
+		opacity: 1;
+	}
 }
 .logreg-link {
 	margin: 0 auto;

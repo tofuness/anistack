@@ -26,15 +26,23 @@ var registerForm = React.createClass({displayName: 'registerForm',
 		});
 		this.validateEmail(e);
 	},
+	registerAccount: function(){
+		if(this.state.emailValid && this.state.passwordVal >= 6){
+			console.log($(this.refs.registerForm.getDOMNode()).serialize());
+		} else {
+
+		}		
+	},
 	validateEmail: _.debounce(function(e){
+		if(e.target.value === '') return this.setState({ emailValid: null });
 		$.ajax({
-			type: 'get',
-			url: 'https://api.mailgun.net/v2/address/validate',
+			type: 'post',
+			url: 'http://localhost:1339/validate/email',
 			data: {
-				address: e.target.value,
-				api_key: 'pubkey-809b78e9259959060a4c93bae86b290a'
+				address: e.target.value
 			},
 			success: function(res){
+				console.log(res);
 				this.setState({
 					emailValid: res.is_valid === true
 				});
@@ -43,16 +51,16 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				console.log(err);
 			}
 		});
-	}, 1000),
+	}, 700),
 	render: function(){
 		return (
-			React.DOM.form({id: "register-form", className: "logreg-form"}, 
+			React.DOM.form({id: "register-form", className: "logreg-form", ref: "registerForm"}, 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({id: "logreg-form-hd"}, 
 						"Let's get this started."
 					), 
 					React.DOM.div({id: "logreg-form-desc"}, 
-						"Most of Herro's features don't require that you have an email. However, if you forget your login credentials you will be shit out of luck."
+						"Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck."
 					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
@@ -61,14 +69,30 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({className: "logreg-legend"}, "Password ", React.DOM.div({className: "logreg-legend-desc"}, "At least ", React.DOM.b(null, "6"), " characters. Keep this secure.")), 
-					React.DOM.input({className: "logreg-input", type: "password", name: "password", value: this.state.passwordVal, onChange: this.passwordChange})
+					React.DOM.input({className: "logreg-input", type: "password", name: "password", value: this.state.passwordVal, onChange: this.passwordChange}), 
+					React.DOM.div({className: 
+						React.addons.classSet({
+							'icon-spam': true,
+							'logreg-input-error': true,
+							'visible': this.state.passwordVal && this.state.passwordVal.length < 6
+						})
+					}
+					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({className: "logreg-legend"}, "Email ", React.DOM.div({className: "logreg-legend-desc"}, React.DOM.b(null, "Optional"), ". You can add/remove it later.")), 
-					React.DOM.input({className: "logreg-input", type: "text", name: "email", value: this.state.emailVal, onChange: this.emailChange})
+					React.DOM.input({className: "logreg-input", type: "text", name: "email", value: this.state.emailVal, onChange: this.emailChange}), 
+					React.DOM.div({className: 
+						React.addons.classSet({
+							'icon-spam': true,
+							'logreg-input-error': true,
+							'visible': this.state.emailValid === false
+						})
+					}
+					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
-					React.DOM.div({id: "logreg-submit"}, "Create My Account")
+					React.DOM.div({id: "logreg-submit", onClick: this.registerAccount}, "Create My Account")
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.a({className: "logreg-link", href: "/login"}, "Already registered?")

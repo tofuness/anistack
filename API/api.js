@@ -27,10 +27,12 @@ app.use(morgan('dev'));
 
 require(path.join(__dirname, '/routes/series'))(app);
 require(path.join(__dirname, '/routes/list'))(app);
+require(path.join(__dirname, '/routes/user'))(app);
 
 app.use(function(err, req, res, next){
 	if(err){
 		// Do error handling
+		console.log(err.stack);
 		res.status(500).json({ message: err.message, status: "error" });
 	}
 	next();

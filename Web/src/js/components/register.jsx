@@ -26,15 +26,23 @@ var registerForm = React.createClass({
 		});
 		this.validateEmail(e);
 	},
+	registerAccount: function(){
+		if(this.state.emailValid && this.state.passwordVal >= 6){
+			console.log($(this.refs.registerForm.getDOMNode()).serialize());
+		} else {
+
+		}		
+	},
 	validateEmail: _.debounce(function(e){
+		if(e.target.value === '') return this.setState({ emailValid: null });
 		$.ajax({
-			type: 'get',
-			url: 'https://api.mailgun.net/v2/address/validate',
+			type: 'post',
+			url: 'http://localhost:1339/validate/email',
 			data: {
-				address: e.target.value,
-				api_key: 'pubkey-809b78e9259959060a4c93bae86b290a'
+				address: e.target.value
 			},
 			success: function(res){
+				console.log(res);
 				this.setState({
 					emailValid: res.is_valid === true
 				});
@@ -43,16 +51,16 @@ var registerForm = React.createClass({
 				console.log(err);
 			}
 		});
-	}, 1000),
+	}, 700),
 	render: function(){
 		return (
-			<form id="register-form" className="logreg-form">
+			<form id="register-form" className="logreg-form" ref="registerForm">
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-hd">
 						Let's get this started.
 					</div>
 					<div id="logreg-form-desc">
-						Most of Herro's features don't require that you have an email. However, if you forget your login credentials you will be shit out of luck.
+						Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
 					</div>
 				</div>
 				<div className="logreg-section-wrap">
@@ -62,13 +70,29 @@ var registerForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<div className="logreg-legend">Password <div className="logreg-legend-desc">At least <b>6</b> characters. Keep this secure.</div></div>
 					<input className="logreg-input" type="password" name="password" value={this.state.passwordVal} onChange={this.passwordChange} /> 
+					<div className={
+						React.addons.classSet({
+							'icon-spam': true,
+							'logreg-input-error': true,
+							'visible': this.state.passwordVal && this.state.passwordVal.length < 6
+						})
+					}>
+					</div>
 				</div>
 				<div className="logreg-section-wrap">
 					<div className="logreg-legend">Email <div className="logreg-legend-desc"><b>Optional</b>. You can add/remove it later.</div></div>
-					<input className="logreg-input" type="text" name="email" value={this.state.emailVal} onChange={this.emailChange} /> 
+					<input className="logreg-input" type="text" name="email" value={this.state.emailVal} onChange={this.emailChange} />
+					<div className={
+						React.addons.classSet({
+							'icon-spam': true,
+							'logreg-input-error': true,
+							'visible': this.state.emailValid === false
+						})
+					}>
+					</div>
 				</div>
 				<div className="logreg-section-wrap">
-					<div id="logreg-submit">Create My Account</div>
+					<div id="logreg-submit" onClick={this.registerAccount}>Create My Account</div>
 				</div>
 				<div className="logreg-section-wrap">
 					<a className="logreg-link" href="/login">Already registered?</a>
