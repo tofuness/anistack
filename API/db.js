@@ -101,7 +101,6 @@ var validate = {
 				return done(doc);
 			});
 		},
-
 		status: function(statusStr){
 			statusStr = statusStr.toLowerCase();
 			if(['current', 'completed', 'planned', 'onhold', 'dropped'].indexOf(statusStr) > -1){
@@ -147,7 +146,7 @@ filters.user.add('email', 'lowercase');
 
 // Validation/Filters for ListItemSchema
 
-validators.list.add('_anime', {
+validators.list.add('_id', {
 	callback: validate.list.anime
 });
 
@@ -234,10 +233,7 @@ var StudioSchema = new Schema({
 	studio_image_processed: String,
 	studio_description: String,
 	// ?: Does the "studio" actually do anime, or do they just license?
-	studio_animates: {
-		type: Boolean,
-		required: true
-	}
+	studio_animates: Boolean
 });
 
 var AnimeListItemSchema = new Schema({
