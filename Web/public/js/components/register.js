@@ -3,9 +3,9 @@
 var registerForm = React.createClass({displayName: 'registerForm',
 	getInitialState: function(){
 		return {
-			usernameVal: null,
-			passwordVal: null,
-			emailVal: null,
+			usernameVal: '',
+			passwordVal: '',
+			emailVal: '',
 			emailValid: null
 		}
 	},
@@ -22,19 +22,20 @@ var registerForm = React.createClass({displayName: 'registerForm',
 	emailChange: function(e){
 		e.persist();
 		this.setState({
-			emailVal: e.target.value
+			emailVal: e.target.value,
+			emailValid: 'loading'
 		});
 		this.validateEmail(e);
 	},
 	registerAccount: function(){
-		if(this.state.emailValid && this.state.passwordVal >= 6){
+		if(this.state.emailValid !== false && this.state.emailValid !== 'loading' && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
 			console.log($(this.refs.registerForm.getDOMNode()).serialize());
 		} else {
-
+			alert('check the damn form');
 		}		
 	},
 	validateEmail: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ emailValid: null });
+		if(e.target.value === '') return this.setState({ emailValid: '' });
 		$.ajax({
 			type: 'post',
 			url: 'http://localhost:1339/validate/email',
@@ -65,16 +66,26 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({className: "logreg-legend"}, "Username ", React.DOM.div({className: "logreg-legend-desc"}, "At least ", React.DOM.b(null, "3"), " chars. Only letters/numbers.")), 
-					React.DOM.input({className: "logreg-input", type: "text", name: "username", value: this.state.usernameVal, onChange: this.usernameChange})
+					React.DOM.input({className: "logreg-input", type: "text", name: "username", value: this.state.usernameVal, onChange: this.usernameChange}), 
+					React.DOM.div({className: 
+						React.addons.classSet({
+							'icon-spam':  0 < this.state.usernameVal.length < 3,
+							'icon-check':  this.state.usernameVal.length >= 3,
+							'logreg-input-validate': true,
+							'visible': this.state.usernameVal
+						})
+					}
+					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
-					React.DOM.div({className: "logreg-legend"}, "Password ", React.DOM.div({className: "logreg-legend-desc"}, "At least ", React.DOM.b(null, "6"), " characters. Keep this secure.")), 
+					React.DOM.div({className: "logreg-legend"}, "Password ", React.DOM.div({className: "logreg-legend-desc"}, "At least ", React.DOM.b(null, "6"), " chars. Keep this secure.")), 
 					React.DOM.input({className: "logreg-input", type: "password", name: "password", value: this.state.passwordVal, onChange: this.passwordChange}), 
 					React.DOM.div({className: 
 						React.addons.classSet({
-							'icon-spam': true,
-							'logreg-input-error': true,
-							'visible': this.state.passwordVal && this.state.passwordVal.length < 6
+							'icon-spam':  0 < this.state.passwordVal.length < 6,
+							'icon-check':  this.state.passwordVal.length >= 6,
+							'logreg-input-validate': true,
+							'visible': this.state.passwordVal
 						})
 					}
 					)
@@ -84,9 +95,11 @@ var registerForm = React.createClass({displayName: 'registerForm',
 					React.DOM.input({className: "logreg-input", type: "text", name: "email", value: this.state.emailVal, onChange: this.emailChange}), 
 					React.DOM.div({className: 
 						React.addons.classSet({
-							'icon-spam': true,
-							'logreg-input-error': true,
-							'visible': this.state.emailValid === false
+							'icon-spam': this.state.emailValid === false,
+							'icon-check': this.state.emailValid === true,
+							'icon-ellipsis': this.state.emailValid === 'loading',
+							'logreg-input-validate': true,
+							'visible': this.state.emailValid !== null
 						})
 					}
 					)

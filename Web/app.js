@@ -19,6 +19,7 @@ var expressValidator = require('express-validator');
 // Auth
 
 var passport = require('passport');
+var passportLocal = require('passport-local');
 var MongoStore = require('connect-mongo')(session);
 
 // Access application through app
@@ -28,7 +29,7 @@ var app = express();
 // Configure http.ServerResponse(req);
 
 app.disable('x-powered-by');
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -39,14 +40,15 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(session({ 
+app.use(session({
+	name: 'kek.id',
 	secret: process.env.SESSION_SECRET,
 	store: new MongoStore({
 		db: 'herro',
-		clear_interval: 60
+		clear_interval: 60 // One minute
 	}),
 	cookie: {
-		maxAge: 1209600 * 1000
+		maxAge: 1000 * 2630000 * 4 // 4 months
 	},
 	resave: true,
 	saveUninitialized: true
@@ -89,6 +91,7 @@ if(process.env.NODE_ENV === 'production'){
 
 // Helpers
 
+require(path.join(__dirname, '/helpers/passport'));
 require(path.join(__dirname, '/helpers/hbs'));
 
 // Routes

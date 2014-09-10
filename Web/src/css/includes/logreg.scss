@@ -4,7 +4,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: url(/img/login/anonatsu.jpg) center center fixed;
+	background: url(/img/login/sakamoto.jpg) center center fixed;
 	background-size: cover;
 }
 #logreg-bg-ovl {
@@ -83,14 +83,24 @@
 	color: $w70;
 	text-decoration: none;
 }
-.logreg-input-error {
+.logreg-input-validate {
 	@extend .ts15;
 	opacity: 0;
 	position: absolute;
 	top: 36px;
 	right: 15px;
-	color: $red;
+	width: 18px;
+	height: 18px;
 	font-size: 18px;
+	&.icon-spam {
+		color: $red;
+	}
+	&.icon-check {
+		color: $green;
+	}
+	&.icon-ellipsis {
+		color: $gray;
+	}
 	&.visible {
 		opacity: 1;
 	}
