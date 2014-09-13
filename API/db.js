@@ -132,17 +132,24 @@ filters.anime.add('series_genres', filter.anime.genres);
 // Validation/Filtering for UserSchema
 
 validators.user.add('username', {
+	minLength: 3,
 	callback: validate.user.username
-})
+});
+
+validators.user.add('password', {
+	minLength: 6,
+	msg: 'password did not pass validation'
+});
 
 validators.user.add('email', {
 	type: 'email',
 	minLength: 5,
-	maxLength: 80,
+	maxLength: 128,
 	msg: 'email did not pass validation'
 });
 
 filters.user.add('email', 'lowercase');
+filters.user.add('password', filter.user.password);
 
 // Validation/Filters for ListItemSchema
 

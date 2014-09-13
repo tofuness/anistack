@@ -22,13 +22,13 @@ var registerForm = React.createClass({displayName: 'registerForm',
 	emailChange: function(e){
 		e.persist();
 		this.setState({
-			emailVal: e.target.value,
-			emailValid: 'loading'
+			emailVal: e.target.value.trim(),
+			emailValid: (e.target.value.trim() !== '' ) ? 'loading' : ''
 		});
 		this.validateEmail(e);
 	},
 	registerAccount: function(){
-		if(this.state.emailValid !== false && this.state.emailValid !== 'loading' && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
+		if(this.state.emailValid === true && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
 			console.log($(this.refs.registerForm.getDOMNode()).serialize());
 		} else {
 			alert('check the damn form');
@@ -45,7 +45,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 			success: function(res){
 				console.log(res);
 				this.setState({
-					emailValid: res.is_valid === true
+					emailValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
 			error: function(err){
@@ -59,9 +59,6 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({id: "logreg-form-hd"}, 
 						"Let's get this started."
-					), 
-					React.DOM.div({id: "logreg-form-desc"}, 
-						"Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck."
 					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
@@ -79,7 +76,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({className: "logreg-legend"}, "Password ", React.DOM.div({className: "logreg-legend-desc"}, "At least ", React.DOM.b(null, "6"), " chars. Keep this secure.")), 
-					React.DOM.input({className: "logreg-input", type: "password", name: "password", value: this.state.passwordVal, onChange: this.passwordChange}), 
+					React.DOM.input({id: "logreg-password-input", className: "logreg-input", type: "password", name: "password", value: this.state.passwordVal, onChange: this.passwordChange}), 
 					React.DOM.div({className: 
 						React.addons.classSet({
 							'icon-spam':  0 < this.state.passwordVal.length < 6,
@@ -102,6 +99,11 @@ var registerForm = React.createClass({displayName: 'registerForm',
 							'visible': this.state.emailValid !== null
 						})
 					}
+					)
+				), 
+				React.DOM.div({className: "logreg-section-wrap"}, 
+					React.DOM.div({id: "logreg-form-desc"}, 
+						"Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck."
 					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 

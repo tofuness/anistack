@@ -20,49 +20,53 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -175px;
+	margin-left: -150px;
+	width: 300px;
 }
 #logreg-form-logo {
 	margin-bottom: 30px;
-	width: 350px;
+	width: 100%;
 	height: 21px;
 	background: url(/img/login/logo.png) center center no-repeat;
 }
 #logreg-form-hd {
+	padding-bottom: 30px;
 	color: #fff;
 	font-size: 23px;
 	font-weight: 700;
 	text-align: left;
+	text-align: center;
 }
 #logreg-form-desc {
-	padding: 10px 0 15px 0;
-	width: 350px;
+	padding-bottom: 15px;
+	width: 100%;
 	color: $w70;
 	text-align: left;
 	line-height: 1.5em;
 	border-bottom: 1px dotted $w30;
 }
 #register-form {
-	margin-top: -224px;
+	margin-top: -253px;
 }
 #login-form {
-	margin-top: -152px;
+	margin-top: -164px;
 }
 .logreg-section-wrap {
 	@extend .cf;
 	position: relative;
 	padding-bottom: 15px;
-	&:last-child {
-		padding-bottom: 0;
-	}
 }
 .logreg-legend {
 	@extend .cf;
 	padding-bottom: 5px;
 	color: #fff;
 }
+#logreg-password-input {
+	letter-spacing: 0.2em;
+}
 .logreg-input {
-	width: 350px;
+	display: block;
+	width: 100%;
 	padding: 15px;
 	font-size: 14px;
 	font-weight: 800;
@@ -99,7 +103,7 @@
 		color: $green;
 	}
 	&.icon-ellipsis {
-		color: $gray;
+		color: $gray-d-3;
 	}
 	&.visible {
 		opacity: 1;
@@ -119,7 +123,7 @@
 #logreg-submit {
 	@extend .opensans;
 	cursor: pointer;
-	width: 350px;
+	width: 100%;
 	line-height: 49px;
 	color: #fff;
 	font-weight: 800;

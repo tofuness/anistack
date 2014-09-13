@@ -11,7 +11,7 @@ var loginForm = React.createClass({
 				</div>
 				<div className="logreg-section-wrap">
 					<div className="logreg-legend">Password <a className="logreg-legend-link" href="/forgot">Forgot your Password?</a></div>
-					<input className="logreg-input" type="password" name="password" /> 
+					<input id="logreg-password-input" className="logreg-input" type="password" name="password" /> 
 				</div>
 				<div className="logreg-section-wrap">
 					<div id="logreg-submit">Log in</div>

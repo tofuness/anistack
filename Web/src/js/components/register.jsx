@@ -22,13 +22,13 @@ var registerForm = React.createClass({
 	emailChange: function(e){
 		e.persist();
 		this.setState({
-			emailVal: e.target.value,
-			emailValid: 'loading'
+			emailVal: e.target.value.trim(),
+			emailValid: (e.target.value.trim() !== '' ) ? 'loading' : ''
 		});
 		this.validateEmail(e);
 	},
 	registerAccount: function(){
-		if(this.state.emailValid !== false && this.state.emailValid !== 'loading' && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
+		if(this.state.emailValid === true && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
 			console.log($(this.refs.registerForm.getDOMNode()).serialize());
 		} else {
 			alert('check the damn form');
@@ -45,7 +45,7 @@ var registerForm = React.createClass({
 			success: function(res){
 				console.log(res);
 				this.setState({
-					emailValid: res.is_valid === true
+					emailValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
 			error: function(err){
@@ -59,9 +59,6 @@ var registerForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-hd">
 						Let's get this started.
-					</div>
-					<div id="logreg-form-desc">
-						Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
 					</div>
 				</div>
 				<div className="logreg-section-wrap">
@@ -79,7 +76,7 @@ var registerForm = React.createClass({
 				</div>
 				<div className="logreg-section-wrap">
 					<div className="logreg-legend">Password <div className="logreg-legend-desc">At least <b>6</b> chars. Keep this secure.</div></div>
-					<input className="logreg-input" type="password" name="password" value={this.state.passwordVal} onChange={this.passwordChange} /> 
+					<input id="logreg-password-input" className="logreg-input" type="password" name="password" value={this.state.passwordVal} onChange={this.passwordChange} /> 
 					<div className={
 						React.addons.classSet({
 							'icon-spam':  0 < this.state.passwordVal.length < 6,
@@ -102,6 +99,11 @@ var registerForm = React.createClass({
 							'visible': this.state.emailValid !== null
 						})
 					}>
+					</div>
+				</div>
+				<div className="logreg-section-wrap">
+					<div id="logreg-form-desc">
+						Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
 					</div>
 				</div>
 				<div className="logreg-section-wrap">

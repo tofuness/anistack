@@ -1,0 +1,25 @@
+@media (max-width: 480px){
+	#top-nav-wrap {
+		width: 100%;
+	}
+	#top-nav-logo {
+		margin-left: 15px;
+	}
+	#middle {
+		min-height: 100%;
+	}
+	#logreg-bg-ovl, #logreg-bg {
+		position: static;
+		width: 100%;
+		height: 100%;
+	}
+	#logreg-form-hd {
+		padding-bottom: 15px;
+	}
+	.logreg-form {
+		position: static;
+		margin: 0 auto!important;
+		padding-top: 82px;
+		width: 280px;
+	}
+}
