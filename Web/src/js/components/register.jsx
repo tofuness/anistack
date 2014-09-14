@@ -4,15 +4,19 @@ var registerForm = React.createClass({
 	getInitialState: function(){
 		return {
 			usernameVal: '',
+			usernameValid: null,
 			passwordVal: '',
 			emailVal: '',
 			emailValid: null
 		}
 	},
 	usernameChange: function(e){
+		e.persist();
 		this.setState({
-			usernameVal: e.target.value.replace(/\W+/g, '')
+			usernameVal: e.target.value.replace(/\W+/g, ''),
+			usernameValid: (e.target.value.trim() !== '' && e.target.value.length >= 3) ? 'loading' : (e.target.value.trim() !== '') ? false : null
 		});
+		if(e.target.value.length >= 3) this.validateUsername(e);
 	},
 	passwordChange: function(e){
 		this.setState({
@@ -23,24 +27,53 @@ var registerForm = React.createClass({
 		e.persist();
 		this.setState({
 			emailVal: e.target.value.trim(),
-			emailValid: (e.target.value.trim() !== '' ) ? 'loading' : ''
+			emailValid: (e.target.value.trim() !== '' ) ? 'loading' : null
 		});
 		this.validateEmail(e);
 	},
 	registerAccount: function(){
-		if(this.state.emailValid === true && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
-			console.log($(this.refs.registerForm.getDOMNode()).serialize());
+		if(this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
+			$.ajax({
+				type: 'post',
+				url: 'http://localhost:1339/api/register',
+				data: $(this.refs.registerForm.getDOMNode()).serialize(),
+				success: function(res){
+					console.log(res);
+				},
+				error: function(err){
+					console.log(err);
+				}
+			});
 		} else {
 			alert('check the damn form');
 		}		
 	},
+	validateUsername: _.debounce(function(e){
+		if(e.target.value === '') return this.setState({ usernameValid: null });
+		$.ajax({
+			type: 'post',
+			url: 'http://localhost:1339/validate/username',
+			data: {
+				username: e.target.value
+			},
+			success: function(res){
+				console.log(res);
+				this.setState({
+					usernameValid: res.is_valid === true && res.exists === false
+				});
+			}.bind(this),
+			error: function(err){
+				console.log(err);
+			}
+		});
+	}, 500),
 	validateEmail: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ emailValid: '' });
+		if(e.target.value === '') return this.setState({ emailValid: null });
 		$.ajax({
 			type: 'post',
 			url: 'http://localhost:1339/validate/email',
 			data: {
-				address: e.target.value
+				email: e.target.value
 			},
 			success: function(res){
 				console.log(res);
@@ -52,7 +85,7 @@ var registerForm = React.createClass({
 				console.log(err);
 			}
 		});
-	}, 700),
+	}, 500),
 	render: function(){
 		return (
 			<form id="register-form" className="logreg-form" ref="registerForm">
@@ -66,10 +99,11 @@ var registerForm = React.createClass({
 					<input className="logreg-input" type="text" name="username" value={this.state.usernameVal} onChange={this.usernameChange} />
 					<div className={
 						React.addons.classSet({
-							'icon-spam':  0 < this.state.usernameVal.length < 3,
-							'icon-check':  this.state.usernameVal.length >= 3,
+							'icon-spam': this.state.usernameValid === false,
+							'icon-check': this.state.usernameValid === true,
+							'icon-ellipsis': this.state.usernameValid === 'loading',
 							'logreg-input-validate': true,
-							'visible': this.state.usernameVal
+							'visible': this.state.usernameValid !== null
 						})
 					}>
 					</div>

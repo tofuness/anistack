@@ -7,8 +7,11 @@ module.exports = function(app){
 	app.route('/register')
 	.get(function(req, res, next){
 		res.render('register', { title: 'Register' });
-	})
-	.post(function(req, res, next){
+	});
 
+	app.route('/logout')
+	.get(function(req, res, next){
+		req.logout();
+		res.redirect('back');
 	});
 }

@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var slugin = require('slugin');
 var bcryptjs = require('bcryptjs');
 var _ = require('lodash');
+var request = require('request');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
 mongoose.connect('mongodb://localhost:27017/herro_dev');
@@ -50,7 +51,7 @@ var filter = {
 	},
 	user: {
 		password: function(passwordStr, done){
-			bcryptjs.hash(passwordStr, 16, function(err, hash){
+			bcryptjs.hash(passwordStr, 8, function(err, hash){
 				if(err) throw new Error('bcrypt hash failed');
 				return done(hash);
 			});
@@ -83,12 +84,27 @@ var validate = {
 	},
 	user: {
 		username: function(usernameStr, done){
+			if(/^\W+/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
 			this.findOne({
 				username: new RegExp(usernameStr, 'i')
 			}, function(err, doc){
 				if(err) return done(false);
 				return done(!doc);
 			});
+		},
+		email: function(emailStr, done){
+			if(emailStr === undefined) return done(true);
+			// ?: This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
+			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAINGUN_PUBKEY + '&address=' + emailStr, function(err, response, body){
+				body = JSON.parse(body);
+				if(!body.is_valid) return done(false);
+				this.findOne({
+					email: new RegExp(emailStr, 'i')
+				}, function(err, userDoc){
+					if(err) return done(false);
+					return done(!userDoc);
+				});
+			}.bind(this));
 		}
 	},
 	list: {
@@ -133,7 +149,9 @@ filters.anime.add('series_genres', filter.anime.genres);
 
 validators.user.add('username', {
 	minLength: 3,
-	callback: validate.user.username
+	maxLength: 128,
+	callback: validate.user.username,
+	msg: 'username did not pass validation'
 });
 
 validators.user.add('password', {
@@ -142,9 +160,7 @@ validators.user.add('password', {
 });
 
 validators.user.add('email', {
-	type: 'email',
-	minLength: 5,
-	maxLength: 128,
+	callback: validate.user.email,
 	msg: 'email did not pass validation'
 });
 

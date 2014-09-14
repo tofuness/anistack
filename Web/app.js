@@ -41,10 +41,10 @@ app.use(bodyParser.urlencoded({
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(session({
-	name: 'kek.id',
+	name: 'nothingimportant.pls.don.hijack',
 	secret: process.env.SESSION_SECRET,
 	store: new MongoStore({
-		db: 'herro',
+		db: 'herro_dev',
 		clear_interval: 60 // One minute
 	}),
 	cookie: {
@@ -61,6 +61,7 @@ app.use(passport.session());
 app.use(function(req, res, next){
 	if(req.isAuthenticated()){
 		// Pass user object to all views
+		console.log(req.user.username);
 		res.locals.user = req.user;
 	} else {
 		res.locals.user = null;
@@ -81,18 +82,23 @@ if(process.env.NODE_ENV === 'development'){
 	process.send({ cmd: 'NODE_DEV', required: './views/search.hbs' });
 }
 if(process.env.NODE_ENV === 'production'){
-	console.log('✓ Loaded Sentry Log')
-	var raven = require('raven');
-	app.use(raven.middleware.express(process.env.SENTRY_URL));
-
 	console.log('✓ Enabled trust proxy. Now accepting X-Forwarded-* headers.');
 	app.enable('trust proxy');
 }
 
 // Helpers
 
-require(path.join(__dirname, '/helpers/passport'));
 require(path.join(__dirname, '/helpers/hbs'));
+
+// Authentication
+
+require(path.join(__dirname, '/helpers/passport'));
+app.route('login')
+.post(passport.authenticate('local', {
+	successRedirect: '/list/anime',
+	failureRedirect: '/login',
+	failureFlash: true
+}));
 
 // Routes
 
@@ -100,9 +106,13 @@ require(path.join(__dirname, '/routes/list'))(app);
 require(path.join(__dirname, '/routes/logreg'))(app);
 
 app.use(function(err, req, res, next){
-	if(err) return next();
-	console.log(err);
-	res.status(500).end(err);
+	if(err){
+		// Do error handling
+		console.log(err);
+		res.status(500).json({ message: err.message, status: "error" });
+	} else {
+		next();
+	}
 });
 
 // If no matching route was found, give 'em the 404
