@@ -53,7 +53,10 @@ module.exports = function(app){
 			user.email = req.body.email;
 		}
 		User.createOne(user, function(err, userDoc){
-			if(err) return next(new Error('/register error'));
+			if(err){
+				console.log(err);
+				return next(new Error('/register error'));
+			}
 			if(userDoc) return res.status(200).json({ status: 'ok', message: 'user has been regisered' });
 		});
 	});

@@ -92,6 +92,14 @@ app.use(passport.session());
 
 app.use(morgan('dev'));
 
+if(process.env.NODE_ENV === 'development'){
+	process.send({ cmd: 'NODE_DEV', required: './views/partials/header.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/partials/footer.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/login.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/list.hbs' });
+	process.send({ cmd: 'NODE_DEV', required: './views/search.hbs' });
+}
+
 // Production settings
 
 if(process.env.NODE_ENV === 'production'){

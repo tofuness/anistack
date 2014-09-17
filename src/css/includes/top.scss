@@ -31,3 +31,26 @@
 	font-weight: 400;
 	line-height: 50px;
 }
+#top-profile-wrap {
+	@extend .cf;
+	float: right;
+	padding: 0 15px;
+	border-left: 1px solid $gray-l-3;
+	border-right: 1px solid $gray-l-3;
+}
+#top-profile-avatar {
+	float: left;
+	margin-top: 13px;
+	width: 24px;
+	height: 24px;
+	background-color: $gray-d-6;
+	background-size: cover;
+	@include border-radius(32px);
+}
+#top-profile-name {
+	@extend .opensans;
+	float: left;
+	padding-left: 15px;
+	font-weight: bold;
+	line-height: 50px;
+}

@@ -16,8 +16,14 @@
 			<a id="top-nav-logo" href="#"></a>
 			<div id="top-nav-tagline">Track Anime &amp; Manga</div>
 		</div>
+		{{#if user}}
+		<div id="top-profile-wrap">
+			<div id="top-profile-avatar" style="background-image: url({{user.avatar.processed}})">
+			</div>
+			<div id="top-profile-name">
+				{{user.username}}
+			</div>
+		</div>
+		{{/if}}
 	</div>
-	{{#if user}}
-	logged in
-	{{/if}}
 </div>
