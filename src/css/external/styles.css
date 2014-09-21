@@ -1070,3 +1070,15 @@
 .icon-check:before {
   content: "\e0f9";
 }
+.icon-lock-line:before {
+  content: "\e0fa";
+}
+.icon-lock-fill:before {
+  content: "\e0fb";
+}
+.icon-chevleft:before {
+  content: "\e0fc";
+}
+.icon-chevright:before {
+  content: "\e0fd";
+}

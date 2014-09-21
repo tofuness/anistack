@@ -86,7 +86,7 @@ var validate = {
 		username: function(usernameStr, done){
 			if(/^\W+/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
 			this.findOne({
-				username: new RegExp(usernameStr, 'i')
+				username: new RegExp('^' + usernameStr + '$', 'i')
 			}, function(err, doc){
 				if(err) return done(false);
 				return done(!doc);
@@ -99,7 +99,7 @@ var validate = {
 				body = JSON.parse(body);
 				if(!body.is_valid) return done(false);
 				this.findOne({
-					email: new RegExp(emailStr, 'i')
+					email: new RegExp('^' + emailStr + '$', 'i')
 				}, function(err, userDoc){
 					if(err) return done(false);
 					return done(!userDoc);

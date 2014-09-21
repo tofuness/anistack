@@ -1,68 +1,70 @@
-#search-page {
-	margin-bottom: 30px;
+#search-page-wrap {
+	padding-top: 82px;
+	width: 100%;
 	background: #fff;
 }
-.search-input-wrap {
-	border-bottom: 2px solid $gray-l-3;
-}
-.search-input {
+#search-page {
 	margin: 0 auto;
-	padding: 15px;
-	width: 100%;
-	font-size: 14px;
-	font-weight: bold;
+	width: 1000px;
 }
-.search-results-wrap {
-
-}
-.search-item-wrap {
-	padding: 15px;
+#search-input-wrap {
+	@extend .cf;
+	padding-bottom: 30px;
+	margin-bottom: 30px;
 	border-bottom: 1px solid $gray-l-3;
+}
+#search-input {
+	float: left;
+	width: 600px;
+	font-size: 32px;
+	font-weight: 700;
+}
+#search-results-wrap {
+	
+}
+.search-result {
+	@extend .cf;
+	padding: 20px 0;
+	width: 600px;
+	border-bottom: 1px dotted $gray;
+	&:first-child {
+		padding-top: 0;
+	}
 	&:last-child {
 		border-bottom: 0;
+		padding-bottom: 40px;
 	}
 }
-.search-item {
-	@extend .cf;
-	position: relative;
-}
-.search-item-left {
+.search-result-image {
 	float: left;
+	margin-right: 20px;
+	width: 80px;
+	height: 130px;
+	background-size: cover;
+	background-position: center center;
+	@include border-radius(4px);
 }
-.search-item-right {
-	float: right;
+.search-result-content {
+	@extend .cf;
+	float: left;
+	width: 500px;
 }
-.search-item-title {
-	font-weight: bold;
+.search-result-title-wrap {
+	@extend .cf;
+	padding-bottom: 10px;
 }
-.search-item-meta {
-	padding-top: 5px;
+.search-result-title {
+	float: left;
+	font-size: 14px;
+	font-weight: 700;
+}
+.search-result-year {
+	float: left;
+	padding-left: 10px;
 	color: $gray-d-9;
-	font-size: 11px;
+	font-size: 12px;
+	line-height: 19px;
 }
-.search-item-type {
-	font-weight: bold;
-}
-.search-item-add {
-	@extend .ts15;
-	@extend .ns;
-	cursor: pointer;
-	margin-top: 2px;
-	padding: 4px;
-	width: 50px;
-	color: #fff;
-	font-weight: bold;
-	text-align: center;
-	background: $blue;
-	border: 2px solid $blue;
-	@include border-radius(20px);
-	&.open {
-		color: $blue;
-		background: #fff;
-	}
-	&.added {
-		cursor: default;
-		background: $green;
-		border: 2px solid $green;
-	}
+.search-result-desc {
+	line-height: 2em;
 }

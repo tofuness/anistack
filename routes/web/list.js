@@ -3,9 +3,4 @@ module.exports = function(app){
 	.get(function(req, res, next){
 		res.render('list');
 	});
-
-	app.route('/list/search')
-	.get(function(req, res, next){
-		res.render('search');
-	});
 }

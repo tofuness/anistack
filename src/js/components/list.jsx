@@ -19,19 +19,13 @@ var listComp = React.createClass({
 		return app;
 	},
 	shouldComponentUpdate: function(nextProps, nextState){
-		/*
-			By default this returns true always. Which makes the thing
-			re-render a bunch of times even if nothing changed. This 
-			below should be implemented as the default behavior in React.
-		*/
+		// By default, shouldComponentUpdate just returns true.
+		// This replaces default behavior.
 		if(nextState === this.state) return false;
 		return true;
 	},
 	componentDidMount: function(){
-		// Initialize list
 		PubSub.subscribe(constants.DATA_CHANGE, this.initList);
-
-		// Displays the error message and kills the component
 		PubSub.subscribe(constants.LIST_ERROR, this.errList);
 	},
 	initList: function(){
@@ -42,8 +36,8 @@ var listComp = React.createClass({
 		}
 	},
 	sortList: function(sortBy, order){
-		// ES6 WHEN?! Set default property, to sort by, to title
-		if(!sortBy) sortBy = 'seriesTitle';
+		// Set default property, to sort by, to title
+		if(!sortBy) sortBy = 'series_title';
 
 		// This automagically works
 		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
@@ -54,7 +48,9 @@ var listComp = React.createClass({
 
 		var listSorted = listStore;
 
-		listSorted = keysort(listSorted, 'itemStatus, ' + sortBy + ' ' + order + ', seriesTitle');
+		// Sort by property, e.g. progress, then by title.
+
+		listSorted = keysort(listSorted, 'itemStatus, ' + sortBy + ' ' + order + ', series_title');
 		
 		this.setState({
 			listData: listSorted,

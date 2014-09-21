@@ -15,7 +15,7 @@ module.exports = function(app){
 				body = JSON.parse(body);
 				if(!body.is_valid) return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
 				User.findOne({
-					email: new RegExp(req.body.email, 'i')
+					email: new RegExp('^' + req.body.email + '$', 'i')
 				}, function(err, userDoc){
 					if(err) return next(new Error('/validate/email error'));
 					res.status(200).json({ status: 'ok', is_valid: true, exists: !!userDoc });
@@ -33,7 +33,7 @@ module.exports = function(app){
 		if(req.body.username){
 			if(req.body.username.length < 3) return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
 			User.findOne({
-				username: new RegExp(req.body.username, 'i')
+				username: new RegExp('^' + req.body.username + '$', 'i')
 			}, function(err, userDoc){
 				if(err) return next(new Error('/validate/username error'));
 				res.status(200).json({ status: 'ok', is_valid: true, exists: !!userDoc });

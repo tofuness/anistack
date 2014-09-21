@@ -1,18 +1,16 @@
 #list-wrap {
 	@extend .cf;
-	margin: 90px auto 30px auto;
-	width: 1160px;
+	margin: 80px auto 20px auto;
+	width: 1000px;
 	background: #fff;
 	@include border-radius(4px);
 	@include box-shadow(0 1px 3px $b15);
 }
-
 #list-onboard {
 	padding: 100px 0;
 	text-align: center;
 }
 #onboard-welcome {
-	@extend .opensans;
 	padding-bottom: 60px;
 	font-size: 32px;
 	font-weight: bold;
@@ -442,7 +440,7 @@
 
 #list-right {
 	float: right;
-	width: 200px;
+	width: 220px;
 	height: 100%;
 	background: #fff;
 	@include box-shadow(inset 1px 0 0 $gray-l-3);
@@ -460,68 +458,65 @@
 	background-color: $gray;
 	background-size: cover;
 	@include border-radius(4px);
+	@include box-shadow(0 1px 3px $b15);
 }
 #list-profile-background {
 	height: 150px;
-	//background: url(/img/profilebg.jpg) center center no-repeat;
-	background: $black;
+	background: url(/img/profilebg.jpg) center center no-repeat;
 	background-size: cover;
 	@include border-top-right-radius(4px);
 }
 #list-profile-name {
-	@extend .opensans;
-	padding-top: 15px;
+	padding: 20px 0 10px 0;
 	font-size: 14px;
-	font-weight: bold;
+	font-weight: 800;
 	text-align: center;
 }
 #list-profile-bio {
-	padding: 15px;
+	padding: 10px 20px;
 	color: $gray-d-9;
-	font-size: 11px;
 	text-align: left;
 }
 .list-nav-item {
 	@extend .cf;
-	@extend .opensans;
 	cursor: pointer;
 	display: block;
-	padding: 15px 15px;
+	padding: 10px 20px;
 	font-size: 11px;
-	font-weight: bold;
 	text-transform: uppercase;
-	border-right: 2px solid $gray;
-
 	&.current {
 		color: $blue;
-		border-right: 2px solid $blue;
 		& .list-nav-count {
 			color: #fff;
 			background: $blue;
 		}
 	}
-
 	&:last-child {
-		margin-bottom: 30px;
+		margin-bottom: 20px;
 	}
 
 	&:hover:not(.current) {
-		opacity: 0.6;
+		color: $blue;
 	}
 }
-.list-nav-private-icon {
+.list-nav-sep {
+	margin-bottom: 10px;
+	padding-top: 10px;
+	border-bottom: 1px solid $gray-l-3;
+}
+.list-nav-icon {
 	font-size: 8px;
 }
 .list-nav-text {
-	font-size: 11px;
+	font-weight: 800;
 	line-height: 23px;
 }
-.list-nav-count {
-	display: block;
+.list-nav-private {
 	float: right;
-	padding: 4px;
-	background: $gray-l-3;
-	@include border-radius(2px);
+	color: $yellow-d-6;
+	padding: 3px 5px;
+	font-weight: 700;
+	text-align: center;
+	background: $yellow-l-6;
+	@include border-radius(4px);
 }
-
-
