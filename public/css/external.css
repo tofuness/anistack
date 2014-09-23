@@ -762,3 +762,6 @@
 .icon-chevright:before {
   content: "\e0fd";
 }
+.icon-bookmark:before {
+  content: "\e0ff";
+}

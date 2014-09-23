@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 
-var searchComp = React.createClass({displayName: 'searchComp',
+var searchApp = React.createClass({displayName: 'searchApp',
 	getInitialState: function(){
 		var initState = {
-			searchText: 'bebop',
+			searchText: $('#search-page-query').text().trim(),
 			searchResults: []
 		}
 		return initState;
@@ -85,6 +85,11 @@ var searchItem = React.createClass({displayName: 'searchItem',
 					), 
 					React.DOM.div({className: "search-result-desc"}, 
 						this.props.series.series_description
+					), 
+					React.DOM.div({className: "search-result-meta"}, 
+						React.DOM.span({className: "search-result-type"}, this.props.series.series_type), " with ", this.props.series.series_episodes_total, " Episode(s)", 
+						React.DOM.span({className: "icon-bookmark search-result-bookmark"}
+						)
 					)
 				)
 			)

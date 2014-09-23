@@ -1,4 +1,4 @@
-// Not very well writte code
+// Not very well written code
 
 var db = require('../models/db.js');
 var Anime = db.Anime;

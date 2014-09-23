@@ -6,6 +6,9 @@ var concat = require('gulp-concat');
 var react = require('gulp-react');
 var cssmin = require('gulp-cssmin');
 
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+
 var path = {
 	scss: {
 		src: 'src/css/app.scss',
