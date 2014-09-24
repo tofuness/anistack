@@ -97,4 +97,4 @@ var searchItem = React.createClass({displayName: 'searchItem',
 	}
 });
 
-React.renderComponent(searchComp(null), document.getElementById('search-page-wrap'));
+React.renderComponent(searchApp(null), document.getElementById('search-page-wrap'));

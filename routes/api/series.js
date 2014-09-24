@@ -72,11 +72,14 @@ module.exports = function(app){
 			]
 		}
 		Collection.find(searchConditions)
-		.sort({ series_date_start: -1 })
 		.limit(15)
 		.exec(function(err, docs){
 			if(err) return next(new Error(err));
-			res.status(200).json(docs).end();
+			var sortedDocs = _.sortBy(docs, function(series){
+				// Hacky sort function
+				return ['movie', 'tv'].indexOf(series.series_type) * -1
+			});
+			res.status(200).json(sortedDocs).end();
 		});
 	});
 }

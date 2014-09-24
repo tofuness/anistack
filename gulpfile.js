@@ -6,9 +6,6 @@ var concat = require('gulp-concat');
 var react = require('gulp-react');
 var cssmin = require('gulp-cssmin');
 
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-
 var path = {
 	scss: {
 		src: 'src/css/app.scss',
@@ -48,7 +45,7 @@ gulp.task('css', function(){
 	return gulp.src(path.css.src)
 	.pipe(plumber(function(err){
 		console.log(err.message);
-		this.emit('end'); // https://github.com/floatdrop/gulp-plumber/issues/8#issuecomment-41465386
+		this.emit('end');
 	}))
 	.pipe(cssmin({
 		noAdvanced: true
