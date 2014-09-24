@@ -107,16 +107,6 @@ if(process.env.NODE_ENV === 'production'){
 	app.enable('trust proxy');
 }
 
-// Basic error handling
-
-app.use(function(err, req, res, next){
-	if(err){
-		console.log(req.url);
-		console.log(err.stack);
-	}
-	next();
-});
-
 // Populate res.locals.user with user information if logged in
 
 app.use(function(req, res, next){
@@ -146,6 +136,18 @@ app.use('/api', apiRouter); // Prepends /api/* to all routes
 require('./routes/api/list.js')(apiRouter);
 require('./routes/api/series.js')(apiRouter);
 require('./routes/api/user.js')(apiRouter);
+
+// Basic error handling
+
+app.use(function(err, req, res, next){
+	if(err){
+		console.log(req.url);
+		console.log(err.stack);
+		res.status(500).json({ status: 'error', message: err.message });
+	} else {
+		next();
+	}
+});
 
 // If none of the routes are matched, give 'em the 404
 

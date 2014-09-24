@@ -26,5 +26,5 @@ var loginForm = React.createClass({
 		)
 	}
 });
-
-React.renderComponent(<loginForm />, document.getElementById('login-form-wrap'));
+var mountNode = document.getElementById('login-form-wrap');
+if(mountNode) React.renderComponent(<loginForm />, mountNode);

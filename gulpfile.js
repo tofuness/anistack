@@ -61,7 +61,7 @@ gulp.task('uglify', function(){
 		this.emit('end');
 	}))
 	.pipe(concat('app.js'))
-	//.pipe(uglify())
+	.pipe(uglify())
 	.pipe(gulp.dest(path.js.dest));
 });
 
@@ -72,6 +72,8 @@ gulp.task('react', function(){
 		this.emit('end');
 	}))
 	.pipe(react())
+	.pipe(concat('app.js'))
+	.pipe(uglify())
 	.pipe(gulp.dest(path.react.dest))
 });
 

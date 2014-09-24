@@ -69,12 +69,14 @@
 .search-result-desc {
 	line-height: 2em;
 }
-.search-result-meta {
+.search-result-meta-wrap {
 	margin-top: 10px;
 	padding-top: 10px;
+	border-top: 1px dotted $gray-l-3;
+}
+.search-result-meta {
 	color: $gray-d-9;
 	font-size: 11px;
-	border-top: 1px dotted $gray-l-3;
 }
 .search-result-type {
 	font-weight: 700;

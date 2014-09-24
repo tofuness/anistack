@@ -53,7 +53,7 @@ var searchApp = React.createClass({
 				<div id="search-results-wrap">
 				{
 					this.state.searchResults.map(function(searchRes){
-						return <searchItem series={searchRes} />;
+						return <searchItem seriesData={searchRes} key={searchRes._id} />;
 					})
 				}
 				</div>
@@ -65,7 +65,7 @@ var searchApp = React.createClass({
 var searchItem = React.createClass({
 	render: function(){
 		var imageStyle = {
-			backgroundImage: 'url(' + this.props.series.series_image_reference + ')'
+			backgroundImage: 'url(' + this.props.seriesData.series_image_reference + ')'
 		}
 		
 		return (
@@ -75,21 +75,27 @@ var searchItem = React.createClass({
 				<div className="search-result-content">
 					<div className="search-result-title-wrap">
 						<div className="search-result-title">
-							{this.props.series.series_title_main}
+							{this.props.seriesData.series_title_main}
 						</div>
 						<div className="search-result-year">
 						{
-							(this.props.series.series_date_start) ? new Date(this.props.series.series_date_start).getFullYear() : ''
+							(this.props.seriesData.series_date_start) ? new Date(this.props.seriesData.series_date_start).getFullYear() : ''
 						}
 						</div>
 					</div>
 					<div className="search-result-desc">
-						{this.props.series.series_description}
+						{this.props.seriesData.series_description}
 					</div>
-					<div className="search-result-meta">
-						<span className="search-result-type">{this.props.series.series_type}</span> with {this.props.series.series_episodes_total} Episode(s)
-						<span className="icon-bookmark search-result-bookmark">
+					<div className="search-result-meta-wrap">
+						<span className="search-result-meta">
+							<span className="search-result-type">{this.props.seriesData.series_type}</span> with {this.props.seriesData.series_episodes_total} Episode(s)
 						</span>
+						<pickerApp
+							seriesData={this.props.seriesData}
+							pickerStatus={true}
+							pickerProgress={true}
+							pickerRating={true}
+						/>
 					</div>
 				</div>
 			</div>

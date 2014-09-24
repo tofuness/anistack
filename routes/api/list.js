@@ -15,13 +15,10 @@ module.exports = function(app){
 
 	// ?: Get user's list
 
-	app.route('/list/:list(anime|manga)/view/:username')
+	app.route('/list/:list(anime|manga)/:username')
 	.get(function(req, res, next){
 		User.findOne({
-			$or: [
-				{ _id: req.param('username') },
-				{ username: req.param('username') }
-			]			
+			username: req.param('username').toLowerCase()
 		}, {
 			email: 0,
 			password: 0,
@@ -29,7 +26,7 @@ module.exports = function(app){
 		}, function(err, doc){
 			if(err) return next(new Error(err));
 			if(!doc) return next(new Error('User not found'));
-			return res.status(200).json(doc[listType + '_list']);
+			return res.status(200).json(doc);
 		});
 	});
 

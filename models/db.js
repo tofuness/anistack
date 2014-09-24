@@ -95,11 +95,11 @@ var validate = {
 		email: function(emailStr, done){
 			if(emailStr === undefined) return done(true);
 			// ?: This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
-			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAINGUN_PUBKEY + '&address=' + emailStr, function(err, response, body){
+			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + emailStr, function(err, response, body){
 				body = JSON.parse(body);
 				if(!body.is_valid) return done(false);
 				this.findOne({
-					email: new RegExp('^' + emailStr + '$', 'i')
+					email: emailStr.toLowerCase()
 				}, function(err, userDoc){
 					if(err) return done(false);
 					return done(!userDoc);
@@ -137,7 +137,7 @@ validators.anime.add('series_type', {
 
 validators.anime.add('series_episodes_total', {
 	min: 0,
-	max: 9999,
+	max: 999,
 	msg: 'series_episodes_total did not pass validation'
 });
 
@@ -147,9 +147,15 @@ filters.anime.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for UserSchema
 
+validators.user.add('display_name', {
+	minLength: 3,
+	maxLength: 40,
+	msg: 'display_name did not pass validation'
+});
+
 validators.user.add('username', {
 	minLength: 3,
-	maxLength: 128,
+	maxLength: 40,
 	callback: validate.user.username,
 	msg: 'username did not pass validation'
 });
@@ -164,6 +170,7 @@ validators.user.add('email', {
 	msg: 'email did not pass validation'
 });
 
+filters.user.add('username', 'lowercase');
 filters.user.add('email', 'lowercase');
 filters.user.add('password', filter.user.password);
 
@@ -280,6 +287,12 @@ var AnimeListItemSchema = new Schema({
 		type: String,
 		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
 		required: true
+	},
+	item_reruns: {
+		type: Number,
+		min: 0,
+		max: 999,
+		default: 0
 	}
 });
 
@@ -304,6 +317,12 @@ var MangaListItemSchema = new Schema({
 		type: String,
 		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
 		required: true
+	},
+	item_reruns: {
+		type: Number,
+		min: 0,
+		max: 999,
+		default: 0
 	}
 });
 
@@ -376,9 +395,16 @@ var ActivityItemSchema = new Schema({
 });
 
 var UserSchema = new Schema({
+	display_name: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	// Username should always be lowercase
 	username: {
 		type: String,
 		required: true,
+		lowercase: true,
 		unique: true
 	},
 	email: {

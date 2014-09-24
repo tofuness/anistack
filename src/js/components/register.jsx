@@ -14,7 +14,7 @@ var registerForm = React.createClass({
 		e.persist();
 		this.setState({
 			usernameVal: e.target.value.replace(/\W+/g, ''),
-			usernameValid: (e.target.value.trim() !== '' && e.target.value.length >= 3) ? 'loading' : (e.target.value.trim() !== '') ? false : null
+			usernameValid: (e.target.value.trim() !== '' && e.target.value.length >= 3 && e.target.value.length <= 40) ? 'loading' : (e.target.value.trim() !== '') ? false : null
 		});
 		if(e.target.value.length >= 3) this.validateUsername(e);
 	},
@@ -113,7 +113,7 @@ var registerForm = React.createClass({
 					<input id="logreg-password-input" className="logreg-input" type="password" name="password" value={this.state.passwordVal} onChange={this.passwordChange} /> 
 					<div className={
 						React.addons.classSet({
-							'icon-spam':  0 < this.state.passwordVal.length < 6,
+							'icon-spam':  0 < this.state.passwordVal.length && this.state.passwordVal.length < 6,
 							'icon-check':  this.state.passwordVal.length >= 6,
 							'logreg-input-validate': true,
 							'visible': this.state.passwordVal
@@ -151,4 +151,5 @@ var registerForm = React.createClass({
 	}
 });
 
-React.renderComponent(<registerForm />, document.getElementById('register-form-wrap'));
+var mountNode = document.getElementById('register-form-wrap');
+if(mountNode) React.renderComponent(<registerForm />, mountNode);

@@ -63,4 +63,4 @@ var listComp = React.createClass({
 	}
 });
 
-React.renderComponent(<listComp />, document.getElementById('list-left'));
+//React.renderComponent(<listComp />, document.getElementById('list-left'));

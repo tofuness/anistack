@@ -11,8 +11,9 @@ module.exports = function(app){
 	app.route('/validate/email')
 	.post(function(req, res, next){
 		if(req.body.email){
-			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAINGUN_PUBKEY + '&address=' + req.body.email, function(err, response, body){
+			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + req.body.email, function(err, response, body){
 				body = JSON.parse(body);
+				console.log(body);
 				if(!body.is_valid) return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
 				User.findOne({
 					email: new RegExp('^' + req.body.email + '$', 'i')
@@ -46,6 +47,7 @@ module.exports = function(app){
 	app.route('/register')
 	.post(function(req, res, next){
 		var user = new User({
+			display_name: req.body.username,
 			username: req.body.username,
 			password: req.body.password
 		});
