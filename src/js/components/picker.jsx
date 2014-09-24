@@ -31,6 +31,15 @@ var pickerApp = React.createClass({
 			this.setRepeats(Number(this.state.itemRepeats) + delta);
 			return false;
 		}.bind(this));
+
+		$(this.refs.pickerStatusVal.getDOMNode()).click(function(){
+			if(this.state.statusMenuVisible){
+				$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
+			} else {
+				$(this.refs.pickerStatusMenu.getDOMNode()).find('>div')
+				.velocity('transition.slideLeftIn', { stagger: 50, duration: 500 });
+			}
+		}.bind(this));
 	},
 	setStatus: function(e){
 		this.setState({
@@ -86,7 +95,6 @@ var pickerApp = React.createClass({
 			itemRating: this.state.ratingPreview
 		});
 	},
-
 	render: function(){
 		var heartNodes = [];
 
@@ -117,29 +125,29 @@ var pickerApp = React.createClass({
 					Status
 				</div>
 				<div className="picker-status-wrap">
-					<div className={cx({
+					<div ref="pickerStatusVal" className={cx({
 						'picker-status-val': true,
 						'visible': this.state.statusMenuVisible
 					})} onClick={this.toggleStatusMenu}>
 						{this.state.itemStatus}
 						<div className={
 							cx({
-								'picker-status-dd-icon': true,
+								'picker-status-menu-icon': true,
 								'icon-down-open': !this.state.statusMenuVisible,
 								'icon-up-open': this.state.statusMenuVisible
 							})
 						}></div>
 					</div>
-					<div className={
+					<div ref="pickerStatusMenu" className={
 							cx({
-								'picker-status-dd': true,
+								'picker-status-menu': true,
 								'visible': this.state.statusMenuVisible
 							})
 						}>
 						{
 							['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
 								return (
-									<div className="picker-status-dd-item" onClick={this.setStatus}>
+									<div ref="pickerStatusItem" className="picker-status-menu-item" onClick={this.setStatus}>
 										{statusType}
 									</div>
 								);

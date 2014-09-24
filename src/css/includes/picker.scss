@@ -32,15 +32,17 @@
 	line-height: 18px;
 	text-transform: uppercase;
 }
-.picker-status-dd-icon {
+.picker-status-menu-icon {
 	float: right;
 	padding-top: 2px;
 }
-.picker-status-dd {
+.picker-status-menu {
+	@extend .ts15;
 	display: none;
 	position: relative;
 	padding-top: 10px;
 	margin-top: -10px;
+	height: 191px;
 	background: $brand-black;
 	z-index: $z-up;
 	@include border-bottom-left-radius(4px);
@@ -50,8 +52,9 @@
 		display: block;
 	}
 }
-.picker-status-dd-item {
+.picker-status-menu-item {
 	cursor: pointer;
+	display: none;
 	padding: 10px;
 	color: $w70;
 	&:first-child {
@@ -166,7 +169,7 @@
 	float: right;
 	margin-right: 10px;
 	color: $gray-d-9;
-	font-weight: 700;
+	font-size: 12px;
 	line-height: 30px;
 }
 .picker-save {
@@ -176,5 +179,9 @@
 	color: #fff;
 	font-weight: 700;
 	background: $green;
+	text-transform: uppercase;
 	@include border-radius(4px);
+	&:hover {
+		background: $green-l-3;
+	}
 }
