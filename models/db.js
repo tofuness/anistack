@@ -288,7 +288,7 @@ var AnimeListItemSchema = new Schema({
 		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
 		required: true
 	},
-	item_reruns: {
+	item_repeats: {
 		type: Number,
 		min: 0,
 		max: 999,
@@ -318,7 +318,7 @@ var MangaListItemSchema = new Schema({
 		enum: ['current', 'completed', 'planned', 'onhold', 'dropped'],
 		required: true
 	},
-	item_reruns: {
+	item_repeats: {
 		type: Number,
 		min: 0,
 		max: 999,

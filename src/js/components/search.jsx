@@ -92,9 +92,6 @@ var searchItem = React.createClass({
 						</span>
 						<pickerApp
 							seriesData={this.props.seriesData}
-							pickerStatus={true}
-							pickerProgress={true}
-							pickerRating={true}
 						/>
 					</div>
 				</div>

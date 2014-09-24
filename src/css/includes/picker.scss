@@ -1,6 +1,6 @@
 .picker-wrap {
 	padding: 10px;
-	width: 250px;
+	width: 216px; // WORK: Needs some tweaking
 	height: auto;
 	background: #fff;
 	@include box-shadow(0 1px 3px $b30);
@@ -8,6 +8,7 @@
 }
 .picker-status-wrap {
 	height: 40px;
+	margin-bottom: 10px;
 }
 .picker-status-val {
 	@extend .cf;
@@ -64,4 +65,116 @@
 		@include border-bottom-left-radius(4px);
 		@include border-bottom-right-radius(4px);
 	}
+}
+.picker-inputs-wrap {
+	// Contains both rewatched and progress
+	@extend .cf;
+	margin-bottom: 10px;
+}
+.picker-progress-wrap {
+	@extend .cf;
+	float: left;
+	margin-left: 10px;
+	padding-left: 10px;
+}
+.picker-title {
+	margin-bottom: 5px;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+.picker-input-val {
+	@extend .ts10;
+	float: left;
+	padding: 3px 0 4px 0;
+	width: 40px;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	border: 2px solid $gray;
+	@include border-radius(4px);
+	&:focus {
+		border: 2px solid $brand-black;
+	}
+}
+.picker-input-sep {
+	float: left;
+	padding: 0 10px;
+	color: $gray-d-9;
+	line-height: 30px;
+}
+.picker-input-times {
+	float: left;
+	padding-left: 10px;
+	color: $gray-d-9;
+	line-height: 30px;
+}
+.picker-input-total {
+	float: left;
+	width: 40px;
+	color: $gray-d-9;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	line-height: 30px;
+	background: $gray-l-3;
+	@include border-radius(4px);
+}
+.picker-repeats-wrap {
+	@extend .cf;
+	float: left;
+
+}
+.picker-rating-wrap {
+	@extend .cf;
+}
+.picker-rating-hearts {
+	@extend .cf;
+	float: left;
+}
+.picker-heart {
+	float: left;
+	cursor: pointer;
+	padding: 4px 5px;
+	color: $red;
+	font-size: 23px;
+	line-height: 18px;
+	&:first-child {
+		padding-left: 0;
+	}
+	&:last-child {
+		padding-right: 0;
+	}
+}
+.picker-rating-val {
+	float: right;
+	margin-left: 10px;
+	width: 50px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 30px;
+	text-align: center;
+}
+.picker-actions {
+	@extend .cf;
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid $gray-l-3;
+}
+.picker-cancel {
+	cursor: pointer;
+	float: right;
+	margin-right: 10px;
+	color: $gray-d-9;
+	font-weight: 700;
+	line-height: 30px;
+}
+.picker-save {
+	cursor: pointer;
+	float: right;
+	padding: 5px 15px;
+	color: #fff;
+	font-weight: 700;
+	background: $green;
+	@include border-radius(4px);
 }
