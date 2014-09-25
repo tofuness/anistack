@@ -117,96 +117,98 @@ var pickerApp = React.createClass({
 
 		return (
 			<div className="picker-wrap">
-				<div className="picker-title">
-					Status
-				</div>
-				<div className="picker-status-wrap">
-					<div ref="pickerStatusVal" className={cx({
-						'picker-status-val': true,
-						'visible': this.state.statusMenuVisible
-					})} onClick={this.toggleStatusMenu}>
-						{this.state.itemStatus}
-						<div className={
-							cx({
-								'picker-status-menu-icon': true,
-								'icon-down-open': true,
-								'rotate': this.state.statusMenuVisible
-							})
-						}></div>
+				<div className="picker-top">
+					<div className="picker-title">
+						Status
 					</div>
-					<div ref="pickerStatusMenu" className={
-							cx({
-								'picker-status-menu': true,
-								'visible': this.state.statusMenuVisible
-							})
-						}>
-						{
-							['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
-								return (
-									<div ref="pickerStatusItem" className="picker-status-menu-item" onClick={this.setStatus}>
-										{statusType}
-									</div>
-								);
-							}.bind(this))
-						}
-					</div>
-				</div>
-				<div className="picker-inputs-wrap">
-					<div className="picker-repeats-wrap">
-						<div className="picker-title">
-							Re-watched
+					<div className="picker-status-wrap">
+						<div ref="pickerStatusVal" className={cx({
+							'picker-status-val': true,
+							'visible': this.state.statusMenuVisible
+						})} onClick={this.toggleStatusMenu}>
+							{this.state.itemStatus}
+							<div className={
+								cx({
+									'picker-status-menu-icon': true,
+									'icon-down-open': true,
+									'rotate': this.state.statusMenuVisible
+								})
+							}></div>
 						</div>
-						<div className="cf">
-							<input
-								ref="repeatsInput"
-								className="picker-input-val"
-								type="text"
-								maxLength="3"
-								value={this.state.itemRepeats}
-								onChange={this.onRepeatsChange}
-								placeholder="0"
-							/>
-							<div className="picker-input-times">
-								times
+						<div ref="pickerStatusMenu" className={
+								cx({
+									'picker-status-menu': true,
+									'visible': this.state.statusMenuVisible
+								})
+							}>
+							{
+								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
+									return (
+										<div ref="pickerStatusItem" className="picker-status-menu-item" onClick={this.setStatus}>
+											{statusType}
+										</div>
+									);
+								}.bind(this))
+							}
+						</div>
+					</div>
+					<div className="picker-inputs-wrap">
+						<div className="picker-repeats-wrap">
+							<div className="picker-title">
+								Re-watched
+							</div>
+							<div className="cf">
+								<input
+									ref="repeatsInput"
+									className="picker-input-val"
+									type="text"
+									maxLength="3"
+									value={this.state.itemRepeats}
+									onChange={this.onRepeatsChange}
+									placeholder="0"
+								/>
+								<div className="picker-input-times">
+									times
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className="picker-progress-wrap">
-						<div className="picker-title">
-							Progress
-						</div>
-						<div className="cf">
-							<input
-								ref="progressInput"
-								className="picker-input-val"
-								type="text"
-								maxLength="3"
-								value={this.state.itemProgress}
-								onChange={this.onProgressChange}
-								placeholder="0"
-							/>
-							<div className="picker-input-sep">
-							of
+						<div className="picker-progress-wrap">
+							<div className="picker-title">
+								Progress
 							</div>
-							<div className="picker-input-total">
-								{this.props.seriesData.series_episodes_total}
+							<div className="cf">
+								<input
+									ref="progressInput"
+									className="picker-input-val"
+									type="text"
+									maxLength="3"
+									value={this.state.itemProgress}
+									onChange={this.onProgressChange}
+									placeholder="0"
+								/>
+								<div className="picker-input-sep">
+								of
+								</div>
+								<div className="picker-input-total">
+									{this.props.seriesData.series_episodes_total}
+								</div>
 							</div>
 						</div>
-					</div>
 
-				</div>
-				<div className="picker-title">
-					Rating
-				</div>
-				<div className="picker-rating-wrap">
-					<div className="picker-rating-hearts">
-						{heartNodes}
 					</div>
-					<div className="picker-rating-val">
-						{(this.state.itemRating / 2).toFixed(1)}
+					<div className="picker-title">
+						Rating
+					</div>
+					<div className="picker-rating-wrap">
+						<div className="picker-rating-hearts">
+							{heartNodes}
+						</div>
+						<div className="picker-rating-val">
+							{(this.state.itemRating / 2).toFixed(1)}
+						</div>
 					</div>
 				</div>
-				<div className="picker-actions">
+				<div className="picker-bottom">
 					<div className="picker-save">
 						Save
 					</div>

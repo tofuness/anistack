@@ -214,96 +214,98 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 
 		return (
 			React.DOM.div({className: "picker-wrap"}, 
-				React.DOM.div({className: "picker-title"}, 
-					"Status"
-				), 
-				React.DOM.div({className: "picker-status-wrap"}, 
-					React.DOM.div({ref: "pickerStatusVal", className: cx({
-						'picker-status-val': true,
-						'visible': this.state.statusMenuVisible
-					}), onClick: this.toggleStatusMenu}, 
-						this.state.itemStatus, 
-						React.DOM.div({className: 
-							cx({
-								'picker-status-menu-icon': true,
-								'icon-down-open': true,
-								'rotate': this.state.statusMenuVisible
-							})
-						})
+				React.DOM.div({className: "picker-top"}, 
+					React.DOM.div({className: "picker-title"}, 
+						"Status"
 					), 
-					React.DOM.div({ref: "pickerStatusMenu", className: 
-							cx({
-								'picker-status-menu': true,
-								'visible': this.state.statusMenuVisible
+					React.DOM.div({className: "picker-status-wrap"}, 
+						React.DOM.div({ref: "pickerStatusVal", className: cx({
+							'picker-status-val': true,
+							'visible': this.state.statusMenuVisible
+						}), onClick: this.toggleStatusMenu}, 
+							this.state.itemStatus, 
+							React.DOM.div({className: 
+								cx({
+									'picker-status-menu-icon': true,
+									'icon-down-open': true,
+									'rotate': this.state.statusMenuVisible
+								})
 							})
-						}, 
-						
-							['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
-								return (
-									React.DOM.div({ref: "pickerStatusItem", className: "picker-status-menu-item", onClick: this.setStatus}, 
-										statusType
-									)
-								);
-							}.bind(this))
-						
-					)
-				), 
-				React.DOM.div({className: "picker-inputs-wrap"}, 
-					React.DOM.div({className: "picker-repeats-wrap"}, 
-						React.DOM.div({className: "picker-title"}, 
-							"Re-watched"
 						), 
-						React.DOM.div({className: "cf"}, 
-							React.DOM.input({
-								ref: "repeatsInput", 
-								className: "picker-input-val", 
-								type: "text", 
-								maxLength: "3", 
-								value: this.state.itemRepeats, 
-								onChange: this.onRepeatsChange, 
-								placeholder: "0"}
-							), 
-							React.DOM.div({className: "picker-input-times"}, 
-								"times"
-							)
+						React.DOM.div({ref: "pickerStatusMenu", className: 
+								cx({
+									'picker-status-menu': true,
+									'visible': this.state.statusMenuVisible
+								})
+							}, 
+							
+								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
+									return (
+										React.DOM.div({ref: "pickerStatusItem", className: "picker-status-menu-item", onClick: this.setStatus}, 
+											statusType
+										)
+									);
+								}.bind(this))
+							
 						)
 					), 
-					React.DOM.div({className: "picker-progress-wrap"}, 
-						React.DOM.div({className: "picker-title"}, 
-							"Progress"
+					React.DOM.div({className: "picker-inputs-wrap"}, 
+						React.DOM.div({className: "picker-repeats-wrap"}, 
+							React.DOM.div({className: "picker-title"}, 
+								"Re-watched"
+							), 
+							React.DOM.div({className: "cf"}, 
+								React.DOM.input({
+									ref: "repeatsInput", 
+									className: "picker-input-val", 
+									type: "text", 
+									maxLength: "3", 
+									value: this.state.itemRepeats, 
+									onChange: this.onRepeatsChange, 
+									placeholder: "0"}
+								), 
+								React.DOM.div({className: "picker-input-times"}, 
+									"times"
+								)
+							)
 						), 
-						React.DOM.div({className: "cf"}, 
-							React.DOM.input({
-								ref: "progressInput", 
-								className: "picker-input-val", 
-								type: "text", 
-								maxLength: "3", 
-								value: this.state.itemProgress, 
-								onChange: this.onProgressChange, 
-								placeholder: "0"}
+						React.DOM.div({className: "picker-progress-wrap"}, 
+							React.DOM.div({className: "picker-title"}, 
+								"Progress"
 							), 
-							React.DOM.div({className: "picker-input-sep"}, 
-							"of"
-							), 
-							React.DOM.div({className: "picker-input-total"}, 
-								this.props.seriesData.series_episodes_total
+							React.DOM.div({className: "cf"}, 
+								React.DOM.input({
+									ref: "progressInput", 
+									className: "picker-input-val", 
+									type: "text", 
+									maxLength: "3", 
+									value: this.state.itemProgress, 
+									onChange: this.onProgressChange, 
+									placeholder: "0"}
+								), 
+								React.DOM.div({className: "picker-input-sep"}, 
+								"of"
+								), 
+								React.DOM.div({className: "picker-input-total"}, 
+									this.props.seriesData.series_episodes_total
+								)
 							)
 						)
-					)
 
-				), 
-				React.DOM.div({className: "picker-title"}, 
-					"Rating"
-				), 
-				React.DOM.div({className: "picker-rating-wrap"}, 
-					React.DOM.div({className: "picker-rating-hearts"}, 
-						heartNodes
 					), 
-					React.DOM.div({className: "picker-rating-val"}, 
-						(this.state.itemRating / 2).toFixed(1)
+					React.DOM.div({className: "picker-title"}, 
+						"Rating"
+					), 
+					React.DOM.div({className: "picker-rating-wrap"}, 
+						React.DOM.div({className: "picker-rating-hearts"}, 
+							heartNodes
+						), 
+						React.DOM.div({className: "picker-rating-val"}, 
+							(this.state.itemRating / 2).toFixed(1)
+						)
 					)
 				), 
-				React.DOM.div({className: "picker-actions"}, 
+				React.DOM.div({className: "picker-bottom"}, 
 					React.DOM.div({className: "picker-save"}, 
 						"Save"
 					), 
