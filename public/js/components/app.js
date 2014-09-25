@@ -118,33 +118,30 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		}
 
 		var progressInput = this.refs.progressInput.getDOMNode();
-		$(progressInput).on('mousewheel', function(e, delta){
-			this.setProgress(Number(this.state.itemProgress) + delta);
+		$(progressInput).on('mousewheel', function(e){
+			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
 			return false;
 		}.bind(this));
 
 		var repeatsInput = this.refs.repeatsInput.getDOMNode();
-		$(repeatsInput).on('mousewheel', function(e, delta){
-			this.setRepeats(Number(this.state.itemRepeats) + delta);
+		$(repeatsInput).on('mousewheel', function(e){
+			this.setRepeats(Number(this.state.itemRepeats) + e.deltaY);
 			return false;
-		}.bind(this));
-
-		$(this.refs.pickerStatusVal.getDOMNode()).click(function(){
-			if(this.state.statusMenuVisible){
-				$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
-			} else {
-				$(this.refs.pickerStatusMenu.getDOMNode()).find('>div')
-				.velocity('transition.slideLeftIn', { stagger: 50, duration: 500 });
-			}
 		}.bind(this));
 	},
 	setStatus: function(e){
 		this.setState({
-			statusMenuVisible: false,
 			itemStatus: e.target.innerText
 		});
+		this.toggleStatusMenu();
 	},
 	toggleStatusMenu: function(){
+		if(this.state.statusMenuVisible){
+			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
+		} else {
+			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
+			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300 });
+		}
 		this.setState({
 			statusMenuVisible: !this.state.statusMenuVisible
 		});
@@ -194,7 +191,6 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 	},
 	render: function(){
 		var heartNodes = [];
-
 		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.itemRating;
 
 		for(var i = 1; i <= 9; i += 2){
@@ -230,8 +226,8 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 						React.DOM.div({className: 
 							cx({
 								'picker-status-menu-icon': true,
-								'icon-down-open': !this.state.statusMenuVisible,
-								'icon-up-open': this.state.statusMenuVisible
+								'icon-down-open': true,
+								'rotate': this.state.statusMenuVisible
 							})
 						})
 					), 
