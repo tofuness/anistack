@@ -307,7 +307,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 					React.DOM.div({className: "picker-save"}, 
 						"Save"
 					), 
-					React.DOM.div({className: "picker-cancel"}, 
+					React.DOM.div({className: "picker-cancel", onClick: this.props.onClose}, 
 						"Cancel"
 					)
 				)
@@ -535,11 +535,20 @@ var searchApp = React.createClass({displayName: 'searchApp',
 });
 
 var searchItem = React.createClass({displayName: 'searchItem',
+	getInitialState: function() {
+		return {
+			pickerVisible: false 
+		};
+	},
+	togglePicker: function(visible){
+		this.setState({
+			pickerVisible: !this.state.pickerVisible 
+		});
+	},
 	render: function(){
 		var imageStyle = {
 			backgroundImage: 'url(' + this.props.seriesData.series_image_reference + ')'
 		}
-		
 		return (
 			React.DOM.div({className: "search-result"}, 
 				React.DOM.div({className: "search-result-image", style: imageStyle}
@@ -562,8 +571,21 @@ var searchItem = React.createClass({displayName: 'searchItem',
 						React.DOM.span({className: "search-result-meta"}, 
 							React.DOM.span({className: "search-result-type"}, this.props.seriesData.series_type), " with ", this.props.seriesData.series_episodes_total, " Episode(s)"
 						), 
-						pickerApp({
-							seriesData: this.props.seriesData}
+						React.DOM.div({className: 
+							cx({
+								'search-result-add': true 
+							}), 
+						onClick: this.togglePicker}, "+ Add"), 
+						React.DOM.div({className: 
+							cx({
+								'search-result-picker': true,
+								'visible': this.state.pickerVisible
+							})
+						}, 
+							pickerApp({
+								seriesData: this.props.seriesData, 
+								onClose: this.togglePicker}
+							)
 						)
 					)
 				)

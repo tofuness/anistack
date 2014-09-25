@@ -70,6 +70,8 @@
 	line-height: 2em;
 }
 .search-result-meta-wrap {
+	@extend .cf;
+	position: relative;
 	margin-top: 10px;
 	padding-top: 10px;
 	border-top: 1px dotted $gray-l-3;
@@ -81,4 +83,30 @@
 .search-result-type {
 	font-weight: 700;
 	text-transform: uppercase;
+}
+.search-result-add {
+	@extend .ns;
+	cursor: pointer;
+	float: right;
+	padding: 2px 5px;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	background: $blue;
+	@include border-radius(15px);
+}
+.search-result-picker {
+	@extend .tsout;
+	position: absolute;
+	top: -260px;
+	right: 0;
+	opacity: 0;
+	@include transform(scale(0));
+	@include transform-origin(bottom right);
+	&.visible {
+		@extend .tsin;
+		opacity: 1;
+		@include transform(scale(1));
+	}
 }

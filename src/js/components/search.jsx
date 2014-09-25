@@ -63,11 +63,20 @@ var searchApp = React.createClass({
 });
 
 var searchItem = React.createClass({
+	getInitialState: function() {
+		return {
+			pickerVisible: false 
+		};
+	},
+	togglePicker: function(visible){
+		this.setState({
+			pickerVisible: !this.state.pickerVisible 
+		});
+	},
 	render: function(){
 		var imageStyle = {
 			backgroundImage: 'url(' + this.props.seriesData.series_image_reference + ')'
 		}
-		
 		return (
 			<div className="search-result">
 				<div className="search-result-image" style={imageStyle}>
@@ -90,9 +99,22 @@ var searchItem = React.createClass({
 						<span className="search-result-meta">
 							<span className="search-result-type">{this.props.seriesData.series_type}</span> with {this.props.seriesData.series_episodes_total} Episode(s)
 						</span>
-						<pickerApp
-							seriesData={this.props.seriesData}
-						/>
+						<div className={
+							cx({
+								'search-result-add': true 
+							})
+						} onClick={this.togglePicker}>+ Add</div>
+						<div className={
+							cx({
+								'search-result-picker': true,
+								'visible': this.state.pickerVisible
+							})
+						}>
+							<pickerApp
+								seriesData={this.props.seriesData}
+								onClose={this.togglePicker}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

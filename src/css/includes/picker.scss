@@ -54,6 +54,7 @@
 	z-index: $z-up;
 	@include border-bottom-left-radius(4px);
 	@include border-bottom-right-radius(4px);
+	@include box-shadow(0 1px 3px $b30);
 
 	&.visible {
 		display: block;
@@ -176,7 +177,7 @@
 	float: right;
 	margin-right: 10px;
 	color: $gray-d-9;
-	font-size: 12px;
+	font-size: 11px;
 	line-height: 30px;
 }
 .picker-save {
@@ -186,7 +187,7 @@
 	color: #fff;
 	font-weight: 700;
 	background: $green;
-	@include border-radius(4px);
+	@include border-radius(30px);
 	&:hover {
 		background: $green-l-3;
 	}

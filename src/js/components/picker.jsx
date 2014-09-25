@@ -210,7 +210,7 @@ var pickerApp = React.createClass({
 					<div className="picker-save">
 						Save
 					</div>
-					<div className="picker-cancel">
+					<div className="picker-cancel" onClick={this.props.onClose}>
 						Cancel
 					</div>
 				</div>
