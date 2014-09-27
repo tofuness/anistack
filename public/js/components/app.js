@@ -98,16 +98,79 @@ if(mountNode) React.renderComponent(loginForm(null), mountNode);
 var cx = React.addons.classSet;
 var pickerApp = React.createClass({displayName: 'pickerApp',
 	propTypes: {
-		seriesData: React.PropTypes.object
+		seriesData: React.PropTypes.object,
+		onClose: React.PropTypes.func,
+		onSave: React.PropTypes.func
 	},
 	getInitialState: function(){
 		return {
-			itemStatus: 'Current',
+			itemStatusDisplay: 'Current',
+			itemStatus: 'current',
 			itemProgress: '',
 			itemRating: '',
 			itemRepeats: '',
 			ratingPreview: '',
 			statusMenuVisible: false
+		}
+	},
+	componentDidUpdate: function(prevProps, prevState){
+		var episodesTotal = this.props.seriesData.series_episodes_total;
+
+		// If statement below is there to make sure no infinite-loop happen
+
+		if(
+			(this.state.itemStatus === 'completed') !==
+			(this.state.itemProgress === episodesTotal)
+		){
+
+			// (1) If changed status to completed: bump up the itemProgress
+
+			if(this.state.itemStatus === 'completed' && prevState.itemStatus !== 'completed'){
+				this.setState({
+					itemProgress: episodesTotal
+				});
+			}
+
+			// (2) If changed the status from completed: remove the itemProgress
+
+			if(prevState.itemStatus === 'completed' && this.state.itemStatus !== 'completed'){
+				this.setState({
+					itemProgress: ''
+				});
+			}
+
+			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
+
+			if(prevState.itemProgress < episodesTotal && this.state.itemProgress === episodesTotal){
+				this.setState({
+					itemStatusDisplay: 'Completed',
+					itemStatus: 'completed'
+				});
+			}
+
+			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
+
+			if(prevState.itemProgress === episodesTotal && this.state.itemProgress < episodesTotal){
+				this.setState({
+					itemStatusDisplay: 'Current',
+					itemStatus: 'current'
+				});
+			}
+
+		}
+	},
+	componentWillReceiveProps: function(nextProps){
+		if(this.props.itemData === nextProps.itemData){
+			if(Object.keys(nextProps.itemData).length === 0){
+				// Timeout to compensate for scaleout animation duration
+				setTimeout(function(){
+					this.setState(this.getInitialState());
+				}.bind(this), 150);
+			} else {
+				setTimeout(function(){
+					this.setState(nextProps.itemData);
+				}.bind(this), 150);
+			}
 		}
 	},
 	componentDidMount: function(){
@@ -128,10 +191,18 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			this.setRepeats(Number(this.state.itemRepeats) + e.deltaY);
 			return false;
 		}.bind(this));
+
+		$(window).on('keyup', function(e){
+			if(e.keyCode === 27){
+				this.props.onCancel();
+			}
+		}.bind(this));
 	},
 	setStatus: function(e){
+		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
 		this.setState({
-			itemStatus: e.target.innerText
+			itemStatusDisplay: e.target.innerText,
+			itemStatus: statusVal
 		});
 		this.toggleStatusMenu();
 	},
@@ -159,7 +230,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			!this.props.seriesData.series_episodes_total)
 		){
 			this.setState({
-				itemProgress: (progressValue === 0) ? '' : progressValue
+				itemProgress: (progressValue === 0) ? '' : Number(progressValue)
 			});
 		}
 	},
@@ -223,7 +294,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 							'picker-status-val': true,
 							'visible': this.state.statusMenuVisible
 						}), onClick: this.toggleStatusMenu}, 
-							this.state.itemStatus, 
+							this.state.itemStatusDisplay, 
 							React.DOM.div({className: 
 								cx({
 									'picker-status-menu-icon': true,
@@ -306,10 +377,10 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 					)
 				), 
 				React.DOM.div({className: "picker-bottom"}, 
-					React.DOM.div({className: "picker-save"}, 
+					React.DOM.div({className: "picker-save", onClick: this.props.onSave.bind(null, this.state)}, 
 						"Save"
 					), 
-					React.DOM.div({className: "picker-cancel", onClick: this.props.onClose}, 
+					React.DOM.div({className: "picker-cancel", onClick: this.props.onCancel}, 
 						"Cancel"
 					)
 				)
@@ -472,7 +543,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 
 var mountNode = document.getElementById('register-form-wrap');
 if(mountNode) React.renderComponent(registerForm(null), mountNode);
-/** @jsx React.DOM */
+ /** @jsx React.DOM */
 
 var searchApp = React.createClass({displayName: 'searchApp',
 	getInitialState: function(){
@@ -539,12 +610,35 @@ var searchApp = React.createClass({displayName: 'searchApp',
 var searchItem = React.createClass({displayName: 'searchItem',
 	getInitialState: function() {
 		return {
+			itemData: {}, // List item data,
+			itemAdded: false, // If the item added in list
 			pickerVisible: false 
 		};
+	},
+	componentDidMount: function(){
+		if(this.props.itemData){
+			this.setState({
+				itemData: this.props.itemData,
+				itemAdded: true
+			});
+		}
 	},
 	togglePicker: function(visible){
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
+		});
+	},
+	closePicker: function(){
+		this.setState({
+			itemData: this.state.itemData,
+			pickerVisible: false
+		});
+	},
+	saveData: function(data){
+		this.setState({
+			itemData: data,
+			itemAdded: true,
+			pickerVisible: false
 		});
 	},
 	render: function(){
@@ -575,9 +669,15 @@ var searchItem = React.createClass({displayName: 'searchItem',
 						), 
 						React.DOM.div({className: 
 							cx({
-								'search-result-add': true 
+								'search-result-add': true,
+								'added': this.state.itemAdded,
+								'open': this.state.pickerVisible
 							}), 
-						onClick: this.togglePicker}, "+ Add"), 
+						onClick: this.togglePicker}, 
+							
+								(this.state.itemAdded) ? 'Edit info' : 'Add to list +'
+							
+						), 
 						React.DOM.div({className: 
 							cx({
 								'search-result-picker': true,
@@ -585,8 +685,10 @@ var searchItem = React.createClass({displayName: 'searchItem',
 							})
 						}, 
 							pickerApp({
+								itemData: this.state.itemData, 
 								seriesData: this.props.seriesData, 
-								onClose: this.togglePicker}
+								onCancel: this.closePicker, 
+								onSave: this.saveData}
 							)
 						)
 					)

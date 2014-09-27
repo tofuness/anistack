@@ -1,4 +1,4 @@
-/** @jsx React.DOM */
+ /** @jsx React.DOM */
 
 var searchApp = React.createClass({
 	getInitialState: function(){
@@ -65,12 +65,35 @@ var searchApp = React.createClass({
 var searchItem = React.createClass({
 	getInitialState: function() {
 		return {
+			itemData: {}, // List item data,
+			itemAdded: false, // If the item added in list
 			pickerVisible: false 
 		};
+	},
+	componentDidMount: function(){
+		if(this.props.itemData){
+			this.setState({
+				itemData: this.props.itemData,
+				itemAdded: true
+			});
+		}
 	},
 	togglePicker: function(visible){
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
+		});
+	},
+	closePicker: function(){
+		this.setState({
+			itemData: this.state.itemData,
+			pickerVisible: false
+		});
+	},
+	saveData: function(data){
+		this.setState({
+			itemData: data,
+			itemAdded: true,
+			pickerVisible: false
 		});
 	},
 	render: function(){
@@ -101,9 +124,15 @@ var searchItem = React.createClass({
 						</span>
 						<div className={
 							cx({
-								'search-result-add': true 
+								'search-result-add': true,
+								'added': this.state.itemAdded,
+								'open': this.state.pickerVisible
 							})
-						} onClick={this.togglePicker}>+ Add</div>
+						} onClick={this.togglePicker}>
+							{
+								(this.state.itemAdded) ? 'Edit info' : 'Add to list +'
+							}
+						</div>
 						<div className={
 							cx({
 								'search-result-picker': true,
@@ -111,8 +140,10 @@ var searchItem = React.createClass({
 							})
 						}>
 							<pickerApp
+								itemData={this.state.itemData}
 								seriesData={this.props.seriesData}
-								onClose={this.togglePicker}
+								onCancel={this.closePicker}
+								onSave={this.saveData}
 							/>
 						</div>
 					</div>

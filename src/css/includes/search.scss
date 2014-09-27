@@ -74,7 +74,7 @@
 	position: relative;
 	margin-top: 10px;
 	padding-top: 10px;
-	border-top: 1px dotted $gray-l-3;
+	border-top: 1px solid $gray-l-3;
 }
 .search-result-meta {
 	color: $gray-d-9;
@@ -85,25 +85,43 @@
 	text-transform: uppercase;
 }
 .search-result-add {
+	@extend .ts15;
 	@extend .ns;
 	cursor: pointer;
 	float: right;
-	padding: 2px 5px;
+	padding: 3px 10px;
 	color: #fff;
-	font-size: 10px;
 	font-weight: 700;
-	text-transform: uppercase;
+	text-align: center;
 	background: $blue;
+	border: 2px solid $blue;
 	@include border-radius(15px);
+	&.added {
+		border: 2px solid $gray-d-9;
+		background: $gray-d-9;
+		&.open {
+			color: $gray-d-9;
+			background: #fff;
+		}
+	}
+	&.open {
+		color: $blue;
+		background: #fff;
+	}
 }
 .search-result-picker {
 	@extend .tsout;
 	position: absolute;
-	top: -260px;
-	right: 0;
-	opacity: 0;
+	top: -101px;
+	right: -256px;
+	opacity: 1;
+	z-index: $z-up;
+	background: #fff;
 	@include transform(scale(0));
-	@include transform-origin(bottom right);
+	@include transform-origin(left center);
+	@include box-shadow(0 1px 6px $b30);
+	@include border-radius(4px);
+
 	&.visible {
 		@extend .tsin;
 		opacity: 1;

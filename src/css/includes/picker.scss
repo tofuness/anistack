@@ -2,7 +2,7 @@
 	width: 236px; // WORK: Needs some tweaking
 	height: auto;
 	background: #fff;
-	@include box-shadow(0 1px 3px $b30);
+	//@include box-shadow(0 1px 6px $b30);
 	@include border-radius(4px);
 }
 .picker-top {
@@ -173,6 +173,9 @@
 	padding: 10px;
 	background: $gray-hover;
 	border-top: 1px solid $gray-l-3;
+	@include border-bottom-left-radius(4px);
+	@include border-bottom-right-radius(4px);
+
 }
 .picker-cancel {
 	cursor: pointer;
@@ -180,7 +183,7 @@
 	margin-right: 10px;
 	color: $gray-d-9;
 	font-size: 11px;
-	line-height: 30px;
+	line-height: 28px;
 }
 .picker-save {
 	cursor: pointer;
