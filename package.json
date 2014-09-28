@@ -25,7 +25,8 @@
     "passport-local": "~1.0.0",
     "request": "~2.42.0",
     "slugin": "0.0.11",
-    "swag": "~0.7.0"
+    "swag": "~0.7.0",
+    "bluebird": "~2.3.4"
   },
   "devDependencies": {
     "gulp": "~3.8.7",
@@ -37,7 +38,7 @@
     "gulp-uglify": "~0.3.1",
     "morgan": "~1.2.2",
     "pretty-error": "~1.1.1",
-    "progress-bar": "^0.1.1",
+    "progress-bar": "^0.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

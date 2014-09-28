@@ -108,14 +108,9 @@ var validate = {
 		}
 	},
 	list: {
-		anime: function(_anime, done){
-			console.log(this.item_progress);
-			Anime.findOne({
-				_id: _anime
-			}, function(err, doc){
-				if(err) return done(false);
-				return done(doc);
-			});
+		anime: function(_animeId, done){
+			console.log(animeId);
+			done(false);
 		},
 		status: function(statusStr){
 			statusStr = statusStr.toLowerCase();
@@ -173,29 +168,6 @@ validators.user.add('email', {
 filters.user.add('username', 'lowercase');
 filters.user.add('email', 'lowercase');
 filters.user.add('password', filter.user.password);
-
-// Validation/Filters for ListItemSchema
-
-validators.list.add('_id', {
-	callback: validate.list.anime
-});
-
-validators.list.add('item_progress', {
-	min: 0,
-	max: 10,
-	msg: 'item_progress did not pass validation'
-});
-
-validators.list.add('item_rating', {
-	min: 0,
-	max: 10,
-	msg: 'item_rating did not pass validation'
-});
-
-validators.list.add('item_status', {
-	callback: validate.list.status,
-	msg: 'item_status did not pass validation'
-});
 
 // Schemas
 
@@ -269,7 +241,7 @@ var StudioSchema = new Schema({
 var AnimeListItemSchema = new Schema({
 	_id: {
 		type: Schema.Types.ObjectId,
-		unique: true
+		required: true
 	},
 	item_progress: {
 		type: Number,
@@ -299,7 +271,7 @@ var AnimeListItemSchema = new Schema({
 var MangaListItemSchema = new Schema({
 	_id: {
 		type: Schema.Types.ObjectId,
-		unique: true
+		required: true
 	},
 	item_progress: {
 		type: Number,
@@ -428,8 +400,6 @@ var UserSchema = new Schema({
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
 mongooseValidateFilter.validateFilter(UserSchema, validators.user, filters.user);
-mongooseValidateFilter.validateFilter(AnimeListItemSchema, validators.list, filters.list);
-mongooseValidateFilter.validateFilter(MangaListItemSchema, validators.list, filters.list);
 
 var Anime = mongoose.model('Anime', AnimeSchema);
 var User = mongoose.model('User', UserSchema);

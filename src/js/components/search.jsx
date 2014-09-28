@@ -95,6 +95,18 @@ var searchItem = React.createClass({
 			itemAdded: true,
 			pickerVisible: false
 		});
+
+		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
+		data._id = this.props.seriesData._id;
+
+		$.ajax({
+			type: 'post',
+			url: APIUrl,
+			data: data,
+			success: function(res){
+				console.log(res); 
+			}
+		});
 	},
 	render: function(){
 		var imageStyle = {

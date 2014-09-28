@@ -1,4 +1,6 @@
 var db = require('../../models/db.js');
+var hAuth = require('../../helpers/auth.js');
+var listValidate = require('../../helpers/validateListData.js');
 var User = db.User;
 var _ = require('lodash');
 
@@ -15,7 +17,7 @@ module.exports = function(app){
 
 	// ?: Get user's list
 
-	app.route('/list/:list(anime|manga)/:username')
+	app.route('/list/:list(anime|manga)/view/:username')
 	.get(function(req, res, next){
 		User.findOne({
 			username: req.param('username').toLowerCase()
@@ -30,6 +32,110 @@ module.exports = function(app){
 		});
 	});
 
+	app.route('/list/:list(anime|manga)/add')
+	.all(hAuth.ifAuth)
+	.post(function(req, res, next){
+		if(!req.body._id){
+			return next(new Error('No _id was sent'));
+		}
+
+		if(
+			_.map(req.user.anime_list, function(list){ return list._id.toString() })
+			.indexOf(req.body._id) > -1
+		){
+			return next(new Error('_id already exists in list'));
+		}
+
+		var listItem = {
+			_id: req.body._id,
+			item_progress: req.body.itemProgress,
+			item_rating: req.body.itemRating,
+			item_status: req.body.itemStatus || 'current',
+			item_repeats: req.body.itemRepeats
+		}
+
+		listValidate.validate.anime(listItem, function(err, itemDoc){
+			if(!err){
+				User.update({
+					_id: req.user._id
+				}, {
+					$addToSet: {
+						anime_list: itemDoc
+					}
+				}, function(err, status){
+					if(status){
+						res.status(200).json({ status: 'ok', message: 'added item to list' });
+					} else {
+						next(new Error('Could not add item to list'));
+					}
+				});
+			}
+		});
+	});
+
+	app.route('/list/:list(anime|manga)/update')
+	.all(hAuth.ifAuth)
+	.post(function(req, res, next){
+		if(!req.body._id){
+			return next(new Error('No _id was sent'));
+		}
+
+		var listItem = {
+			_id: req.body._id,
+			item_progress: req.body.itemProgress,
+			item_rating: req.body.itemRating,
+			item_status: req.body.itemStatus || 'current',
+			item_repeats: req.body.itemRepeats
+		}
+		listValidate.validate.anime(listItem, function(err, itemDoc){
+			if(!err){
+				var itemData = {};
+				console.log(itemDoc);
+				itemData['anime_list.$.item_status'] = itemDoc.item_status;				
+				if(itemDoc.item_progress){
+					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
+				}
+				if(itemDoc.item_rating){
+					itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
+				}
+
+				console.log(itemData);
+
+				User.update({
+					_id: req.user._id,
+					'anime_list._id': itemDoc._id
+				}, {
+					$set: itemData
+				}, function(err, status){
+					if(status){
+						res.status(200).json({ status: 'ok', message: 'update item in list'});
+					} else {
+						next(new Error('Could not update item in list'));
+					}
+				});
+			}
+		})
+	});
+
+
+
+	app.route('/list/reset')
+	.all(hAuth.ifAuth)
+	.get(function(req, res, next){
+		User.update({
+			_id: req.user._id
+		}, {
+			$set: {
+				anime_list: []
+			}
+		}, function(err, status){
+			console.log(err);
+			console.log(status);
+			res.status(200).end();
+		});
+	});
+
+	/*
 	// ?: Add anime/manga to user's list
 
 	app.route('/list/:list(anime|manga)/add/:username')
@@ -105,4 +211,5 @@ module.exports = function(app){
 			return res.status(200).json({ status: 'ok', message: 'Deleted list entry' });
 		});
 	});
+	*/
 }
