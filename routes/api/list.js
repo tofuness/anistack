@@ -91,10 +91,10 @@ module.exports = function(app){
 			if(!err){
 				var itemData = {};
 				itemData['anime_list.$.item_status'] = itemDoc.item_status;				
-				if(itemDoc.item_progress){
+				if(itemDoc.item_progress !== undefined){
 					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
 				}
-				if(itemDoc.item_rating){
+				if(itemDoc.item_rating !== undefined){
 					itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
 				}
 

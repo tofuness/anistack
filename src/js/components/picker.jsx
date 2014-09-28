@@ -76,13 +76,14 @@ var pickerApp = React.createClass({
 			}
 		}
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		// This might need some improvement
 		// Pass in itemData props to overwrite the default values
 		if(this.props.itemData){
 			this.setState(this.props.itemData);
 		}
-
+	},
+	componentDidMount: function(){
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
 			this.setProgress(Number(this.state.itemProgress) + e.deltaY);

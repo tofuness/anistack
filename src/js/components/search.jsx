@@ -53,6 +53,10 @@ var searchApp = React.createClass({
 						var itemData = null;
 						if(searchRes.item_data){
 							itemData = {
+								itemStatusDisplay: (
+									searchRes.item_data.item_status.charAt(0).toUpperCase() +
+									searchRes.item_data.item_status.slice(1).toLowerCase()
+								).replace('Onhold', 'On Hold'),
 								itemStatus: searchRes.item_data.item_status,
 								itemProgress: searchRes.item_data.item_progress,
 								itemRating: searchRes.item_data.item_rating

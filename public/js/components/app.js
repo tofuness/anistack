@@ -173,13 +173,14 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			}
 		}
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		// This might need some improvement
 		// Pass in itemData props to overwrite the default values
 		if(this.props.itemData){
 			this.setState(this.props.itemData);
 		}
-
+	},
+	componentDidMount: function(){
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
 			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
@@ -598,6 +599,10 @@ var searchApp = React.createClass({displayName: 'searchApp',
 						var itemData = null;
 						if(searchRes.item_data){
 							itemData = {
+								itemStatusDisplay: (
+									searchRes.item_data.item_status.charAt(0).toUpperCase() +
+									searchRes.item_data.item_status.slice(1).toLowerCase()
+								).replace('Onhold', 'On Hold'),
 								itemStatus: searchRes.item_data.item_status,
 								itemProgress: searchRes.item_data.item_progress,
 								itemRating: searchRes.item_data.item_rating
