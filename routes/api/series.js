@@ -47,7 +47,7 @@ module.exports = function(app){
 
 	// ?: Get one anime/manga by _id
 
-	app.route('/:collection(anime|manga)/:_id')
+	app.route('/:collection(anime|manga)/view/:_id')
 	.get(function(req, res, next){
 		Collection.findOne({
 			_id: req.param('_id')
@@ -61,6 +61,7 @@ module.exports = function(app){
 
 	app.route('/:collection(anime|manga)/search/:query')
 	.get(function(req, res, next){
+		if(!req.param('query')) return res.status(200).json([]);
 		var searchQuery = req.param('query');
 		var searchConditions = {
 			$or: [
@@ -79,6 +80,21 @@ module.exports = function(app){
 				// Hacky sort function
 				return ['movie', 'tv'].indexOf(series.series_type) * -1
 			});
+
+			sortedDocs = sortedDocs.map(function(series){
+				return series.toObject();
+			});
+
+			if(req.user && req.user[req.param('collection') + '_list']){
+				for(var i = 0; i < sortedDocs.length; i++){
+					var findRes = _.find(req.user[req.param('collection') + '_list'], {
+						_id: sortedDocs[i]._id
+					});
+					if(findRes){
+						sortedDocs[i]['item_data'] = findRes;
+					}
+				}
+			}
 			res.status(200).json(sortedDocs).end();
 		});
 	});

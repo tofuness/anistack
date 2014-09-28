@@ -13,18 +13,15 @@ var searchApp = React.createClass({
 	},
 	onSearch: function(e){
 		this.setState({
-			searchText: e.target.value || ''
+			searchText: e.target.value,
+			searchResults: (e.target.value === '') ? [] : this.state.searchResults
 		});
-
 		if(e.target.value !== ''){
 			this.search();
-		} else {
-			this.setState({
-				searchResults: []
-			});
 		}
 	},
 	search: _.debounce(function(){
+		if(this.state.searchText === '') return false;
 		$.ajax({
 			type: 'get',
 			url: '/api/anime/search/' + this.state.searchText,
@@ -37,7 +34,7 @@ var searchApp = React.createClass({
 				console.log(err);
 			}
 		});
-	}, 300),
+	}, 500),
 	onEsc: function(e){
 		// On escape, clear the search
 		if(e.key === 'Escape'){ 
@@ -53,7 +50,15 @@ var searchApp = React.createClass({
 				<div id="search-results-wrap">
 				{
 					this.state.searchResults.map(function(searchRes){
-						return <searchItem seriesData={searchRes} key={searchRes._id} />;
+						var itemData = null;
+						if(searchRes.item_data){
+							itemData = {
+								itemStatus: searchRes.item_data.item_status,
+								itemProgress: searchRes.item_data.item_progress,
+								itemRating: searchRes.item_data.item_rating
+							}
+						}
+						return <searchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} />;
 					})
 				}
 				</div>

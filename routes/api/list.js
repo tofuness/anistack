@@ -90,7 +90,6 @@ module.exports = function(app){
 		listValidate.validate.anime(listItem, function(err, itemDoc){
 			if(!err){
 				var itemData = {};
-				console.log(itemDoc);
 				itemData['anime_list.$.item_status'] = itemDoc.item_status;				
 				if(itemDoc.item_progress){
 					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
@@ -98,8 +97,6 @@ module.exports = function(app){
 				if(itemDoc.item_rating){
 					itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
 				}
-
-				console.log(itemData);
 
 				User.update({
 					_id: req.user._id,
@@ -126,7 +123,8 @@ module.exports = function(app){
 			_id: req.user._id
 		}, {
 			$set: {
-				anime_list: []
+				anime_list: [],
+				manga_list: []
 			}
 		}, function(err, status){
 			console.log(err);
