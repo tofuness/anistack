@@ -187,13 +187,30 @@
 }
 .picker-save {
 	cursor: pointer;
+	position: relative;
 	float: right;
 	padding: 5px 20px;
 	color: #fff;
 	font-weight: 700;
-	background: $green;
+	background: $blue;
 	@include border-radius(30px);
 	&:hover {
-		background: $green-l-3;
+		background: $blue-l-3;
 	}
+}
+.picker-save-success {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	text-align: center;
+	background: $green;
+	@include border-radius(30px);
+}
+.picker-save-success-icon {
+	padding-top: 5px;
+	font-size: 16px;
 }

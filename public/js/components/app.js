@@ -173,14 +173,11 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			}
 		}
 	},
-	componentWillMount: function(){
-		// This might need some improvement
-		// Pass in itemData props to overwrite the default values
+	componentDidMount: function(){
 		if(this.props.itemData){
 			this.setState(this.props.itemData);
 		}
-	},
-	componentDidMount: function(){
+
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
 			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
@@ -260,6 +257,39 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		this.setState({
 			itemRating: this.state.ratingPreview
 		});
+	},
+	onSave: function(){
+		/*
+		$(this.refs.successBtn.getDOMNode()).velocity('transition.fadeIn', {
+			duration: 100
+		}).velocity('reverse', {
+			delay: 780,
+			duration: 200
+		});
+
+		$(this.refs.successIcon.getDOMNode()).velocity({
+			scale: [1, [300, 20]]
+		}, {
+			delay: 80,
+			duration: 400
+		}).delay(780).hide();*/
+
+		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
+			duration: 100
+		}).velocity('reverse', {
+			delay: 1500,
+			duration: 300
+		});
+
+		$(this.refs.successIcon.getDOMNode()).stop(true).velocity({
+			scale: [1, 0]
+		}, 600, [200, 16])
+		.velocity('reverse', {
+			delay: 950,
+			duration: 300
+		});
+		
+		this.props.onSave(this.state);
 	},
 	render: function(){
 		var heartNodes = [];
@@ -378,8 +408,12 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 					)
 				), 
 				React.DOM.div({className: "picker-bottom"}, 
-					React.DOM.div({className: "picker-save", onClick: this.props.onSave.bind(null, this.state)}, 
-						"Save"
+					React.DOM.div({className: "picker-save", onClick: this.onSave}, 
+						"Save", 
+						React.DOM.div({className: "picker-save-success", ref: "successBtn"}, 
+							React.DOM.div({className: "picker-save-success-icon icon-check", ref: "successIcon"}
+							)
+						)
 					), 
 					React.DOM.div({className: "picker-cancel", onClick: this.props.onCancel}, 
 						"Cancel"
@@ -625,7 +659,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 			pickerVisible: false 
 		};
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		if(this.props.itemData){
 			this.setState({
 				itemData: this.props.itemData,
@@ -645,12 +679,13 @@ var searchItem = React.createClass({displayName: 'searchItem',
 		});
 	},
 	saveData: function(data){
-		this.setState({
-			itemData: data,
-			itemAdded: true,
-			pickerVisible: false
-		});
-
+		setTimeout(function(){
+			this.setState({
+				itemData: data,
+				itemAdded: true,
+				pickerVisible: false
+			});
+		}.bind(this), 1300);
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
 		data._id = this.props.seriesData._id;
 
@@ -692,6 +727,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 						React.DOM.div({className: 
 							cx({
 								'search-result-add': true,
+								'visible': LOGGED_IN,
 								'added': this.state.itemAdded,
 								'open': this.state.pickerVisible
 							}), 

@@ -79,7 +79,7 @@ var searchItem = React.createClass({
 			pickerVisible: false 
 		};
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		if(this.props.itemData){
 			this.setState({
 				itemData: this.props.itemData,
@@ -99,12 +99,13 @@ var searchItem = React.createClass({
 		});
 	},
 	saveData: function(data){
-		this.setState({
-			itemData: data,
-			itemAdded: true,
-			pickerVisible: false
-		});
-
+		setTimeout(function(){
+			this.setState({
+				itemData: data,
+				itemAdded: true,
+				pickerVisible: false
+			});
+		}.bind(this), 1300);
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
 		data._id = this.props.seriesData._id;
 
@@ -146,6 +147,7 @@ var searchItem = React.createClass({
 						<div className={
 							cx({
 								'search-result-add': true,
+								'visible': LOGGED_IN,
 								'added': this.state.itemAdded,
 								'open': this.state.pickerVisible
 							})

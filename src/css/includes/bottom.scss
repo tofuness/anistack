@@ -1,23 +1,25 @@
 #bottom {
-	display: none;
 	@extend .cf;
 	margin: 0 auto;
-	padding-bottom: 30px;
-	width: 1160px;
+	padding: 40px 0;
+	width: 1000px;
 }
 #bottom-logo {
 	@extend .ts15;
 	cursor: pointer;
 	float: left;
-	margin-right: 30px;
+	margin-right: 20px;
 	color: $bluegray;
 	font-size: 32px;
 	&:hover {
 		color: $red;
 	}
 }
+#bottom-menu-wrap {
+	float: left;
+}
 #bottom-menu-main {
-	padding-bottom: 15px;
+	padding-bottom: 10px;
 	a {
 		padding-right: 10px;
 		color: $bluegray;

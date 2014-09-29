@@ -76,14 +76,11 @@ var pickerApp = React.createClass({
 			}
 		}
 	},
-	componentWillMount: function(){
-		// This might need some improvement
-		// Pass in itemData props to overwrite the default values
+	componentDidMount: function(){
 		if(this.props.itemData){
 			this.setState(this.props.itemData);
 		}
-	},
-	componentDidMount: function(){
+
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
 			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
@@ -163,6 +160,39 @@ var pickerApp = React.createClass({
 		this.setState({
 			itemRating: this.state.ratingPreview
 		});
+	},
+	onSave: function(){
+		/*
+		$(this.refs.successBtn.getDOMNode()).velocity('transition.fadeIn', {
+			duration: 100
+		}).velocity('reverse', {
+			delay: 780,
+			duration: 200
+		});
+
+		$(this.refs.successIcon.getDOMNode()).velocity({
+			scale: [1, [300, 20]]
+		}, {
+			delay: 80,
+			duration: 400
+		}).delay(780).hide();*/
+
+		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
+			duration: 100
+		}).velocity('reverse', {
+			delay: 1500,
+			duration: 300
+		});
+
+		$(this.refs.successIcon.getDOMNode()).stop(true).velocity({
+			scale: [1, 0]
+		}, 600, [200, 16])
+		.velocity('reverse', {
+			delay: 950,
+			duration: 300
+		});
+		
+		this.props.onSave(this.state);
 	},
 	render: function(){
 		var heartNodes = [];
@@ -281,8 +311,12 @@ var pickerApp = React.createClass({
 					</div>
 				</div>
 				<div className="picker-bottom">
-					<div className="picker-save" onClick={this.props.onSave.bind(null, this.state)}>
+					<div className="picker-save" onClick={this.onSave}>
 						Save
+						<div className="picker-save-success" ref="successBtn">
+							<div className="picker-save-success-icon icon-check" ref="successIcon">
+							</div>
+						</div>
 					</div>
 					<div className="picker-cancel" onClick={this.props.onCancel}>
 						Cancel

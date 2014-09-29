@@ -25333,5 +25333,7 @@ var constants = {
 	UPDATE_ITEM: 'UPDATE_ITEM',
 	CLOSE_PICKERS: 'CLOSE_PICKERS'
 }
+
+var LOGGED_IN = !!$('#top-profile-name').length;
 // Try too keep things modular by writing your JS under ./includes
 

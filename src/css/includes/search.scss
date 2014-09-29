@@ -1,5 +1,5 @@
 #search-page-wrap {
-	padding-top: 82px;
+	padding-top: 92px;
 	width: 100%;
 	background: #fff;
 }
@@ -12,15 +12,12 @@
 }
 #search-input-wrap {
 	@extend .cf;
-	padding-bottom: 30px;
-	margin-bottom: 30px;
-	border-bottom: 1px solid $gray-l-3;
+	padding-bottom: 40px;
 }
 #search-input {
 	float: left;
 	width: 600px;
-	font-size: 23px;
-	font-weight: 700;
+	font-size: 32px;
 }
 #search-results-wrap {
 	
@@ -56,7 +53,7 @@
 }
 .search-result-title {
 	float: left;
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: 700;
 }
 .search-result-year {
@@ -64,7 +61,7 @@
 	padding-left: 10px;
 	color: $gray-d-9;
 	font-size: 12px;
-	line-height: 19px;
+	line-height: 24px;
 }
 .search-result-desc {
 	line-height: 2em;
@@ -79,6 +76,7 @@
 .search-result-meta {
 	color: $gray-d-9;
 	font-size: 11px;
+	line-height: 28px;
 }
 .search-result-type {
 	font-weight: 700;
@@ -87,6 +85,7 @@
 .search-result-add {
 	@extend .ts15;
 	@extend .ns;
+	display: none;
 	cursor: pointer;
 	float: right;
 	padding: 3px 10px;
@@ -96,6 +95,9 @@
 	background: $blue;
 	border: 2px solid $blue;
 	@include border-radius(15px);
+	&.visible {
+		display: block;
+	}
 	&.added {
 		border: 2px solid $gray-d-9;
 		background: $gray-d-9;
