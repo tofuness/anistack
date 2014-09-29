@@ -147,9 +147,15 @@ var pickerApp = React.createClass({
 	},
 	setRatingPreview: function(rating, e){
 		var posX = e.pageX - $(e.target).offset().left;
-		this.setState({
-			ratingPreview: (posX < 11) ? Number(rating) : Number(rating + 1)
-		});
+		if(rating === 1 && posX < 21){
+			this.setState({
+				ratingPreview: (posX > 10) ? Number(rating) : 0
+			});
+		} else {
+			this.setState({
+				ratingPreview: (posX < 11) ? Number(rating) : Number(rating + 1)
+			});
+		}
 	},
 	resetRatingPreview: function(){
 		this.setState({
@@ -163,19 +169,16 @@ var pickerApp = React.createClass({
 	},
 	onSave: function(){
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
-			duration: 100
+			duration: 200
 		}).velocity('reverse', {
-			delay: 600,
+			delay: 500,
 			duration: 300
 		});
 
-		$(this.refs.successIcon.getDOMNode()).stop(true).velocity({
-			scale: [1, 0]
-		}, 600, [200, 16])
-		.velocity('reverse', {
-			delay: 400,
-			duration: 0
-		});
+		$(this.refs.successIcon.getDOMNode()).stop(true).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		}).delay(600).hide();
 		setTimeout(function(){
 			this.props.onSave(this.state);
 		}.bind(this), 550);
@@ -288,11 +291,11 @@ var pickerApp = React.createClass({
 						Rating
 					</div>
 					<div className="picker-rating-wrap">
-						<div className="picker-rating-val">
-							{(this.state.itemRating / 2).toFixed(1)}
-						</div>
 						<div className="picker-rating-hearts">
 							{heartNodes}
+						</div>
+						<div className="picker-rating-val">
+							{(this.state.itemRating / 2).toFixed(1)}
 						</div>
 					</div>
 				</div>
