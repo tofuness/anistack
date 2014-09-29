@@ -63,7 +63,7 @@ var pickerApp = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function(nextProps){
-		if(this.props.itemData === nextProps.itemData){
+		if(nextProps.itemData){
 			if(Object.keys(nextProps.itemData).length === 0){
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function(){
@@ -162,25 +162,10 @@ var pickerApp = React.createClass({
 		});
 	},
 	onSave: function(){
-		/*
-		$(this.refs.successBtn.getDOMNode()).velocity('transition.fadeIn', {
-			duration: 100
-		}).velocity('reverse', {
-			delay: 780,
-			duration: 200
-		});
-
-		$(this.refs.successIcon.getDOMNode()).velocity({
-			scale: [1, [300, 20]]
-		}, {
-			delay: 80,
-			duration: 400
-		}).delay(780).hide();*/
-
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
 			duration: 100
 		}).velocity('reverse', {
-			delay: 1500,
+			delay: 600,
 			duration: 300
 		});
 
@@ -188,11 +173,12 @@ var pickerApp = React.createClass({
 			scale: [1, 0]
 		}, 600, [200, 16])
 		.velocity('reverse', {
-			delay: 950,
-			duration: 300
+			delay: 400,
+			duration: 0
 		});
-		
-		this.props.onSave(this.state);
+		setTimeout(function(){
+			this.props.onSave(this.state);
+		}.bind(this), 550);
 	},
 	render: function(){
 		var heartNodes = [];
@@ -302,11 +288,11 @@ var pickerApp = React.createClass({
 						Rating
 					</div>
 					<div className="picker-rating-wrap">
-						<div className="picker-rating-hearts">
-							{heartNodes}
-						</div>
 						<div className="picker-rating-val">
 							{(this.state.itemRating / 2).toFixed(1)}
+						</div>
+						<div className="picker-rating-hearts">
+							{heartNodes}
 						</div>
 					</div>
 				</div>

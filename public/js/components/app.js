@@ -160,7 +160,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		}
 	},
 	componentWillReceiveProps: function(nextProps){
-		if(this.props.itemData === nextProps.itemData){
+		if(nextProps.itemData){
 			if(Object.keys(nextProps.itemData).length === 0){
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function(){
@@ -259,25 +259,10 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		});
 	},
 	onSave: function(){
-		/*
-		$(this.refs.successBtn.getDOMNode()).velocity('transition.fadeIn', {
-			duration: 100
-		}).velocity('reverse', {
-			delay: 780,
-			duration: 200
-		});
-
-		$(this.refs.successIcon.getDOMNode()).velocity({
-			scale: [1, [300, 20]]
-		}, {
-			delay: 80,
-			duration: 400
-		}).delay(780).hide();*/
-
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
 			duration: 100
 		}).velocity('reverse', {
-			delay: 1500,
+			delay: 600,
 			duration: 300
 		});
 
@@ -285,11 +270,12 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			scale: [1, 0]
 		}, 600, [200, 16])
 		.velocity('reverse', {
-			delay: 950,
-			duration: 300
+			delay: 400,
+			duration: 0
 		});
-		
-		this.props.onSave(this.state);
+		setTimeout(function(){
+			this.props.onSave(this.state);
+		}.bind(this), 550);
 	},
 	render: function(){
 		var heartNodes = [];
@@ -399,11 +385,11 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 						"Rating"
 					), 
 					React.DOM.div({className: "picker-rating-wrap"}, 
-						React.DOM.div({className: "picker-rating-hearts"}, 
-							heartNodes
-						), 
 						React.DOM.div({className: "picker-rating-val"}, 
 							(this.state.itemRating / 2).toFixed(1)
+						), 
+						React.DOM.div({className: "picker-rating-hearts"}, 
+							heartNodes
 						)
 					)
 				), 
@@ -679,13 +665,6 @@ var searchItem = React.createClass({displayName: 'searchItem',
 		});
 	},
 	saveData: function(data){
-		setTimeout(function(){
-			this.setState({
-				itemData: data,
-				itemAdded: true,
-				pickerVisible: false
-			});
-		}.bind(this), 1300);
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
 		data._id = this.props.seriesData._id;
 
@@ -697,6 +676,21 @@ var searchItem = React.createClass({displayName: 'searchItem',
 				console.log(res); 
 			}
 		});
+
+		this.setState({
+			itemData: data,
+			itemAdded: true,
+			pickerVisible: false
+		});
+	},
+	onRemove: function(){
+		var confirmRemove = confirm('Sure you want to remove this from your list?');
+		if(confirmRemove){
+			this.setState({
+				itemData: {},
+				itemAdded: false
+			});
+		}
 	},
 	render: function(){
 		var imageStyle = {
@@ -748,6 +742,14 @@ var searchItem = React.createClass({displayName: 'searchItem',
 								onCancel: this.closePicker, 
 								onSave: this.saveData}
 							)
+						), 
+						React.DOM.div({className: 
+							cx({
+								'search-result-remove': true,
+								'visible': LOGGED_IN && this.state.itemAdded,
+							}), 
+						onClick: this.onRemove}, 
+							"× Remove"
 						)
 					)
 				)

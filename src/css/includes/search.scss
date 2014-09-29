@@ -102,13 +102,34 @@
 		border: 2px solid $gray-d-9;
 		background: $gray-d-9;
 		&.open {
-			color: $gray-d-9;
+			color: $blue;
+			border: 2px solid $blue;
 			background: #fff;
+		}
+		&:hover:not(.open) {
+			border: 2px solid $blue; 
+			background: $blue;
 		}
 	}
 	&.open {
 		color: $blue;
 		background: #fff;
+	}
+}
+.search-result-remove {
+	float: right;
+	padding-top: 6px;
+	cursor: pointer;
+	display: none;
+	margin-right: 20px;
+	color: $gray-d-9;
+	font-size: 11px;
+	&.visible {
+		display: block;
+	}
+	&:hover {
+		color: $red;
+		@include box-shadow(0 1px 0 $red);
 	}
 }
 .search-result-picker {

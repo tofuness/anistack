@@ -143,7 +143,7 @@
 }
 .picker-rating-hearts {
 	@extend .cf;
-	float: left;
+	float: right;
 }
 .picker-heart {
 	float: left;
@@ -153,15 +153,14 @@
 	font-size: 23px;
 	line-height: 18px;
 	&:first-child {
-		padding-left: 0;
+		padding-left: 10px;
 	}
 	&:last-child {
 		padding-right: 0;
 	}
 }
 .picker-rating-val {
-	float: right;
-	margin-left: 10px;
+	float: left;
 	width: 50px;
 	font-size: 14px;
 	font-weight: 700;

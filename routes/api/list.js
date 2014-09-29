@@ -66,7 +66,7 @@ module.exports = function(app){
 					if(status){
 						res.status(200).json({ status: 'ok', message: 'added item to list' });
 					} else {
-						next(new Error('Could not add item to list'));
+						next(new Error('could not add item to list'));
 					}
 				});
 			}
@@ -77,7 +77,7 @@ module.exports = function(app){
 	.all(hAuth.ifAuth)
 	.post(function(req, res, next){
 		if(!req.body._id){
-			return next(new Error('No _id was sent'));
+			return next(new Error('no _id was sent'));
 		}
 
 		var listItem = {
@@ -105,11 +105,36 @@ module.exports = function(app){
 					$set: itemData
 				}, function(err, status){
 					if(status){
-						res.status(200).json({ status: 'ok', message: 'update item in list'});
+						res.status(200).json({ status: 'ok', message: 'updated item in list'});
 					} else {
-						next(new Error('Could not update item in list'));
+						next(new Error('could not update item in list'));
 					}
 				});
+			}
+		})
+	});
+
+	app.route('/list/:list(anime|manga)/remove')
+	.all(hAuth.ifAuth)
+	.post(function(req, res, next){
+		if(!req.body._id){
+			return next(new Error('no _id was sent'));
+		}
+
+		var removeListItem = (listType === 'anime') ? { anime_list: { _id: req.body._id } } : { manga_list: { _id: req.body._id } };
+
+		User.update({
+			_id: req.user._id
+		}, {
+			$pull: removeListItem
+		}, function(err, status){
+			if(status){
+				res.status(200).json({
+					status: 'ok',
+					message: 'removed item from list'
+				});
+			} else {
+				next(new Error('could not remove item from list'));
 			}
 		})
 	});

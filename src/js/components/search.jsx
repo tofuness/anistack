@@ -99,13 +99,6 @@ var searchItem = React.createClass({
 		});
 	},
 	saveData: function(data){
-		setTimeout(function(){
-			this.setState({
-				itemData: data,
-				itemAdded: true,
-				pickerVisible: false
-			});
-		}.bind(this), 1300);
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
 		data._id = this.props.seriesData._id;
 
@@ -117,6 +110,21 @@ var searchItem = React.createClass({
 				console.log(res); 
 			}
 		});
+
+		this.setState({
+			itemData: data,
+			itemAdded: true,
+			pickerVisible: false
+		});
+	},
+	onRemove: function(){
+		var confirmRemove = confirm('Sure you want to remove this from your list?');
+		if(confirmRemove){
+			this.setState({
+				itemData: {},
+				itemAdded: false
+			});
+		}
 	},
 	render: function(){
 		var imageStyle = {
@@ -168,6 +176,14 @@ var searchItem = React.createClass({
 								onCancel={this.closePicker}
 								onSave={this.saveData}
 							/>
+						</div>
+						<div className={
+							cx({
+								'search-result-remove': true,
+								'visible': LOGGED_IN && this.state.itemAdded,
+							})
+						} onClick={this.onRemove}>
+							&times; Remove
 						</div>
 					</div>
 				</div>
