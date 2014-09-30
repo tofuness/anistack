@@ -135,19 +135,17 @@
 .search-result-picker {
 	@extend .tsout;
 	position: absolute;
-	top: -101px;
-	right: -256px;
-	opacity: 1;
+	top: -267px;
+	right: 0;
 	z-index: $z-up;
 	background: #fff;
 	@include transform(scale(0));
-	@include transform-origin(left center);
+	@include transform-origin(190px bottom);
 	@include box-shadow(0 1px 6px $b30);
 	@include border-radius(4px);
 
 	&.visible {
 		@extend .tsin;
-		opacity: 1;
 		@include transform(scale(1));
 	}
 }

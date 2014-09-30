@@ -687,13 +687,21 @@ var searchItem = React.createClass({displayName: 'searchItem',
 		});
 	},
 	onRemove: function(){
-		var confirmRemove = confirm('Sure you want to remove this from your list?');
-		if(confirmRemove){
-			this.setState({
-				itemData: {},
-				itemAdded: false
-			});
-		}
+		this.setState({
+			itemData: {},
+			itemAdded: false
+		});
+
+		$.ajax({
+			type: 'post',
+			url: '/api/list/anime/remove',
+			data: {
+				_id: this.props.seriesData._id
+			},
+			success: function(res){
+				console.log(res);
+			}
+		});
 	},
 	render: function(){
 		var imageStyle = {
