@@ -25334,6 +25334,9 @@ var constants = {
 	CLOSE_PICKERS: 'CLOSE_PICKERS'
 }
 
-var LOGGED_IN = !!$('#top-profile-name').length;
+var USER = {
+	LOGGED_IN: !!$('#top-profile-name').length,
+	USERNAME: $('#top-profile-name').text().toLowerCase()
+}
 // Try too keep things modular by writing your JS under ./includes
 

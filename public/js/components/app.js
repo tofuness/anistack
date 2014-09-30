@@ -1,69 +1,62 @@
 /** @jsx React.DOM */
 
 var listStore = [];
-var listAction = {
 
-}
+$.ajax({
+	url: '/api/list/anime/view/' + USER.USERNAME,
+	type: 'get',
+	success: function(listData){
+		listStore = listData;
+		PubSub.publishSync(constants.DATA_CHANGE, listData)
+	}
+});
 
-var listComp = React.createClass({displayName: 'listComp',
+var listApp = React.createClass({displayName: 'listApp',
 	getInitialState: function(){
-		var app = {
-			listData: [], // List data
-			listFilterText: '', // Filter by string
-			listFilterStatus: '', // Filter by status
-			listLoaded: false, // Display list
-			listLoadError: false, // Hides list and show error
-			listLastSort: 'seriesTitle', // Which property the list is sorter by
-			listLastOrder: 'asc' // Which order the list is currently sorted by
+		return {
+			listLastSort: 'series_title', // Property name from API
+			listLastOrder: 'asc'
 		}
-		return app;
 	},
-	shouldComponentUpdate: function(nextProps, nextState){
-		// By default, shouldComponentUpdate just returns true.
-		// This replaces default behavior.
-		if(nextState === this.state) return false;
-		return true;
-	},
-	componentDidMount: function(){
-		PubSub.subscribe(constants.DATA_CHANGE, this.initList);
-		PubSub.subscribe(constants.LIST_ERROR, this.errList);
-	},
-	initList: function(){
-		if(!this.state.listLoaded){
-			this.setState({
-				listLoaded: true
-			});
-		}
+	reloadList: function(data){
+		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 	},
 	sortList: function(sortBy, order){
-		// Set default property, to sort by, to title
-		if(!sortBy) sortBy = 'series_title';
+		sortBy = sortBy || 'series_title';
 
-		// This automagically works
+		// Decide if it should be asc or desc
+
 		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
 		} else if(!order){
 			order = 'asc';
 		}
 
-		var listSorted = listStore;
-
-		// Sort by property, e.g. progress, then by title.
-
-		listSorted = keysort(listSorted, 'itemStatus, ' + sortBy + ' ' + order + ', series_title');
-		
 		this.setState({
-			listData: listSorted,
+			listData: keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title'),
 			listLastSort: sortBy,
 			listLastOrder: order
 		});
 	},
+	componentDidMount: function(){
+		PubSub.subscribe(constants.DATA_CHANGE, this.loadListData);
+	},
 	render: function(){
-		return (React.DOM.div(null));
+		return (
+			React.DOM.div(null)	
+		);
 	}
 });
 
-//React.renderComponent(<listComp />, document.getElementById('list-left'));
+var listItem = React.createClass({displayName: 'listItem',
+	render: function(){
+		return (
+			React.DOM.div(null)
+		)
+	}
+});
+
+React.renderComponent(listApp(null), document.getElementById('list-left'));
 /** @jsx React.DOM */
 
 var loginForm = React.createClass({displayName: 'loginForm',
@@ -732,7 +725,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 						React.DOM.div({className: 
 							cx({
 								'search-result-add': true,
-								'visible': LOGGED_IN,
+								'visible': USER.LOGGED_IN,
 								'added': this.state.itemAdded,
 								'open': this.state.pickerVisible
 							}), 
@@ -757,7 +750,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 						React.DOM.div({className: 
 							cx({
 								'search-result-remove': true,
-								'visible': LOGGED_IN && this.state.itemAdded,
+								'visible': USER.LOGGED_IN && this.state.itemAdded,
 							}), 
 						onClick: this.onRemove}, 
 							"× Remove"
@@ -768,5 +761,8 @@ var searchItem = React.createClass({displayName: 'searchItem',
 		)
 	}
 });
+var mountNode = document.getElementById('search-page-wrap');
+if(mountNode) React.renderComponent(searchApp(null), mountNode);
 
-React.renderComponent(searchApp(null), document.getElementById('search-page-wrap'));
+
+

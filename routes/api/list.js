@@ -2,16 +2,18 @@ var db = require('../../models/db.js');
 var hAuth = require('../../helpers/auth.js');
 var listValidate = require('../../helpers/validateListData.js');
 var User = db.User;
+var Anime = db.Anime;
 var _ = require('lodash');
 
 module.exports = function(app){
-	var listType;
+	var listType, Collection;
 
 	// ?: Sets the list type
 
 	app.route('/list/:list(anime|manga)*')
 	.all(function(req, res, next){
 		listType = req.param('list');
+		Collection = (listType === 'anime') ? Anime : ''; // Change to manga later
 		next();
 	});
 
@@ -19,16 +21,38 @@ module.exports = function(app){
 
 	app.route('/list/:list(anime|manga)/view/:username')
 	.get(function(req, res, next){
+		// Needs cleanup
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, {
 			email: 0,
 			password: 0,
 			API_key: 0
-		}, function(err, doc){
+		}, function(err, listDoc){
 			if(err) return next(new Error(err));
-			if(!doc) return next(new Error('User not found'));
-			return res.status(200).json(doc);
+			if(!listDoc) return next(new Error('User not found'));
+
+			listDoc = listDoc.toObject()[req.param('list') + '_list'];
+			var seriesIds = _.map(listDoc, function(listItem){
+				return listItem._id
+			});
+
+			Anime.find({
+				_id: {
+					$in: seriesIds
+				}
+			}, function(err, seriesDocs){
+				seriesDocs = seriesDocs.map(function(seriesItem){
+					return seriesItem.toObject();
+				});
+				var joinedList = _.map(listDoc, function(listItem){
+					return _.extend(listItem, _.findWhere(seriesDocs, function(seriesItem){
+						return seriesItem._id.equals(listItem._id)
+					}));
+				});
+				console.log(joinedList);
+				return res.status(200).json(joinedList);
+			});
 		});
 	});
 

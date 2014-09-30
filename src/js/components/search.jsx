@@ -163,7 +163,7 @@ var searchItem = React.createClass({
 						<div className={
 							cx({
 								'search-result-add': true,
-								'visible': LOGGED_IN,
+								'visible': USER.LOGGED_IN,
 								'added': this.state.itemAdded,
 								'open': this.state.pickerVisible
 							})
@@ -188,7 +188,7 @@ var searchItem = React.createClass({
 						<div className={
 							cx({
 								'search-result-remove': true,
-								'visible': LOGGED_IN && this.state.itemAdded,
+								'visible': USER.LOGGED_IN && this.state.itemAdded,
 							})
 						} onClick={this.onRemove}>
 							&times; Remove
@@ -199,5 +199,8 @@ var searchItem = React.createClass({
 		)
 	}
 });
+var mountNode = document.getElementById('search-page-wrap');
+if(mountNode) React.renderComponent(<searchApp />, mountNode);
 
-React.renderComponent(<searchApp />, document.getElementById('search-page-wrap'));
+
+

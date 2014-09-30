@@ -1,66 +1,59 @@
 /** @jsx React.DOM */
 
 var listStore = [];
-var listAction = {
 
-}
+$.ajax({
+	url: '/api/list/anime/view/' + USER.USERNAME,
+	type: 'get',
+	success: function(listData){
+		listStore = listData;
+		PubSub.publishSync(constants.DATA_CHANGE, listData)
+	}
+});
 
-var listComp = React.createClass({
+var listApp = React.createClass({
 	getInitialState: function(){
-		var app = {
-			listData: [], // List data
-			listFilterText: '', // Filter by string
-			listFilterStatus: '', // Filter by status
-			listLoaded: false, // Display list
-			listLoadError: false, // Hides list and show error
-			listLastSort: 'seriesTitle', // Which property the list is sorter by
-			listLastOrder: 'asc' // Which order the list is currently sorted by
+		return {
+			listLastSort: 'series_title', // Property name from API
+			listLastOrder: 'asc'
 		}
-		return app;
 	},
-	shouldComponentUpdate: function(nextProps, nextState){
-		// By default, shouldComponentUpdate just returns true.
-		// This replaces default behavior.
-		if(nextState === this.state) return false;
-		return true;
-	},
-	componentDidMount: function(){
-		PubSub.subscribe(constants.DATA_CHANGE, this.initList);
-		PubSub.subscribe(constants.LIST_ERROR, this.errList);
-	},
-	initList: function(){
-		if(!this.state.listLoaded){
-			this.setState({
-				listLoaded: true
-			});
-		}
+	reloadList: function(data){
+		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 	},
 	sortList: function(sortBy, order){
-		// Set default property, to sort by, to title
-		if(!sortBy) sortBy = 'series_title';
+		sortBy = sortBy || 'series_title';
 
-		// This automagically works
+		// Decide if it should be asc or desc
+
 		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
 		} else if(!order){
 			order = 'asc';
 		}
 
-		var listSorted = listStore;
-
-		// Sort by property, e.g. progress, then by title.
-
-		listSorted = keysort(listSorted, 'itemStatus, ' + sortBy + ' ' + order + ', series_title');
-		
 		this.setState({
-			listData: listSorted,
+			listData: keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title'),
 			listLastSort: sortBy,
 			listLastOrder: order
 		});
 	},
+	componentDidMount: function(){
+		PubSub.subscribe(constants.DATA_CHANGE, this.loadListData);
+	},
 	render: function(){
-		return (<div></div>);
+		return (
+			<div></div>	
+		);
 	}
 });
 
-//React.renderComponent(<listComp />, document.getElementById('list-left'));
+var listItem = React.createClass({
+	render: function(){
+		return (
+			<div></div>
+		)
+	}
+});
+
+React.renderComponent(<listApp />, document.getElementById('list-left'));
