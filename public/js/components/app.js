@@ -1,25 +1,40 @@
 /** @jsx React.DOM */
 
 var listStore = [];
+var cx = React.addons.classSet;
 
 $.ajax({
 	url: '/api/list/anime/view/' + USER.USERNAME,
 	type: 'get',
 	success: function(listData){
 		listStore = listData;
-		PubSub.publishSync(constants.DATA_CHANGE, listData)
+		PubSub.publishSync(constants.DATA_CHANGE, listData);
 	}
 });
 
 var listApp = React.createClass({displayName: 'listApp',
 	getInitialState: function(){
 		return {
+			listFilterText: '',
+			listFilterStatus: 'all',
+			listLoaded: false, // Display list if true
 			listLastSort: 'series_title', // Property name from API
 			listLastOrder: 'asc'
 		}
 	},
+	componentDidMount: function(){
+		PubSub.subscribe(constants.DATA_CHANGE, this.reloadList);
+	},
 	reloadList: function(data){
+		console.log('asda');
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
+
+		// First load
+		if(!this.state.listLoaded){
+			this.setState({
+				listLoaded: true
+			});
+		}
 	},
 	sortList: function(sortBy, order){
 		sortBy = sortBy || 'series_title';
@@ -32,26 +47,157 @@ var listApp = React.createClass({displayName: 'listApp',
 			order = 'asc';
 		}
 
+		console.log(listStore);
+		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title');
 		this.setState({
-			listData: keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title'),
+			listData: listStore,
 			listLastSort: sortBy,
 			listLastOrder: order
+		});
+	},
+	setStatusFilter: function(statusVal){
+		this.setState({
+			listFilterStatus: statusVal
+		});
+	},
+	setTextFilter: function(e){
+		this.setState({
+			listFilterText: e.target.value
 		});
 	},
 	componentDidMount: function(){
 		PubSub.subscribe(constants.DATA_CHANGE, this.loadListData);
 	},
 	render: function(){
+		var listStyle = {
+			display: this.state.listLoaded
+		}
 		return (
-			React.DOM.div(null)	
+			React.DOM.div({style: listStyle}, 
+				React.DOM.div({id: "list-top"}, 
+					React.DOM.div({id: "list-tabs-wrap"}, 
+						
+							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName){
+								var statusVal = statusName.toLowerCase().replace(/ /g, '')
+								return (
+									React.DOM.div({className: cx({
+										'list-tab': true,
+										'current': (statusVal === this.state.listFilterStatus)
+									}), onClick: this.setStatusFilter.bind(this, statusVal)}, 
+										statusName
+									)
+								)
+							}.bind(this))
+						
+					), 
+					React.DOM.div({id: "list-filter-wrap"}, 
+						React.DOM.input({type: "text", maxLength: "50", id: "list-filter-input", placeholder: "Filter your list...", onChange: this.setTextFilter})
+					), 
+					React.DOM.div({id: "list-sort-wrap"}, 
+						React.DOM.div({id: "list-sort-title", className: "list-sort-hd", onClick: this.sortList.bind(this, 'series_title', null)}, 
+							"Title"
+						), 
+						React.DOM.div({id: "list-sort-progress", className: "list-sort-hd", onClick: this.sortList.bind(this, 'item_progress', null)}, 
+							"Progress"
+						), 
+						React.DOM.div({id: "list-sort-rating", className: "list-sort-hd", onClick: this.sortList.bind(this, 'item_rating', null)}, 
+							"Rating"
+						), 
+						React.DOM.div({id: "list-sort-type", className: "list-sort-hd", onClick: this.sortList.bind(this, 'series_type', null)}, 
+							"Type"
+						)
+					)
+				), 
+				listContent({
+					listData: this.state.listData, 
+					listFilterText: this.state.listFilterText, 
+					listFilterStatus: this.state.listFilterStatus}
+				)
+			)
 		);
 	}
 });
 
+var listContent = React.createClass({displayName: 'listContent',
+	propTypes: {
+		listData: React.PropTypes.array,
+		listFilterText: React.PropTypes.string,
+		listFilterStatus: React.PropTypes.string,
+		listLoaded: React.PropTypes.bool
+	},
+	getInitialState: function(){
+		return {
+			batchRendering: true,
+			listBegin: 0,
+			listEnd: 45
+		}
+	},
+	componentDidMount: function(){
+		if(!this.state.batchRendering) return false;
+
+		// This automagically works
+		$(window).on('scroll', function(e){
+				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
+				var listItemsOnScreen = window.innerHeight / 46 | 0;
+				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
+				var listEnd = listItemsOnScreen * listMulti * 1.5;
+
+				if(this.state.listEnd < listEnd || listMulti === 1){
+					this.setState({ listEnd: listEnd });
+				}
+		}.bind(this));
+	},
+	render: function(){
+		var listDOM = [];
+		var lastStatus = null;
+		var lastStatusCount = 0;
+		if(!this.props.listLoaded) return (React.DOM.div(null));
+		_.each(this.props.listData, function(listItem){
+			var listNode = []; // Current node we are iterating over
+
+			// Status filter
+			if(this.props.listFilterText && this.props.listFilterText !== listItem.item_status){
+				return null;
+			}
+
+			// Check if item matches search string, if anys
+			if(
+				this.props.listFilterText !== '' &&
+				listItem.series_title.match(new RegExp(this.props.listFilterText, 'gi'))
+			){
+				listNode.push(listItem({itemData: listItem, key: listItem._id}));
+			} else {
+				listNode.push(listItem({itemData: listItem, key: listItem._id}));
+			}
+
+			if(lastStatus !== listItem.itemStatus && listNode.length){
+				lastStatus = listItem.itemStatus;
+				lastStatusCount++;
+				listDOM.push(
+					React.DOM.div({key: index + '-status', className:  // FIX: Let this have index as key one _id is used for listItems
+						ReactClassSet({
+							'list-itemstatus-wrap': true,
+							'current': (lastStatus === 'current') // ?: When index is 0, the current listPart status is "current"
+						})
+					}, 
+						React.DOM.div({className: "list-itemstatus-tag"}, 
+							lastStatus
+						), 
+						React.DOM.div({className: "list-itemstatus-line"}
+						)
+					)
+				)
+			}
+			if(listNode.length) return listDOM.push(listNode);
+		}.bind(this));
+		return (React.DOM.div(null, listDOM))
+	}
+})
+
 var listItem = React.createClass({displayName: 'listItem',
 	render: function(){
 		return (
-			React.DOM.div(null)
+			React.DOM.div(null, this.props.itemData.series_title)
 		)
 	}
 });

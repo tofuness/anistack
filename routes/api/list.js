@@ -50,7 +50,6 @@ module.exports = function(app){
 						return seriesItem._id.equals(listItem._id)
 					}));
 				});
-				console.log(joinedList);
 				return res.status(200).json(joinedList);
 			});
 		});
