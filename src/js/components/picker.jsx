@@ -112,7 +112,7 @@ var pickerApp = React.createClass({
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
 		} else {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
-			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300 });
+			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300, easing: [200,15,0] });
 		}
 		this.setState({
 			statusMenuVisible: !this.state.statusMenuVisible

@@ -3,30 +3,31 @@
 var listStore = [];
 var cx = React.addons.classSet;
 
-$.ajax({
-	url: '/api/list/anime/view/' + USER.USERNAME,
-	type: 'get',
-	success: function(listData){
-		listStore = listData;
-		PubSub.publishSync(constants.DATA_CHANGE, listData);
-	}
-});
-
-var listApp = React.createClass({displayName: 'listApp',
+var ListApp = React.createClass({displayName: 'ListApp',
 	getInitialState: function(){
 		return {
 			listFilterText: '',
 			listFilterStatus: 'all',
 			listLoaded: false, // Display list if true
-			listLastSort: 'series_title', // Property name from API
+			listLastSort: 'series_title_main', // Property name from API
 			listLastOrder: 'asc'
 		}
 	},
 	componentDidMount: function(){
 		PubSub.subscribe(constants.DATA_CHANGE, this.reloadList);
+		$.ajax({
+			url: '/api/list/anime/view/' + USER.USERNAME,
+			type: 'get',
+			success: function(listData){
+				listStore = listData;
+				PubSub.publishSync(constants.DATA_CHANGE, listData);
+			},
+			error: function(err){
+				console.log(err);
+			}
+		});
 	},
 	reloadList: function(data){
-		console.log('asda');
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
 		// First load
@@ -37,7 +38,7 @@ var listApp = React.createClass({displayName: 'listApp',
 		}
 	},
 	sortList: function(sortBy, order){
-		sortBy = sortBy || 'series_title';
+		sortBy = sortBy || 'series_title_main';
 
 		// Decide if it should be asc or desc
 
@@ -47,8 +48,7 @@ var listApp = React.createClass({displayName: 'listApp',
 			order = 'asc';
 		}
 
-		console.log(listStore);
-		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title');
+		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title_main');
 		this.setState({
 			listData: listStore,
 			listLastSort: sortBy,
@@ -64,9 +64,6 @@ var listApp = React.createClass({displayName: 'listApp',
 		this.setState({
 			listFilterText: e.target.value
 		});
-	},
-	componentDidMount: function(){
-		PubSub.subscribe(constants.DATA_CHANGE, this.loadListData);
 	},
 	render: function(){
 		var listStyle = {
@@ -94,7 +91,7 @@ var listApp = React.createClass({displayName: 'listApp',
 						React.DOM.input({type: "text", maxLength: "50", id: "list-filter-input", placeholder: "Filter your list...", onChange: this.setTextFilter})
 					), 
 					React.DOM.div({id: "list-sort-wrap"}, 
-						React.DOM.div({id: "list-sort-title", className: "list-sort-hd", onClick: this.sortList.bind(this, 'series_title', null)}, 
+						React.DOM.div({id: "list-sort-title", className: "list-sort-hd", onClick: this.sortList.bind(this, 'series_title_main', null)}, 
 							"Title"
 						), 
 						React.DOM.div({id: "list-sort-progress", className: "list-sort-hd", onClick: this.sortList.bind(this, 'item_progress', null)}, 
@@ -108,8 +105,9 @@ var listApp = React.createClass({displayName: 'listApp',
 						)
 					)
 				), 
-				listContent({
+				ListContent({
 					listData: this.state.listData, 
+					listLoaded: this.state.listLoaded, 
 					listFilterText: this.state.listFilterText, 
 					listFilterStatus: this.state.listFilterStatus}
 				)
@@ -118,7 +116,7 @@ var listApp = React.createClass({displayName: 'listApp',
 	}
 });
 
-var listContent = React.createClass({displayName: 'listContent',
+var ListContent = React.createClass({displayName: 'ListContent',
 	propTypes: {
 		listData: React.PropTypes.array,
 		listFilterText: React.PropTypes.string,
@@ -155,27 +153,31 @@ var listContent = React.createClass({displayName: 'listContent',
 		_.each(this.props.listData, function(listItem){
 			var listNode = []; // Current node we are iterating over
 
-			// Status filter
-			if(this.props.listFilterText && this.props.listFilterText !== listItem.item_status){
+			if(
+				(this.props.listFilterStatus &&
+				this.props.listFilterStatus !== 'all') &&
+				this.props.listFilterStatus !== listItem.item_status
+			){
 				return null;
 			}
 
 			// Check if item matches search string, if anys
 			if(
 				this.props.listFilterText !== '' &&
-				listItem.series_title.match(new RegExp(this.props.listFilterText, 'gi'))
+				listItem.series_title_main.match(new RegExp(this.props.listFilterText, 'gi'))
 			){
-				listNode.push(listItem({itemData: listItem, key: listItem._id}));
-			} else {
-				listNode.push(listItem({itemData: listItem, key: listItem._id}));
+				listNode.push(ListItem({itemData: listItem, key: listItem._id}));
+			} else if(this.props.listFilterText === ''){
+				listNode.push(ListItem({itemData: listItem, key: listItem._id}));
 			}
 
-			if(lastStatus !== listItem.itemStatus && listNode.length){
-				lastStatus = listItem.itemStatus;
+			if(lastStatus !== listItem.item_status && listNode.length){
+				lastStatus = listItem.item_status;
+				console.log('sadfdsf');
 				lastStatusCount++;
 				listDOM.push(
-					React.DOM.div({key: index + '-status', className:  // FIX: Let this have index as key one _id is used for listItems
-						ReactClassSet({
+					React.DOM.div({key: listItem._id + '-status', className:  // FIX: Let this have index as key one _id is used for listItems
+						cx({
 							'list-itemstatus-wrap': true,
 							'current': (lastStatus === 'current') // ?: When index is 0, the current listPart status is "current"
 						})
@@ -188,21 +190,22 @@ var listContent = React.createClass({displayName: 'listContent',
 					)
 				)
 			}
-			if(listNode.length) return listDOM.push(listNode);
+			if(listNode.length) listDOM.push(listNode);
 		}.bind(this));
-		return (React.DOM.div(null, listDOM))
+		return (React.DOM.div(null, listDOM));
 	}
 })
 
-var listItem = React.createClass({displayName: 'listItem',
+var ListItem = React.createClass({displayName: 'ListItem',
 	render: function(){
 		return (
-			React.DOM.div(null, this.props.itemData.series_title)
+			React.DOM.div({className: "list-item"}, this.props.itemData.series_title_main)
 		)
 	}
 });
 
-React.renderComponent(listApp(null), document.getElementById('list-left'));
+var mountNode = document.getElementById('list-left');
+if(mountNode) React.renderComponent(ListApp(null), mountNode);
 /** @jsx React.DOM */
 
 var loginForm = React.createClass({displayName: 'loginForm',
@@ -348,7 +351,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
 		} else {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
-			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300 });
+			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300, easing: [200,15,0] });
 		}
 		this.setState({
 			statusMenuVisible: !this.state.statusMenuVisible

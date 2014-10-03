@@ -24,7 +24,7 @@
 }
 #top-nav-tagline {
 	float: left;
-	padding-left: 9px;
+	padding-left: 10px;
 	color: $gray-d-6;
 	font-size: 11px;
 	font-weight: 400;
@@ -33,7 +33,7 @@
 #top-profile-wrap {
 	@extend .cf;
 	float: right;
-	padding: 0 15px;
+	padding: 0 20px;
 	border-left: 1px solid $gray-l-3;
 	border-right: 1px solid $gray-l-3;
 }
@@ -48,7 +48,7 @@
 }
 #top-profile-name {
 	float: left;
-	padding-left: 15px;
+	padding-left: 20px;
 	font-weight: 800;
 	line-height: 50px;
 }
