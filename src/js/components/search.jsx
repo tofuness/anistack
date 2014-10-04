@@ -1,6 +1,6 @@
- /** @jsx React.DOM */
+/** @jsx React.DOM */
 
-var searchApp = React.createClass({
+var SearchApp = React.createClass({
 	getInitialState: function(){
 		var initState = {
 			searchText: $('#search-page-query').text().trim(),
@@ -57,12 +57,13 @@ var searchApp = React.createClass({
 									searchRes.item_data.item_status.charAt(0).toUpperCase() +
 									searchRes.item_data.item_status.slice(1).toLowerCase()
 								).replace('Onhold', 'On Hold'),
-								itemStatus: searchRes.item_data.item_status,
-								itemProgress: searchRes.item_data.item_progress,
-								itemRating: searchRes.item_data.item_rating
+								item_status: searchRes.item_data.item_status,
+								item_progress: searchRes.item_data.item_progress,
+								item_rating: searchRes.item_data.item_rating,
+								item_repeats: searchRes.item_data.item_repeats
 							}
 						}
-						return <searchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} />;
+						return <SearchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} />;
 					})
 				}
 				</div>
@@ -71,7 +72,7 @@ var searchApp = React.createClass({
 	}
 });
 
-var searchItem = React.createClass({
+var SearchItem = React.createClass({
 	getInitialState: function() {
 		return {
 			itemData: {}, // List item data,
@@ -178,7 +179,7 @@ var searchItem = React.createClass({
 								'visible': this.state.pickerVisible
 							})
 						}>
-							<pickerApp
+							<PickerApp
 								itemData={this.state.itemData}
 								seriesData={this.props.seriesData}
 								onCancel={this.closePicker}
@@ -200,7 +201,7 @@ var searchItem = React.createClass({
 	}
 });
 var mountNode = document.getElementById('search-page-wrap');
-if(mountNode) React.renderComponent(<searchApp />, mountNode);
+if(mountNode) React.renderComponent(<SearchApp />, mountNode);
 
 
 

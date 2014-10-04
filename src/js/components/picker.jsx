@@ -1,5 +1,5 @@
 var cx = React.addons.classSet;
-var pickerApp = React.createClass({
+var PickerApp = React.createClass({
 	propTypes: {
 		seriesData: React.PropTypes.object,
 		onClose: React.PropTypes.func,
@@ -8,10 +8,10 @@ var pickerApp = React.createClass({
 	getInitialState: function(){
 		return {
 			itemStatusDisplay: 'Current',
-			itemStatus: 'current',
-			itemProgress: '',
-			itemRating: '',
-			itemRepeats: '',
+			item_status: 'current',
+			item_progress: '',
+			item_rating: '',
+			item_repeats: '',
 			ratingPreview: '',
 			statusMenuVisible: false
 		}
@@ -22,41 +22,41 @@ var pickerApp = React.createClass({
 		// If statement below is there to make sure no infinite-loop happen
 
 		if(
-			(this.state.itemStatus === 'completed') !==
-			(this.state.itemProgress === episodesTotal)
+			(this.state.item_status === 'completed' && this.state.itemStatusDisplay === 'Completed') !==
+			(this.state.item_progress === episodesTotal)
 		){
 
-			// (1) If changed status to completed: bump up the itemProgress
+			// (1) If changed status to completed: bump up the item_progress
 
-			if(this.state.itemStatus === 'completed' && prevState.itemStatus !== 'completed'){
+			if(this.state.item_status === 'completed' && prevState.item_status !== 'completed'){
 				this.setState({
-					itemProgress: episodesTotal
+					item_progress: episodesTotal
 				});
 			}
 
-			// (2) If changed the status from completed: remove the itemProgress
+			// (2) If changed the status from completed: remove the item_progress
 
-			if(prevState.itemStatus === 'completed' && this.state.itemStatus !== 'completed'){
+			if(prevState.item_status === 'completed' && this.state.item_status !== 'completed'){
 				this.setState({
-					itemProgress: ''
+					item_progress: ''
 				});
 			}
 
 			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
 
-			if(prevState.itemProgress < episodesTotal && this.state.itemProgress === episodesTotal){
+			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
 				this.setState({
 					itemStatusDisplay: 'Completed',
-					itemStatus: 'completed'
+					item_status: 'completed'
 				});
 			}
 
 			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
 
-			if(prevState.itemProgress === episodesTotal && this.state.itemProgress < episodesTotal){
+			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
 				this.setState({
 					itemStatusDisplay: 'Current',
-					itemStatus: 'current'
+					item_status: 'current'
 				});
 			}
 
@@ -83,13 +83,13 @@ var pickerApp = React.createClass({
 
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
-			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
+			this.setProgress(Number(this.state.item_progress) + e.deltaY);
 			return false;
 		}.bind(this));
 
 		var repeatsInput = this.refs.repeatsInput.getDOMNode();
 		$(repeatsInput).on('mousewheel', function(e){
-			this.setRepeats(Number(this.state.itemRepeats) + e.deltaY);
+			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
 		}.bind(this));
 
@@ -103,7 +103,7 @@ var pickerApp = React.createClass({
 		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
 		this.setState({
 			itemStatusDisplay: e.target.innerText,
-			itemStatus: statusVal
+			item_status: statusVal
 		});
 		this.toggleStatusMenu();
 	},
@@ -131,7 +131,7 @@ var pickerApp = React.createClass({
 			!this.props.seriesData.series_episodes_total)
 		){
 			this.setState({
-				itemProgress: (progressValue === 0) ? '' : Number(progressValue)
+				item_progress: (progressValue === 0) ? '' : Number(progressValue)
 			});
 		}
 	},
@@ -141,7 +141,7 @@ var pickerApp = React.createClass({
 	setRepeats: function(repeatsValue){
 		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
 			this.setState({
-				itemRepeats: (repeatsValue === 0) ? '' : repeatsValue
+				item_repeats: (repeatsValue === 0) ? '' : repeatsValue
 			});
 		}
 	},
@@ -164,7 +164,7 @@ var pickerApp = React.createClass({
 	},
 	onRatingClick: function(e){
 		this.setState({
-			itemRating: this.state.ratingPreview
+			item_rating: this.state.ratingPreview
 		});
 	},
 	onSave: function(){
@@ -185,7 +185,7 @@ var pickerApp = React.createClass({
 	},
 	render: function(){
 		var heartNodes = [];
-		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.itemRating;
+		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.item_rating;
 
 		for(var i = 1; i <= 9; i += 2){
 			heartNodes.push(
@@ -254,7 +254,7 @@ var pickerApp = React.createClass({
 									className="picker-input-val"
 									type="text"
 									maxLength="3"
-									value={this.state.itemRepeats}
+									value={this.state.item_repeats}
 									onChange={this.onRepeatsChange}
 									placeholder="0"
 								/>
@@ -273,7 +273,7 @@ var pickerApp = React.createClass({
 									className="picker-input-val"
 									type="text"
 									maxLength="3"
-									value={this.state.itemProgress}
+									value={this.state.item_progress}
 									onChange={this.onProgressChange}
 									placeholder="0"
 								/>
@@ -295,7 +295,7 @@ var pickerApp = React.createClass({
 							{heartNodes}
 						</div>
 						<div className="picker-rating-val">
-							{(this.state.itemRating / 2).toFixed(1)}
+							{(this.state.item_rating / 2).toFixed(1)}
 						</div>
 					</div>
 				</div>

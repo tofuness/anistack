@@ -1,6 +1,6 @@
 #list-wrap {
 	@extend .cf;
-	margin: 80px auto 20px auto;
+	margin: 72px auto 0 auto;
 	width: 1000px;
 	background: #fff;
 	@include border-radius(4px);
@@ -97,9 +97,10 @@
 .list-tab {
 	cursor: pointer;
 	float: left;
-	padding: 12px 0;
+	padding: 10px 0;
 	width: 130px;
 	color: $gray-d-9;
+	font-weight: 700;
 	background: $gray-l-3;
 	text-align: center;
 	@include box-shadow(inset 0 -3px 3px -3px $b05);
@@ -125,13 +126,34 @@
 	width: 780px;
 }
 #list-sort-wrap {
-	display: none;
 	@extend .cf;
 	border-bottom: 1px solid $gray-l-3;
 }
+#list-sort-title {
+	padding-left: 15px;
+	width: 515px;
+	border-right: 1px dotted $gray-l-3;
+}
+#list-sort-progress {
+	width: 95px;
+	text-align: center;
+	border-right: 1px dotted $gray-l-3;
+}
+#list-sort-rating {
+	width: 83px;
+	text-align: center;
+	border-right: 1px dotted $gray-l-3;
+}
+#list-sort-type {
+	width: 69px;
+	text-align: center;
+}
 .list-sort-hd {
+	@extend .ns;
+	cursor: pointer;
 	float: left;
-	padding: 10px 0;
+	padding: 12px 0;
+	font-weight: 700;
 }
 
 .list-itemstatus-wrap {
@@ -150,9 +172,9 @@
 .list-itemstatus-tag {
 	float: left;
 	margin-top: -10px;
-	margin-left: -85px;
+	margin-left: -95px;
 	padding: 5px;
-	width: 60px;
+	width: 70px;
 	height: 10px;
 	color: #fff;
 	font-size: 10px;
@@ -173,9 +195,71 @@
 }
 
 .list-item {
-	padding: 10px;
-	font-size: 13px;
+	@extend .cf;
 	border-bottom: 1px solid $gray-l-3;
+	@include box-shadow(1px 0 0 $gray-l-3);
+}
+.list-item-title {
+	float: left;
+	padding: 12px 15px;
+}
+.list-item-right {
+	float: right;
+	width: 250px;
+}
+.list-item-progress {
+	@extend .cf;
+	float: left;
+	padding: 0 15px;
+	font-weight: 700;
+	line-height: 42px;
+	text-align: center;
+	border-left: 1px solid $gray-l-3;
+	border-right: 1px solid $gray-l-3;
+}
+.list-item-progress-sofar {
+	float: left;
+	width: 20px;
+}
+.list-item-progress-sep {
+	float: left;
+	padding: 0 10px;
+	color: $gray-d-9;
+}
+.list-item-progress-total {
+	float: left;
+	width: 20px;
+	color: $gray-d-9;
+}
+.list-item-rating {
+	@extend .cf;
+	float: left;
+	padding: 0 15px;
+	border-right: 1px solid $gray-l-3;
+}
+.list-item-rating-icon {
+	float: left;
+	color: $red;
+	padding-top: 14px;
+}
+.list-item-rating-number {
+	float: left;
+	width: 30px;
+	padding-left: 10px;
+	font-weight: 700;
+	line-height: 42px;
+	text-align: center;
+}
+.list-item-type {
+	float: left;
+	padding: 0 15px;
+	color: $gray-d-9;
+	width: 38px;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 42px;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 // List left

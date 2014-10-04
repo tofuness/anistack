@@ -127,7 +127,7 @@ var ListContent = React.createClass({
 		return {
 			batchRendering: true,
 			listBegin: 0,
-			listEnd: 45
+			listEnd: 30
 		}
 	},
 	componentDidMount: function(){
@@ -136,7 +136,7 @@ var ListContent = React.createClass({
 		// This automagically works
 		$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
-				var listItemsOnScreen = window.innerHeight / 46 | 0;
+				var listItemsOnScreen = window.innerHeight / 43 | 0;
 				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
@@ -173,7 +173,6 @@ var ListContent = React.createClass({
 
 			if(lastStatus !== listItem.item_status && listNode.length){
 				lastStatus = listItem.item_status;
-				console.log('sadfdsf');
 				lastStatusCount++;
 				listDOM.push(
 					<div key={listItem._id + '-status'} className={ // FIX: Let this have index as key one _id is used for listItems
@@ -192,14 +191,70 @@ var ListContent = React.createClass({
 			}
 			if(listNode.length) listDOM.push(listNode);
 		}.bind(this));
-		return (<div>{listDOM}</div>);
+		if(this.state.batchRendering && lastStatusCount > 0){
+			var listStyle = {
+				'padding-bottom': 15,
+				'min-height': (listDOM.length - lastStatusCount) * 43
+			}
+			listDOM = listDOM.slice(0, this.state.listEnd);
+		}
+		return (<div style={listStyle}>{listDOM}</div>);
 	}
 })
 
 var ListItem = React.createClass({
+	cancel: function(){
+		console.log('No cancelrino');
+	},
+	saveData: function(data){
+		console.log(data);
+	},
 	render: function(){
+		console.log(this.props.itemData);
 		return (
-			<div className="list-item">{this.props.itemData.series_title_main}</div>
+			<div>
+				<div className="list-item">
+					<div className="list-item-title">
+						{this.props.itemData.series_title_main}
+					</div>
+					<div className="list-item-right">
+						<div className="list-item-progress">
+							<div className="list-item-progress-sofar">
+								{this.props.itemData.item_progress || '—'}
+							</div>
+							<div className="list-item-progress-sep">
+							/
+							</div>
+							<div className="list-item-progress-total">
+								{this.props.itemData.series_episodes_total || '—'}
+							</div>
+						</div>
+						<div className="list-item-rating">
+							<div className={
+								cx({
+									'list-item-rating-icon': true,
+									'icon-heart-empty': !this.props.itemData.item_rating,
+									'icon-heart-full': this.props.itemData.item_rating
+								})
+							}></div>
+							<div className="list-item-rating-number">
+								{(this.props.itemData.item_rating) ? (this.props.itemData.item_rating / 2).toFixed(1) : '—'}
+							</div>
+						</div>
+						<div className="list-item-type">
+							{this.props.itemData.series_type}
+						</div>
+					</div>
+				</div>
+				<div className="list-item-expanded">
+					<PickerApp
+						itemData={this.props.itemData}
+						seriesData={this.props.itemData}
+						onCancel={this.cancel}
+						onSave={this.saveData}
+					/>
+				</div>
+			</div>
 		)
 	}
 });

@@ -127,7 +127,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		return {
 			batchRendering: true,
 			listBegin: 0,
-			listEnd: 45
+			listEnd: 30
 		}
 	},
 	componentDidMount: function(){
@@ -136,7 +136,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		// This automagically works
 		$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
-				var listItemsOnScreen = window.innerHeight / 46 | 0;
+				var listItemsOnScreen = window.innerHeight / 43 | 0;
 				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
@@ -173,7 +173,6 @@ var ListContent = React.createClass({displayName: 'ListContent',
 
 			if(lastStatus !== listItem.item_status && listNode.length){
 				lastStatus = listItem.item_status;
-				console.log('sadfdsf');
 				lastStatusCount++;
 				listDOM.push(
 					React.DOM.div({key: listItem._id + '-status', className:  // FIX: Let this have index as key one _id is used for listItems
@@ -192,14 +191,70 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			}
 			if(listNode.length) listDOM.push(listNode);
 		}.bind(this));
-		return (React.DOM.div(null, listDOM));
+		if(this.state.batchRendering && lastStatusCount > 0){
+			var listStyle = {
+				'padding-bottom': 15,
+				'min-height': (listDOM.length - lastStatusCount) * 43
+			}
+			listDOM = listDOM.slice(0, this.state.listEnd);
+		}
+		return (React.DOM.div({style: listStyle}, listDOM));
 	}
 })
 
 var ListItem = React.createClass({displayName: 'ListItem',
+	cancel: function(){
+		console.log('No cancelrino');
+	},
+	saveData: function(data){
+		console.log(data);
+	},
 	render: function(){
+		console.log(this.props.itemData);
 		return (
-			React.DOM.div({className: "list-item"}, this.props.itemData.series_title_main)
+			React.DOM.div(null, 
+				React.DOM.div({className: "list-item"}, 
+					React.DOM.div({className: "list-item-title"}, 
+						this.props.itemData.series_title_main
+					), 
+					React.DOM.div({className: "list-item-right"}, 
+						React.DOM.div({className: "list-item-progress"}, 
+							React.DOM.div({className: "list-item-progress-sofar"}, 
+								this.props.itemData.item_progress || '—'
+							), 
+							React.DOM.div({className: "list-item-progress-sep"}, 
+							"/"
+							), 
+							React.DOM.div({className: "list-item-progress-total"}, 
+								this.props.itemData.series_episodes_total || '—'
+							)
+						), 
+						React.DOM.div({className: "list-item-rating"}, 
+							React.DOM.div({className: 
+								cx({
+									'list-item-rating-icon': true,
+									'icon-heart-empty': !this.props.itemData.item_rating,
+									'icon-heart-full': this.props.itemData.item_rating
+								})
+							}), 
+							React.DOM.div({className: "list-item-rating-number"}, 
+								(this.props.itemData.item_rating) ? (this.props.itemData.item_rating / 2).toFixed(1) : '—'
+							)
+						), 
+						React.DOM.div({className: "list-item-type"}, 
+							this.props.itemData.series_type
+						)
+					)
+				), 
+				React.DOM.div({className: "list-item-expanded"}, 
+					PickerApp({
+						itemData: this.props.itemData, 
+						seriesData: this.props.itemData, 
+						onCancel: this.cancel, 
+						onSave: this.saveData}
+					)
+				)
+			)
 		)
 	}
 });
@@ -238,7 +293,7 @@ var mountNode = document.getElementById('login-form-wrap');
 if(mountNode) React.renderComponent(loginForm(null), mountNode);
 /** @jsx React.DOM */
 var cx = React.addons.classSet;
-var pickerApp = React.createClass({displayName: 'pickerApp',
+var PickerApp = React.createClass({displayName: 'PickerApp',
 	propTypes: {
 		seriesData: React.PropTypes.object,
 		onClose: React.PropTypes.func,
@@ -247,10 +302,10 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 	getInitialState: function(){
 		return {
 			itemStatusDisplay: 'Current',
-			itemStatus: 'current',
-			itemProgress: '',
-			itemRating: '',
-			itemRepeats: '',
+			item_status: 'current',
+			item_progress: '',
+			item_rating: '',
+			item_repeats: '',
 			ratingPreview: '',
 			statusMenuVisible: false
 		}
@@ -261,41 +316,41 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		// If statement below is there to make sure no infinite-loop happen
 
 		if(
-			(this.state.itemStatus === 'completed') !==
-			(this.state.itemProgress === episodesTotal)
+			(this.state.item_status === 'completed' && this.state.itemStatusDisplay === 'Completed') !==
+			(this.state.item_progress === episodesTotal)
 		){
 
-			// (1) If changed status to completed: bump up the itemProgress
+			// (1) If changed status to completed: bump up the item_progress
 
-			if(this.state.itemStatus === 'completed' && prevState.itemStatus !== 'completed'){
+			if(this.state.item_status === 'completed' && prevState.item_status !== 'completed'){
 				this.setState({
-					itemProgress: episodesTotal
+					item_progress: episodesTotal
 				});
 			}
 
-			// (2) If changed the status from completed: remove the itemProgress
+			// (2) If changed the status from completed: remove the item_progress
 
-			if(prevState.itemStatus === 'completed' && this.state.itemStatus !== 'completed'){
+			if(prevState.item_status === 'completed' && this.state.item_status !== 'completed'){
 				this.setState({
-					itemProgress: ''
+					item_progress: ''
 				});
 			}
 
 			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
 
-			if(prevState.itemProgress < episodesTotal && this.state.itemProgress === episodesTotal){
+			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
 				this.setState({
 					itemStatusDisplay: 'Completed',
-					itemStatus: 'completed'
+					item_status: 'completed'
 				});
 			}
 
 			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
 
-			if(prevState.itemProgress === episodesTotal && this.state.itemProgress < episodesTotal){
+			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
 				this.setState({
 					itemStatusDisplay: 'Current',
-					itemStatus: 'current'
+					item_status: 'current'
 				});
 			}
 
@@ -322,13 +377,13 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 
 		var progressInput = this.refs.progressInput.getDOMNode();
 		$(progressInput).on('mousewheel', function(e){
-			this.setProgress(Number(this.state.itemProgress) + e.deltaY);
+			this.setProgress(Number(this.state.item_progress) + e.deltaY);
 			return false;
 		}.bind(this));
 
 		var repeatsInput = this.refs.repeatsInput.getDOMNode();
 		$(repeatsInput).on('mousewheel', function(e){
-			this.setRepeats(Number(this.state.itemRepeats) + e.deltaY);
+			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
 		}.bind(this));
 
@@ -342,7 +397,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
 		this.setState({
 			itemStatusDisplay: e.target.innerText,
-			itemStatus: statusVal
+			item_status: statusVal
 		});
 		this.toggleStatusMenu();
 	},
@@ -370,7 +425,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 			!this.props.seriesData.series_episodes_total)
 		){
 			this.setState({
-				itemProgress: (progressValue === 0) ? '' : Number(progressValue)
+				item_progress: (progressValue === 0) ? '' : Number(progressValue)
 			});
 		}
 	},
@@ -380,7 +435,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 	setRepeats: function(repeatsValue){
 		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
 			this.setState({
-				itemRepeats: (repeatsValue === 0) ? '' : repeatsValue
+				item_repeats: (repeatsValue === 0) ? '' : repeatsValue
 			});
 		}
 	},
@@ -403,7 +458,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 	},
 	onRatingClick: function(e){
 		this.setState({
-			itemRating: this.state.ratingPreview
+			item_rating: this.state.ratingPreview
 		});
 	},
 	onSave: function(){
@@ -424,7 +479,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 	},
 	render: function(){
 		var heartNodes = [];
-		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.itemRating;
+		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.item_rating;
 
 		for(var i = 1; i <= 9; i += 2){
 			heartNodes.push(
@@ -493,7 +548,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 									className: "picker-input-val", 
 									type: "text", 
 									maxLength: "3", 
-									value: this.state.itemRepeats, 
+									value: this.state.item_repeats, 
 									onChange: this.onRepeatsChange, 
 									placeholder: "0"}
 								), 
@@ -512,7 +567,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 									className: "picker-input-val", 
 									type: "text", 
 									maxLength: "3", 
-									value: this.state.itemProgress, 
+									value: this.state.item_progress, 
 									onChange: this.onProgressChange, 
 									placeholder: "0"}
 								), 
@@ -534,7 +589,7 @@ var pickerApp = React.createClass({displayName: 'pickerApp',
 							heartNodes
 						), 
 						React.DOM.div({className: "picker-rating-val"}, 
-							(this.state.itemRating / 2).toFixed(1)
+							(this.state.item_rating / 2).toFixed(1)
 						)
 					)
 				), 
@@ -709,9 +764,9 @@ var registerForm = React.createClass({displayName: 'registerForm',
 
 var mountNode = document.getElementById('register-form-wrap');
 if(mountNode) React.renderComponent(registerForm(null), mountNode);
- /** @jsx React.DOM */
+/** @jsx React.DOM */
 
-var searchApp = React.createClass({displayName: 'searchApp',
+var SearchApp = React.createClass({displayName: 'SearchApp',
 	getInitialState: function(){
 		var initState = {
 			searchText: $('#search-page-query').text().trim(),
@@ -768,12 +823,13 @@ var searchApp = React.createClass({displayName: 'searchApp',
 									searchRes.item_data.item_status.charAt(0).toUpperCase() +
 									searchRes.item_data.item_status.slice(1).toLowerCase()
 								).replace('Onhold', 'On Hold'),
-								itemStatus: searchRes.item_data.item_status,
-								itemProgress: searchRes.item_data.item_progress,
-								itemRating: searchRes.item_data.item_rating
+								item_status: searchRes.item_data.item_status,
+								item_progress: searchRes.item_data.item_progress,
+								item_rating: searchRes.item_data.item_rating,
+								item_repeats: searchRes.item_data.item_repeats
 							}
 						}
-						return searchItem({seriesData: searchRes, key: searchRes._id, itemData: itemData});
+						return SearchItem({seriesData: searchRes, key: searchRes._id, itemData: itemData});
 					})
 				
 				)
@@ -782,7 +838,7 @@ var searchApp = React.createClass({displayName: 'searchApp',
 	}
 });
 
-var searchItem = React.createClass({displayName: 'searchItem',
+var SearchItem = React.createClass({displayName: 'SearchItem',
 	getInitialState: function() {
 		return {
 			itemData: {}, // List item data,
@@ -889,7 +945,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 								'visible': this.state.pickerVisible
 							})
 						}, 
-							pickerApp({
+							PickerApp({
 								itemData: this.state.itemData, 
 								seriesData: this.props.seriesData, 
 								onCancel: this.closePicker, 
@@ -911,7 +967,7 @@ var searchItem = React.createClass({displayName: 'searchItem',
 	}
 });
 var mountNode = document.getElementById('search-page-wrap');
-if(mountNode) React.renderComponent(searchApp(null), mountNode);
+if(mountNode) React.renderComponent(SearchApp(null), mountNode);
 
 
 

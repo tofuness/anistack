@@ -68,13 +68,13 @@ module.exports = function(app){
 		){
 			return next(new Error('_id already exists in list'));
 		}
-
+		console.log(req.body);
 		var listItem = {
 			_id: req.body._id,
-			item_progress: req.body.itemProgress,
-			item_rating: req.body.itemRating,
-			item_status: req.body.itemStatus || 'current',
-			item_repeats: req.body.itemRepeats
+			item_progress: req.body.item_progress,
+			item_rating: req.body.item_rating,
+			item_status: req.body.item_status || 'current',
+			item_repeats: req.body.item_repeats
 		}
 
 		listValidate.validate.anime(listItem, function(err, itemDoc){
@@ -105,14 +105,15 @@ module.exports = function(app){
 
 		var listItem = {
 			_id: req.body._id,
-			item_progress: req.body.itemProgress,
-			item_rating: req.body.itemRating,
-			item_status: req.body.itemStatus || 'current',
-			item_repeats: req.body.itemRepeats
+			item_progress: req.body.item_progress,
+			item_rating: req.body.item_rating,
+			item_status: req.body.item_status || 'current',
+			item_repeats: req.body.item_repeats
 		}
 		listValidate.validate.anime(listItem, function(err, itemDoc){
 			if(!err){
 				var itemData = {};
+				itemData['anime_list.$.item_repeats'] = itemDoc.item_repeats;
 				itemData['anime_list.$.item_status'] = itemDoc.item_status;				
 				if(itemDoc.item_progress !== undefined){
 					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
@@ -120,7 +121,7 @@ module.exports = function(app){
 				if(itemDoc.item_rating !== undefined){
 					itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
 				}
-
+				
 				User.update({
 					_id: req.user._id,
 					'anime_list._id': itemDoc._id
