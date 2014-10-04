@@ -131,7 +131,7 @@ var PickerApp = React.createClass({
 			!this.props.seriesData.series_episodes_total)
 		){
 			this.setState({
-				item_progress: (progressValue === 0) ? '' : Number(progressValue)
+				item_progress: (progressValue == 0) ? '' : Number(progressValue)
 			});
 		}
 	},
@@ -141,7 +141,7 @@ var PickerApp = React.createClass({
 	setRepeats: function(repeatsValue){
 		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
 			this.setState({
-				item_repeats: (repeatsValue === 0) ? '' : repeatsValue
+				item_repeats: (repeatsValue == 0) ? '' : repeatsValue
 			});
 		}
 	},

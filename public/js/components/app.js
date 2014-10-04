@@ -20,6 +20,7 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			type: 'get',
 			success: function(listData){
 				listStore = listData;
+				console.log(listStore.length);
 				PubSub.publishSync(constants.DATA_CHANGE, listData);
 			},
 			error: function(err){
@@ -127,7 +128,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		return {
 			batchRendering: true,
 			listBegin: 0,
-			listEnd: 30
+			listEnd: 40
 		}
 	},
 	componentDidMount: function(){
@@ -141,6 +142,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
 				if(this.state.listEnd < listEnd || listMulti === 1){
+					console.log(listEnd);
 					this.setState({ listEnd: listEnd });
 				}
 		}.bind(this));
@@ -150,7 +152,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		var lastStatus = null;
 		var lastStatusCount = 0;
 		if(!this.props.listLoaded) return (React.DOM.div(null));
-		_.each(this.props.listData, function(listItem){
+		_.each(this.props.listData, function(listItem, index){
 			var listNode = []; // Current node we are iterating over
 
 			if(
@@ -203,17 +205,46 @@ var ListContent = React.createClass({displayName: 'ListContent',
 })
 
 var ListItem = React.createClass({displayName: 'ListItem',
+	getInitialState: function() {
+		return {
+			expanded: false,
+			showPicker: false
+		};
+	},
 	cancel: function(){
 		console.log('No cancelrino');
 	},
 	saveData: function(data){
 		console.log(data);
 	},
+	toggleExpanded: function(e){
+		$(this.refs.listItemExpanded.getDOMNode()).velocity({
+			height: (this.state.expanded) ? [0, 280] : [280, 0]
+		}, {
+			easing: (this.state.expanded) ? [0.165, 0.84, 0.44, 1] : [0.1, 0.885, 0.07, 1.09],
+			duration: (this.state.expanded) ? 350 : 500
+		});
+		
+		this.setState({
+			expanded: !this.state.expanded,
+			showPicker: true
+		});
+		return false;
+	},
 	render: function(){
-		console.log(this.props.itemData);
+		var listItemStyle = {
+			'backgroundImage': 'url(' + this.props.itemData.series_image_reference + ')'
+		}
+		var listExpPicker = null;
+		if(this.state.showPicker){
+			listExpPicker = (PickerApp({itemData: this.props.itemData, seriesData: this.props.itemData, onCancel: this.cancel, onSave: this.saveData}));
+		}
 		return (
 			React.DOM.div(null, 
-				React.DOM.div({className: "list-item"}, 
+				React.DOM.div({className: cx({
+					'list-item':  true,
+					'expanded': this.state.expanded
+				}), onClick: this.toggleExpanded}, 
 					React.DOM.div({className: "list-item-title"}, 
 						this.props.itemData.series_title_main
 					), 
@@ -246,12 +277,18 @@ var ListItem = React.createClass({displayName: 'ListItem',
 						)
 					)
 				), 
-				React.DOM.div({className: "list-item-expanded"}, 
-					PickerApp({
-						itemData: this.props.itemData, 
-						seriesData: this.props.itemData, 
-						onCancel: this.cancel, 
-						onSave: this.saveData}
+				React.DOM.div({ref: "listItemExpanded", className: 
+					cx({
+						'list-item-expanded': true,
+						'visible': this.state.expanded
+					}), 
+				style: listItemStyle}, 	
+					React.DOM.div({className: "list-exp-ovl"}, 
+						React.DOM.div({className: "list-exp-image", style: listItemStyle}
+						), 
+						React.DOM.div({className: "list-exp-picker"}, 
+							listExpPicker
+						)
 					)
 				)
 			)
@@ -425,7 +462,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			!this.props.seriesData.series_episodes_total)
 		){
 			this.setState({
-				item_progress: (progressValue === 0) ? '' : Number(progressValue)
+				item_progress: (progressValue == 0) ? '' : Number(progressValue)
 			});
 		}
 	},
@@ -435,7 +472,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 	setRepeats: function(repeatsValue){
 		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
 			this.setState({
-				item_repeats: (repeatsValue === 0) ? '' : repeatsValue
+				item_repeats: (repeatsValue == 0) ? '' : repeatsValue
 			});
 		}
 	},
