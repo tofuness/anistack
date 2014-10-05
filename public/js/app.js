@@ -25327,7 +25327,7 @@ return function (global, window, document, undefined) {
     }
 }((window.jQuery || window.Zepto || window), window, document);
 }));
-var constants = {
+var ListConstants = {
 	DATA_CHANGE: 'DATA_CHANGE',
 	LIST_ERROR: 'LIST_ERROR',
 	LIST_ITEM_CLOSE: 'LIST_ITEM_CLOSE',
@@ -25335,9 +25335,9 @@ var constants = {
 	CLOSE_PICKERS: 'CLOSE_PICKERS'
 }
 
-var USER = {
-	LOGGED_IN: !!$('#top-profile-name').length,
-	USERNAME: $('#top-profile-name').text().toLowerCase()
+var UserConstants = {
+	LOGGED_IN: !!$('#top-profile-name').length
 }
+
 // Try too keep things modular by writing your JS under ./includes
 

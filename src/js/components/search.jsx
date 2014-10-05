@@ -160,7 +160,7 @@ var SearchItem = React.createClass({
 						<div className={
 							cx({
 								'search-result-add': true,
-								'visible': USER.LOGGED_IN,
+								'visible': UserConstants.LOGGED_IN,
 								'added': this.state.itemAdded,
 								'open': this.state.pickerVisible
 							})
@@ -185,7 +185,7 @@ var SearchItem = React.createClass({
 						<div className={
 							cx({
 								'search-result-remove': true,
-								'visible': USER.LOGGED_IN && this.state.itemAdded,
+								'visible': UserConstants.LOGGED_IN && this.state.itemAdded,
 							})
 						} onClick={this.onRemove}>
 							&times; Remove

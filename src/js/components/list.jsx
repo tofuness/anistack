@@ -2,25 +2,31 @@
 
 var listStore = [];
 var cx = React.addons.classSet;
+var TempListConstants = {
+	TYPE: $('#list-left').data('list-type'),
+	USERNAME: $('#list-left').data('username'),
+	EDITABLE: $('#list-left').data('editable')
+}
 
 var ListApp = React.createClass({
 	getInitialState: function(){
 		return {
-			listFilterText: '',
-			listFilterStatus: 'all',
+			listFilterText: '', // Search text
+			listFilterStatus: 'all', // Which tab to display
 			listLoaded: false, // Display list if true
 			listLastSort: 'series_title_main', // Property name from API
-			listLastOrder: 'asc'
+			listLastOrder: 'asc' // Order to sort by
 		}
 	},
 	componentDidMount: function(){
-		PubSub.subscribe(constants.DATA_CHANGE, this.reloadList);
+		PubSub.subscribe(ListConstants.DATA_CHANGE, this.reloadList);
 		$.ajax({
-			url: '/api/list/anime/view/' + USER.USERNAME,
+			url: '/api/list/' + TempListConstants.TYPE + '/view/' + TempListConstants.USERNAME,
 			type: 'get',
 			success: function(listData){
 				listStore = listData;
-				PubSub.publishSync(constants.DATA_CHANGE);
+				console.log('listStore length: ' + listStore.length);
+				PubSub.publishSync(ListConstants.DATA_CHANGE);
 			},
 			error: function(err){
 				console.log(err);
@@ -30,7 +36,7 @@ var ListApp = React.createClass({
 	reloadList: function(data){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
-		// First load
+		// This displays the list after the list is loaded from API
 		if(!this.state.listLoaded){
 			this.setState({
 				listLoaded: true
@@ -125,7 +131,7 @@ var ListContent = React.createClass({
 	},
 	getInitialState: function(){
 		return {
-			batchRendering: false,
+			batchRendering: true,
 			listBegin: 0,
 			listEnd: 40
 		}
@@ -133,7 +139,7 @@ var ListContent = React.createClass({
 	componentDidMount: function(){
 		if(!this.state.batchRendering) return false;
 
-		// This automagically works
+		// Decides how much of the list we should render
 		$(window).on('scroll', function(e){
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 				var listItemsOnScreen = window.innerHeight / 43 | 0;
@@ -141,7 +147,7 @@ var ListContent = React.createClass({
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
 				if(this.state.listEnd < listEnd || listMulti === 1){
-					console.log(listEnd);
+					console.log('listEnd value:' + listEnd);
 					this.setState({ listEnd: listEnd });
 				}
 		}.bind(this));
@@ -162,7 +168,8 @@ var ListContent = React.createClass({
 				return null;
 			}
 
-			// Check if item matches search string, if anys
+			// Check if item matches search string
+
 			if(
 				this.props.listFilterText !== '' &&
 				listItem.series_title_main.match(new RegExp(this.props.listFilterText, 'gi'))
@@ -172,14 +179,14 @@ var ListContent = React.createClass({
 				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
 			}
 
-			if(lastStatus !== listItem.item_status && listNode.length && true === false){
+			if(lastStatus !== listItem.item_status && listNode.length){
 				lastStatus = listItem.item_status;
 				lastStatusCount++;
 				listDOM.push(
-					<div key={listItem._id + '-status'} className={ // FIX: Let this have index as key one _id is used for listItems
+					<div key={listItem._id + '-status'} className={
 						cx({
 							'list-itemstatus-wrap': true,
-							'current': (lastStatus === 'current') // ?: When index is 0, the current listPart status is "current"
+							'current': (lastStatus === 'current')
 						})
 					}>
 						<div className="list-itemstatus-tag">
@@ -192,6 +199,12 @@ var ListContent = React.createClass({
 			}
 			if(listNode.length) listDOM.push(listNode[0]);
 		}.bind(this));
+	
+		/* 
+			If batchRendering is enabled, slice the listDOM
+			accordingly and fix some of the styling.
+		*/
+
 		if(this.state.batchRendering && lastStatusCount > 0){
 			var listStyle = {
 				'padding-bottom': 15,
@@ -199,58 +212,92 @@ var ListContent = React.createClass({
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
-		return (<div style={listStyle}>{listDOM}</div>);
+
+		/*
+			If list is empty, it could be either becauase of there are no items
+			or becuase nothing matched the search text.
+		*/
+
+		if(listDOM.length === 0 && this.props.listFilterText === ''){
+			listDOM = <ListEmpty />;
+		} else if(listDOM.length === 0){
+			listDOM = <ListNoResults />;
+		}
+		return (<div id="list-content" style={listStyle}>{listDOM}</div>);
 	}
-})
+});
+
+var ListEmpty = React.createClass({
+	render: function(){
+		return (<div>Empty!!</div>);
+	}
+});
+
+var ListNoResults = React.createClass({
+	render: function(){
+		return (<div>No results</div>);
+	}
+});
 
 var ListItem = React.createClass({
 	getInitialState: function() {
 		return {
-			expanded: false,
-			showPicker: false
+			expanded: false, // Is the list item expanded
+			showPicker: false // If the PickerApp component should mount
 		};
 	},
 	cancel: function(){
-		console.log('No cancelrino');
+		if(this.state.expanded){
+			this.toggleExpanded(function(){
+				// On cancel, reset the PickerApp component by re-mounting it.
+				this.setState({
+					showPicker: false
+				});
+			}.bind(this));
+		}
 	},
 	saveData: function(data){
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 		if(data.item_status !== this.props.itemData.item_status){
+			// Remove 43px (list item height) from the div
+			$('#list-content').css('min-height','-=43');
+
+			// If we are changing status, transision the whole div
 			$(this.refs.listItem.getDOMNode()).stop(true).velocity({
 				backgroundColor: ['#e8e8e8', '#fffff'],
-				height: [0, 323],
-				blur: [5, 0]
+				height: [0, 323]
 			}, {
 				easing: [0.165, 0.84, 0.44, 1],
-				duration: 350,
+				duration: 300,
 				complete: function(){
-					_.extend(listStore[itemIndex], data);
-					PubSub.publishSync(constants.DATA_CHANGE);
+					listStore[itemIndex] = _.extend(listStore[itemIndex], data);
+					PubSub.publishSync(ListConstants.DATA_CHANGE);
 				}
+			}).velocity('reverse', 300).velocity({
+				height: '100%'
 			});
 		} else {
-			this.toggleExpanded(function(){
-				_.extend(listStore[itemIndex], data);
-				PubSub.publishSync(constants.DATA_CHANGE);
-			});
+			// If we are not changing status, just change the values. No animations.
+			listStore[itemIndex] = _.extend(listStore[itemIndex], data);
+			PubSub.publishSync(ListConstants.DATA_CHANGE);
 		}
 	},
 	toggleExpanded: function(e){
+		this.setState({
+			expanded: !this.state.expanded,
+			showPicker: true
+		});
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
-			duration: 350,
+			duration: (this.state.expanded) ? 200 : 300,
 			complete: function(){
 				// If e is a function, we know that it should be a callback
 				if(e instanceof Function){
 					e();
 				}
-			}
-		});
-		this.setState({
-			expanded: !this.state.expanded,
-			showPicker: true
+			}.bind(this)
 		});
 	},
 	render: function(){

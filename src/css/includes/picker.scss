@@ -57,7 +57,7 @@
 	z-index: $z-up;
 	@include border-bottom-left-radius(4px);
 	@include border-bottom-right-radius(4px);
-	@include box-shadow(0 1px 3px $b30);
+	@include box-shadow(0 1px 3px $b60);
 
 	&.visible {
 		display: block;

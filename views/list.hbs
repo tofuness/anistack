@@ -1,7 +1,11 @@
 {{>header}}
 <div id="middle">
 	<div id="list-wrap">
-		<div id="list-left">
+		<div id="list-left"
+			data-username="{{profile.username}}"
+			data-editable="{{listEditable}}"
+			data-list-type="{{listType}}"
+		>
 		<!-- Mount stuff here -->
 		</div>
 		<div id="list-right">
@@ -11,11 +15,11 @@
 				<div id="list-profile-avatar">
 				</div>
 				<div id="list-profile-name">
-					Mochi
+					{{profile.display_name}}
 				</div>
 				<div id="list-profile-bio">
 					<p>
-						I spend my free time learning to program stuff.
+						{{profile.biography}}
 					</p>
 				</div>
 			</div>

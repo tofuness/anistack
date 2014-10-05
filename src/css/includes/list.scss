@@ -155,7 +155,9 @@
 	padding: 12px 0;
 	font-weight: 700;
 }
-
+#list-content {
+	@include box-shadow(1px 0 0 $gray-l-3);
+}
 .list-itemstatus-wrap {
 	@extend .cf;
 	position: relative;
@@ -195,7 +197,6 @@
 }
 .list-item-wrap {
 	overflow: hidden;
-	@include box-shadow(inset);
 }
 .list-item {
 	@extend .cf;
