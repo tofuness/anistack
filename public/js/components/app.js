@@ -270,10 +270,20 @@ var ListItem = React.createClass({displayName: 'ListItem',
 				easing: [0.165, 0.84, 0.44, 1],
 				duration: 300,
 				complete: function(){
+					$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
+					this.setState({
+						expanded: false
+					});
 					listStore[itemIndex] = _.extend(listStore[itemIndex], data);
 					PubSub.publishSync(ListConstants.DATA_CHANGE);
-				}
-			}).velocity('reverse', 300).velocity({
+				}.bind(this)
+			}).velocity({
+				backgroundColor: ['#ffffff', '#e8e8e8'],
+				height: [43, 0]
+			}, {
+				easing: [0.165, 0.84, 0.44, 1],
+				duration: 300
+			}).velocity({
 				height: '100%'
 			});
 		} else {
