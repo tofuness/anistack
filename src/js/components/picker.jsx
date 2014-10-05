@@ -7,7 +7,6 @@ var PickerApp = React.createClass({
 	},
 	getInitialState: function(){
 		return {
-			itemStatusDisplay: 'Current',
 			item_status: 'current',
 			item_progress: '',
 			item_rating: '',
@@ -22,7 +21,7 @@ var PickerApp = React.createClass({
 		// If statement below is there to make sure no infinite-loop happen
 
 		if(
-			(this.state.item_status === 'completed' && this.state.itemStatusDisplay === 'Completed') !==
+			this.state.item_status === 'completed' !==
 			(this.state.item_progress === episodesTotal)
 		){
 
@@ -46,7 +45,6 @@ var PickerApp = React.createClass({
 
 			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
 				this.setState({
-					itemStatusDisplay: 'Completed',
 					item_status: 'completed'
 				});
 			}
@@ -55,7 +53,6 @@ var PickerApp = React.createClass({
 
 			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
 				this.setState({
-					itemStatusDisplay: 'Current',
 					item_status: 'current'
 				});
 			}
@@ -63,7 +60,7 @@ var PickerApp = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function(nextProps){
-		if(nextProps.itemData){
+		if(nextProps.itemData !== this.props.itemData){
 			if(Object.keys(nextProps.itemData).length === 0){
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function(){
@@ -102,7 +99,6 @@ var PickerApp = React.createClass({
 	setStatus: function(e){
 		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
 		this.setState({
-			itemStatusDisplay: e.target.innerText,
 			item_status: statusVal
 		});
 		this.toggleStatusMenu();
@@ -126,9 +122,9 @@ var PickerApp = React.createClass({
 	setProgress: function(progressValue){
 		if(
 			!isNaN(progressValue) &&
-			(progressValue <= this.props.seriesData.series_episodes_total &&
-			0 <= progressValue ||
-			!this.props.seriesData.series_episodes_total)
+			(progressValue <= this.props.seriesData.series_episodes_total ||
+			!this.props.seriesData.series_episodes_total) &&
+			0 <= progressValue
 		){
 			this.setState({
 				item_progress: (progressValue == 0) ? '' : Number(progressValue)
@@ -217,7 +213,7 @@ var PickerApp = React.createClass({
 							'picker-status-val': true,
 							'visible': this.state.statusMenuVisible
 						})} onClick={this.toggleStatusMenu}>
-							{this.state.itemStatusDisplay}
+							{this.state.item_status.replace('onhold', 'On Hold')}
 							<div className={
 								cx({
 									'picker-status-menu-icon': true,

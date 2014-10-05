@@ -193,7 +193,10 @@
 	height: 2px;
 	background: $blue;
 }
-
+.list-item-wrap {
+	overflow: hidden;
+	@include box-shadow(inset);
+}
 .list-item {
 	@extend .cf;
 	cursor: pointer;
@@ -278,6 +281,7 @@
 	background-size: cover;
 	background-position: center center;
 	@include border-radius(4px);
+	@include box-shadow(inset 0 1px 0 $w15, 0 1px 3px $b15);
 }
 .list-exp-ovl {
 	@extend .cf;

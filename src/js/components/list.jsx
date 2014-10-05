@@ -20,8 +20,8 @@ var ListApp = React.createClass({
 			type: 'get',
 			success: function(listData){
 				listStore = listData;
-				console.log(listStore.length);
-				PubSub.publishSync(constants.DATA_CHANGE, listData);
+				console.log('List length: ' + listStore.length);
+				PubSub.publishSync(constants.DATA_CHANGE);
 			},
 			error: function(err){
 				console.log(err);
@@ -51,7 +51,7 @@ var ListApp = React.createClass({
 
 		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title_main');
 		this.setState({
-			listData: listStore,
+			listData: listSorted,
 			listLastSort: sortBy,
 			listLastOrder: order
 		});
@@ -214,22 +214,49 @@ var ListItem = React.createClass({
 	cancel: function(){
 		console.log('No cancelrino');
 	},
+	componentWillReceiveProps: function(nextProps){
+		console.log(this.props.itemData.series_title_main);
+		console.log(this.props.itemData.item_rating);
+		console.log(nextProps.itemData.item_rating);
+		console.log('----');
+	},
 	saveData: function(data){
-		console.log(data);
+		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
+		if(data.item_status !== this.props.itemData.item_status){
+			$(this.refs.listItem.getDOMNode()).stop(true).velocity({
+				backgroundColor: ['#e8e8e8', '#fffff'],
+				height: [0, 323],
+				blur: [5, 0]
+			}, {
+				easing: [0.165, 0.84, 0.44, 1],
+				duration: 350,
+				complete: function(){
+					_.extend(listStore[itemIndex], data);
+					PubSub.publishSync(constants.DATA_CHANGE);
+				}
+			});
+		} else {
+			_.extend(listStore[itemIndex], data);
+			PubSub.publishSync(constants.DATA_CHANGE);
+		}
 	},
 	toggleExpanded: function(e){
-		$(this.refs.listItemExpanded.getDOMNode()).velocity({
+		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
-			easing: (this.state.expanded) ? [0.165, 0.84, 0.44, 1] : [0.1, 0.885, 0.07, 1.09],
-			duration: (this.state.expanded) ? 350 : 500
+			easing: [0.165, 0.84, 0.44, 1],
+			duration: 350,
+			complete: function(){
+				// If e is a function, we know that it should be a callback
+				if(e instanceof Function){
+					e();
+				}
+			}
 		});
-		
 		this.setState({
 			expanded: !this.state.expanded,
 			showPicker: true
 		});
-		return false;
 	},
 	render: function(){
 		var listItemStyle = {
@@ -240,7 +267,7 @@ var ListItem = React.createClass({
 			listExpPicker = (<PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onCancel={this.cancel} onSave={this.saveData} />);
 		}
 		return (
-			<div>
+			<div ref="listItem" className="list-item-wrap">
 				<div className={cx({
 					'list-item':  true,
 					'expanded': this.state.expanded

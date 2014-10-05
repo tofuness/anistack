@@ -20,8 +20,8 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			type: 'get',
 			success: function(listData){
 				listStore = listData;
-				console.log(listStore.length);
-				PubSub.publishSync(constants.DATA_CHANGE, listData);
+				console.log('List length: ' + listStore.length);
+				PubSub.publishSync(constants.DATA_CHANGE);
 			},
 			error: function(err){
 				console.log(err);
@@ -51,7 +51,7 @@ var ListApp = React.createClass({displayName: 'ListApp',
 
 		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title_main');
 		this.setState({
-			listData: listStore,
+			listData: listSorted,
 			listLastSort: sortBy,
 			listLastOrder: order
 		});
@@ -214,22 +214,49 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	cancel: function(){
 		console.log('No cancelrino');
 	},
+	componentWillReceiveProps: function(nextProps){
+		console.log(this.props.itemData.series_title_main);
+		console.log(this.props.itemData.item_rating);
+		console.log(nextProps.itemData.item_rating);
+		console.log('----');
+	},
 	saveData: function(data){
-		console.log(data);
+		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
+		if(data.item_status !== this.props.itemData.item_status){
+			$(this.refs.listItem.getDOMNode()).stop(true).velocity({
+				backgroundColor: ['#e8e8e8', '#fffff'],
+				height: [0, 323],
+				blur: [5, 0]
+			}, {
+				easing: [0.165, 0.84, 0.44, 1],
+				duration: 350,
+				complete: function(){
+					_.extend(listStore[itemIndex], data);
+					PubSub.publishSync(constants.DATA_CHANGE);
+				}
+			});
+		} else {
+			_.extend(listStore[itemIndex], data);
+			PubSub.publishSync(constants.DATA_CHANGE);
+		}
 	},
 	toggleExpanded: function(e){
-		$(this.refs.listItemExpanded.getDOMNode()).velocity({
+		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
-			easing: (this.state.expanded) ? [0.165, 0.84, 0.44, 1] : [0.1, 0.885, 0.07, 1.09],
-			duration: (this.state.expanded) ? 350 : 500
+			easing: [0.165, 0.84, 0.44, 1],
+			duration: 350,
+			complete: function(){
+				// If e is a function, we know that it should be a callback
+				if(e instanceof Function){
+					e();
+				}
+			}
 		});
-		
 		this.setState({
 			expanded: !this.state.expanded,
 			showPicker: true
 		});
-		return false;
 	},
 	render: function(){
 		var listItemStyle = {
@@ -240,7 +267,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			listExpPicker = (PickerApp({itemData: this.props.itemData, seriesData: this.props.itemData, onCancel: this.cancel, onSave: this.saveData}));
 		}
 		return (
-			React.DOM.div(null, 
+			React.DOM.div({ref: "listItem", className: "list-item-wrap"}, 
 				React.DOM.div({className: cx({
 					'list-item':  true,
 					'expanded': this.state.expanded
@@ -338,7 +365,6 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 	},
 	getInitialState: function(){
 		return {
-			itemStatusDisplay: 'Current',
 			item_status: 'current',
 			item_progress: '',
 			item_rating: '',
@@ -353,7 +379,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		// If statement below is there to make sure no infinite-loop happen
 
 		if(
-			(this.state.item_status === 'completed' && this.state.itemStatusDisplay === 'Completed') !==
+			this.state.item_status === 'completed' !==
 			(this.state.item_progress === episodesTotal)
 		){
 
@@ -377,7 +403,6 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
 				this.setState({
-					itemStatusDisplay: 'Completed',
 					item_status: 'completed'
 				});
 			}
@@ -386,7 +411,6 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
 				this.setState({
-					itemStatusDisplay: 'Current',
 					item_status: 'current'
 				});
 			}
@@ -394,7 +418,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		}
 	},
 	componentWillReceiveProps: function(nextProps){
-		if(nextProps.itemData){
+		if(nextProps.itemData !== this.props.itemData){
 			if(Object.keys(nextProps.itemData).length === 0){
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function(){
@@ -433,7 +457,6 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 	setStatus: function(e){
 		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
 		this.setState({
-			itemStatusDisplay: e.target.innerText,
 			item_status: statusVal
 		});
 		this.toggleStatusMenu();
@@ -457,9 +480,9 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 	setProgress: function(progressValue){
 		if(
 			!isNaN(progressValue) &&
-			(progressValue <= this.props.seriesData.series_episodes_total &&
-			0 <= progressValue ||
-			!this.props.seriesData.series_episodes_total)
+			(progressValue <= this.props.seriesData.series_episodes_total ||
+			!this.props.seriesData.series_episodes_total) &&
+			0 <= progressValue
 		){
 			this.setState({
 				item_progress: (progressValue == 0) ? '' : Number(progressValue)
@@ -548,7 +571,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 							'picker-status-val': true,
 							'visible': this.state.statusMenuVisible
 						}), onClick: this.toggleStatusMenu}, 
-							this.state.itemStatusDisplay, 
+							this.state.item_status.replace('onhold', 'On Hold'), 
 							React.DOM.div({className: 
 								cx({
 									'picker-status-menu-icon': true,
@@ -856,10 +879,6 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 						var itemData = null;
 						if(searchRes.item_data){
 							itemData = {
-								itemStatusDisplay: (
-									searchRes.item_data.item_status.charAt(0).toUpperCase() +
-									searchRes.item_data.item_status.slice(1).toLowerCase()
-								).replace('Onhold', 'On Hold'),
 								item_status: searchRes.item_data.item_status,
 								item_progress: searchRes.item_data.item_progress,
 								item_rating: searchRes.item_data.item_rating,
