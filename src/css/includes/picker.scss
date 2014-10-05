@@ -154,6 +154,9 @@
 	color: $red;
 	font-size: 23px;
 	line-height: 18px;
+	&:hover {
+		color: $red-d-3;
+	}
 	&:first-child {
 		padding-left: 10px;
 	}

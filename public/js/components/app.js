@@ -20,7 +20,6 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			type: 'get',
 			success: function(listData){
 				listStore = listData;
-				console.log('List length: ' + listStore.length);
 				PubSub.publishSync(constants.DATA_CHANGE);
 			},
 			error: function(err){
@@ -75,13 +74,13 @@ var ListApp = React.createClass({displayName: 'ListApp',
 				React.DOM.div({id: "list-top"}, 
 					React.DOM.div({id: "list-tabs-wrap"}, 
 						
-							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName){
+							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index){
 								var statusVal = statusName.toLowerCase().replace(/ /g, '')
 								return (
 									React.DOM.div({className: cx({
 										'list-tab': true,
 										'current': (statusVal === this.state.listFilterStatus)
-									}), onClick: this.setStatusFilter.bind(this, statusVal)}, 
+									}), onClick: this.setStatusFilter.bind(this, statusVal), key: 'tab-' + index}, 
 										statusName
 									)
 								)
@@ -126,7 +125,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 	},
 	getInitialState: function(){
 		return {
-			batchRendering: true,
+			batchRendering: false,
 			listBegin: 0,
 			listEnd: 40
 		}
@@ -173,7 +172,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 				listNode.push(ListItem({itemData: listItem, key: listItem._id}));
 			}
 
-			if(lastStatus !== listItem.item_status && listNode.length){
+			if(lastStatus !== listItem.item_status && listNode.length && true === false){
 				lastStatus = listItem.item_status;
 				lastStatusCount++;
 				listDOM.push(
@@ -191,7 +190,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 					)
 				)
 			}
-			if(listNode.length) listDOM.push(listNode);
+			if(listNode.length) listDOM.push(listNode[0]);
 		}.bind(this));
 		if(this.state.batchRendering && lastStatusCount > 0){
 			var listStyle = {
@@ -214,12 +213,6 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	cancel: function(){
 		console.log('No cancelrino');
 	},
-	componentWillReceiveProps: function(nextProps){
-		console.log(this.props.itemData.series_title_main);
-		console.log(this.props.itemData.item_rating);
-		console.log(nextProps.itemData.item_rating);
-		console.log('----');
-	},
 	saveData: function(data){
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 		if(data.item_status !== this.props.itemData.item_status){
@@ -236,8 +229,10 @@ var ListItem = React.createClass({displayName: 'ListItem',
 				}
 			});
 		} else {
-			_.extend(listStore[itemIndex], data);
-			PubSub.publishSync(constants.DATA_CHANGE);
+			this.toggleExpanded(function(){
+				_.extend(listStore[itemIndex], data);
+				PubSub.publishSync(constants.DATA_CHANGE);
+			});
 		}
 	},
 	toggleExpanded: function(e){
@@ -260,7 +255,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	},
 	render: function(){
 		var listItemStyle = {
-			'backgroundImage': 'url(' + this.props.itemData.series_image_reference + ')'
+			backgroundImage: 'url(' + this.props.itemData.series_image_reference + ')'
 		}
 		var listExpPicker = null;
 		if(this.state.showPicker){
