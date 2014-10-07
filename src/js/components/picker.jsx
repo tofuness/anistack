@@ -60,7 +60,7 @@ var PickerApp = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function(nextProps){
-		if(nextProps.itemData !== this.props.itemData){
+		if(nextProps.itemData){
 			if(Object.keys(nextProps.itemData).length === 0){
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function(){
