@@ -63,13 +63,21 @@ module.exports = function(app){
 	.get(function(req, res, next){
 		if(!req.param('query')) return res.status(200).json([]);
 		var searchQuery = req.param('query');
+		var dbSearchQuery;
+
+		if(searchQuery.match(/^".*"$/)){
+			dbSearchQuery = new RegExp('^' + searchQuery.substring(1, searchQuery.length - 1) + '$', 'i');
+		} else {
+			dbSearchQuery = new RegExp(searchQuery, 'gi');
+		}
+		
 		var searchConditions = {
 			$or: [
-				{ series_title_main: new RegExp(searchQuery, 'gi') },				
-				{ series_title_english: new RegExp(searchQuery, 'gi') },				
-				{ series_title_romanji: new RegExp(searchQuery, 'gi') },
-				{ series_title_japanese: new RegExp(searchQuery, 'gi') },
-				{ series_title_synonyms: new RegExp(searchQuery, 'gi') },
+				{ series_title_main: dbSearchQuery },				
+				{ series_title_english: dbSearchQuery },				
+				{ series_title_romanji: dbSearchQuery },
+				{ series_title_japanese: dbSearchQuery },
+				{ series_title_synonyms: dbSearchQuery },
 			]
 		}
 		Collection.find(searchConditions)
