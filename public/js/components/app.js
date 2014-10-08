@@ -411,6 +411,7 @@ if(mountNode) React.renderComponent(loginForm(null), mountNode);
 var cx = React.addons.classSet;
 var PickerApp = React.createClass({displayName: 'PickerApp',
 	propTypes: {
+		collection: React.PropTypes.string,
 		seriesData: React.PropTypes.object,
 		onClose: React.PropTypes.func,
 		onSave: React.PropTypes.func
@@ -652,7 +653,9 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 					React.DOM.div({className: "picker-inputs-wrap"}, 
 						React.DOM.div({className: "picker-repeats-wrap"}, 
 							React.DOM.div({className: "picker-title"}, 
-								"Re-watched"
+								
+									(this.props.collection === 'anime') ? 'Re-watched' : 'Re-read'
+								
 							), 
 							React.DOM.div({className: "cf"}, 
 								React.DOM.input({
@@ -687,7 +690,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 								"of"
 								), 
 								React.DOM.div({className: "picker-input-total"}, 
-									this.props.seriesData.series_episodes_total
+									this.props.seriesData.series_episodes_total || '—'
 								)
 							)
 						)
@@ -878,10 +881,15 @@ var mountNode = document.getElementById('register-form-wrap');
 if(mountNode) React.renderComponent(registerForm(null), mountNode);
 /** @jsx React.DOM */
 
+var TempSearchConstants = {
+	QUERY: $('#search-page-wrap').data('query'),
+	COLLECTION: $('#search-page-wrap').data('collection')
+}
+
 var SearchApp = React.createClass({displayName: 'SearchApp',
 	getInitialState: function(){
 		var initState = {
-			searchText: $('#search-page-query').text().trim(),
+			searchText: TempSearchConstants.QUERY,
 			searchResults: []
 		}
 		return initState;
@@ -902,7 +910,7 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 		if(this.state.searchText === '') return false;
 		$.ajax({
 			type: 'get',
-			url: '/api/anime/search/' + this.state.searchText,
+			url: '/api/' + TempSearchConstants.COLLECTION + '/search/' + this.state.searchText,
 			success: function(searchRes){
 				this.setState({
 					searchResults: searchRes
@@ -974,7 +982,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 		});
 	},
 	saveData: function(data){
-		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
+		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
 
 		$.ajax({
@@ -1054,6 +1062,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 							})
 						}, 
 							PickerApp({
+								collection: TempSearchConstants.COLLECTION, 
 								itemData: this.state.itemData, 
 								seriesData: this.props.seriesData, 
 								onCancel: this.closePicker, 

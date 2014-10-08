@@ -1,9 +1,14 @@
 /** @jsx React.DOM */
 
+var TempSearchConstants = {
+	QUERY: $('#search-page-wrap').data('query'),
+	COLLECTION: $('#search-page-wrap').data('collection')
+}
+
 var SearchApp = React.createClass({
 	getInitialState: function(){
 		var initState = {
-			searchText: $('#search-page-query').text().trim(),
+			searchText: TempSearchConstants.QUERY,
 			searchResults: []
 		}
 		return initState;
@@ -24,7 +29,7 @@ var SearchApp = React.createClass({
 		if(this.state.searchText === '') return false;
 		$.ajax({
 			type: 'get',
-			url: '/api/anime/search/' + this.state.searchText,
+			url: '/api/' + TempSearchConstants.COLLECTION + '/search/' + this.state.searchText,
 			success: function(searchRes){
 				this.setState({
 					searchResults: searchRes
@@ -96,7 +101,7 @@ var SearchItem = React.createClass({
 		});
 	},
 	saveData: function(data){
-		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/anime/update' : '/api/list/anime/add';
+		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
 
 		$.ajax({
@@ -176,6 +181,7 @@ var SearchItem = React.createClass({
 							})
 						}>
 							<PickerApp
+								collection={TempSearchConstants.COLLECTION}
 								itemData={this.state.itemData}
 								seriesData={this.props.seriesData}
 								onCancel={this.closePicker}

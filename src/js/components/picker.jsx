@@ -1,6 +1,7 @@
 var cx = React.addons.classSet;
 var PickerApp = React.createClass({
 	propTypes: {
+		collection: React.PropTypes.string,
 		seriesData: React.PropTypes.object,
 		onClose: React.PropTypes.func,
 		onSave: React.PropTypes.func
@@ -242,7 +243,9 @@ var PickerApp = React.createClass({
 					<div className="picker-inputs-wrap">
 						<div className="picker-repeats-wrap">
 							<div className="picker-title">
-								Re-watched
+								{
+									(this.props.collection === 'anime') ? 'Re-watched' : 'Re-read'
+								}
 							</div>
 							<div className="cf">
 								<input
@@ -277,7 +280,7 @@ var PickerApp = React.createClass({
 								of
 								</div>
 								<div className="picker-input-total">
-									{this.props.seriesData.series_episodes_total}
+									{this.props.seriesData.series_episodes_total || '—'}
 								</div>
 							</div>
 						</div>

@@ -10,12 +10,14 @@ mongoose.connect('mongodb://localhost:27017/herro_dev');
 
 var validators = {
 	anime: new mongooseValidateFilter.validate(),
+	manga: new mongooseValidateFilter.validate(),
 	user: new mongooseValidateFilter.validate(),
 	list: new mongooseValidateFilter.validate()
 }
 
 var filters = {
 	anime: new mongooseValidateFilter.filter(),
+	manga: new mongooseValidateFilter.filter(),
 	user: new mongooseValidateFilter.filter(),
 	list: new mongooseValidateFilter.filter()
 }
@@ -82,6 +84,16 @@ var validate = {
 			}
 		}
 	},
+	manga: {
+		type: function(typeStr, done){
+			typeStr = typeStr.toLowerCase();
+			if(['manga', 'novel', 'oneshot', 'doujin', 'manhwa', 'manhua', 'oel'].indexOf(typeStr) > -1){
+				done(true);
+			} else {
+				done(false);
+			}	
+		}
+	},
 	user: {
 		username: function(usernameStr, done){
 			if(/^\W+/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
@@ -139,6 +151,17 @@ validators.anime.add('series_episodes_total', {
 filters.anime.add('series_type', 'lowercase');
 filters.anime.add('series_genres', filter.general.lowerCaseUniq);
 filters.anime.add('series_genres', filter.anime.genres);
+
+// Validation/Filtering for MangaSchema
+
+validators.manga.add('series_type', {
+	callback: validate.manga.type,
+	msg: 'series_type did not pass validation'
+});
+
+filters.manga.add('series_type', 'lowercase');
+filters.manga.add('series_genres', filter.general.lowerCaseUniq);
+filters.manga.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for UserSchema
 
@@ -220,6 +243,55 @@ var AnimeSchema = new Schema({
 });
 
 AnimeSchema.plugin(slugin, {
+	slugName: 'series_slug',
+	source: [
+		'series_title_main'
+	]
+});
+
+var MangaSchema = new Schema({
+	series_title_main: { // Straight from Wikipedia
+		type: String,
+		required: true,
+		unique: true
+	},
+	series_title_english: String,
+	series_title_japanese: String,
+	series_title_romanji: String,
+	series_title_synonyms: [ String ], // Abbriviations should be added as "tags"
+	series_slug: {
+		type: String,
+		required: true,
+		unique: true,
+		index: true
+	},
+	series_type: {
+		type: String,
+		lowercase: true,
+		enum: ['manga', 'novel', 'oneshot', 'doujin', 'manhwa', 'manhua', 'oel'],
+		required: true
+	},
+	series_date_start: Date,
+	series_date_end: Date,
+	series_description: String,
+	series_image_original: String,
+	series_image_processed: String,
+	series_image_reference: String,
+	series_genres: [ String ],
+	series_gallery: [ String ],
+	series_studios: [ Schema.Types.ObjectId ],
+	series_external_ids: {
+		myanimelist: Number,
+		anidb: Number
+	},
+	series_external_links: [{
+		_id: false,
+		title: String,
+		url: String
+	}]
+});
+
+MangaSchema.plugin(slugin, {
 	slugName: 'series_slug',
 	source: [
 		'series_title_main'
@@ -399,12 +471,15 @@ var UserSchema = new Schema({
 });
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
+mongooseValidateFilter.validateFilter(MangaSchema, validators.manga, filters.manga);
 mongooseValidateFilter.validateFilter(UserSchema, validators.user, filters.user);
 
 var Anime = mongoose.model('Anime', AnimeSchema);
+var Manga = mongoose.model('Manga', MangaSchema);
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {
 	Anime: Anime,
+	Manga: Manga,
 	User: User
 }

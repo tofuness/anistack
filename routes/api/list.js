@@ -3,6 +3,7 @@ var hAuth = require('../../helpers/auth.js');
 var listValidate = require('../../helpers/validateListData.js');
 var User = db.User;
 var Anime = db.Anime;
+var Manga = db.Manga;
 var _ = require('lodash');
 
 module.exports = function(app){
@@ -13,7 +14,7 @@ module.exports = function(app){
 	app.route('/list/:list(anime|manga)*')
 	.all(function(req, res, next){
 		listType = req.param('list');
-		Collection = (listType === 'anime') ? Anime : ''; // Change to manga later
+		Collection = (listType === 'anime') ? Anime : Manga; // Change to manga later
 		next();
 	});
 
@@ -37,7 +38,7 @@ module.exports = function(app){
 				return listItem._id
 			});
 
-			Anime.find({
+			Collection.find({
 				_id: {
 					$in: seriesIds
 				}
@@ -62,13 +63,17 @@ module.exports = function(app){
 			return next(new Error('No _id was sent'));
 		}
 
+		// Check if anime/manga already exists
+
 		if(
 			_.map(req.user.anime_list, function(list){ return list._id.toString() })
+			.indexOf(req.body._id) > -1 ||
+			_.map(req.user.manga_list, function(list){ return list._id.toString() })
 			.indexOf(req.body._id) > -1
 		){
 			return next(new Error('_id already exists in list'));
 		}
-		console.log(req.body);
+
 		var listItem = {
 			_id: req.body._id,
 			item_progress: req.body.item_progress,
@@ -77,23 +82,27 @@ module.exports = function(app){
 			item_repeats: req.body.item_repeats
 		}
 
-		listValidate.validate.anime(listItem, function(err, itemDoc){
-			if(!err){
-				User.update({
-					_id: req.user._id
-				}, {
-					$addToSet: {
-						anime_list: itemDoc
-					}
-				}, function(err, status){
-					if(status){
-						res.status(200).json({ status: 'ok', message: 'added item to list' });
-					} else {
-						next(new Error('could not add item to list'));
-					}
-				});
-			}
-		});
+		if(listType === 'anime'){
+			listValidate.validate.anime(listItem, function(err, itemDoc){
+				if(!err){
+					User.update({
+						_id: req.user._id
+					}, {
+						$addToSet: {
+							anime_list: itemDoc
+						}
+					}, function(err, status){
+						if(status){
+							res.status(200).json({ status: 'ok', message: 'added item to list' });
+						} else {
+							next(new Error('could not add item to list'));
+						}
+					});
+				}
+			});
+		} else {
+			console.log('Add manga here');
+		}
 	});
 
 	app.route('/list/:list(anime|manga)/update')
@@ -110,32 +119,36 @@ module.exports = function(app){
 			item_status: req.body.item_status || 'current',
 			item_repeats: req.body.item_repeats
 		}
-		listValidate.validate.anime(listItem, function(err, itemDoc){
-			if(!err){
-				var itemData = {};
-				itemData['anime_list.$.item_repeats'] = itemDoc.item_repeats;
-				itemData['anime_list.$.item_status'] = itemDoc.item_status;				
-				if(itemDoc.item_progress !== undefined){
-					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
-				}
-				if(itemDoc.item_rating !== undefined){
-					itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
-				}
-				
-				User.update({
-					_id: req.user._id,
-					'anime_list._id': itemDoc._id
-				}, {
-					$set: itemData
-				}, function(err, status){
-					if(status){
-						res.status(200).json({ status: 'ok', message: 'updated item in list'});
-					} else {
-						next(new Error('could not update item in list'));
+		if(listType === 'anime'){
+			listValidate.validate.anime(listItem, function(err, itemDoc){
+				if(!err){
+					var itemData = {};
+					itemData['anime_list.$.item_repeats'] = itemDoc.item_repeats;
+					itemData['anime_list.$.item_status'] = itemDoc.item_status;				
+					if(itemDoc.item_progress !== undefined){
+						itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
 					}
-				});
-			}
-		})
+					if(itemDoc.item_rating !== undefined){
+						itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
+					}
+					
+					User.update({
+						_id: req.user._id,
+						'anime_list._id': itemDoc._id
+					}, {
+						$set: itemData
+					}, function(err, status){
+						if(status){
+							res.status(200).json({ status: 'ok', message: 'updated item in list'});
+						} else {
+							next(new Error('could not update item in list'));
+						}
+					});
+				}
+			});
+		} else {
+			console.log('Update manga here');
+		}
 	});
 
 	app.route('/list/:list(anime|manga)/remove')

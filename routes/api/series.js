@@ -1,5 +1,6 @@
 var db = require('../../models/db.js');
 var Anime = db.Anime;
+var Manga = db.Manga;
 var _ = require('lodash');
 
 module.exports = function(app){
@@ -86,7 +87,7 @@ module.exports = function(app){
 			if(err) return next(new Error(err));
 			var sortedDocs = _.sortBy(docs, function(series){
 				// Hacky sort function
-				return ['movie', 'tv'].indexOf(series.series_type) * -1
+				return ['movie', 'tv', 'manga'].indexOf(series.series_type) * -1
 			});
 
 			sortedDocs = sortedDocs.map(function(series){

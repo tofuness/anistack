@@ -7,7 +7,7 @@ var db = require('../models/db.js');
 var Anime = db.Anime;
 
 var fs = require('fs');
-var errorLog = fs.WriteStream('./logs/' + new Date().getTime() + '.log');
+var errorLog = fs.WriteStream('./logs/anime-' + new Date().getTime() + '.log');
 
 var getQ = async.queue(function(task, callback){
 	request(task.url, function(err, res, body){
