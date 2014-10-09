@@ -24,9 +24,9 @@
     "passport": "~0.2.1",
     "passport-local": "~1.0.0",
     "request": "~2.42.0",
-    "slugin": "0.0.11",
     "swag": "~0.7.0",
-    "bluebird": "~2.3.4"
+    "bluebird": "~2.3.4",
+    "slugin": "git://github.com/Desuvader/slugin"
   },
   "devDependencies": {
     "gulp": "~3.8.7",
@@ -38,10 +38,13 @@
     "gulp-uglify": "~0.3.1",
     "morgan": "~1.2.2",
     "pretty-error": "~1.1.1",
-    "progress-bar": "^0.1.1"
+    "progress-bar": "^0.1.1",
+    "mocha": "~1.21.4",
+    "supertest": "~0.14.0",
+    "should": "~4.0.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require test/support/env --reporter spec --bail --check-leaks test/"
   },
   "author": "Dennis Jin <desuvader@gmail.com>",
   "license": "MIT"

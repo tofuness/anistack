@@ -57,7 +57,7 @@ module.exports = function(app){
 	});
 
 	app.route('/list/:list(anime|manga)/add')
-	.all(hAuth.ifAuth)
+	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next){
 		if(!req.body._id){
 			return next(new Error('No _id was sent'));
@@ -83,7 +83,7 @@ module.exports = function(app){
 		}
 
 		if(listType === 'anime'){
-			listValidate.validate.anime(listItem, function(err, itemDoc){
+			listValidate.anime(listItem, function(err, itemDoc){
 				if(!err){
 					User.update({
 						_id: req.user._id
@@ -98,6 +98,8 @@ module.exports = function(app){
 							next(new Error('could not add item to list'));
 						}
 					});
+				} else {
+					next(new Error(err));
 				}
 			});
 		} else {
@@ -106,7 +108,7 @@ module.exports = function(app){
 	});
 
 	app.route('/list/:list(anime|manga)/update')
-	.all(hAuth.ifAuth)
+	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next){
 		if(!req.body._id){
 			return next(new Error('no _id was sent'));
@@ -120,13 +122,14 @@ module.exports = function(app){
 			item_repeats: req.body.item_repeats
 		}
 		if(listType === 'anime'){
-			listValidate.validate.anime(listItem, function(err, itemDoc){
+			listValidate.anime(listItem, function(err, itemDoc){
 				if(!err){
 					var itemData = {};
-					itemData['anime_list.$.item_repeats'] = itemDoc.item_repeats;
-					itemData['anime_list.$.item_status'] = itemDoc.item_status;				
-					if(itemDoc.item_progress !== undefined){
-						itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
+					itemData['anime_list.$.item_status'] = itemDoc.item_status;
+					itemData['anime_list.$.item_progress'] = itemDoc.item_progress;
+
+					if(itemDoc.item_repeats !== undefined){
+						itemData['anime_list.$.item_repeats'] = itemDoc.item_repeats;
 					}
 					if(itemDoc.item_rating !== undefined){
 						itemData['anime_list.$.item_rating'] = itemDoc.item_rating;
@@ -139,11 +142,13 @@ module.exports = function(app){
 						$set: itemData
 					}, function(err, status){
 						if(status){
-							res.status(200).json({ status: 'ok', message: 'updated item in list'});
+							res.status(200).json({ status: 'ok', message: 'updated item in list' });
 						} else {
 							next(new Error('could not update item in list'));
 						}
 					});
+				} else {
+					next(new Error(err));
 				}
 			});
 		} else {
@@ -152,7 +157,7 @@ module.exports = function(app){
 	});
 
 	app.route('/list/:list(anime|manga)/remove')
-	.all(hAuth.ifAuth)
+	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next){
 		if(!req.body._id){
 			return next(new Error('no _id was sent'));
@@ -170,6 +175,8 @@ module.exports = function(app){
 					status: 'ok',
 					message: 'removed item from list'
 				});
+			} else if(status === 0 && !err){
+				next(new Error('no matching item in list'));
 			} else {
 				next(new Error('could not remove item from list'));
 			}

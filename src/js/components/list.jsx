@@ -324,6 +324,8 @@ var ListItem = React.createClass({
 					'list-item':  true,
 					'expanded': this.state.expanded
 				})} onClick={this.toggleExpanded}>
+					<div className="list-item-image-preview" style={listItemStyle}>
+					</div>
 					<div className="list-item-title">
 						{this.props.itemData.series_title_main}
 					</div>

@@ -26,7 +26,7 @@ var getQ = async.queue(function(task, callback){
 			series_title_english: mangaJSON.english[0],
 			series_title_japanese: mangaJSON.japanese[0],
 			series_title_synonyms: mangaJSON.synonyms,
-			series_type: mangaJSON.kind,
+			series_type: mangaJSON.kind.replace(/ /g, ''),
 			series_date_start: mangaJSON.aired_on,
 			series_date_end: mangaJSON.released_on,
 			series_image_reference: 'http://shikimori.org' + mangaJSON.image.original,
@@ -54,7 +54,7 @@ var getQ = async.queue(function(task, callback){
 	});
 }, 1);
 
-for (var i = 1, len = 22037; i < len; i++) {
+for (var i = 77708, len = 80931; i < len; i++) {
 	getQ.push({
 		url: 'http://shikimori.org/api/mangas/' + i,
 		index: i

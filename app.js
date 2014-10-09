@@ -13,7 +13,6 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
-var morgan = require('morgan');
 var cors = require('cors');
 
 // Authentication modules
@@ -90,9 +89,9 @@ app.use(passport.session());
 
 // Enable logging
 
-app.use(morgan('dev'));
-
 if(process.env.NODE_ENV === 'development'){
+	var morgan = require('morgan');
+	app.use(morgan('dev'));
 	process.send({ cmd: 'NODE_DEV', required: './views/partials/header.hbs' });
 	process.send({ cmd: 'NODE_DEV', required: './views/partials/footer.hbs' });
 	process.send({ cmd: 'NODE_DEV', required: './views/login.hbs' });
@@ -141,8 +140,8 @@ require('./routes/api/user.js')(apiRouter);
 
 app.use(function(err, req, res, next){
 	if(err){
-		console.log(req.url);
-		console.log(err.stack);
+		//console.log(req.url);
+		//console.log(err.stack);
 		res.status(500).json({ status: 'error', message: err.message });
 	} else {
 		next();
@@ -158,6 +157,10 @@ app.use(function(req, res, next){
 // Create application server
 
 http.createServer(app).listen(app.get('port'), function(){
-	console.log('✓ Running application in: ' + process.env.NODE_ENV);
-	console.log('✓ Application up and running at port: ' + app.get('port'));
+	if(process.env.NODE_ENV !== 'test'){
+		console.log('✓ Running application in: ' + process.env.NODE_ENV);
+		console.log('✓ Application up and running at port: ' + app.get('port'));
+	}
 });
+
+module.exports = app;

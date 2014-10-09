@@ -14,8 +14,10 @@ module.exports = function(app){
 		if(req.body.email){
 			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + req.body.email, function(err, response, body){
 				body = JSON.parse(body);
-				console.log(body);
-				if(!body.is_valid) return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
+				if(!body.is_valid){
+					return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
+				}
+
 				User.findOne({
 					email: new RegExp('^' + req.body.email + '$', 'i')
 				}, function(err, userDoc){
@@ -33,7 +35,14 @@ module.exports = function(app){
 	app.route('/validate/username')
 	.post(function(req, res, next){
 		if(req.body.username){
-			if(req.body.username.length < 3) return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
+			if(!/^\w+$/g.test(req.body.username)){
+				return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
+			}
+
+			if(req.body.username.length < 3 || req.body.username.length > 40){
+				return res.status(200).json({ status: 'ok', is_valid: false, exists: false });
+			}
+
 			User.findOne({
 				username: new RegExp('^' + req.body.username + '$', 'i')
 			}, function(err, userDoc){

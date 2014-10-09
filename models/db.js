@@ -6,7 +6,11 @@ var _ = require('lodash');
 var request = require('request');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
-mongoose.connect('mongodb://localhost:27017/herro_dev');
+if(process.env.NODE_ENV !== 'test'){
+	mongoose.connect('mongodb://localhost:27017/herro_dev');
+} else {
+	mongoose.connect('mongodb://localhost:27017/herro_test');
+}
 
 var validators = {
 	anime: new mongooseValidateFilter.validate(),
@@ -96,7 +100,7 @@ var validate = {
 	},
 	user: {
 		username: function(usernameStr, done){
-			if(/^\W+/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
+			if(/^\w+$/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
 			this.findOne({
 				username: new RegExp('^' + usernameStr + '$', 'i')
 			}, function(err, doc){
@@ -467,7 +471,7 @@ var UserSchema = new Schema({
 	anime_list: [ AnimeListItemSchema ],
 	manga_list: [ MangaListItemSchema ],
 	activity_feed: [ ActivityItemSchema ],
-	API_key: String
+	api_token: String
 });
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
