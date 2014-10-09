@@ -52,8 +52,10 @@
 	cursor: pointer;
 	display: block;
 	padding: 10px 20px;
+	color: $black;
 	font-size: 11px;
 	text-transform: uppercase;
+	text-decoration: none;
 	&.current {
 		color: $blue;
 		& .list-nav-count {

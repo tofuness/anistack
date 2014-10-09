@@ -144,7 +144,11 @@
 	@include transform-origin(190px bottom);
 	@include box-shadow(0 1px 6px $b30);
 	@include border-radius(4px);
-
+	&.first {
+		top: -113px;
+		right: -256px;
+		@include transform-origin(center left);
+	}
 	&.visible {
 		@extend .tsin;
 		@include transform(scale(1));

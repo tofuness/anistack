@@ -54,7 +54,7 @@ var getQ = async.queue(function(task, callback){
 	});
 }, 1);
 
-for (var i = 77708, len = 80931; i < len; i++) {
+for (var i = 56804, len = 80931; i < len; i++) {
 	getQ.push({
 		url: 'http://shikimori.org/api/mangas/' + i,
 		index: i

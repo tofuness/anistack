@@ -93,9 +93,9 @@ module.exports = function(app){
 						}
 					}, function(err, status){
 						if(status){
-							res.status(200).json({ status: 'ok', message: 'added item to list' });
+							res.status(200).json({ status: 'ok', message: 'added item to anime list' });
 						} else {
-							next(new Error('could not add item to list'));
+							next(new Error('could not add item to anime list'));
 						}
 					});
 				} else {
@@ -103,7 +103,25 @@ module.exports = function(app){
 				}
 			});
 		} else {
-			console.log('Add manga here');
+			listValidate.manga(listItem, function(err, itemDoc){
+				if(!err){
+					User.update({
+						_id: req.user._id
+					}, {
+						$addToSet: {
+							manga_list: itemDoc
+						}
+					}, function(err, status){
+						if(status){
+							res.status(200).json({ status: 'ok', message: 'added item to manga list' });
+						} else {
+							next(new Error('could not add item to manga list'));
+						}
+					});
+				} else {
+					next(new Error(err));
+				}
+			});
 		}
 	});
 
@@ -152,7 +170,37 @@ module.exports = function(app){
 				}
 			});
 		} else {
-			console.log('Update manga here');
+			listValidate.manga(listItem, function(err, itemDoc){
+				if(!err){
+					var itemData = {};
+					itemData['manga_list.$.item_status'] = itemDoc.item_status;
+
+					if(itemDoc.item_progress !== undefined){
+						itemData['manga_list.$.item_progress'] = itemDoc.item_progress;
+					}
+					if(itemDoc.item_repeats !== undefined){
+						itemData['manga_list.$.item_repeats'] = itemDoc.item_repeats;
+					}
+					if(itemDoc.item_rating !== undefined){
+						itemData['manga_list.$.item_rating'] = itemDoc.item_rating;
+					}
+					
+					User.update({
+						_id: req.user._id,
+						'manga_list._id': itemDoc._id
+					}, {
+						$set: itemData
+					}, function(err, status){
+						if(status){
+							res.status(200).json({ status: 'ok', message: 'updated item in manga list' });
+						} else {
+							next(new Error('could not update item in manga list'));
+						}
+					});
+				} else {
+					next(new Error(err));
+				}
+			});
 		}
 	});
 

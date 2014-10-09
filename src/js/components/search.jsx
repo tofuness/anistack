@@ -54,7 +54,7 @@ var SearchApp = React.createClass({
 				</div>
 				<div id="search-results-wrap">
 				{
-					this.state.searchResults.map(function(searchRes){
+					this.state.searchResults.map(function(searchRes, index){
 						var itemData = null;
 						if(searchRes.item_data){
 							itemData = {
@@ -64,7 +64,7 @@ var SearchApp = React.createClass({
 								item_repeats: searchRes.item_data.item_repeats
 							}
 						}
-						return <SearchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} />;
+						return <SearchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} indexNum={index} />;
 					})
 				}
 				</div>
@@ -110,7 +110,10 @@ var SearchItem = React.createClass({
 			data: data,
 			success: function(res){
 				console.log(res); 
-			}
+			},
+			error: function(){
+				this.onRemove();
+			}.bind(this)
 		});
 
 		this.setState({
@@ -171,12 +174,13 @@ var SearchItem = React.createClass({
 							})
 						} onClick={this.togglePicker}>
 							{
-								(this.state.itemAdded) ? 'Edit info' : 'Add to list +'
+								(this.state.itemAdded) ? 'Edit info' : '+ Add to list'
 							}
 						</div>
 						<div className={
 							cx({
 								'search-result-picker': true,
+								'first': this.props.indexNum === 0,
 								'visible': this.state.pickerVisible
 							})
 						}>

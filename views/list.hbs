@@ -26,12 +26,12 @@
 			<div class="list-nav">
 				<div class="list-nav-sep">
 				</div>
-				<a class="list-nav-item current">
+				<a class="list-nav-item {{#is listType 'anime'}}current{{/is}}" href="/list/anime/{{profile.username}}">
 					<span class="list-nav-text">
 						Anime List
 					</span>
 				</a>
-				<a class="list-nav-item">
+				<a class="list-nav-item {{#is listType 'manga'}}current{{/is}}" href="/list/manga/{{profile.username}}">
 					<span class="list-nav-text">
 						Manga List
 					</span>
