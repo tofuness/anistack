@@ -5,7 +5,8 @@ html {
 	font-size: 13px;
 	font-family: sans-serif;
 	background: $bluegray-l-12;
-	vertical-align: baseline;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased;
 }
 body {
 	@extend .opensans;
@@ -16,6 +17,13 @@ p a, p a:visited {
 	text-decoration: underline;
 	&:hover {
 		text-decoration: none;
+	}
+}
+p a, p a:visited {
+	color: $blue;
+	text-decoration: none;
+	&:hover {
+		@include box-shadow(0 1px 0 $blue);
 	}
 }
 p {

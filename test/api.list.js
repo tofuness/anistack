@@ -143,4 +143,104 @@ describe('routes/api/list', function(){
 			.expect(302, done);
 		});
 	});
+
+	// Manga list
+
+	describe('GET /api/list/manga/view/:username', function(){
+		it('should respond with user manga list in JSON', function(done){
+			request(app)
+			.get('/api/list/manga/view/mochi')
+			.set('Accept', 'application/json')
+			.expect('Content-Type', /json/)
+			.expect(200, done);
+		});
+	});
+
+	describe('POST /api/list/manga/add', function(){
+		it('should add manga to list', function(done){
+			request(app)
+			.post('/api/list/manga/add')
+			.send({
+				username: 'mochi',
+				api_token: 'topkek',
+				_id: '5434ff296a2ff84c2391b156', // Sword Art Online
+				item_status: 'completed',
+				item_rating: 4,
+				item_progress: 25
+			})
+			.expect(200, done);
+		});
+
+		it('should redirect to login page', function(done){
+			request(app)
+			.post('/api/list/manga/add')
+			.expect(302, done);
+		});
+	});
+
+	describe('POST /api/list/manga/update', function(){
+		it('should update manga in list', function(done){
+			request(app)
+			.post('/api/list/manga/add')
+			.send({
+				username: 'mochi',
+				api_token: 'topkek',
+				_id: '5434ff296a2ff84c2391b156', // Sword Art Online
+				item_status: 'completed',
+				item_rating: 4,
+				item_progress: 25
+			})
+			.expect(200, function(err, res){
+				if(err) return done(err);
+				request(app)
+				.post('/api/list/manga/update')
+				.send({
+					username: 'mochi',
+					api_token: 'topkek',
+					_id: '5434ff296a2ff84c2391b156', // Sword Art Online
+					item_status: 'planned',
+					item_progress: 20
+				})
+				.expect(200, done);
+			});
+		});
+
+		it('should redirect to login page', function(done){
+			request(app)
+			.post('/api/list/manga/update')
+			.expect(302, done);
+		});
+	});
+
+	describe('POST /api/list/manga/remove', function(){
+		it('should remove manga from list', function(done){
+			request(app)
+			.post('/api/list/manga/add')
+			.send({
+				username: 'mochi',
+				api_token: 'topkek',
+				_id: '5434ff296a2ff84c2391b156', // Sword Art Online
+				item_status: 'completed',
+				item_rating: 4,
+				item_progress: 25
+			})
+			.expect(200, function(err, res){
+				if(err) return done(err);
+				request(app)
+				.post('/api/list/manga/remove')
+				.send({
+					username: 'mochi',
+					api_token: 'topkek',
+					_id: '5434ff296a2ff84c2391b156' // Sword Art Online
+				})
+				.expect(200, done);
+			});
+		});
+
+		it('should redirect to login page', function(done){
+			request(app)
+			.post('/api/list/manga/remove')
+			.expect(302, done);
+		});
+	});
 });

@@ -33,22 +33,17 @@
 #top-profile-wrap {
 	@extend .cf;
 	float: right;
-	padding: 0 20px;
+	padding: 0 12px;
+	height: 50px;
 	border-left: 1px solid $gray-l-3;
 	border-right: 1px solid $gray-l-3;
 }
 #top-profile-avatar {
 	float: left;
-	margin-top: 13px;
-	width: 24px;
-	height: 24px;
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
 	background-color: $gray-d-6;
 	background-size: cover;
-	@include border-radius(32px);
-}
-#top-profile-name {
-	float: left;
-	padding-left: 20px;
-	font-weight: 800;
-	line-height: 50px;
+	@include border-radius(4px);
 }

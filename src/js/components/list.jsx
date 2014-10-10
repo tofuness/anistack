@@ -293,10 +293,6 @@ var ListItem = React.createClass({
 		}
 	},
 	toggleExpanded: function(e){
-		this.setState({
-			expanded: !this.state.expanded,
-			showPicker: true
-		});
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
@@ -308,6 +304,11 @@ var ListItem = React.createClass({
 					e();
 				}
 			}.bind(this)
+		});
+
+		this.setState({
+			expanded: !this.state.expanded,
+			showPicker: true
 		});
 	},
 	render: function(){
