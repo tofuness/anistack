@@ -272,9 +272,8 @@
 }
 .list-item-type {
 	float: left;
-	padding: 0 15px;
 	color: $gray-d-9;
-	width: 38px;
+	width: 69px;
 	font-size: 11px;
 	font-weight: 700;
 	line-height: 42px;
@@ -305,6 +304,14 @@
 }
 .list-exp-picker {
 	float: right;
+}
+
+#list-noresults {
+	color: $gray-d-9;
+	font-size: 23px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 420px;
 }
 
 // List left

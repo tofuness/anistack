@@ -23,7 +23,7 @@ var PickerApp = React.createClass({
 
 		if(
 			this.state.item_status === 'completed' !==
-			(this.state.item_progress === episodesTotal)
+			(this.state.item_progress === episodesTotal) && episodesTotal
 		){
 
 			// (1) If changed status to completed: bump up the item_progress

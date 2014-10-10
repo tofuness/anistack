@@ -235,7 +235,7 @@ var ListEmpty = React.createClass({displayName: 'ListEmpty',
 
 var ListNoResults = React.createClass({displayName: 'ListNoResults',
 	render: function(){
-		return (React.DOM.div(null, "No results"));
+		return (React.DOM.div({id: "list-noresults"}, "No results :("));
 	}
 });
 
@@ -435,7 +435,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 		if(
 			this.state.item_status === 'completed' !==
-			(this.state.item_progress === episodesTotal)
+			(this.state.item_progress === episodesTotal) && episodesTotal
 		){
 
 			// (1) If changed status to completed: bump up the item_progress

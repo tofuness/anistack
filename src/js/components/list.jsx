@@ -235,7 +235,7 @@ var ListEmpty = React.createClass({
 
 var ListNoResults = React.createClass({
 	render: function(){
-		return (<div>No results</div>);
+		return (<div id="list-noresults">No results :(</div>);
 	}
 });
 
