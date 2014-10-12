@@ -146,7 +146,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 	},
 	getInitialState: function(){
 		return {
-			batchRendering: true,
+			batchRendering: (this.props.listData && this.props.listData.length > 150),
 			listBegin: 0,
 			listEnd: 40
 		}
@@ -219,12 +219,12 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			If batchRendering is enabled, slice the listDOM
 			accordingly and fix some of the styling.
 		*/
+		var listStyle = {
+			paddingBottom: 15
+		}
 
 		if(this.state.batchRendering && lastStatusCount > 0){
-			var listStyle = {
-				paddingBottom: 15,
-				minHeight: (listDOM.length - lastStatusCount) * 43
-			}
+			listStyle.minHeight = (listDOM.length - lastStatusCount) * 43;
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
 
@@ -339,17 +339,22 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,
 			complete: function(){
+				// 
+				this.setState({
+					expanded: !this.state.expanded,
+					showPicker: !this.state.expanded
+				});
 				// If e is a function, we know that it should be a callback
 				if(e instanceof Function){
 					e();
 				}
 			}.bind(this)
 		});
-
-		this.setState({
-			expanded: !this.state.expanded,
-			showPicker: true
-		});
+		if(!this.state.expanded){
+			this.setState({
+				showPicker: true
+			});
+		}
 	},
 	render: function(){
 		var listItemStyle = {
