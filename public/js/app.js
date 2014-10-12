@@ -25327,12 +25327,12 @@ return function (global, window, document, undefined) {
     }
 }((window.jQuery || window.Zepto || window), window, document);
 }));
+var AppConstants = {
+	CLOSE_VISIBLE: 'CLOSE_VISIBLE'
+}
+
 var ListConstants = {
-	DATA_CHANGE: 'DATA_CHANGE',
-	LIST_ERROR: 'LIST_ERROR',
-	LIST_ITEM_CLOSE: 'LIST_ITEM_CLOSE',
-	UPDATE_ITEM: 'UPDATE_ITEM',
-	CLOSE_PICKERS: 'CLOSE_PICKERS'
+	DATA_CHANGE: 'DATA_CHANGE'
 }
 
 var UserConstants = {
@@ -25343,4 +25343,12 @@ var UserConstants = {
 // There should be something here
 $('#top-profile-wrap').click(function(){
 	$('#top-profile-menu-wrap').toggleClass('visible');
+});
+
+var $profileMenuWrap = $('#top-profile-menu-wrap');
+
+$(document).click(function(e){
+	if($profileMenuWrap.hasClass('visible') && !$(e.target).closest('#top-profile-wrap').length){
+		$profileMenuWrap.removeClass('visible');
+	}
 });

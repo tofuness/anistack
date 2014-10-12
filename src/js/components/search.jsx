@@ -14,9 +14,10 @@ var SearchApp = React.createClass({
 		return initState;
 	},
 	componentDidMount: function(){
-		if(this.state.searchText) this.search();
+		if(this.state.searchText !== '') this.search();
 	},
 	onSearch: function(e){
+		e.persist();
 		this.setState({
 			searchText: e.target.value,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
@@ -42,7 +43,7 @@ var SearchApp = React.createClass({
 	}, 500),
 	onEsc: function(e){
 		// On escape, clear the search
-		if(e.key === 'Escape'){ 
+		if(e.key === 'Escape'){
 			this.setState({ searchText: '', searchResults: [] });
 		}
 	},
@@ -89,7 +90,7 @@ var SearchItem = React.createClass({
 			});
 		}
 	},
-	togglePicker: function(visible){
+	togglePicker: function(){
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
 		});

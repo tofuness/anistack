@@ -7,7 +7,7 @@ var db = require('../models/db.js');
 var Manga = db.Manga;
 
 var fs = require('fs');
-var errorLog = fs.WriteStream('./logs/manga-' + new Date().getTime() + '.log');
+var errorLog = fs.WriteStream('./logs/scrapeManga-' + new Date().getTime() + '.log');
 
 var getQ = async.queue(function(task, callback){
 	request(task.url, function(err, res, body){

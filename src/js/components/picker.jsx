@@ -98,7 +98,7 @@ var PickerApp = React.createClass({
 		}.bind(this));
 	},
 	setStatus: function(e){
-		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
+		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');
 		this.setState({
 			item_status: statusVal
 		});

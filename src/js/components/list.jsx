@@ -33,9 +33,6 @@ var ListApp = React.createClass({
 			}
 		});
 	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListApp updated');
-	},
 	reloadList: function(data){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
@@ -74,6 +71,13 @@ var ListApp = React.createClass({
 			listFilterText: e.target.value
 		});
 	},
+	clearTextFilter: function(e){
+		if(e.key === 'Escape' && this.state.listFilterText !== ''){
+			this.setState({
+				listFilterText: ''
+			});
+		}
+	},
 	render: function(){
 		var listStyle = {
 			display: this.state.listLoaded
@@ -97,7 +101,15 @@ var ListApp = React.createClass({
 						}
 					</div>
 					<div id="list-filter-wrap">
-						<input type="text" maxLength="50" id="list-filter-input" placeholder="Filter your list..." onChange={this.setTextFilter} />
+						<input
+							type="text"
+							maxLength="50"
+							id="list-filter-input"
+							placeholder="Filter your list..."
+							onChange={this.setTextFilter}
+							onKeyUp={this.clearTextFilter}
+							value={this.state.listFilterText}
+						/>
 					</div>
 					<div id="list-sort-wrap">
 						<div id="list-sort-title" className="list-sort-hd" onClick={this.sortList.bind(this, 'series_title_main', null)}>
@@ -138,9 +150,6 @@ var ListContent = React.createClass({
 			listBegin: 0,
 			listEnd: 40
 		}
-	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListContent updated');
 	},
 	componentDidMount: function(){
 		if(!this.state.batchRendering) return false;
@@ -213,8 +222,8 @@ var ListContent = React.createClass({
 
 		if(this.state.batchRendering && lastStatusCount > 0){
 			var listStyle = {
-				'padding-bottom': 15,
-				'min-height': (listDOM.length - lastStatusCount) * 43
+				paddingBottom: 15,
+				minHeight: (listDOM.length - lastStatusCount) * 43
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -229,19 +238,32 @@ var ListContent = React.createClass({
 		} else if(listDOM.length === 0){
 			listDOM = <ListNoResults />;
 		}
+
 		return (<div id="list-content" style={listStyle}>{listDOM}</div>);
 	}
 });
 
 var ListEmpty = React.createClass({
+	componentDidMount: function(){
+		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
 	render: function(){
-		return (<div id="list-noresults">No series under {this.props.statusName}!</div>);
+		return (<div ref="listNoRes" id="list-noresults">No series under {this.props.statusName}!</div>);
 	}
 });
 
 var ListNoResults = React.createClass({
+	componentDidMount: function(){
+		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
 	render: function(){
-		return (<div id="list-noresults">No matches. Try another search term.</div>);
+		return (<div ref="listNoRes" id="list-noresults">No matches. Try another search term.</div>);
 	}
 });
 
@@ -251,9 +273,6 @@ var ListItem = React.createClass({
 			expanded: false, // Is the list item expanded
 			showPicker: false // If the PickerApp component should mount
 		};
-	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListItem updated');
 	},
 	cancel: function(){
 		if(this.state.expanded){

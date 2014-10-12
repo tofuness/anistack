@@ -33,9 +33,6 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			}
 		});
 	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListApp updated');
-	},
 	reloadList: function(data){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
@@ -74,6 +71,13 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			listFilterText: e.target.value
 		});
 	},
+	clearTextFilter: function(e){
+		if(e.key === 'Escape' && this.state.listFilterText !== ''){
+			this.setState({
+				listFilterText: ''
+			});
+		}
+	},
 	render: function(){
 		var listStyle = {
 			display: this.state.listLoaded
@@ -97,7 +101,15 @@ var ListApp = React.createClass({displayName: 'ListApp',
 						
 					), 
 					React.DOM.div({id: "list-filter-wrap"}, 
-						React.DOM.input({type: "text", maxLength: "50", id: "list-filter-input", placeholder: "Filter your list...", onChange: this.setTextFilter})
+						React.DOM.input({
+							type: "text", 
+							maxLength: "50", 
+							id: "list-filter-input", 
+							placeholder: "Filter your list...", 
+							onChange: this.setTextFilter, 
+							onKeyUp: this.clearTextFilter, 
+							value: this.state.listFilterText}
+						)
 					), 
 					React.DOM.div({id: "list-sort-wrap"}, 
 						React.DOM.div({id: "list-sort-title", className: "list-sort-hd", onClick: this.sortList.bind(this, 'series_title_main', null)}, 
@@ -138,9 +150,6 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			listBegin: 0,
 			listEnd: 40
 		}
-	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListContent updated');
 	},
 	componentDidMount: function(){
 		if(!this.state.batchRendering) return false;
@@ -213,8 +222,8 @@ var ListContent = React.createClass({displayName: 'ListContent',
 
 		if(this.state.batchRendering && lastStatusCount > 0){
 			var listStyle = {
-				'padding-bottom': 15,
-				'min-height': (listDOM.length - lastStatusCount) * 43
+				paddingBottom: 15,
+				minHeight: (listDOM.length - lastStatusCount) * 43
 			}
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -229,19 +238,32 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		} else if(listDOM.length === 0){
 			listDOM = ListNoResults(null);
 		}
+
 		return (React.DOM.div({id: "list-content", style: listStyle}, listDOM));
 	}
 });
 
 var ListEmpty = React.createClass({displayName: 'ListEmpty',
+	componentDidMount: function(){
+		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
 	render: function(){
-		return (React.DOM.div({id: "list-noresults"}, "No series under ", this.props.statusName, "!"));
+		return (React.DOM.div({ref: "listNoRes", id: "list-noresults"}, "No series under ", this.props.statusName, "!"));
 	}
 });
 
 var ListNoResults = React.createClass({displayName: 'ListNoResults',
+	componentDidMount: function(){
+		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
 	render: function(){
-		return (React.DOM.div({id: "list-noresults"}, "No matches. Try another search term."));
+		return (React.DOM.div({ref: "listNoRes", id: "list-noresults"}, "No matches. Try another search term."));
 	}
 });
 
@@ -251,9 +273,6 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			expanded: false, // Is the list item expanded
 			showPicker: false // If the PickerApp component should mount
 		};
-	},
-	componentDidUpdate: function(prevProps, prevState) {
-		console.log('ListItem updated');
 	},
 	cancel: function(){
 		if(this.state.expanded){
@@ -533,7 +552,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		}.bind(this));
 	},
 	setStatus: function(e){
-		var statusVal = e.target.innerText.toLowerCase().replace(/ /g, '');
+		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');
 		this.setState({
 			item_status: statusVal
 		});
@@ -923,9 +942,10 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 		return initState;
 	},
 	componentDidMount: function(){
-		if(this.state.searchText) this.search();
+		if(this.state.searchText !== '') this.search();
 	},
 	onSearch: function(e){
+		e.persist();
 		this.setState({
 			searchText: e.target.value,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
@@ -951,7 +971,7 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 	}, 500),
 	onEsc: function(e){
 		// On escape, clear the search
-		if(e.key === 'Escape'){ 
+		if(e.key === 'Escape'){
 			this.setState({ searchText: '', searchResults: [] });
 		}
 	},
@@ -998,7 +1018,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 			});
 		}
 	},
-	togglePicker: function(visible){
+	togglePicker: function(){
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
 		});

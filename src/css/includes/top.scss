@@ -33,6 +33,8 @@
 }
 #top-profile-wrap {
 	@extend .cf;
+	@extend .ns;
+	cursor: pointer;
 	float: right;
 	padding: 0 12px;
 	height: 50px;
@@ -55,12 +57,14 @@
 	right: -10px;
 	background: #fff;
 	opacity: 0;
+	visibility: hidden;
 	@include box-shadow(0 1px 6px $b20);
 	@include border-radius(4px);
 	@include transform-origin(138px -10px);
 	@include transform(scale(0.4));
 	&.visible {
 		@extend .tsin;
+		visibility: visible;
 		opacity: 1;
 		@include transform(scale(1));
 	}

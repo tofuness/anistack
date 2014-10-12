@@ -6,7 +6,7 @@ var async = require('async');
 var cheerio = require('cheerio');
 var request = require('request');
 var fs = require('fs');
-var errorLog = fs.WriteStream('./logs/animedesc-' + new Date().getTime() + '.log');
+var errorLog = fs.WriteStream('./logs/scrapeAnimeDesc-' + new Date().getTime() + '.log');
 
 var getQ = async.queue(function(task, callback){
 	request(task.url, function(err, res, body){
