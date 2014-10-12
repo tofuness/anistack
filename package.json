@@ -26,7 +26,8 @@
     "request": "~2.42.0",
     "swag": "~0.7.0",
     "bluebird": "~2.3.4",
-    "slugin": "git://github.com/Desuvader/slugin"
+    "slugin": "git://github.com/Desuvader/slugin",
+    "lusca": "git://github.com/krakenjs/lusca"
   },
   "devDependencies": {
     "gulp": "~3.8.7",

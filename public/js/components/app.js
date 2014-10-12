@@ -33,6 +33,9 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			}
 		});
 	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListApp updated');
+	},
 	reloadList: function(data){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
@@ -136,6 +139,9 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			listEnd: 40
 		}
 	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListContent updated');
+	},
 	componentDidMount: function(){
 		if(!this.state.batchRendering) return false;
 
@@ -219,7 +225,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		*/
 
 		if(listDOM.length === 0 && this.props.listFilterText === ''){
-			listDOM = ListEmpty(null);
+			listDOM = ListEmpty({statusName: this.props.listFilterStatus.replace('onhold', 'on hold')});
 		} else if(listDOM.length === 0){
 			listDOM = ListNoResults(null);
 		}
@@ -229,13 +235,13 @@ var ListContent = React.createClass({displayName: 'ListContent',
 
 var ListEmpty = React.createClass({displayName: 'ListEmpty',
 	render: function(){
-		return (React.DOM.div(null, "Empty!!"));
+		return (React.DOM.div({id: "list-noresults"}, "No series under ", this.props.statusName, "!"));
 	}
 });
 
 var ListNoResults = React.createClass({displayName: 'ListNoResults',
 	render: function(){
-		return (React.DOM.div({id: "list-noresults"}, "No results :("));
+		return (React.DOM.div({id: "list-noresults"}, "No matches. Try another search term."));
 	}
 });
 
@@ -245,6 +251,9 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			expanded: false, // Is the list item expanded
 			showPicker: false // If the PickerApp component should mount
 		};
+	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListItem updated');
 	},
 	cancel: function(){
 		if(this.state.expanded){
@@ -258,6 +267,17 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	},
 	saveData: function(data){
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
+
+		data._csrf = UserConstants.CSRF_TOKEN;
+		$.ajax({
+			url: '/api/list/' + TempListConstants.TYPE + '/update',
+			data: data,
+			type: 'POST',
+			error: function(){
+				alert('Something seems to be wrong on our side! Your list did not get updated :C');
+			}
+		});
+
 		if(data.item_status !== this.props.itemData.item_status){
 			// Remove 43px (list item height) from the div
 			$('#list-content').css('min-height','-=43');
@@ -293,6 +313,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 		}
 	},
 	toggleExpanded: function(e){
+		if(!TempListConstants.EDITABLE) return false;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
@@ -403,7 +424,8 @@ var loginForm = React.createClass({displayName: 'loginForm',
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.a({className: "logreg-link", href: "/register"}, "or Register for Free")
-				)
+				), 
+				React.DOM.input({type: "hidden", value: UserConstants.CSRF_TOKEN, name: "_csrf"})
 			)
 		)
 	}
@@ -522,7 +544,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
 		} else {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
-			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300, easing: [200,15,0] });
+			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300 });
 		}
 		this.setState({
 			statusMenuVisible: !this.state.statusMenuVisible
@@ -765,7 +787,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 			$.ajax({
 				type: 'post',
 				url: '/api/register',
-				data: $(this.refs.registerForm.getDOMNode()).serialize(),
+				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
 				success: function(res){
 					console.log(res);
 				},
@@ -783,6 +805,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 			type: 'post',
 			url: '/api/validate/username',
 			data: {
+				_csrf: UserConstants.CSRF_TOKEN,
 				username: e.target.value
 			},
 			success: function(res){
@@ -802,6 +825,7 @@ var registerForm = React.createClass({displayName: 'registerForm',
 			type: 'post',
 			url: '/api/validate/email',
 			data: {
+				_csrf: UserConstants.CSRF_TOKEN,
 				email: e.target.value
 			},
 			success: function(res){
@@ -866,7 +890,8 @@ var registerForm = React.createClass({displayName: 'registerForm',
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({id: "logreg-form-desc"}, 
-						"Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck."
+						"Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.", 
+						React.DOM.div({className: "logreg-form-desc-small"}, "(You may add an email later)")
 					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
@@ -987,6 +1012,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 	saveData: function(data){
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
+		data._csrf = UserConstants.CSRF_TOKEN;
 
 		$.ajax({
 			type: 'post',
@@ -994,33 +1020,40 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 			data: data,
 			success: function(res){
 				console.log(res); 
-			},
+				this.setState({
+					itemData: data,
+					itemAdded: true,
+					pickerVisible: false
+				});
+			}.bind(this),
 			error: function(){
-				this.onRemove();
+				if(!this.props.itemData){
+					this.onRemove();
+				} else {
+					this.closePicker();
+				}
+				confirm('Could not add/update series. Something seems to be wrong on our end!');
 			}.bind(this)
-		});
-
-		this.setState({
-			itemData: data,
-			itemAdded: true,
-			pickerVisible: false
 		});
 	},
 	onRemove: function(){
-		this.setState({
-			itemData: {},
-			itemAdded: false
-		});
-
 		$.ajax({
 			type: 'post',
-			url: '/api/list/anime/remove',
+			url: '/api/list/' + TempSearchConstants.COLLECTION + '/remove',
 			data: {
-				_id: this.props.seriesData._id
+				_id: this.props.seriesData._id,
+				_csrf: UserConstants.CSRF_TOKEN
 			},
 			success: function(res){
-				console.log(res);
-			}
+				this.setState({
+					itemData: {},
+					itemAdded: false
+				});
+			}.bind(this),
+			error: function(){
+				this.closePicker();
+				confirm('Could not remove series. Something seems to be wrong on our end!');
+			}.bind(this)
 		});
 	},
 	render: function(){

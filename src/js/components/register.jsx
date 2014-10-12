@@ -36,7 +36,7 @@ var registerForm = React.createClass({
 			$.ajax({
 				type: 'post',
 				url: '/api/register',
-				data: $(this.refs.registerForm.getDOMNode()).serialize(),
+				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
 				success: function(res){
 					console.log(res);
 				},
@@ -54,6 +54,7 @@ var registerForm = React.createClass({
 			type: 'post',
 			url: '/api/validate/username',
 			data: {
+				_csrf: UserConstants.CSRF_TOKEN,
 				username: e.target.value
 			},
 			success: function(res){
@@ -73,6 +74,7 @@ var registerForm = React.createClass({
 			type: 'post',
 			url: '/api/validate/email',
 			data: {
+				_csrf: UserConstants.CSRF_TOKEN,
 				email: e.target.value
 			},
 			success: function(res){
@@ -138,6 +140,7 @@ var registerForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-desc">
 						Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
+						<div className="logreg-form-desc-small">(You may add an email later)</div>
 					</div>
 				</div>
 				<div className="logreg-section-wrap">

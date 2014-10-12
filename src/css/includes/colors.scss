@@ -46,9 +46,9 @@ $orange: #ff9335;
 
 // Fetched from NYTimes, used for captions and credits + normal text.
 
-$text: #333;
-$text-l: #666;
-$text-l2: #999;
+$text: #333; // Title and text
+$text-2: #666; // Minor caption
+$text-3: #999; // Credit/Time stamp
 
 // Opaque black/white
 

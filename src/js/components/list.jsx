@@ -33,6 +33,9 @@ var ListApp = React.createClass({
 			}
 		});
 	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListApp updated');
+	},
 	reloadList: function(data){
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
@@ -136,6 +139,9 @@ var ListContent = React.createClass({
 			listEnd: 40
 		}
 	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListContent updated');
+	},
 	componentDidMount: function(){
 		if(!this.state.batchRendering) return false;
 
@@ -219,7 +225,7 @@ var ListContent = React.createClass({
 		*/
 
 		if(listDOM.length === 0 && this.props.listFilterText === ''){
-			listDOM = <ListEmpty />;
+			listDOM = <ListEmpty statusName={this.props.listFilterStatus.replace('onhold', 'on hold')} />;
 		} else if(listDOM.length === 0){
 			listDOM = <ListNoResults />;
 		}
@@ -229,13 +235,13 @@ var ListContent = React.createClass({
 
 var ListEmpty = React.createClass({
 	render: function(){
-		return (<div>Empty!!</div>);
+		return (<div id="list-noresults">No series under {this.props.statusName}!</div>);
 	}
 });
 
 var ListNoResults = React.createClass({
 	render: function(){
-		return (<div id="list-noresults">No results :(</div>);
+		return (<div id="list-noresults">No matches. Try another search term.</div>);
 	}
 });
 
@@ -245,6 +251,9 @@ var ListItem = React.createClass({
 			expanded: false, // Is the list item expanded
 			showPicker: false // If the PickerApp component should mount
 		};
+	},
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log('ListItem updated');
 	},
 	cancel: function(){
 		if(this.state.expanded){
@@ -258,6 +267,17 @@ var ListItem = React.createClass({
 	},
 	saveData: function(data){
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
+
+		data._csrf = UserConstants.CSRF_TOKEN;
+		$.ajax({
+			url: '/api/list/' + TempListConstants.TYPE + '/update',
+			data: data,
+			type: 'POST',
+			error: function(){
+				alert('Something seems to be wrong on our side! Your list did not get updated :C');
+			}
+		});
+
 		if(data.item_status !== this.props.itemData.item_status){
 			// Remove 43px (list item height) from the div
 			$('#list-content').css('min-height','-=43');
@@ -293,6 +313,7 @@ var ListItem = React.createClass({
 		}
 	},
 	toggleExpanded: function(e){
+		if(!TempListConstants.EDITABLE) return false;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {

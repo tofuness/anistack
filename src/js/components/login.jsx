@@ -22,6 +22,7 @@ var loginForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<a className="logreg-link" href="/register">or Register for Free</a>
 				</div>
+				<input type="hidden" value={UserConstants.CSRF_TOKEN} name="_csrf" />
 			</form>
 		)
 	}

@@ -43,9 +43,14 @@
 	text-align: left;
 	line-height: 1.5em;
 	border-bottom: 1px solid $w30;
+	& .logreg-form-desc-small {
+		padding-top: 5px;
+		font-size: 11px;
+		text-align: center;
+	}
 }
 #register-form {
-	margin-top: -275px;
+	margin-top: -287px;
 }
 #login-form {
 	margin-top: -176px;
@@ -132,4 +137,11 @@
 	text-shadow: 0 -1px 0 $b15;
 	@include border-radius(4px);
 	@include box-shadow(0 1px 2px $b10, inset 0 1px 0 $w15);
+	&:hover {
+		background: #5ba2f1;	
+	}
+	&:active {
+		background: $blue-d-3;
+		@include box-shadow(0 1px 2px $b10, inset 0 -1px 0 $b15);
+	}
 }

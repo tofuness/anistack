@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
 var cors = require('cors');
+var lusca = require('lusca');
 
 // Authentication modules
 
@@ -72,10 +73,21 @@ app.use(session({
 		clear_interval: 60 // One minute
 	}),
 	cookie: {
-		maxAge: 1000 * 2630000 * 4 // 4 months
+		maxAge: 1000 * 2630000 * 5 // 5 months
 	},
 	resave: true,
 	saveUninitialized: true
+}));
+
+// Enable CSRF protection. Has to come after cookies/session
+
+app.use(lusca({
+    csrf: true,
+	csp: false,
+	xframe: 'DENY', // or SAMEORIGIN
+	p3p: false,
+	hsts: { maxAge: 31536000, includeSubDomains: true },
+	xssProtection: true
 }));
 
 // Enable flashes

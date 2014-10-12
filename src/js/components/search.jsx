@@ -103,6 +103,7 @@ var SearchItem = React.createClass({
 	saveData: function(data){
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
+		data._csrf = UserConstants.CSRF_TOKEN;
 
 		$.ajax({
 			type: 'post',
@@ -110,33 +111,40 @@ var SearchItem = React.createClass({
 			data: data,
 			success: function(res){
 				console.log(res); 
-			},
+				this.setState({
+					itemData: data,
+					itemAdded: true,
+					pickerVisible: false
+				});
+			}.bind(this),
 			error: function(){
-				this.onRemove();
+				if(!this.props.itemData){
+					this.onRemove();
+				} else {
+					this.closePicker();
+				}
+				confirm('Could not add/update series. Something seems to be wrong on our end!');
 			}.bind(this)
-		});
-
-		this.setState({
-			itemData: data,
-			itemAdded: true,
-			pickerVisible: false
 		});
 	},
 	onRemove: function(){
-		this.setState({
-			itemData: {},
-			itemAdded: false
-		});
-
 		$.ajax({
 			type: 'post',
-			url: '/api/list/anime/remove',
+			url: '/api/list/' + TempSearchConstants.COLLECTION + '/remove',
 			data: {
-				_id: this.props.seriesData._id
+				_id: this.props.seriesData._id,
+				_csrf: UserConstants.CSRF_TOKEN
 			},
 			success: function(res){
-				console.log(res);
-			}
+				this.setState({
+					itemData: {},
+					itemAdded: false
+				});
+			}.bind(this),
+			error: function(){
+				this.closePicker();
+				confirm('Could not remove series. Something seems to be wrong on our end!');
+			}.bind(this)
 		});
 	},
 	render: function(){

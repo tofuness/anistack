@@ -9,16 +9,25 @@ module.exports = function(app){
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, function(err, userDoc){
+			var listEditable = false;;
+			if(req.user && req.user.username === req.param('username').toLowerCase()){
+				listEditable = true;
+			}
 			if(userDoc){
 				res.render('list', {
 					profile: userDoc,
 					listType: req.param('listType'),
-					listEditable: req.user.username === req.param('username').toLowerCase()
+					listEditable: listEditable
 				});
 			} else {
 				next();
 			}
 		});
-		
+	});
+
+	app.route('/list/:listType(anime|manga)')
+	.all(hAuth.ifAuth)
+	.get(function(req, res, next){
+		res.redirect('/list/' + req.param('listType') + '/' + req.user.username);
 	});
 }

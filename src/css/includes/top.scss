@@ -8,6 +8,7 @@
 	@include box-shadow(0 0px 3px $b15);
 }
 #top-nav-wrap {
+	position: relative;
 	margin: 0 auto;
 	width: 1000px;
 	height: 50px;
@@ -46,4 +47,102 @@
 	background-color: $gray-d-6;
 	background-size: cover;
 	@include border-radius(4px);
+}
+#top-profile-menu-wrap {
+	@extend .tsout;
+	position: absolute;
+	top: 55px;
+	right: -10px;
+	background: #fff;
+	opacity: 0;
+	@include box-shadow(0 1px 6px $b20);
+	@include border-radius(4px);
+	@include transform-origin(138px -10px);
+	@include transform(scale(0.4));
+	&.visible {
+		@extend .tsin;
+		opacity: 1;
+		@include transform(scale(1));
+	}
+}
+.top-profile-menu-section {
+	border-bottom: 1px solid $gray-l-3;
+	&:last-child {
+		border-bottom: 0;
+	}
+}
+.top-profile-menu-link {
+	display: block;
+	color: $black;
+	width: 150px;
+	padding: 8px 12px;
+	text-decoration: none;
+	&.first {
+		@include border-top-left-radius(4px);
+		@include border-top-right-radius(4px);
+	}
+	&.last {
+		@include border-bottom-left-radius(4px);
+		@include border-bottom-right-radius(4px);
+	}
+	&:hover {
+		background: $gray-hover;
+	}
+}
+.top-profile-menu-desc {
+	display: block;
+	font-size: 11px;
+}
+#top-profile-menu-wrap:after, #top-profile-menu-wrap:before {
+	bottom: 100%;
+	right: 28px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+#top-profile-menu-wrap:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 10px;
+	margin-left: -10px;
+}
+#top-profile-menu-wrap:before {
+	border-color: rgba(166, 157, 245, 0);
+	border-bottom-color: $b30;
+	border-width: 10px;
+	margin-left: -11px;
+}
+
+#top-guest-actions {
+	@extend .cf;
+	float: right;
+}
+#top-register-link {
+	float: left;
+	margin-top: 8px;
+	padding: 7px 10px;
+	color: #fff;
+	background: $blue;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-decoration: none;
+	@include border-radius(4px);
+	&:hover {
+		background: $blue-l-3;
+	}
+}
+#top-login-link {
+	float: left;
+	margin-top: 15px;
+	margin-left: 20px;
+	color: $black;
+	font-weight: bold;
+	text-decoration: none;
+	&:hover {
+		@include box-shadow(0 1px 0 $black);
+	}
 }

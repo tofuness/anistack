@@ -51,7 +51,7 @@ gulp.task('css', function(){
 		noAdvanced: true
 	}))
 	.pipe(concat('external.css'))
-	.pipe(gulp.dest(path.css.dest));g
+	.pipe(gulp.dest(path.css.dest));
 });
 
 gulp.task('uglify', function(){
@@ -74,7 +74,7 @@ gulp.task('react', function(){
 	.pipe(react())
 	.pipe(concat('app.js'))
 	//.pipe(uglify())
-	.pipe(gulp.dest(path.react.dest))
+	.pipe(gulp.dest(path.react.dest));
 });
 
 gulp.task('watch', function(){

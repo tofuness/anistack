@@ -19,7 +19,7 @@
 				</div>
 				<div id="list-profile-bio">
 					<p>
-						{{profile.biography}}
+						{{default profile.biography 'Senpai noticed me'}}
 					</p>
 				</div>
 			</div>
@@ -30,10 +30,16 @@
 					<span class="list-nav-text">
 						Anime List
 					</span>
+					<span class="list-nav-tag">
+						{{length profile.anime_list}} Entries
+					</span>
 				</a>
 				<a class="list-nav-item {{#is listType 'manga'}}current{{/is}}" href="/list/manga/{{profile.username}}">
 					<span class="list-nav-text">
 						Manga List
+					</span>
+					<span class="list-nav-tag">
+						{{length profile.manga_list}} Entries
 					</span>
 				</a>
 				<a class="list-nav-item">

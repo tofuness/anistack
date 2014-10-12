@@ -87,9 +87,20 @@
 	float: right;
 	color: $yellow-d-6;
 	padding: 3px 5px;
+	font-size: 10px;
 	font-weight: 700;
 	text-align: center;
 	background: $yellow-l-6;
+	@include border-radius(4px);
+}
+.list-nav-tag {
+	float: right;
+	padding: 3px 5px;
+	color: $w90;
+	font-size: 10px;
+	font-weight: 700;
+	text-align: center;
+	background: $blue;
 	@include border-radius(4px);
 }
 
@@ -202,6 +213,7 @@
 }
 .list-item {
 	@extend .cf;
+	@extend .ns;
 	cursor: pointer;
 	border-bottom: 1px solid $gray-l-3;
 	@include box-shadow(1px 0 0 $gray-l-3);
@@ -307,8 +319,8 @@
 }
 
 #list-noresults {
-	color: $gray-d-9;
-	font-size: 23px;
+	color: $gray;
+	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
 	line-height: 420px;

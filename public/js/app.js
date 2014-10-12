@@ -25336,8 +25336,11 @@ var ListConstants = {
 }
 
 var UserConstants = {
-	LOGGED_IN: !!$('#top-profile-name').length
+	LOGGED_IN: !!$('#top-profile-wrap').length,
+	CSRF_TOKEN: $('#csrf-kek').val()
 }
 
-// Try too keep things modular by writing your JS under ./includes
-
+// There should be something here
+$('#top-profile-wrap').click(function(){
+	$('#top-profile-menu-wrap').toggleClass('visible');
+});
