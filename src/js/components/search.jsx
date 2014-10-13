@@ -172,7 +172,9 @@ var SearchItem = React.createClass({
 					</div>
 					<div className="search-result-meta-wrap">
 						<span className="search-result-meta">
-							<span className="search-result-type">{this.props.seriesData.series_type}</span> with {this.props.seriesData.series_episodes_total} Episode(s)
+							<span className="search-result-type">
+								{this.props.seriesData.series_type}
+							</span> with {this.props.seriesData.series_episodes_total || '—'} {TempSearchConstants.COLLECTION === 'anime' ? 'Episode(s)' : 'Chapter(s)'}
 						</span>
 						<div className={
 							cx({

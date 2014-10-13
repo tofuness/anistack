@@ -139,6 +139,7 @@ require('./helpers/passport');
 require('./routes/web/list.js')(app);
 require('./routes/web/search.js')(app);
 require('./routes/web/logreg.js')(app);
+require('./routes/web/settings.js')(app);
 
 // API routes
 

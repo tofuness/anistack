@@ -1,0 +1,18 @@
+#settings-wrap {
+	padding-top: 52px;
+	background: #fff;
+}
+#settings-content {
+	margin: 0 auto;
+	padding: 40px 0;
+	width: 1000px;
+}
+#settings-hd {
+	@extend .opensans;
+	font-size: 23px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+#settings-tagline {
+	color: $text-3;
+}

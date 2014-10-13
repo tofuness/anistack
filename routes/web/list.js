@@ -15,6 +15,7 @@ module.exports = function(app){
 			}
 			if(userDoc){
 				res.render('list', {
+					title: userDoc.display_name,
 					profile: userDoc,
 					listType: req.param('listType'),
 					listEditable: listEditable
