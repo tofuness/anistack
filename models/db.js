@@ -201,8 +201,7 @@ filters.user.add('password', filter.user.password);
 var AnimeSchema = new Schema({
 	series_title_main: { // Straight from Wikipedia
 		type: String,
-		required: true,
-		unique: true
+		required: true
 	},
 	series_title_english: String,
 	series_title_japanese: String,
@@ -236,7 +235,10 @@ var AnimeSchema = new Schema({
 	series_gallery: [ String ],
 	series_studios: [ Schema.Types.ObjectId ],
 	series_external_ids: {
-		myanimelist: Number,
+		myanimelist: {
+			type: Number,
+			unique: true
+		},
 		anidb: Number
 	},
 	series_external_links: [{

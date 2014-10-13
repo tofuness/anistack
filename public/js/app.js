@@ -20873,13 +20873,13 @@ module.exports = warning;
 },{"./emptyFunction":116}]},{},[88])
 (88)
 });
-/*! VelocityJS.org (1.0.0). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
+/*! VelocityJS.org (1.1.0). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
 
 /*************************
    Velocity jQuery Shim
 *************************/
 
-/*! VelocityJS.org jQuery Shim (1.0.0-rc1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
+/*! VelocityJS.org jQuery Shim (1.0.1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
 
 /* This file contains the jQuery functions that Velocity relies on, thereby removing Velocity's dependency on a full copy of jQuery, and allowing it to work in any environment. */
 /* These shimmed functions are only used if jQuery isn't present. If both this shim and jQuery are loaded, Velocity defaults to jQuery proper. */
@@ -21197,7 +21197,7 @@ module.exports = warning;
 
     /* jQuery */
     $.fn = $.prototype = {
-        init: function(selector) {
+        init: function (selector) {
             /* Just return the element wrapped inside an array; don't proceed with the actual jQuery node wrapping process. */
             if (selector.nodeType) {
                 this[0] = selector;
@@ -21209,11 +21209,11 @@ module.exports = warning;
         },
 
         offset: function () {
-            /* jQuery altered code: Dropped disconnected DOM node checking and iOS3+BlackBerry support. */
-            var box = this[0].getBoundingClientRect();
+            /* jQuery altered code: Dropped disconnected DOM node checking. */
+            var box = this[0].getBoundingClientRect ? this[0].getBoundingClientRect() : { top: 0, left: 0 };
 
             return {
-                top: box.top  + (window.pageYOffset || document.scrollTop  || 0)  - (document.clientTop  || 0),
+                top: box.top + (window.pageYOffset || document.scrollTop  || 0)  - (document.clientTop  || 0),
                 left: box.left + (window.pageXOffset || document.scrollLeft  || 0) - (document.clientLeft || 0)
             };
         },
@@ -21281,7 +21281,7 @@ module.exports = warning;
     Velocity.js
 ******************/
 
-;(function (factory) {    
+;(function (factory) {
     /* CommonJS module. */
     if (typeof module === "object" && typeof module.exports === "object") {
         module.exports = factory();
@@ -21289,7 +21289,7 @@ module.exports = warning;
     } else if (typeof define === "function" && define.amd) {
         define(factory);
     /* Browser globals. */
-    } else {        
+    } else {
         factory();
     }
 }(function() {
@@ -21385,19 +21385,15 @@ return function (global, window, document, undefined) {
         isString: function (variable) {
             return (typeof variable === "string");
         },
-
         isArray: Array.isArray || function (variable) {
             return Object.prototype.toString.call(variable) === "[object Array]";
         },
-
         isFunction: function (variable) {
             return Object.prototype.toString.call(variable) === "[object Function]";
         },
-
         isNode: function (variable) {
             return variable && variable.nodeType;
         },
-
         /* Copyright Martin Bohm. MIT License: https://gist.github.com/Tomalak/818a78a226a0738eaade */
         isNodeList: function (variable) {
             return typeof variable === "object" &&
@@ -21405,20 +21401,15 @@ return function (global, window, document, undefined) {
                 variable.length !== undefined &&
                 (variable.length === 0 || (typeof variable[0] === "object" && variable[0].nodeType > 0));
         },
-
         /* Determine if variable is a wrapped jQuery or Zepto element. */
         isWrapped: function (variable) {
             return variable && (variable.jquery || (window.Zepto && window.Zepto.zepto.isZ(variable)));
         },
-
         isSVG: function (variable) {
-            return window.SVGElement && (variable instanceof SVGElement);
+            return window.SVGElement && (variable instanceof window.SVGElement);
         },
-
         isEmptyObject: function (variable) {
-            var name;
-
-            for (name in variable) {
+            for (var name in variable) {
                 return false;
             }
 
@@ -21449,15 +21440,6 @@ return function (global, window, document, undefined) {
         /* Now that $.fn.velocity is aliased, abort this Velocity declaration. */
         return;
     }
-
-    /* Shorthand alias for jQuery's $.data() utility. */
-    function Data (element) {
-        /* Hardcode a reference to the plugin name. */
-        var response = $.data(element, "velocity");
-
-        /* jQuery <=1.4.2 returns null instead of undefined when no match is found. We normalize this behavior. */
-        return response === null ? undefined : response;
-    };
 
     /*****************
         Constants
@@ -21500,13 +21482,9 @@ return function (global, window, document, undefined) {
         CSS: { /* Defined below. */ },
         /* Defined by Velocity's optional jQuery shim. */
         Utilities: $,
-        /* Container for the user's custom animation sequences that are referenced by name in place of a properties map object. */
-        Sequences: {
-            /* Manually registered by the user. Learn more: VelocityJS.org/#sequences */
-        },
-        Easings: {
-            /* Defined below. */
-        },
+        /* Container for the user's custom animation redirects that are referenced by name in place of a properties map object. */
+        Redirects: { /* Manually registered by the user. */ },
+        Easings: { /* Defined below. */ },
         /* Attempt to use ES6 Promises by default. Users can override this with a third-party promises library. */
         Promise: window.Promise,
         /* Page-wide option defaults, which can be overriden by the user. */
@@ -21514,10 +21492,11 @@ return function (global, window, document, undefined) {
             queue: "",
             duration: DURATION_DEFAULT,
             easing: EASING_DEFAULT,
-            begin: null,
-            complete: null,
-            progress: null,
+            begin: undefined,
+            complete: undefined,
+            progress: undefined,
             display: undefined,
+            visibility: undefined,
             loop: false,
             delay: false,
             mobileHA: true,
@@ -21546,13 +21525,11 @@ return function (global, window, document, undefined) {
                 transformCache: {}
             });
         },
-        /* Velocity's core animation method, later aliased to $.fn if a framework (jQuery or Zepto) is detected. */
-        animate: null, /* Defined below. */
-        /* A reimplementation of jQuery's $.css(), used for getting/setting Velocity's hooked CSS properties. */
+        /* A parallel to jQuery's $.css(), used for getting/setting Velocity's hooked CSS properties. */
         hook: null, /* Defined below. */
-        /* Set to true to force a duration of 1ms for all animations so that UI testing can be performed without waiting on animations to complete. */
+        /* Velocity-wide animation time remapping for testing purposes. */
         mock: false,
-        version: { major: 1, minor: 0, patch: 0 },
+        version: { major: 1, minor: 1, patch: 0 },
         /* Set to 1 or 2 (most verbose) to output debug info to console. */
         debug: false
     };
@@ -21567,6 +21544,15 @@ return function (global, window, document, undefined) {
         Velocity.State.scrollPropertyLeft = "scrollLeft";
         Velocity.State.scrollPropertyTop = "scrollTop";
     }
+
+    /* Shorthand alias for jQuery's $.data() utility. */
+    function Data (element) {
+        /* Hardcode a reference to the plugin name. */
+        var response = $.data(element, "velocity");
+
+        /* jQuery <=1.4.2 returns null instead of undefined when no match is found. We normalize this behavior. */
+        return response === null ? undefined : response;
+    };
 
     /**************
         Easing
@@ -21791,23 +21777,21 @@ return function (global, window, document, undefined) {
         };
     }());
 
-    /* Easings from jQuery, jQuery UI, and CSS3. */
+    /* jQuery easings. */
     Velocity.Easings = {
-        /* jQuery's default named easing types. */
         linear: function(p) { return p; },
         swing: function(p) { return 0.5 - Math.cos( p * Math.PI ) / 2 },
         /* Bonus "spring" easing, which is a less exaggerated version of easeInOutElastic. */
         spring: function(p) { return 1 - (Math.cos(p * 4.5 * Math.PI) * Math.exp(-p * 6)); }
     };
 
+    /* CSS3 and Robert Penner easings. */
     $.each(
         [
-            /* CSS3's named easing types. */
             [ "ease", [ 0.25, 0.1, 0.25, 1.0 ] ],
             [ "ease-in", [ 0.42, 0.0, 1.00, 1.0 ] ],
             [ "ease-out", [ 0.00, 0.0, 0.58, 1.0 ] ],
             [ "ease-in-out", [ 0.42, 0.0, 0.58, 1.0 ] ],
-            /* Robert Penner easing equations. */
             [ "easeInSine", [ 0.47, 0, 0.745, 0.715 ] ],
             [ "easeOutSine", [ 0.39, 0.575, 0.565, 1 ] ],
             [ "easeInOutSine", [ 0.445, 0.05, 0.55, 0.95 ] ],
@@ -21937,12 +21921,13 @@ return function (global, window, document, undefined) {
             },
             /* Convert the templates into individual hooks then append them to the registered object above. */
             register: function () {
-                /* Color hooks registration. */
-                /* Note: Colors are defaulted to white -- as opposed to black -- since colors that are
+                /* Color hooks registration: Colors are defaulted to white -- as opposed to black -- since colors that are
                    currently set to "transparent" default to their respective template below when color-animated,
-                   and white is typically a closer match to transparent than black is. */
+                   and white is typically a closer match to transparent than black is. An exception is made for text ("color"),
+                   which is almost always set closer to black than white. */
                 for (var i = 0; i < CSS.Lists.colors.length; i++) {
-                    CSS.Hooks.templates[CSS.Lists.colors[i]] = [ "Red Green Blue Alpha", "255 255 255 1" ];
+                    var rgbComponents = (CSS.Lists.colors[i] === "color") ? "0 0 0 1" : "255 255 255 1";
+                    CSS.Hooks.templates[CSS.Lists.colors[i]] = [ "Red Green Blue Alpha", rgbComponents ];
                 }
 
                 var rootProperty,
@@ -22006,7 +21991,7 @@ return function (global, window, document, undefined) {
             cleanRootPropertyValue: function(rootProperty, rootPropertyValue) {
                 /* If the rootPropertyValue is wrapped with "rgb()", "clip()", etc., remove the wrapping to normalize the value before manipulation. */
                 if (CSS.RegEx.valueUnwrap.test(rootPropertyValue)) {
-                    rootPropertyValue = rootPropertyValue.match(CSS.Hooks.RegEx.valueUnwrap)[1];
+                    rootPropertyValue = rootPropertyValue.match(CSS.RegEx.valueUnwrap)[1];
                 }
 
                 /* If rootPropertyValue is a CSS null-value (from which there's inherently no hook value to extract),
@@ -22073,7 +22058,7 @@ return function (global, window, document, undefined) {
             /* Normalizations are passed a normalization target (either the property's name, its extracted value, or its injected value),
                the targeted element (which may need to be queried), and the targeted property value. */
             registered: {
-                clip: function(type, element, propertyValue) {
+                clip: function (type, element, propertyValue) {
                     switch (type) {
                         case "name":
                             return "clip";
@@ -22096,6 +22081,38 @@ return function (global, window, document, undefined) {
                         /* Clip needs to be re-wrapped during injection. */
                         case "inject":
                             return "rect(" + propertyValue + ")";
+                    }
+                },
+
+                blur: function(type, element, propertyValue) {
+                    switch (type) {
+                        case "name":
+                            return "-webkit-filter";
+                        case "extract":
+                            var extracted = parseFloat(propertyValue);
+
+                            /* If extracted is NaN, meaning the value isn't already extracted. */
+                            if (!(extracted || extracted === 0)) {
+                                var blurComponent = propertyValue.toString().match(/blur\(([0-9]+[A-z]+)\)/i);
+
+                                /* If the filter string had a blur component, return just the blur value and unit type. */
+                                if (blurComponent) {
+                                    extracted = blurComponent[1];
+                                /* If the component doesn't exist, default blur to 0. */
+                                } else {
+                                    extracted = 0;
+                                }
+                            }
+
+                            return extracted;
+                        /* Blur needs to be re-wrapped during injection. */
+                        case "inject":
+                            /* For the blur effect to be fully de-applied, it needs to be set to "none" instead of 0. */
+                            if (!parseFloat(propertyValue)) {
+                                return "none";
+                            } else {
+                                return "blur(" + propertyValue + ")";
+                            }
                     }
                 },
 
@@ -22401,6 +22418,7 @@ return function (global, window, document, undefined) {
 
                 return rgbParts ? [ parseInt(rgbParts[1], 16), parseInt(rgbParts[2], 16), parseInt(rgbParts[3], 16) ] : [ 0, 0, 0 ];
             },
+
             isCSSNullValue: function (value) {
                 /* The browser defaults CSS values that have not been set to either 0 or one of several possible null-value strings.
                    Thus, we check for both falsiness and these special strings. */
@@ -22409,6 +22427,7 @@ return function (global, window, document, undefined) {
                 /* Note: Chrome returns "rgba(0, 0, 0, 0)" for an undefined color whereas IE returns "transparent". */
                 return (value == 0 || /^(none|auto|transparent|(rgba\(0, ?0, ?0, ?0\)))$/i.test(value));
             },
+
             /* Retrieve a property's default unit type. Used for assigning a unit type when one is not supplied by the user. */
             getUnitType: function (property) {
                 if (/^(rotate|skew)/i.test(property)) {
@@ -22421,10 +22440,11 @@ return function (global, window, document, undefined) {
                     return "px";
                 }
             },
+
             /* HTML elements default to an associated display type when they're not set to display:none. */
-            /* Note: This function is used for correctly setting the non-"none" display value in certain Velocity sequences, such as fadeIn/Out. */
+            /* Note: This function is used for correctly setting the non-"none" display value in certain Velocity redirects, such as fadeIn/Out. */
             getDisplayType: function (element) {
-                var tagName = element.tagName.toString().toLowerCase();
+                var tagName = element && element.tagName.toString().toLowerCase();
 
                 if (/^(b|big|i|small|tt|abbr|acronym|cite|code|dfn|em|kbd|strong|samp|var|a|bdo|br|img|map|object|q|script|span|sub|sup|button|input|label|select|textarea)$/i.test(tagName)) {
                     return "inline";
@@ -22437,6 +22457,7 @@ return function (global, window, document, undefined) {
                     return "block";
                 }
             },
+
             /* The class add/remove functions are used to temporarily apply a "velocity-animating" class to elements while they're animating. */
             addClass: function (element, className) {
                 if (element.classList) {
@@ -22445,6 +22466,7 @@ return function (global, window, document, undefined) {
                     element.className += (element.className.length ? " " : "") + className;
                 }
             },
+
             removeClass: function (element, className) {
                 if (element.classList) {
                     element.classList.remove(className);
@@ -22932,7 +22954,7 @@ return function (global, window, document, undefined) {
                 /* Treat a number as a duration. Parse it out. */
                 /* Note: The following RegEx will return true if passed an array with a number as its first item.
                    Thus, arrays are skipped from this check. */
-                if (!Type.isArray(arguments[i]) && (/fast|normal|slow/i.test(arguments[i].toString()) || /^\d/.test(arguments[i]))) {
+                if (!Type.isArray(arguments[i]) && (/^(fast|normal|slow)$/i.test(arguments[i]) || /^\d/.test(arguments[i]))) {
                     options.duration = arguments[i];
                 /* Treat strings and arrays as easings. */
                 } else if (Type.isString(arguments[i]) || Type.isArray(arguments[i])) {
@@ -23026,10 +23048,10 @@ return function (global, window, document, undefined) {
 
                             if (options !== undefined && activeCall[2].queue !== queueName) {
                                 return true;
-                            }  
+                            }
 
                             /* Iterate through the calls targeted by the stop command. */
-                            $.each(elements, function(l, element) {                                
+                            $.each(elements, function(l, element) {
                                 /* Check that this call was applied to the target element. */
                                 if (element === activeElement) {
                                     /* Optionally clear the remaining queued calls. */
@@ -23083,21 +23105,21 @@ return function (global, window, document, undefined) {
                     action = "start";
 
                 /****************
-                    Sequences
+                    Redirects
                 ****************/
 
-                /* Check if a string matches a registered sequence (see Sequences above). */
-                } else if (Type.isString(propertiesMap) && Velocity.Sequences[propertiesMap]) {
+                /* Check if a string matches a registered redirect (see Redirects above). */
+                } else if (Type.isString(propertiesMap) && Velocity.Redirects[propertiesMap]) {
                     var opts = $.extend({}, options),
                         durationOriginal = opts.duration,
                         delayOriginal = opts.delay || 0;
 
                     /* If the backwards option was passed in, reverse the element set so that elements animate from the last to the first. */
                     if (opts.backwards === true) {
-                        elements = elements.reverse();
+                        elements = $.extend(true, [], elements).reverse();
                     }
 
-                    /* Individually trigger the sequence for each element in the set to prevent users from having to handle iteration logic in their sequence. */
+                    /* Individually trigger the redirect for each element in the set to prevent users from having to handle iteration logic in their redirect. */
                     $.each(elements, function(elementIndex, element) {
                         /* If the stagger option was passed in, successively delay each element by the stagger value (in ms). Retain the original delay value. */
                         if (parseFloat(opts.stagger)) {
@@ -23114,21 +23136,21 @@ return function (global, window, document, undefined) {
 
                             /* For each element, take the greater duration of: A) animation completion percentage relative to the original duration,
                                B) 75% of the original duration, or C) a 200ms fallback (in case duration is already set to a low value).
-                               The end result is a baseline of 75% of the sequence's duration that increases/decreases as the end of the element set is approached. */
+                               The end result is a baseline of 75% of the redirect's duration that increases/decreases as the end of the element set is approached. */
                             opts.duration = Math.max(opts.duration * (opts.backwards ? 1 - elementIndex/elementsLength : (elementIndex + 1) / elementsLength), opts.duration * 0.75, 200);
                         }
 
-                        /* Pass in the call's opts object so that the sequence can optionally extend it. It defaults to an empty object instead of null to
-                           reduce the opts checking logic required inside the sequence. */
-                        Velocity.Sequences[propertiesMap].call(element, element, opts || {}, elementIndex, elementsLength, elements, promiseData.promise ? promiseData : undefined);
+                        /* Pass in the call's opts object so that the redirect can optionally extend it. It defaults to an empty object instead of null to
+                           reduce the opts checking logic required inside the redirect. */
+                        Velocity.Redirects[propertiesMap].call(element, element, opts || {}, elementIndex, elementsLength, elements, promiseData.promise ? promiseData : undefined);
                     });
 
-                    /* Since the animation logic resides within the sequence's own code, abort the remainder of this call.
+                    /* Since the animation logic resides within the redirect's own code, abort the remainder of this call.
                        (The performance overhead up to this point is virtually non-existant.) */
                     /* Note: The jQuery call chain is kept intact by returning the complete element set. */
                     return getChain();
                 } else {
-                    var abortError = "Velocity: First argument (" + propertiesMap + ") was not a property map, a known action, or a registered sequence. Aborting.";
+                    var abortError = "Velocity: First argument (" + propertiesMap + ") was not a property map, a known action, or a registered redirect. Aborting.";
 
                     if (promiseData.promise) {
                         promiseData.rejecter(new Error(abortError));
@@ -23195,7 +23217,7 @@ return function (global, window, document, undefined) {
             /******************
                Element Init
             ******************/
-            
+
             if (Data(element) === undefined) {
                 Velocity.init(element);
             }
@@ -23225,27 +23247,37 @@ return function (global, window, document, undefined) {
                Option: Duration
             *********************/
 
-            /* In mock mode, all animations are forced to 1ms so that they occur immediately upon the next rAF tick. */
-            if (Velocity.mock === true) {
-                opts.duration = 1;
-            } else {
-                /* Support for jQuery's named durations. */
-                switch (opts.duration.toString().toLowerCase()) {
-                    case "fast":
-                        opts.duration = 200;
-                        break;
+            /* Support for jQuery's named durations. */
+            switch (opts.duration.toString().toLowerCase()) {
+                case "fast":
+                    opts.duration = 200;
+                    break;
 
-                    case "normal":
-                        opts.duration = DURATION_DEFAULT;
-                        break;
+                case "normal":
+                    opts.duration = DURATION_DEFAULT;
+                    break;
 
-                    case "slow":
-                        opts.duration = 600;
-                        break;
+                case "slow":
+                    opts.duration = 600;
+                    break;
 
-                    default:
-                        /* Remove the potential "ms" suffix and default to 1 if the user is attempting to set a duration of 0 (in order to produce an immediate style change). */
-                        opts.duration = parseFloat(opts.duration) || 1;
+                default:
+                    /* Remove the potential "ms" suffix and default to 1 if the user is attempting to set a duration of 0 (in order to produce an immediate style change). */
+                    opts.duration = parseFloat(opts.duration) || 1;
+            }
+
+            /************************
+               Global Option: Mock
+            ************************/
+
+            if (Velocity.mock !== false) {
+                /* In mock mode, all animations are forced to 1ms so that they occur immediately upon the next rAF tick.
+                   Alternatively, a multiplier can be passed in to time remap all delays and durations. */
+                if (Velocity.mock === true) {
+                    opts.duration = opts.delay = 1;
+                } else {
+                    opts.duration *= parseFloat(Velocity.mock) || 1;
+                    opts.delay *= parseFloat(Velocity.mock) || 1;
                 }
             }
 
@@ -23287,7 +23319,7 @@ return function (global, window, document, undefined) {
                 }
             }
 
-            if (opts.visibility) {
+            if (opts.visibility !== undefined && opts.visibility !== null) {
                 opts.visibility = opts.visibility.toString().toLowerCase();
             }
 
@@ -23577,7 +23609,17 @@ return function (global, window, document, undefined) {
 
                                 /* Inject the RGB component tweens into propertiesMap. */
                                 for (var i = 0; i < colorComponents.length; i++) {
-                                    propertiesMap[property + colorComponents[i]] = [ endValueRGB[i], easing, startValueRGB ? startValueRGB[i] : startValueRGB ];
+                                    var dataArray = [ endValueRGB[i] ];
+
+                                    if (easing) {
+                                        dataArray.push(easing);
+                                    }
+
+                                    if (startValueRGB !== undefined) {
+                                        dataArray.push(startValueRGB[i]);
+                                    }
+
+                                    propertiesMap[property + colorComponents[i]] = dataArray;
                                 }
 
                                 /* Remove the intermediary shorthand property entry now that we've processed it. */
@@ -23621,7 +23663,7 @@ return function (global, window, document, undefined) {
                         /* If the display option is being set to a non-"none" (e.g. "block") and opacity (filter on IE<=8) is being
                            animated to an endValue of non-zero, the user's intention is to fade in from invisible, thus we forcefeed opacity
                            a startValue of 0 if its startValue hasn't already been sourced by value transferring or prior forcefeeding. */
-                        if (((opts.display !== undefined && opts.display !== null && opts.display !== "none") || (opts.visibility && opts.visibility !== "hidden")) && /opacity|filter/.test(property) && !startValue && endValue !== 0) {
+                        if (((opts.display !== undefined && opts.display !== null && opts.display !== "none") || (opts.visibility !== undefined && opts.visibility !== "hidden")) && /opacity|filter/.test(property) && !startValue && endValue !== 0) {
                             startValue = 0;
                         }
 
@@ -23674,7 +23716,7 @@ return function (global, window, document, undefined) {
                             var unitType,
                                 numericValue;
 
-                            numericValue = (value || 0)
+                            numericValue = (value || "0")
                                 .toString()
                                 .toLowerCase()
                                 /* Match the unit type at the end of the value. */
@@ -23780,7 +23822,7 @@ return function (global, window, document, undefined) {
                             /***************************
                                Element-Specific Units
                             ***************************/
-                             
+
                             /* Note: IE8 rounds to the nearest pixel when returning CSS values, thus we perform conversions using a measurement
                                of 100 (instead of 1) to give our ratios a precision of at least 2 decimal values. */
                             var measurement = 100,
@@ -23788,7 +23830,7 @@ return function (global, window, document, undefined) {
 
                             if (!sameEmRatio || !samePercentRatio) {
                                 var dummy = Data(element).isSVG ? document.createElementNS("http://www.w3.org/2000/svg", "rect") : document.createElement("div");
-                                
+
                                 Velocity.init(dummy);
                                 sameRatioIndicators.myParent.appendChild(dummy);
 
@@ -23801,7 +23843,7 @@ return function (global, window, document, undefined) {
                                 Velocity.CSS.setPropertyValue(dummy, "position", sameRatioIndicators.position);
                                 Velocity.CSS.setPropertyValue(dummy, "fontSize", sameRatioIndicators.fontSize);
                                 Velocity.CSS.setPropertyValue(dummy, "boxSizing", "content-box");
-                                
+
                                 /* width and height act as our proxy properties for measuring the horizontal and vertical % ratios. */
                                 $.each([ "minWidth", "maxWidth", "width", "minHeight", "maxHeight", "height" ], function(i, property) {
                                     Velocity.CSS.setPropertyValue(dummy, property, measurement + "%");
@@ -23813,7 +23855,7 @@ return function (global, window, document, undefined) {
                                 unitRatios.percentToPxWidth = callUnitConversionData.lastPercentToPxWidth = (parseFloat(CSS.getPropertyValue(dummy, "width", null, true)) || 1) / measurement; /* GET */
                                 unitRatios.percentToPxHeight = callUnitConversionData.lastPercentToPxHeight = (parseFloat(CSS.getPropertyValue(dummy, "height", null, true)) || 1) / measurement; /* GET */
                                 unitRatios.emToPx = callUnitConversionData.lastEmToPx = (parseFloat(CSS.getPropertyValue(dummy, "paddingLeft")) || 1) / measurement; /* GET */
-                                
+
                                 sameRatioIndicators.myParent.removeChild(dummy);
                             } else {
                                 unitRatios.emToPx = callUnitConversionData.lastEmToPx;
@@ -23872,7 +23914,7 @@ return function (global, window, document, undefined) {
                                 /* By this point, we cannot avoid unit conversion (it's undesirable since it causes layout thrashing).
                                    If we haven't already, we trigger calculateUnitRatios(), which runs once per element per call. */
                                 elementUnitConversionData = elementUnitConversionData || calculateUnitRatios();
-                                
+
                                 /* The following RegEx matches CSS properties that have their % values measured relative to the x-axis. */
                                 /* Note: W3C spec mandates that all of margin and padding's properties (even top and bottom) are %-relative to the *width* of the parent element. */
                                 var axis = (/margin|padding|left|right|width|text|word|letter/i.test(property) || /X$/.test(property) || property === "x") ? "x" : "y";
@@ -24093,11 +24135,12 @@ return function (global, window, document, undefined) {
                    isn't parsed until then as well, the current call's delay option must be explicitly passed into the reverse
                    call so that the delay logic that occurs inside *Pre-Queueing* can process it. */
                 var reverseOptions = {
-                    delay: opts.delay
+                    delay: opts.delay,
+                    progress: opts.progress
                 };
 
-                /* If a complete callback was passed into this call, transfer it to the loop sequence's final "reverse" call
-                   so that it's triggered when the entire sequence is complete (and not when the very first animation is complete). */
+                /* If a complete callback was passed into this call, transfer it to the loop redirect's final "reverse" call
+                   so that it's triggered when the entire redirect is complete (and not when the very first animation is complete). */
                 if (x === reverseCallsCount - 1) {
                     reverseOptions.display = opts.display;
                     reverseOptions.visibility = opts.visibility;
@@ -24125,6 +24168,7 @@ return function (global, window, document, undefined) {
         Timing
     **************/
 
+    /* Ticker function. */
     var ticker = window.requestAnimationFrame || rAFShim;
 
     /* Inactive browser tabs pause rAF, which results in all active animations immediately sprinting to their completion states when the tab refocuses.
@@ -24183,7 +24227,8 @@ return function (global, window, document, undefined) {
                 var callContainer = Velocity.State.calls[i],
                     call = callContainer[0],
                     opts = callContainer[2],
-                    timeStart = callContainer[3];
+                    timeStart = callContainer[3],
+                    firstTick = !!timeStart;
 
                 /* If timeStart is undefined, then this is the first time that this call has been processed by tick().
                    We assign timeStart now so that its value is as close to the real animation start time as possible.
@@ -24238,7 +24283,7 @@ return function (global, window, document, undefined) {
                     }
 
                     /* Same goes with the visibility option, but its "none" equivalent is "hidden". */
-                    if (opts.visibility && opts.visibility !== "hidden") {
+                    if (opts.visibility !== undefined && opts.visibility !== "hidden") {
                         CSS.setPropertyValue(element, "visibility", opts.visibility);
                     }
 
@@ -24267,6 +24312,11 @@ return function (global, window, document, undefined) {
                             /* Otherwise, calculate currentValue based on the current delta from startValue. */
                             } else {
                                 currentValue = tween.startValue + ((tween.endValue - tween.startValue) * easing(percentComplete));
+
+                                /* If no value change is occurring, don't proceed with DOM updating. */
+                                if (!firstTick && (currentValue === tween.currentValue)) {
+                                    continue;
+                                }
                             }
 
                             tween.currentValue = currentValue;
@@ -24352,9 +24402,10 @@ return function (global, window, document, undefined) {
                 if (opts.display !== undefined && opts.display !== "none") {
                     Velocity.State.calls[i][2].display = false;
                 }
-                if (opts.visibility && opts.visibility !== "hidden") {
+                if (opts.visibility !== undefined && opts.visibility !== "hidden") {
                     Velocity.State.calls[i][2].visibility = false;
                 }
+
 
                 /* Pass the elements and the timing data (percentComplete, msRemaining, and timeStart) into the progress callback. */
                 if (opts.progress) {
@@ -24422,7 +24473,7 @@ return function (global, window, document, undefined) {
                an element's CSS values and thereby cause Velocity's cached value data to go stale. To detect if a queue entry was initiated by Velocity,
                we check for the existence of our special Velocity.queueEntryFlag declaration, which minifiers won't rename since the flag
                is assigned to jQuery's global $ object and thus exists out of Velocity's own scope. */
-            if ($.queue(element)[1] === undefined || !/\.velocityQueueEntryFlag/i.test($.queue(element)[1])) {
+            if (opts.loop !== true && ($.queue(element)[1] === undefined || !/\.velocityQueueEntryFlag/i.test($.queue(element)[1]))) {
                 /* The element may have been deleted. Ensure that its data cache still exists before acting on it. */
                 if (Data(element)) {
                     Data(element).isAnimating = false;
@@ -24558,12 +24609,12 @@ return function (global, window, document, undefined) {
     }
 
     /***********************
-       Packaged Sequences
+       Packaged Redirects
     ***********************/
 
     /* slideUp, slideDown */
     $.each([ "Down", "Up" ], function(i, direction) {
-        Velocity.Sequences["slide" + direction] = function (element, options, elementsIndex, elementsSize, elements, promiseData) {
+        Velocity.Redirects["slide" + direction] = function (element, options, elementsIndex, elementsSize, elements, promiseData) {
             var opts = $.extend({}, options),
                 begin = opts.begin,
                 complete = opts.complete,
@@ -24576,27 +24627,27 @@ return function (global, window, document, undefined) {
                 opts.display = (direction === "Down" ? (Velocity.CSS.Values.getDisplayType(element) === "inline" ? "inline-block" : "block") : "none");
             }
 
-            opts.begin = function () {
+            opts.begin = function() {
                 /* If the user passed in a begin callback, fire it now. */
                 begin && begin.call(elements, elements);
-
-                /* Force vertical overflow content to clip so that sliding works as expected. */
-                inlineValues.overflow = element.style.overflow;
-                element.style.overflow = "hidden";
 
                 /* Cache the elements' original vertical dimensional property values so that we can animate back to them. */
                 for (var property in computedValues) {
                     /* Cache all inline values, we reset to upon animation completion. */
                     inlineValues[property] = element.style[property];
 
-                    /* For slideDown, use forcefeeding to animate all vertical properties from 0. For slideUp, 
+                    /* For slideDown, use forcefeeding to animate all vertical properties from 0. For slideUp,
                        use forcefeeding to start from computed values and animate down to 0. */
                     var propertyValue = Velocity.CSS.getPropertyValue(element, property);
                     computedValues[property] = (direction === "Down") ? [ propertyValue, 0 ] : [ 0, propertyValue ];
                 }
+
+                /* Force vertical overflow content to clip so that sliding works as expected. */
+                inlineValues.overflow = element.style.overflow;
+                element.style.overflow = "hidden";
             }
 
-            opts.complete = function () {
+            opts.complete = function() {
                 /* Reset element to its pre-slide inline values once its slide animation is complete. */
                 for (var property in inlineValues) {
                     element.style[property] = inlineValues[property];
@@ -24613,12 +24664,12 @@ return function (global, window, document, undefined) {
 
     /* fadeIn, fadeOut */
     $.each([ "In", "Out" ], function(i, direction) {
-        Velocity.Sequences["fade" + direction] = function (element, options, elementsIndex, elementsSize, elements, promiseData) {
+        Velocity.Redirects["fade" + direction] = function (element, options, elementsIndex, elementsSize, elements, promiseData) {
             var opts = $.extend({}, options),
                 propertiesMap = { opacity: (direction === "In") ? 1 : 0 },
                 originalComplete = opts.complete;
 
-            /* Since sequences are triggered individually for each element in the animated set, avoid repeatedly triggering
+            /* Since redirects are triggered individually for each element in the animated set, avoid repeatedly triggering
                callbacks by firing them only when the final element has been reached. */
             if (elementsIndex !== elementsSize - 1) {
                 opts.complete = opts.begin = null;
@@ -24650,8 +24701,6 @@ return function (global, window, document, undefined) {
    Known Issues
 ******************/
 
-/* When animating height/width to a % value on an element *without* box-sizing:border-box and *with* visible scrollbars
-on *both* axes, the opposite axis (e.g. height vs width) will be shortened by the height/width of its scrollbar. */
 /* The CSS spec mandates that the translateX/Y/Z transforms are %-relative to the element itself -- not its parent.
 Velocity, however, doesn't make this distinction. Thus, converting to or from the % unit with these subproperties
 will produce an inaccurate conversion value. The same issue exists with the cx/cy attributes of SVG circles and ellipses. */
@@ -24659,48 +24708,77 @@ will produce an inaccurate conversion value. The same issue exists with the cx/c
    Velocity UI Pack
 **********************/
 
-/* VelocityJS.org UI Pack (4.1.4). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License. Portions copyright Daniel Eden, Christian Pucci. */
+/* VelocityJS.org UI Pack (5.0.0). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License. Portions copyright Daniel Eden, Christian Pucci. */
 
-;(function (factory) {    
+;(function (factory) {
     /* CommonJS module. */
-    if (typeof module === "object" && typeof module.exports === "object") {
+    if (typeof require === "function" && typeof exports === "object" ) {
         module.exports = factory();
     /* AMD module. */
     } else if (typeof define === "function" && define.amd) {
         define([ "velocity" ], factory);
     /* Browser globals. */
-    } else {        
+    } else {
         factory();
     }
 }(function() {
 return function (global, window, document, undefined) {
 
-    /**************
+    /*************
         Checks
-    **************/
+    *************/
 
     if (!global.Velocity || !global.Velocity.Utilities) {
         window.console && console.log("Velocity UI Pack: Velocity must be loaded first. Aborting.");
         return;
-    } else if (!global.Velocity.version || (global.Velocity.version.major <= 0 && global.Velocity.version.minor <= 11 && global.Velocity.version.patch < 8)) {
-        var abortError = "Velocity UI Pack: You need to update Velocity (jquery.velocity.js) to a newer version. Visit http://github.com/julianshapiro/velocity.";
+    } else {
+        var Velocity = global.Velocity,
+            $ = Velocity.Utilities;
+    }
 
+    var velocityVersion = Velocity.version,
+        requiredVersion = { major: 1, minor: 1, patch: 0 };
+
+    function greaterSemver (primary, secondary) {
+        var versionInts = [];
+
+        if (!primary || !secondary) { return false; }
+
+        $.each([ primary, secondary ], function(i, versionObject) {
+            var versionIntsComponents = [];
+
+            $.each(versionObject, function(component, value) {
+                while (value.toString().length < 5) {
+                    value = "0" + value;
+                }
+                versionIntsComponents.push(value);
+            });
+
+            versionInts.push(versionIntsComponents.join(""))
+        });
+
+        return (parseFloat(versionInts[0]) > parseFloat(versionInts[1]));
+    }
+
+    if (greaterSemver(requiredVersion, velocityVersion)){
+        var abortError = "Velocity UI Pack: You need to update Velocity (jquery.velocity.js) to a newer version. Visit http://github.com/julianshapiro/velocity.";
         alert(abortError);
         throw new Error(abortError);
     }
 
-    /******************
-       Register UI
-    ******************/
+    /************************
+       Effect Registration
+    ************************/
 
-    global.Velocity.RegisterUI = function (effectName, properties) {
+    /* Note: RegisterUI is a legacy name. */
+    Velocity.RegisterEffect = Velocity.RegisterUI = function (effectName, properties) {
         /* Animate the expansion/contraction of the elements' parent's height for In/Out effects. */
         function animateParentHeight (elements, direction, totalDuration, stagger) {
             var totalHeightDelta = 0,
                 parentNode;
 
             /* Sum the total height (including padding and margin) of all targeted elements. */
-            global.Velocity.Utilities.each(elements.nodeType ? [ elements ] : elements, function(i, element) {
+            $.each(elements.nodeType ? [ elements ] : elements, function(i, element) {
                 if (stagger) {
                     /* Increase the totalDuration by the successive delay amounts produced by the stagger option. */
                     totalDuration += i * stagger;
@@ -24708,84 +24786,99 @@ return function (global, window, document, undefined) {
 
                 parentNode = element.parentNode;
 
-                global.Velocity.Utilities.each([ "height", "paddingTop", "paddingBottom", "marginTop", "marginBottom"], function(i, property) {
-                    totalHeightDelta += parseFloat(global.Velocity.CSS.getPropertyValue(element, property));
+                $.each([ "height", "paddingTop", "paddingBottom", "marginTop", "marginBottom"], function(i, property) {
+                    totalHeightDelta += parseFloat(Velocity.CSS.getPropertyValue(element, property));
                 });
             });
 
             /* Animate the parent element's height adjustment (with a varying duration multiplier for aesthetic benefits). */
-            global.Velocity.animate(
+            Velocity.animate(
                 parentNode,
                 { height: (direction === "In" ? "+" : "-") + "=" + totalHeightDelta },
                 { queue: false, easing: "ease-in-out", duration: totalDuration * (direction === "In" ? 0.6 : 1) }
             );
         }
 
-        /* Register a custom sequence for each effect. */
-        global.Velocity.Sequences[effectName] = function (element, sequenceOptions, elementsIndex, elementsSize, elements, promiseData) {
+        /* Register a custom redirect for each effect. */
+        Velocity.Redirects[effectName] = function (element, redirectOptions, elementsIndex, elementsSize, elements, promiseData) {
             var finalElement = (elementsIndex === elementsSize - 1);
+
+            if (typeof properties.defaultDuration === "function") {
+                properties.defaultDuration = properties.defaultDuration.call(elements, elements);
+            } else {
+                properties.defaultDuration = parseFloat(properties.defaultDuration);
+            }
 
             /* Iterate through each effect's call array. */
             for (var callIndex = 0; callIndex < properties.calls.length; callIndex++) {
                 var call = properties.calls[callIndex],
                     propertyMap = call[0],
-                    sequenceDuration = (sequenceOptions.duration || properties.defaultDuration || 1000),
+                    redirectDuration = (redirectOptions.duration || properties.defaultDuration || 1000),
                     durationPercentage = call[1],
                     callOptions = call[2] || {},
                     opts = {};
 
                 /* Assign the whitelisted per-call options. */
-                opts.duration = sequenceDuration * (durationPercentage || 1);
-                opts.queue = sequenceOptions.queue || "";
+                opts.duration = redirectDuration * (durationPercentage || 1);
+                opts.queue = redirectOptions.queue || "";
                 opts.easing = callOptions.easing || "ease";
-                opts.delay = callOptions.delay || 0;
+                opts.delay = parseFloat(callOptions.delay) || 0;
                 opts._cacheValues = callOptions._cacheValues || true;
 
                 /* Special processing for the first effect call. */
                 if (callIndex === 0) {
-                    /* If a delay was passed into the sequence, combine it with the first call's delay. */
-                    opts.delay += (sequenceOptions.delay || 0);
+                    /* If a delay was passed into the redirect, combine it with the first call's delay. */
+                    opts.delay += (parseFloat(redirectOptions.delay) || 0);
 
                     if (elementsIndex === 0) {
                         opts.begin = function() {
                             /* Only trigger a begin callback on the first effect call with the first element in the set. */
-                            sequenceOptions.begin && sequenceOptions.begin.call(elements, elements);
+                            redirectOptions.begin && redirectOptions.begin.call(elements, elements);
+
+                            var direction = effectName.match(/(In|Out)$/);
+
+                            /* Make "in" transitioning elements invisible immediately so that there's no FOUC between now
+                               and the first RAF tick. */
+                            if ((direction && direction[0] === "In") && propertyMap.opacity !== undefined) {
+                                $.each(elements.nodeType ? [ elements ] : elements, function(i, element) {
+                                    Velocity.CSS.setPropertyValue(element, "opacity", 0);
+                                });
+                            }
 
                             /* Only trigger animateParentHeight() if we're using an In/Out transition. */
-                            var direction = effectName.match(/(In|Out)$/);
-                            if (sequenceOptions.animateParentHeight && direction) {
-                                animateParentHeight(elements, direction[0], sequenceDuration + opts.delay, sequenceOptions.stagger);
+                            if (redirectOptions.animateParentHeight && direction) {
+                                animateParentHeight(elements, direction[0], redirectDuration + opts.delay, redirectOptions.stagger);
                             }
                         }
                     }
 
                     /* If the user isn't overriding the display option, default to "auto" for "In"-suffixed transitions. */
-                    if (sequenceOptions.display !== null) {
-                        if (sequenceOptions.display !== undefined && sequenceOptions.display !== "none") {
-                            opts.display = sequenceOptions.display;
+                    if (redirectOptions.display !== null) {
+                        if (redirectOptions.display !== undefined && redirectOptions.display !== "none") {
+                            opts.display = redirectOptions.display;
                         } else if (/In$/.test(effectName)) {
                             /* Inline elements cannot be subjected to transforms, so we switch them to inline-block. */
-                            var defaultDisplay = global.Velocity.CSS.Values.getDisplayType(element);
+                            var defaultDisplay = Velocity.CSS.Values.getDisplayType(element);
                             opts.display = (defaultDisplay === "inline") ? "inline-block" : defaultDisplay;
                         }
                     }
 
-                    if (sequenceOptions.visibility && sequenceOptions.visibility !== "hidden") {
-                        opts.visibility = sequenceOptions.visibility;
+                    if (redirectOptions.visibility && redirectOptions.visibility !== "hidden") {
+                        opts.visibility = redirectOptions.visibility;
                     }
                 }
 
                 /* Special processing for the last effect call. */
                 if (callIndex === properties.calls.length - 1) {
-                    /* Append promise resolving onto the user's sequence callback. */ 
+                    /* Append promise resolving onto the user's redirect callback. */
                     function injectFinalCallbacks () {
-                        if ((sequenceOptions.display === undefined || sequenceOptions.display === "none") && /Out$/.test(effectName)) {
-                            global.Velocity.Utilities.each(elements.nodeType ? [ elements ] : elements, function(i, element) {
-                                global.Velocity.CSS.setPropertyValue(element, "display", "none");
+                        if ((redirectOptions.display === undefined || redirectOptions.display === "none") && /Out$/.test(effectName)) {
+                            $.each(elements.nodeType ? [ elements ] : elements, function(i, element) {
+                                Velocity.CSS.setPropertyValue(element, "display", "none");
                             });
                         }
 
-                        sequenceOptions.complete && sequenceOptions.complete.call(elements, elements);
+                        redirectOptions.complete && redirectOptions.complete.call(elements, elements);
 
                         if (promiseData) {
                             promiseData.resolver(elements || element);
@@ -24799,7 +24892,8 @@ return function (global, window, document, undefined) {
 
                                 /* Format each non-array value in the reset property map to [ value, value ] so that changes apply
                                    immediately and DOM querying is avoided (via forcefeeding). */
-                                if (typeof resetValue === "string" || typeof resetValue === "number") {
+                                /* Note: Don't forcefeed hooks, otherwise their hook roots will be defaulted to their null values. */
+                                if (Velocity.CSS.Hooks.registered[resetProperty] === undefined && (typeof resetValue === "string" || typeof resetValue === "number")) {
                                     properties.reset[resetProperty] = [ properties.reset[resetProperty], properties.reset[resetProperty] ];
                                 }
                             }
@@ -24810,26 +24904,26 @@ return function (global, window, document, undefined) {
                             /* Since the reset option uses up the complete callback, we trigger the user's complete callback at the end of ours. */
                             if (finalElement) {
                                 resetOptions.complete = injectFinalCallbacks;
-                            }  
+                            }
 
-                            global.Velocity.animate(element, properties.reset, resetOptions);
+                            Velocity.animate(element, properties.reset, resetOptions);
                         /* Only trigger the user's complete callback on the last effect call with the last element in the set. */
                         } else if (finalElement) {
                             injectFinalCallbacks();
                         }
                     };
 
-                    if (sequenceOptions.visibility === "hidden") {
-                        opts.visibility = sequenceOptions.visibility;
+                    if (redirectOptions.visibility === "hidden") {
+                        opts.visibility = redirectOptions.visibility;
                     }
                 }
 
-                global.Velocity.animate(element, propertyMap, opts);
+                Velocity.animate(element, propertyMap, opts);
             }
         };
 
         /* Return the Velocity object so that RegisterUI calls can be chained. */
-        return global.Velocity;
+        return Velocity;
     };
 
     /*********************
@@ -24838,8 +24932,8 @@ return function (global, window, document, undefined) {
 
     /* Externalize the packagedEffects data so that they can optionally be modified and re-registered. */
     /* Support: <=IE8: Callouts will have no effect, and transitions will simply fade in/out. IE9/Android 2.3: Most effects are fully supported, the rest fade in/out. All other browsers: full support. */
-    global.Velocity.RegisterUI.packagedEffects = 
-        { 
+    Velocity.RegisterEffect.packagedEffects =
+        {
             /* Animate.css */
             "callout.bounce": {
                 defaultDuration: 550,
@@ -24853,7 +24947,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "callout.shake": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { translateX: -11 }, 0.125 ],
                     [ { translateX: 11 }, 0.125 ],
                     [ { translateX: -11 }, 0.125 ],
@@ -24867,7 +24961,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "callout.flash": {
                 defaultDuration: 1100,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, "easeInOutQuad", 1 ] }, 0.25 ],
                     [ { opacity: [ 1, "easeInOutQuad" ] }, 0.25 ],
                     [ { opacity: [ 0, "easeInOutQuad" ] }, 0.25 ],
@@ -24877,7 +24971,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "callout.pulse": {
                 defaultDuration: 825,
-                calls: [ 
+                calls: [
                     [ { scaleX: 1.1, scaleY: 1.1 }, 0.50 ],
                     [ { scaleX: 1, scaleY: 1 }, 0.50 ]
                 ]
@@ -24885,7 +24979,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "callout.swing": {
                 defaultDuration: 950,
-                calls: [ 
+                calls: [
                     [ { rotateZ: 15 }, 0.20 ],
                     [ { rotateZ: -10 }, 0.20 ],
                     [ { rotateZ: 5 }, 0.20 ],
@@ -24896,7 +24990,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "callout.tada": {
                 defaultDuration: 1000,
-                calls: [ 
+                calls: [
                     [ { scaleX: 0.9, scaleY: 0.9, rotateZ: -3 }, 0.10 ],
                     [ { scaleX: 1.1, scaleY: 1.1, rotateZ: 3 }, 0.10 ],
                     [ { scaleX: 1.1, scaleY: 1.1, rotateZ: -3 }, 0.10 ],
@@ -24923,7 +25017,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipXIn": {
                 defaultDuration: 700,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 800, 800 ], rotateY: [ 0, -55 ] } ]
                 ],
                 reset: { transformPerspective: 0 }
@@ -24931,7 +25025,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipXOut": {
                 defaultDuration: 700,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 800, 800 ], rotateY: 55 } ]
                 ],
                 reset: { transformPerspective: 0, rotateY: 0 }
@@ -24939,7 +25033,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipYIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 800, 800 ], rotateX: [ 0, -45 ] } ]
                 ],
                 reset: { transformPerspective: 0 }
@@ -24947,7 +25041,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipYOut": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 800, 800 ], rotateX: 25 } ]
                 ],
                 reset: { transformPerspective: 0, rotateX: 0 }
@@ -24956,7 +25050,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipBounceXIn": {
                 defaultDuration: 900,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0.725, 0 ], transformPerspective: [ 400, 400 ], rotateY: [ -10, 90 ] }, 0.50 ],
                     [ { opacity: 0.80, rotateY: 10 }, 0.25 ],
                     [ { opacity: 1, rotateY: 0 }, 0.25 ]
@@ -24967,7 +25061,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipBounceXOut": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0.9, 1 ], transformPerspective: [ 400, 400 ], rotateY: -10 }, 0.50 ],
                     [ { opacity: 0, rotateY: 90 }, 0.50 ]
                 ],
@@ -24977,7 +25071,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipBounceYIn": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0.725, 0 ], transformPerspective: [ 400, 400 ], rotateX: [ -10, 90 ] }, 0.50 ],
                     [ { opacity: 0.80, rotateX: 10 }, 0.25 ],
                     [ { opacity: 1, rotateX: 0 }, 0.25 ]
@@ -24988,7 +25082,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.flipBounceYOut": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0.9, 1 ], transformPerspective: [ 400, 400 ], rotateX: -15 }, 0.50 ],
                     [ { opacity: 0, rotateX: 90 }, 0.50 ]
                 ],
@@ -24997,7 +25091,7 @@ return function (global, window, document, undefined) {
             /* Magic.css */
             "transition.swoopIn": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformOriginX: [ "100%", "50%" ], transformOriginY: [ "100%", "100%" ], scaleX: [ 1, 0 ], scaleY: [ 1, 0 ], translateX: [ 0, -700 ], translateZ: 0 } ]
                 ],
                 reset: { transformOriginX: "50%", transformOriginY: "50%" }
@@ -25005,7 +25099,7 @@ return function (global, window, document, undefined) {
             /* Magic.css */
             "transition.swoopOut": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformOriginX: [ "50%", "100%" ], transformOriginY: [ "100%", "100%" ], scaleX: 0, scaleY: 0, translateX: -700, translateZ: 0 } ]
                 ],
                 reset: { transformOriginX: "50%", transformOriginY: "50%", scaleX: 1, scaleY: 1, translateX: 0 }
@@ -25013,42 +25107,42 @@ return function (global, window, document, undefined) {
             /* Magic.css */
             /* Support: Loses rotation in IE9/Android 2.3. (Fades and scales only.) */
             "transition.whirlIn": {
-                defaultDuration: 900,
-                calls: [ 
-                    [ { opacity: [ 1, 0 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: [ 1, 0 ], scaleY: [ 1, 0 ], rotateY: [ 0, 160 ] } ]
+                defaultDuration: 850,
+                calls: [
+                    [ { opacity: [ 1, 0 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: [ 1, 0 ], scaleY: [ 1, 0 ], rotateY: [ 0, 160 ] }, 1, { easing: "easeInOutSine" } ]
                 ]
             },
             /* Magic.css */
             /* Support: Loses rotation in IE9/Android 2.3. (Fades and scales only.) */
             "transition.whirlOut": {
-                defaultDuration: 900,
-                calls: [ 
-                    [ { opacity: [ 0, 1 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: 0, scaleY: 0, rotateY: 160 } ]
+                defaultDuration: 750,
+                calls: [
+                    [ { opacity: [ 0, "easeInOutQuint", 1 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: 0, scaleY: 0, rotateY: 160 }, 1, { easing: "swing" } ]
                 ],
                 reset: { scaleX: 1, scaleY: 1, rotateY: 0 }
             },
             "transition.shrinkIn": {
-                defaultDuration: 700,
-                calls: [ 
+                defaultDuration: 750,
+                calls: [
                     [ { opacity: [ 1, 0 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: [ 1, 1.5 ], scaleY: [ 1, 1.5 ], translateZ: 0 } ]
                 ]
             },
             "transition.shrinkOut": {
-                defaultDuration: 650,
-                calls: [ 
+                defaultDuration: 600,
+                calls: [
                     [ { opacity: [ 0, 1 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: 1.3, scaleY: 1.3, translateZ: 0 } ]
                 ],
                 reset: { scaleX: 1, scaleY: 1 }
             },
             "transition.expandIn": {
                 defaultDuration: 700,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: [ 1, 0.625 ], scaleY: [ 1, 0.625 ], translateZ: 0 } ]
                 ]
             },
             "transition.expandOut": {
                 defaultDuration: 700,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformOriginX: [ "50%", "50%" ], transformOriginY: [ "50%", "50%" ], scaleX: 0.5, scaleY: 0.5, translateZ: 0 } ]
                 ],
                 reset: { scaleX: 1, scaleY: 1 }
@@ -25056,7 +25150,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], scaleX: [ 1.05, 0.3 ], scaleY: [ 1.05, 0.3 ] }, 0.40 ],
                     [ { scaleX: 0.9, scaleY: 0.9, translateZ: 0 }, 0.20 ],
                     [ { scaleX: 1, scaleY: 1 }, 0.50 ]
@@ -25065,17 +25159,17 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceOut": {
                 defaultDuration: 800,
-                calls: [ 
-                    [ { scaleX: 0.95, scaleY: 0.95 }, 0.40 ],
-                    [ { scaleX: 1.1, scaleY: 1.1, translateZ: 0 }, 0.40 ],
-                    [ { opacity: [ 0, 1 ], scaleX: 0.3, scaleY: 0.3 }, 0.20 ]
+                calls: [
+                    [ { scaleX: 0.95, scaleY: 0.95 }, 0.35 ],
+                    [ { scaleX: 1.1, scaleY: 1.1, translateZ: 0 }, 0.35 ],
+                    [ { opacity: [ 0, 1 ], scaleX: 0.3, scaleY: 0.3 }, 0.30 ]
                 ],
                 reset: { scaleX: 1, scaleY: 1 }
             },
             /* Animate.css */
             "transition.bounceUpIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ -30, 1000 ] }, 0.60, { easing: "easeOutCirc" } ],
                     [ { translateY: 10 }, 0.20 ],
                     [ { translateY: 0 }, 0.20 ]
@@ -25084,7 +25178,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceUpOut": {
                 defaultDuration: 1000,
-                calls: [ 
+                calls: [
                     [ { translateY: 20 }, 0.20 ],
                     [ { opacity: [ 0, "easeInCirc", 1 ], translateY: -1000 }, 0.80 ]
                 ],
@@ -25093,7 +25187,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceDownIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ 30, -1000 ] }, 0.60, { easing: "easeOutCirc" } ],
                     [ { translateY: -10 }, 0.20 ],
                     [ { translateY: 0 }, 0.20 ]
@@ -25102,7 +25196,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceDownOut": {
                 defaultDuration: 1000,
-                calls: [ 
+                calls: [
                     [ { translateY: -20 }, 0.20 ],
                     [ { opacity: [ 0, "easeInCirc", 1 ], translateY: 1000 }, 0.80 ]
                 ],
@@ -25111,7 +25205,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceLeftIn": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ 30, -1250 ] }, 0.60, { easing: "easeOutCirc" } ],
                     [ { translateX: -10 }, 0.20 ],
                     [ { translateX: 0 }, 0.20 ]
@@ -25120,7 +25214,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceLeftOut": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { translateX: 30 }, 0.20 ],
                     [ { opacity: [ 0, "easeInCirc", 1 ], translateX: -1250 }, 0.80 ]
                 ],
@@ -25129,7 +25223,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceRightIn": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ -30, 1250 ] }, 0.60, { easing: "easeOutCirc" } ],
                     [ { translateX: 10 }, 0.20 ],
                     [ { translateX: 0 }, 0.20 ]
@@ -25138,7 +25232,7 @@ return function (global, window, document, undefined) {
             /* Animate.css */
             "transition.bounceRightOut": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { translateX: -30 }, 0.20 ],
                     [ { opacity: [ 0, "easeInCirc", 1 ], translateX: 1250 }, 0.80 ]
                 ],
@@ -25146,104 +25240,104 @@ return function (global, window, document, undefined) {
             },
             "transition.slideUpIn": {
                 defaultDuration: 900,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ 0, 20 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideUpOut": {
                 defaultDuration: 900,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateY: -20, translateZ: 0 } ]
                 ],
                 reset: { translateY: 0 }
             },
             "transition.slideDownIn": {
                 defaultDuration: 900,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ 0, -20 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideDownOut": {
                 defaultDuration: 900,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateY: 20, translateZ: 0 } ]
                 ],
                 reset: { translateY: 0 }
             },
             "transition.slideLeftIn": {
                 defaultDuration: 1000,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ 0, -20 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideLeftOut": {
                 defaultDuration: 1050,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateX: -20, translateZ: 0 } ]
                 ],
                 reset: { translateX: 0 }
             },
             "transition.slideRightIn": {
                 defaultDuration: 1000,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ 0, 20 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideRightOut": {
                 defaultDuration: 1050,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateX: 20, translateZ: 0 } ]
                 ],
                 reset: { translateX: 0 }
             },
             "transition.slideUpBigIn": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ 0, 75 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideUpBigOut": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateY: -75, translateZ: 0 } ]
                 ],
                 reset: { translateY: 0 }
             },
             "transition.slideDownBigIn": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateY: [ 0, -75 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideDownBigOut": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateY: 75, translateZ: 0 } ]
                 ],
                 reset: { translateY: 0 }
             },
             "transition.slideLeftBigIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ 0, -75 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideLeftBigOut": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateX: -75, translateZ: 0 } ]
                 ],
                 reset: { translateX: 0 }
             },
             "transition.slideRightBigIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], translateX: [ 0, 75 ], translateZ: 0 } ]
                 ]
             },
             "transition.slideRightBigOut": {
                 defaultDuration: 750,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], translateX: 75, translateZ: 0 } ]
                 ],
                 reset: { translateX: 0 }
@@ -25251,16 +25345,15 @@ return function (global, window, document, undefined) {
             /* Magic.css */
             "transition.perspectiveUpIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 800, 800 ], transformOriginX: [ 0, 0 ], transformOriginY: [ "100%", "100%" ], rotateX: [ 0, -180 ] } ]
-                ],
-                reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%" }
+                ]
             },
             /* Magic.css */
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveUpOut": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 800, 800 ], transformOriginX: [ 0, 0 ], transformOriginY: [ "100%", "100%" ], rotateX: -180 } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%", rotateX: 0 }
@@ -25269,7 +25362,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveDownIn": {
                 defaultDuration: 800,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 800, 800 ], transformOriginX: [ 0, 0 ], transformOriginY: [ 0, 0 ], rotateX: [ 0, 180 ] } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%" }
@@ -25278,7 +25371,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveDownOut": {
                 defaultDuration: 850,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 800, 800 ], transformOriginX: [ 0, 0 ], transformOriginY: [ 0, 0 ], rotateX: 180 } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%", rotateX: 0 }
@@ -25287,7 +25380,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveLeftIn": {
                 defaultDuration: 950,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 2000, 2000 ], transformOriginX: [ 0, 0 ], transformOriginY: [ 0, 0 ], rotateY: [ 0, -180 ] } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%" }
@@ -25296,7 +25389,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveLeftOut": {
                 defaultDuration: 950,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 2000, 2000 ], transformOriginX: [ 0, 0 ], transformOriginY: [ 0, 0 ], rotateY: -180 } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%", rotateY: 0 }
@@ -25305,7 +25398,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveRightIn": {
                 defaultDuration: 950,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 1, 0 ], transformPerspective: [ 2000, 2000 ], transformOriginX: [ "100%", "100%" ], transformOriginY: [ 0, 0 ], rotateY: [ 0, 180 ] } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%" }
@@ -25314,7 +25407,7 @@ return function (global, window, document, undefined) {
             /* Support: Loses rotation in IE9/Android 2.3 (fades only). */
             "transition.perspectiveRightOut": {
                 defaultDuration: 950,
-                calls: [ 
+                calls: [
                     [ { opacity: [ 0, 1 ], transformPerspective: [ 2000, 2000 ], transformOriginX: [ "100%", "100%" ], transformOriginY: [ 0, 0 ], rotateY: 180 } ]
                 ],
                 reset: { transformPerspective: 0, transformOriginX: "50%", transformOriginY: "50%", rotateY: 0 }
@@ -25322,9 +25415,46 @@ return function (global, window, document, undefined) {
         };
 
     /* Register the packaged effects. */
-    for (var effectName in global.Velocity.RegisterUI.packagedEffects) {
-        global.Velocity.RegisterUI(effectName, global.Velocity.RegisterUI.packagedEffects[effectName]);
+    for (var effectName in Velocity.RegisterEffect.packagedEffects) {
+        Velocity.RegisterEffect(effectName, Velocity.RegisterEffect.packagedEffects[effectName]);
     }
+
+    /*********************
+       Sequence Running
+    **********************/
+
+    /* Sequence calls must use Velocity's single-object arguments syntax. */
+    Velocity.RunSequence = function (originalSequence) {
+        var sequence = $.extend(true, [], originalSequence);
+
+        if (sequence.length > 1) {
+            $.each(sequence.reverse(), function(i, currentCall) {
+                var nextCall = sequence[i + 1];
+
+                if (nextCall) {
+                    /* Parallel sequence calls (indicated via sequenceQueue:false) are triggered
+                       in the previous call's begin callback. Otherwise, chained calls are normally triggered
+                       in the previous call's complete callback. */
+                    var timing = (currentCall.options && currentCall.options.sequenceQueue === false) ? "begin" : "complete",
+                        callbackOriginal = nextCall.options && nextCall.options[timing],
+                        options = {};
+
+                    options[timing] = function() {
+                        var elements = nextCall.elements.nodeType ? [ nextCall.elements ] : nextCall.elements;
+
+                        callbackOriginal && callbackOriginal.call(elements, elements);
+                        Velocity(currentCall);
+                    }
+
+                    nextCall.options = $.extend({}, nextCall.options, options);
+                }
+            });
+
+            sequence.reverse();
+        }
+
+        Velocity(sequence[0]);
+    };
 }((window.jQuery || window.Zepto || window), window, document);
 }));
 var AppConstants = {
@@ -25351,4 +25481,22 @@ $(document).click(function(e){
 	if($profileMenuWrap.hasClass('visible') && !$(e.target).closest('#top-profile-wrap').length){
 		$profileMenuWrap.removeClass('visible');
 	}
+});
+
+$.Velocity.RegisterEffect('herro.slideUpIn', {
+	defaultDuration: 300,
+	calls: [
+		[{
+			opacity: [1, 0],
+			translateY: [0, 20],
+			translateX: [0, 0]
+		}, 1, {
+			easing: [0.23, 1, 0.32, 1]
+		}]
+	]
+});
+
+$('#settings-top>div').velocity('herro.slideUpIn', {
+	delay: 300,
+	stagger: 100
 });

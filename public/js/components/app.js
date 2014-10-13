@@ -339,22 +339,21 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,
 			complete: function(){
-				// 
-				this.setState({
-					expanded: !this.state.expanded,
-					showPicker: !this.state.expanded
-				});
 				// If e is a function, we know that it should be a callback
+				if(!this.state.expanded){
+					this.setState({
+						showPicker: false
+					});
+				}
 				if(e instanceof Function){
 					e();
 				}
 			}.bind(this)
 		});
-		if(!this.state.expanded){
-			this.setState({
-				showPicker: true
-			});
-		}
+		this.setState({
+			expanded: !this.state.expanded,
+			showPicker: true
+		});
 	},
 	render: function(){
 		var listItemStyle = {
@@ -472,7 +471,8 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			item_rating: '',
 			item_repeats: '',
 			ratingPreview: '',
-			statusMenuVisible: false
+			statusMenuVisible: false,
+			saving: false
 		}
 	},
 	componentDidUpdate: function(prevProps, prevState){
@@ -624,6 +624,10 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		});
 	},
 	onSave: function(){
+		if(this.state.saving) return false;
+		this.setState({
+			saving: true
+		});
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
 			duration: 200
 		}).velocity('reverse', {
@@ -636,7 +640,12 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			duration: 300
 		}).delay(600).hide();
 		setTimeout(function(){
-			this.props.onSave(this.state);
+			if(this.state.saving){
+				this.props.onSave(this.state);
+				this.setState({
+					saving: false
+				});
+			}
 		}.bind(this), 550);
 	},
 	render: function(){
@@ -1155,3 +1164,28 @@ if(mountNode) React.renderComponent(SearchApp(null), mountNode);
 
 
 
+
+/**
+ * @jsx React.DOM
+ */
+
+var Settings = React.createClass({displayName: 'Settings',
+	render: function() {
+		return (
+			React.DOM.div(null, 
+				React.DOM.div({className: "setting-section-hd"}
+				), 
+				React.DOM.div({className: "setting-section"}, 
+					React.DOM.div({className: "setting-left"}
+					), 
+					React.DOM.div({className: "setting-right"}
+						
+					)
+				)
+			)
+		);
+	}
+});
+
+var mountNode = document.getElementById('settings');
+if(mountNode) React.renderComponent(Settings(null), mountNode);

@@ -339,22 +339,21 @@ var ListItem = React.createClass({
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,
 			complete: function(){
-				// 
-				this.setState({
-					expanded: !this.state.expanded,
-					showPicker: !this.state.expanded
-				});
 				// If e is a function, we know that it should be a callback
+				if(!this.state.expanded){
+					this.setState({
+						showPicker: false
+					});
+				}
 				if(e instanceof Function){
 					e();
 				}
 			}.bind(this)
 		});
-		if(!this.state.expanded){
-			this.setState({
-				showPicker: true
-			});
-		}
+		this.setState({
+			expanded: !this.state.expanded,
+			showPicker: true
+		});
 	},
 	render: function(){
 		var listItemStyle = {

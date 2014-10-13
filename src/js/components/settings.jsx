@@ -5,7 +5,17 @@
 var Settings = React.createClass({
 	render: function() {
 		return (
-			
+			<div>
+				<div className="setting-section-hd">
+				</div>
+				<div className="setting-section">
+					<div className="setting-left">
+					</div>
+					<div className="setting-right">
+						
+					</div>
+				</div>
+			</div>
 		);
 	}
 });

@@ -13,7 +13,8 @@ var PickerApp = React.createClass({
 			item_rating: '',
 			item_repeats: '',
 			ratingPreview: '',
-			statusMenuVisible: false
+			statusMenuVisible: false,
+			saving: false
 		}
 	},
 	componentDidUpdate: function(prevProps, prevState){
@@ -165,6 +166,10 @@ var PickerApp = React.createClass({
 		});
 	},
 	onSave: function(){
+		if(this.state.saving) return false;
+		this.setState({
+			saving: true
+		});
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
 			duration: 200
 		}).velocity('reverse', {
@@ -177,7 +182,12 @@ var PickerApp = React.createClass({
 			duration: 300
 		}).delay(600).hide();
 		setTimeout(function(){
-			this.props.onSave(this.state);
+			if(this.state.saving){
+				this.props.onSave(this.state);
+				this.setState({
+					saving: false
+				});
+			}
 		}.bind(this), 550);
 	},
 	render: function(){

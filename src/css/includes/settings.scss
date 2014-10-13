@@ -7,6 +7,9 @@
 	padding: 40px 0;
 	width: 1000px;
 }
+#settings-top>div {
+	opacity: 0;
+}
 #settings-hd {
 	@extend .opensans;
 	font-size: 23px;
