@@ -182,12 +182,11 @@ var PickerApp = React.createClass({
 			duration: 300
 		}).delay(600).hide();
 		setTimeout(function(){
-			if(this.state.saving){
-				this.props.onSave(this.state);
-				this.setState({
-					saving: false
-				});
-			}
+			console.log('calling false');
+			this.setState({
+				saving: false
+			});
+			this.props.onSave(this.state);
 		}.bind(this), 550);
 	},
 	render: function(){
