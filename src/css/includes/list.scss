@@ -213,13 +213,26 @@
 }
 .list-item {
 	@extend .cf;
-	@extend .ns;
 	cursor: pointer;
+	position: relative;
 	border-bottom: 1px solid $gray-l-3;
 	@include box-shadow(1px 0 0 $gray-l-3);
 	&.expanded {
 		border-bottom: 1px solid transparent;
 	}
+}
+.list-item-cancel-ovl {
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	bottom: 0;
+	right: 50%;
+	margin-right: -50px;
+	width: 100px;
+	color: $gray-d-3;
+	font-weight: 700;
+	text-align: center;
+	line-height: 42px;
 }
 .list-item-image-preview {
 	float: left;

@@ -16,15 +16,10 @@ $.Velocity.RegisterEffect('herro.slideUpIn', {
 	calls: [
 		[{
 			opacity: [1, 0],
-			translateY: [0, 20],
+			translateY: [0, 30],
 			translateX: [0, 0]
 		}, 1, {
 			easing: [0.23, 1, 0.32, 1]
 		}]
 	]
-});
-
-$('#settings-top>div').velocity('herro.slideUpIn', {
-	delay: 300,
-	stagger: 100
 });

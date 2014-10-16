@@ -58,11 +58,13 @@
 						Private
 					</span>
 				</a>
-				<a class="list-nav-item">
+				{{#is profile.username user.username}}
+				<a class="list-nav-item" href="/me/settings">
 					<span class="list-nav-text">
 						Settings
 					</span>
 				</a>
+				{{/is}}
 			</div>
 		</div>
 	</div>

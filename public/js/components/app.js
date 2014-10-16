@@ -270,6 +270,7 @@ var ListNoResults = React.createClass({displayName: 'ListNoResults',
 var ListItem = React.createClass({displayName: 'ListItem',
 	getInitialState: function() {
 		return {
+			hoveringCancel: false,
 			expanded: false, // Is the list item expanded
 			showPicker: false // If the PickerApp component should mount
 		};
@@ -331,6 +332,25 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			PubSub.publishSync(ListConstants.DATA_CHANGE);
 		}
 	},
+	showCancel: function(e){
+		if(!this.state.expanded) return false;
+		console.log('asdsa');
+		this.setState({
+			hoveringCancel: true
+		});
+		$(this.refs.cancelOvl.getDOMNode()).stop(true).velocity('transition.slideUpIn', {
+			duration: 300
+		});
+	},
+	hideCancel: function(){
+		if(!this.state.expanded || !this.state.hoveringCancel) return false;
+		this.setState({
+			hoveringCancel: false
+		});
+		$(this.refs.cancelOvl.getDOMNode()).stop(true).velocity('transition.slideDownOut', {
+			duration: 300
+		});
+	},
 	toggleExpanded: function(e){
 		if(!TempListConstants.EDITABLE) return false;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
@@ -350,6 +370,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 				}
 			}.bind(this)
 		});
+		this.hideCancel();
 		this.setState({
 			expanded: !this.state.expanded,
 			showPicker: true
@@ -368,7 +389,8 @@ var ListItem = React.createClass({displayName: 'ListItem',
 				React.DOM.div({className: cx({
 					'list-item':  true,
 					'expanded': this.state.expanded
-				}), onClick: this.toggleExpanded}, 
+				}), onClick: this.toggleExpanded, onMouseEnter: this.showCancel, onMouseLeave: this.hideCancel}, 
+					React.DOM.div({ref: "cancelOvl", className: "list-item-cancel-ovl"}, "× Cancel"), 
 					React.DOM.div({className: "list-item-image-preview", style: listItemStyle}
 					), 
 					React.DOM.div({className: "list-item-title"}, 
@@ -1167,24 +1189,158 @@ if(mountNode) React.renderComponent(SearchApp(null), mountNode);
 /**
  * @jsx React.DOM
  */
-
+var cx = React.addons.classSet;
 var Settings = React.createClass({displayName: 'Settings',
-	render: function() {
+	getInitialState: function(){
+		return {
+			tab: $('#settings').data('tab') || 'basic',
+			user: {}
+		};
+	},
+	componentDidMount: function() {
+		$.ajax({
+			url: '/api/settings',
+			success: function(user){
+				this.setState({
+					user: user
+				});
+			}.bind(this)
+		});
+	},
+	setTab: function(tabVal){
+		this.setState({
+			tab: tabVal
+		});
+	},
+	render: function(){
 		return (
 			React.DOM.div(null, 
-				React.DOM.div({className: "setting-section-hd"}
-				), 
-				React.DOM.div({className: "setting-section"}, 
-					React.DOM.div({className: "setting-left"}
+				React.DOM.div({id: "settings-left"}, 
+					React.DOM.div({id: "settings-hd"}, 
+						"Settings"
 					), 
-					React.DOM.div({className: "setting-right"}
+					React.DOM.div({id: "settings-tagline"}, 
+						"Do not forget to save"
+					), 
+					React.DOM.div({id: "settings-tabs"}, 
 						
+							['Basic', 'Password', 'Privacy'].map(function(tabName){
+								return (
+								React.DOM.div({className: cx({
+									'setting-tab': true,
+									'current': this.state.tab === tabName.toLowerCase()
+								}), onClick: this.setTab.bind(null, tabName.toLowerCase())}, 
+									tabName
+								));
+							}.bind(this))
+						
+					)
+				), 
+				React.DOM.div({id: "settings-right"}, 
+					this.state.tab === 'basic' ? BasicSettings({user: this.state.user}) : null, 
+					this.state.tab === 'password' ? PasswordSettings({user: this.state.user}) : null, 
+					this.state.tab === 'privacy' ? PrivacySettings({user: this.state.user}) : null
+				)
+			)
+		);
+	}
+});
+
+var BasicSettings = React.createClass({displayName: 'BasicSettings',
+	componentDidMount: function() {
+		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 150
+		});
+	},
+	render: function(){
+		return (
+			React.DOM.div(null, 
+				React.DOM.form({className: "set-form", ref: "setForm"}, 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-left"}, 
+							React.DOM.div({className: "set-title"}, "Email address"), 
+							React.DOM.div({className: "set-desc"}, "Used for account recovery and anime/manga notifications.")
+						), 
+						React.DOM.div({className: "set-right"}, 
+							React.DOM.input({className: "set-input", name: "email", type: "text", defaultValue: this.props.user.email})
+						)
+					), 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-left"}, 
+							React.DOM.div({className: "set-title"}, "Avatar"), 
+							React.DOM.div({className: "set-desc"}, 
+								"Simply give us an ", React.DOM.a({href: "http://imgur.com", rel: "nofollow", target: "_blank"}, "Imgur"), " link to" + ' ' +
+								"your avatar and let us handle the rest.", 
+								React.DOM.br(null), React.DOM.br(null), 
+								"(Suggested: 250 × 250 pixels)"
+							)
+						), 
+						React.DOM.div({className: "set-right"}, 
+							React.DOM.input({
+								className: "set-input", 
+								name: "avatar", 
+								type: "text", 
+								placeholder: "Imgur link to new avatar..."}
+							), 
+							React.DOM.div({className: "set-avatar-preview-wrap"}, 
+								React.DOM.img({
+									src: this.props.user.avatar ? this.props.user.avatar.processed : 'http://i.imgur.com/siaPoHT.png', 
+									className: "set-avatar"}
+								)
+							)
+						)
+					), 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-left"}, 
+							React.DOM.div({className: "set-title"}, "Biography"), 
+							React.DOM.div({className: "set-desc"}, "Short text about yourself and what you do.")
+						), 
+						React.DOM.div({className: "set-right"}, 
+							React.DOM.textarea({className: "set-textarea", rows: "5", name: "biography", type: "text"}, this.props.user.biography)
+						)
 					)
 				)
 			)
 		);
 	}
 });
+
+var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
+	componentDidMount: function() {
+		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 150
+		});
+	},
+	render: function(){
+		return (
+			React.DOM.div(null, 
+				React.DOM.form({className: "set-form", ref: "setForm"}, 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-left"}, 
+							React.DOM.div({className: "set-title"}, "Old Password"), 
+							React.DOM.div({className: "set-desc"}, "Just to know that it is you.")
+						), 
+						React.DOM.div({className: "set-right"}, 
+							React.DOM.input({className: "set-input", name: "old_password", type: "password"})
+						)
+					), 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-left"}, 
+							React.DOM.div({className: "set-title"}, "New Password"), 
+							React.DOM.div({className: "set-desc"}, "Make sure you remember this.")
+						), 
+						React.DOM.div({className: "set-right"}, 
+							React.DOM.input({className: "set-input", name: "new_password", type: "password"})
+						)
+					)
+				)
+			)
+		)
+	}
+});
+
 
 var mountNode = document.getElementById('settings');
 if(mountNode) React.renderComponent(Settings(null), mountNode);

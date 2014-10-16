@@ -472,6 +472,23 @@ var UserSchema = new Schema({
 		type: String,
 		required: true
 	},
+	biography: {
+		type: String
+	},
+	settings: {
+		stats_private: {
+			type: Boolean,
+			default: false
+		},
+		lists_private: {
+			type: Boolean,
+			default: false
+		},
+		collections_private: {
+			type: Boolean,
+			default: false
+		}
+	},
 	anime_list: [ AnimeListItemSchema ],
 	manga_list: [ MangaListItemSchema ],
 	activity_feed: [ ActivityItemSchema ],
