@@ -1341,6 +1341,38 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 	}
 });
 
+var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
+	componentDidMount: function() {
+		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 150
+		});
+	},
+	render: function(){
+		return (
+			React.DOM.form({className: "set-form", ref: "setForm"}, 
+				React.DOM.div({className: "set-section"}, 
+					React.DOM.div({className: "set-left"}, 
+						React.DOM.div({className: "set-title"}, "Protect List"), 
+						React.DOM.div({className: "set-desc"}, "Make your list private.")
+					)
+				), 
+				React.DOM.div({className: "set-section"}, 
+					React.DOM.div({className: "set-left"}, 
+						React.DOM.div({className: "set-title"}, "Protect Stats"), 
+						React.DOM.div({className: "set-desc"}, "Make your list private.")
+					)
+				), 
+				React.DOM.div({className: "set-section"}, 
+					React.DOM.div({className: "set-left"}, 
+						React.DOM.div({className: "set-title"}, "Protect Collections"), 
+						React.DOM.div({className: "set-desc"}, "Make your collections private.")
+					)
+				)
+			)
+		)
+	}
+});
 
 var mountNode = document.getElementById('settings');
 if(mountNode) React.renderComponent(Settings(null), mountNode);

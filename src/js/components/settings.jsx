@@ -153,6 +153,38 @@ var PasswordSettings = React.createClass({
 	}
 });
 
+var PrivacySettings = React.createClass({
+	componentDidMount: function() {
+		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 150
+		});
+	},
+	render: function(){
+		return (
+			<form className="set-form" ref="setForm">
+				<div className="set-section">
+					<div className="set-left">
+						<div className="set-title">Protect List</div>
+						<div className="set-desc">Make your list private.</div>
+					</div>
+				</div>
+				<div className="set-section">
+					<div className="set-left">
+						<div className="set-title">Protect Stats</div>
+						<div className="set-desc">Make your list private.</div>
+					</div>
+				</div>
+				<div className="set-section">
+					<div className="set-left">
+						<div className="set-title">Protect Collections</div>
+						<div className="set-desc">Make your collections private.</div>
+					</div>
+				</div>
+			</form>
+		)
+	}
+});
 
 var mountNode = document.getElementById('settings');
 if(mountNode) React.renderComponent(<Settings />, mountNode);
