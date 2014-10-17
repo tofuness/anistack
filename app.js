@@ -1,3 +1,13 @@
+var cluster = require('cluster');
+
+if(cluster.isMaster){
+	var cpuCores = require('os').cpus().length;
+	for(var i = 0; i < cpuCores; i++){
+		cluster.fork();
+	}
+	return false;
+}
+
 // Load process variables
 
 var dotenv = require('dotenv');
@@ -116,6 +126,10 @@ if(process.env.NODE_ENV === 'development'){
 if(process.env.NODE_ENV === 'production'){
 	console.log('✓ Enabled trust proxy. Now accepting X-Forwarded-* headers.');
 	app.enable('trust proxy');
+	cluster.on('exit', function(worker){
+		console.log('Worker ' + worker.id + ' died');
+    	cluster.fork();
+	});
 }
 
 // Populate res.locals.user with user information if logged in

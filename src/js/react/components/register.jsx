@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var registerForm = React.createClass({
+var RegisterForm = React.createClass({
 	getInitialState: function(){
 		return {
 			usernameVal: '',
@@ -154,5 +152,4 @@ var registerForm = React.createClass({
 	}
 });
 
-var mountNode = document.getElementById('register-form-wrap');
-if(mountNode) React.renderComponent(<registerForm />, mountNode);
+module.exports = RegisterForm;

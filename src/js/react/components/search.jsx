@@ -1,10 +1,9 @@
-/** @jsx React.DOM */
-
 var TempSearchConstants = {
 	QUERY: $('#search-page-wrap').data('query'),
 	COLLECTION: $('#search-page-wrap').data('collection')
 }
-
+var cx = React.addons.classSet;
+var PickerApp = require('./picker.jsx');
 var SearchApp = React.createClass({
 	getInitialState: function(){
 		var initState = {
@@ -217,8 +216,7 @@ var SearchItem = React.createClass({
 		)
 	}
 });
-var mountNode = document.getElementById('search-page-wrap');
-if(mountNode) React.renderComponent(<SearchApp />, mountNode);
 
+module.exports = SearchApp;
 
 

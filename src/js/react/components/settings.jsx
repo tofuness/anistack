@@ -1,12 +1,10 @@
-/**
- * @jsx React.DOM
- */
 var cx = React.addons.classSet;
 var Settings = React.createClass({
 	getInitialState: function(){
 		return {
 			tab: $('#settings').data('tab') || 'basic',
-			user: {}
+			user: {},
+			loaded: false
 		};
 	},
 	componentDidMount: function() {
@@ -14,7 +12,8 @@ var Settings = React.createClass({
 			url: '/api/settings',
 			success: function(user){
 				this.setState({
-					user: user
+					user: user,
+					loaded: true
 				});
 			}.bind(this)
 		});
@@ -25,6 +24,7 @@ var Settings = React.createClass({
 		});
 	},
 	render: function(){
+		if(!this.state.loaded) return false;
 		return (
 			<div>
 				<div id="settings-left">
@@ -64,6 +64,9 @@ var BasicSettings = React.createClass({
 			duration: 500,
 			stagger: 150
 		});
+	},
+	changeEmail: function(){
+		return false;
 	},
 	render: function(){
 		return (
@@ -186,5 +189,4 @@ var PrivacySettings = React.createClass({
 	}
 });
 
-var mountNode = document.getElementById('settings');
-if(mountNode) React.renderComponent(<Settings />, mountNode);
+module.exports = Settings;

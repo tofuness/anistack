@@ -1,5 +1,4 @@
-/** @jsx React.DOM */
-
+var PickerApp = require('./picker.jsx')
 var listStore = [];
 var cx = React.addons.classSet;
 var TempListConstants = {
@@ -332,25 +331,6 @@ var ListItem = React.createClass({
 			PubSub.publishSync(ListConstants.DATA_CHANGE);
 		}
 	},
-	showCancel: function(e){
-		if(!this.state.expanded) return false;
-		console.log('asdsa');
-		this.setState({
-			hoveringCancel: true
-		});
-		$(this.refs.cancelOvl.getDOMNode()).stop(true).velocity('transition.slideUpIn', {
-			duration: 300
-		});
-	},
-	hideCancel: function(){
-		if(!this.state.expanded || !this.state.hoveringCancel) return false;
-		this.setState({
-			hoveringCancel: false
-		});
-		$(this.refs.cancelOvl.getDOMNode()).stop(true).velocity('transition.slideDownOut', {
-			duration: 300
-		});
-	},
 	toggleExpanded: function(e){
 		if(!TempListConstants.EDITABLE) return false;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
@@ -370,7 +350,6 @@ var ListItem = React.createClass({
 				}
 			}.bind(this)
 		});
-		this.hideCancel();
 		this.setState({
 			expanded: !this.state.expanded,
 			showPicker: true
@@ -382,15 +361,14 @@ var ListItem = React.createClass({
 		}
 		var listExpPicker = null;
 		if(this.state.showPicker){
-			listExpPicker = (<PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onCancel={this.cancel} onSave={this.saveData} />);
+			listExpPicker = <PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onCancel={this.cancel} onSave={this.saveData} />;
 		}
 		return (
 			<div ref="listItem" className="list-item-wrap">
 				<div className={cx({
 					'list-item':  true,
 					'expanded': this.state.expanded
-				})} onClick={this.toggleExpanded} onMouseEnter={this.showCancel} onMouseLeave={this.hideCancel}>
-					<div ref="cancelOvl" className="list-item-cancel-ovl">&times; Cancel</div>
+				})} onClick={this.toggleExpanded}>
 					<div className="list-item-image-preview" style={listItemStyle}>
 					</div>
 					<div className="list-item-title">
@@ -444,5 +422,8 @@ var ListItem = React.createClass({
 	}
 });
 
+module.exports = ListApp;
+/*
+
 var mountNode = document.getElementById('list-left');
-if(mountNode) React.renderComponent(<ListApp />, mountNode);
+if(mountNode) React.renderComponent(<ListApp />, mountNode); */

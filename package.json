@@ -42,7 +42,14 @@
     "progress-bar": "^0.1.1",
     "mocha": "~1.21.4",
     "supertest": "~0.14.0",
-    "should": "~4.0.4"
+    "should": "~4.0.4",
+    "browserify": "*",
+    "watichify": "*",
+    "vinyl-source-stream": "*",
+    "vinyl-buffer": "*",
+    "reactify": "*",
+    "gulp-notify": "*",
+    "react": "~0.11.2"
   },
   "scripts": {
     "test": "mocha --require test/support/env --reporter spec --bail --check-leaks test/"

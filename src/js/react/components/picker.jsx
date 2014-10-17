@@ -323,3 +323,5 @@ var PickerApp = React.createClass({
 		);
 	}
 });
+
+module.exports = PickerApp;

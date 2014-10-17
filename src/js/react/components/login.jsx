@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var loginForm = React.createClass({
+var LoginForm = React.createClass({
 	logIn: function(){
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},
@@ -27,5 +25,5 @@ var loginForm = React.createClass({
 		)
 	}
 });
-var mountNode = document.getElementById('login-form-wrap');
-if(mountNode) React.renderComponent(<loginForm />, mountNode);
+
+module.exports = LoginForm;
