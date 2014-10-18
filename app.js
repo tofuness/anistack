@@ -1,11 +1,14 @@
-var cluster = require('cluster');
 
-if(cluster.isMaster){
-	var cpuCores = require('os').cpus().length;
-	for(var i = 0; i < cpuCores; i++){
-		cluster.fork();
+if(process.env.NODE_ENV !== 'test'){
+	var cluster = require('cluster');
+
+	if(cluster.isMaster){
+		var cpuCores = require('os').cpus().length;
+		for(var i = 0; i < cpuCores; i++){
+			cluster.fork();
+		}
+		return false;
 	}
-	return false;
 }
 
 // Load process variables
@@ -92,7 +95,7 @@ app.use(session({
 // Enable CSRF protection. Has to come after cookies/session
 
 app.use(lusca({
-    csrf: true,
+    csrf: (process.env.NODE_ENV !== 'test'),
 	csp: false,
 	xframe: 'DENY', // or SAMEORIGIN
 	p3p: false,
@@ -128,7 +131,7 @@ if(process.env.NODE_ENV === 'production'){
 	app.enable('trust proxy');
 	cluster.on('exit', function(worker){
 		console.log('Worker ' + worker.id + ' died');
-    	cluster.fork();
+		cluster.fork();
 	});
 }
 
@@ -168,8 +171,8 @@ require('./routes/api/user.js')(apiRouter);
 
 app.use(function(err, req, res, next){
 	if(err){
-		//console.log(req.url);
-		//console.log(err.stack);
+		console.log(req.url);
+		console.log(err.stack);
 		res.status(500).json({ status: 'error', message: err.message });
 	} else {
 		next();

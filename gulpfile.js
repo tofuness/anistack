@@ -34,11 +34,6 @@ var path = {
 		dest: 'public/js'
 	},
 	jsx: {
-		src: ['src/js/components/*.jsx'],
-		files: 'src/js/components/*.jsx',
-		dest: 'public/js/components'
-	},
-	devJsx: {
 		src: './src/js/react/app.jsx',
 		files: 'src/js/react/**/*.jsx',
 		bundle: 'app.js',
@@ -78,19 +73,19 @@ gulp.task('uglify', function(){
 		this.emit('end');
 	}))
 	.pipe(concat('app.js'))
-	//.pipe(uglify())
+	.pipe(uglify())
 	.pipe(gulp.dest(path.js.dest));
 });
 
 gulp.task('watchify', function() {
-	var bundler = watchify(browserify(path.devJsx.src, watchify.args));
+	var bundler = watchify(browserify(path.jsx.src, watchify.args));
 
 	function rebundle() {
 		return bundler
 			.bundle()
 			.on('error', notify.onError())
-			.pipe(source(path.devJsx.bundle))
-			.pipe(gulp.dest(path.devJsx.dest));
+			.pipe(source(path.jsx.bundle))
+			.pipe(gulp.dest(path.jsx.dest));
 	}
 
 	bundler.transform(reactify)
@@ -99,39 +94,26 @@ gulp.task('watchify', function() {
 });
 
 gulp.task('browserify', function() {
-	browserify(path.devJsx.src)
+	browserify(path.jsx.src)
 	.transform(reactify)
 	.bundle()
-	.pipe(source(path.devJsx.bundle))
+	.pipe(source(path.jsx.bundle))
 	.pipe(buffer())
 	.pipe(uglify())
-	.pipe(gulp.dest(path.devJsx.dest));
+	.pipe(gulp.dest(path.jsx.dest));
 });
-
-/*
-gulp.task('react', function(){
-	return gulp.src(path.react.src)
-	.pipe(plumber(function(err){
-		console.log(err.message);
-		this.emit('end');
-	}))
-	.pipe(react())
-	.pipe(concat('app.js'))
-	//.pipe(uglify())
-	.pipe(gulp.dest(path.react.dest));
-}); */
 
 gulp.task('watch', function(){
 	gulp.watch(path.scss.files, ['sass']);
 	gulp.watch(path.scss.files, ['css']);
 	gulp.watch(path.js.files, ['uglify']);
-	gulp.watch(path.devJsx.files, ['watchify']);
+	gulp.watch(path.jsx.files, ['watchify']);
 	gulp.start(['watchify']);
 });
 
 gulp.task('build', function() {
 	process.env.NODE_ENV = 'production';
-	gulp.start(['browserify']);
+	gulp.start(['sass', 'css', 'uglify', 'browserify']);
 });
 
 

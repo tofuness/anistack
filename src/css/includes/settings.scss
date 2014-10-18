@@ -94,3 +94,31 @@
 	height: 250px;
 	@include border-radius(4px);
 }
+.set-check {
+	@extend .cf;
+	@extend .ts15;
+	padding: 0 10px;
+	color: $gray-d-6;
+	background: $gray-l-3;
+	@include border-radius(4px);
+	&.private {
+		color: $yellow-d-6;
+		background: $yellow-l-6;
+	}
+}
+.set-checkbox {
+	margin-top: 11px;
+	float: left;
+}
+.set-check-label {
+	@extend .ns;
+	@extend .opensans;
+	float: left;
+	padding-left: 10px;
+	width: 45px;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 35px;
+	text-align: center;
+	text-transform: uppercase;
+}

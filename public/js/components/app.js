@@ -21841,11 +21841,25 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 });
 
 var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
-	componentDidMount: function() {
+	getInitialState: function(){
+		return {
+			lists_private: false,
+			collections_private: false,
+			stats_private: false
+		}
+	},
+	componentDidMount: function(){
+		this.setState(this.props.settings);
 		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
 			duration: 500,
 			stagger: 150
 		});
+	},
+	toggleCheckbox: function(checkboxVal){
+		var checkObj = {};
+		console.log(checkboxVal);
+		checkObj[checkboxVal] = !this.state[checkboxVal];
+		this.setState(checkObj);
 	},
 	render: function(){
 		return (
@@ -21853,19 +21867,58 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
 						React.DOM.div({className: "set-title"}, "Protect List"), 
-						React.DOM.div({className: "set-desc"}, "Make your list private.")
+						React.DOM.div({className: "set-desc"}, "Make your lists private.")
+					), 
+					React.DOM.div({className: "set-right"}, 
+						React.DOM.div({className: 
+							cx({
+								'set-check': true,
+								'private': this.state.lists_private
+							})
+						}, 
+							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "lists_private", name: "lists_private", checked: this.state.lists_private, onChange: this.toggleCheckbox.bind(null, 'lists_private')}), 
+							React.DOM.label({className: "set-check-label", htmlFor: "lists_private"}, 
+								this.state.lists_private ? 'Private' : 'Public'
+							)
+						)
 					)
 				), 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
 						React.DOM.div({className: "set-title"}, "Protect Stats"), 
-						React.DOM.div({className: "set-desc"}, "Make your list private.")
+						React.DOM.div({className: "set-desc"}, "Make your stats private.")
+					), 
+					React.DOM.div({className: "set-right"}, 
+						React.DOM.div({className: 
+							cx({
+								'set-check': true,
+								'private': this.state.stats_private
+							})
+						}, 
+							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "stats_private", name: "stats_private", checked: this.state.stats_private, onChange: this.toggleCheckbox.bind(null, 'stats_private')}), 
+							React.DOM.label({className: "set-check-label", htmlFor: "stats_private"}, 
+								this.state.stats_private ? 'Private' : 'Public'
+							)
+						)
 					)
 				), 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
 						React.DOM.div({className: "set-title"}, "Protect Collections"), 
 						React.DOM.div({className: "set-desc"}, "Make your collections private.")
+					), 
+					React.DOM.div({className: "set-right"}, 
+						React.DOM.div({className: 
+							cx({
+								'set-check': true,
+								'private': this.state.collections_private
+							})
+						}, 
+							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "collections_private", name: "collections_private", checked: this.state.collections_private, onChange: this.toggleCheckbox.bind(null, 'collections_private')}), 
+							React.DOM.label({className: "set-check-label", htmlFor: "collections_private"}, 
+								this.state.collections_private ? 'Private' : 'Public'
+							)
+						)
 					)
 				)
 			)

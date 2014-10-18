@@ -157,11 +157,25 @@ var PasswordSettings = React.createClass({
 });
 
 var PrivacySettings = React.createClass({
-	componentDidMount: function() {
+	getInitialState: function(){
+		return {
+			lists_private: false,
+			collections_private: false,
+			stats_private: false
+		}
+	},
+	componentDidMount: function(){
+		this.setState(this.props.settings);
 		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
 			duration: 500,
 			stagger: 150
 		});
+	},
+	toggleCheckbox: function(checkboxVal){
+		var checkObj = {};
+		console.log(checkboxVal);
+		checkObj[checkboxVal] = !this.state[checkboxVal];
+		this.setState(checkObj);
 	},
 	render: function(){
 		return (
@@ -169,19 +183,58 @@ var PrivacySettings = React.createClass({
 				<div className="set-section">
 					<div className="set-left">
 						<div className="set-title">Protect List</div>
-						<div className="set-desc">Make your list private.</div>
+						<div className="set-desc">Make your lists private.</div>
+					</div>
+					<div className="set-right">
+						<div className={
+							cx({
+								'set-check': true,
+								'private': this.state.lists_private
+							})
+						}>
+							<input type="checkbox" className="set-checkbox" id="lists_private" name="lists_private" checked={this.state.lists_private} onChange={this.toggleCheckbox.bind(null, 'lists_private')} />
+							<label className="set-check-label" htmlFor="lists_private">
+								{this.state.lists_private ? 'Private' : 'Public'}
+							</label>
+						</div>
 					</div>
 				</div>
 				<div className="set-section">
 					<div className="set-left">
 						<div className="set-title">Protect Stats</div>
-						<div className="set-desc">Make your list private.</div>
+						<div className="set-desc">Make your stats private.</div>
+					</div>
+					<div className="set-right">
+						<div className={
+							cx({
+								'set-check': true,
+								'private': this.state.stats_private
+							})
+						}>
+							<input type="checkbox" className="set-checkbox" id="stats_private" name="stats_private" checked={this.state.stats_private} onChange={this.toggleCheckbox.bind(null, 'stats_private')} />
+							<label className="set-check-label" htmlFor="stats_private">
+								{this.state.stats_private ? 'Private' : 'Public'}
+							</label>
+						</div>
 					</div>
 				</div>
 				<div className="set-section">
 					<div className="set-left">
 						<div className="set-title">Protect Collections</div>
 						<div className="set-desc">Make your collections private.</div>
+					</div>
+					<div className="set-right">
+						<div className={
+							cx({
+								'set-check': true,
+								'private': this.state.collections_private
+							})
+						}>
+							<input type="checkbox" className="set-checkbox" id="collections_private" name="collections_private" checked={this.state.collections_private} onChange={this.toggleCheckbox.bind(null, 'collections_private')} />
+							<label className="set-check-label" htmlFor="collections_private">
+								{this.state.collections_private ? 'Private' : 'Public'}
+							</label>
+						</div>
 					</div>
 				</div>
 			</form>
