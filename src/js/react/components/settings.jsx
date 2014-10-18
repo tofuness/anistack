@@ -7,7 +7,7 @@ var Settings = React.createClass({
 			loaded: false
 		};
 	},
-	componentDidMount: function() {
+	componentDidMount: function(){
 		$.ajax({
 			url: '/api/settings',
 			success: function(user){
@@ -15,13 +15,25 @@ var Settings = React.createClass({
 					user: user,
 					loaded: true
 				});
+				this.animateInForm();
 			}.bind(this)
+		});
+	},
+	animateInForm: function(){
+		$(this.refs.settingsRight.getDOMNode()).find('.visible .set-section').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 100
 		});
 	},
 	setTab: function(tabVal){
 		this.setState({
 			tab: tabVal
 		});
+	},
+	componentDidUpdate: function(prevProps, prevState){
+		if(this.state.tab !== prevState.tab){
+			this.animateInForm();
+		}
 	},
 	render: function(){
 		if(!this.state.loaded) return false;
@@ -48,10 +60,31 @@ var Settings = React.createClass({
 						}
 					</div>
 				</div>
-				<div id="settings-right">
-					{this.state.tab === 'basic' ? <BasicSettings user={this.state.user} /> : null}
-					{this.state.tab === 'password' ? <PasswordSettings user={this.state.user} /> : null}
-					{this.state.tab === 'privacy' ? <PrivacySettings user={this.state.user} /> : null}
+				<div id="settings-right" ref="settingsRight">
+					<div className={
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'basic'
+						})
+					}>
+						<BasicSettings user={this.state.user} />
+					</div>
+					<div className={
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'password'
+						})
+					}>
+						<PasswordSettings user={this.state.user} />
+					</div>
+					<div className={
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'privacy'
+						})
+					}>
+						<PrivacySettings user={this.state.user} />
+					</div>
 				</div>
 			</div>
 		);
@@ -59,14 +92,18 @@ var Settings = React.createClass({
 });
 
 var BasicSettings = React.createClass({
-	componentDidMount: function() {
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 150
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/basic',
+			type: 'POST',
+			data: $(this.refs.setForm.getDOMNode()).serialize(),
+			success: function(){
+				window.location = '/me/settings/basic';
+			},
+			error: function(){
+				alert('Make sure you email is correct (and not already in use)!');
+			}
 		});
-	},
-	changeEmail: function(){
-		return false;
 	},
 	render: function(){
 		return (
@@ -100,7 +137,7 @@ var BasicSettings = React.createClass({
 							/>
 							<div className="set-avatar-preview-wrap">
 								<img
-									src={this.props.user.avatar ? this.props.user.avatar.processed : 'http://i.imgur.com/siaPoHT.png'}
+									src={this.props.user.avatar ? 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + this.props.user.avatar.original : 'http://i.imgur.com/siaPoHT.png'}
 									className="set-avatar" 
 								/>
 							</div>
@@ -112,12 +149,12 @@ var BasicSettings = React.createClass({
 							<div className="set-desc">Short text about yourself.</div>
 						</div>
 						<div className="set-right">
-							<textarea className="set-textarea" rows="5" name="biography" type="text">{this.props.user.biography}</textarea>
+							<textarea className="set-textarea" rows="5" name="biography" type="text" defaultValue={this.props.user.biography}></textarea>
 						</div>
 					</div>
 					<div className="set-section">
 						<div className="set-save-wrap">
-							<div className="set-save">
+							<div className="set-save" onClick={this.saveChanges}>
 								Save changes
 							</div>
 						</div>
@@ -129,10 +166,17 @@ var BasicSettings = React.createClass({
 });
 
 var PasswordSettings = React.createClass({
-	componentDidMount: function() {
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 100
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/password',
+			type: 'POST',
+			data: $(this.refs.setForm.getDOMNode()).serialize(),
+			success: function(){
+				window.location = '/me/settings/password';
+			},
+			error: function(){
+				alert('Make sure the inputs are correct!');
+			}
 		});
 	},
 	render: function(){
@@ -151,7 +195,11 @@ var PasswordSettings = React.createClass({
 					<div className="set-section">
 						<div className="set-left">
 							<div className="set-title">New Password</div>
-							<div className="set-desc">Make sure you remember this.</div>
+							<div className="set-desc">
+								Has to be <em>at least</em> 6 characters long.
+								<br /><br />
+								PROTIP: Do <em>NOT</em> use the same password on other services.
+							</div>
 						</div>
 						<div className="set-right">
 							<input className="set-input" name="new_password" type="password" />
@@ -159,7 +207,7 @@ var PasswordSettings = React.createClass({
 					</div>
 					<div className="set-section">
 						<div className="set-save-wrap">
-							<div className="set-save">
+							<div className="set-save" onClick={this.saveChanges}>
 								Save changes
 							</div>
 						</div>
@@ -179,18 +227,34 @@ var PrivacySettings = React.createClass({
 			stats_private: false
 		}
 	},
-	componentDidMount: function(){
-		this.setState(this.props.settings);
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 100
-		});
+	componentDidMount: function() {
+		if(this.props.user && this.props.user.settings){
+			console.log(this.props.user.settings);
+			this.setState({
+				anime_list_private: this.props.user.settings.anime_list_private,
+				manga_list_private: this.props.user.settings.manga_list_private,
+				collections_private: this.props.user.settings.collections_private,
+				stats_private: this.props.user.settings.stats_private
+			});
+		}
 	},
 	toggleCheckbox: function(checkboxVal){
 		var checkObj = {};
-		console.log(checkboxVal);
 		checkObj[checkboxVal] = !this.state[checkboxVal];
 		this.setState(checkObj);
+	},
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/privacy',
+			type: 'POST',
+			data: this.state,
+			success: function(){
+				window.location = '/me/settings/privacy';
+			},
+			error: function(){
+				alert('Something seems to be wrong on our end');
+			}
+		});
 	},
 	render: function(){
 		return (
@@ -273,7 +337,7 @@ var PrivacySettings = React.createClass({
 				</div>
 				<div className="set-section">
 					<div className="set-save-wrap">
-						<div className="set-save">
+						<div className="set-save" onClick={this.saveChanges}>
 							Save changes
 						</div>
 					</div>

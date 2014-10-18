@@ -16,7 +16,10 @@ var getQ = async.queue(function(task, callback){
 			console.log('\n');
 			bar.update(task.index / 26200);
 			console.log('\n');
-			return callback();
+			setTimeout(function(){
+				callback();
+			}, 200);
+			return false;
 		}
 
 		animeJSON = JSON.parse(body);
@@ -50,15 +53,17 @@ var getQ = async.queue(function(task, callback){
 			console.log('\n');
 			bar.update(task.index / 26200);
 			console.log('\n');
-			return callback();
+			setTimeout(function(){
+				callback();
+			}, 200);
+			return false;
 		});
 	});
 }, 1);
 
-/*
-for (var i = 1, len = 26200; i < len; i++) {
+for(var i = 5615, len = 26200; i < len; i++){
 	getQ.push({
 		url: 'http://shikimori.org/api/animes/' + i,
 		index: i
 	});
-} */
+}

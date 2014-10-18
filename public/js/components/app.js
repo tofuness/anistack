@@ -20620,7 +20620,7 @@ var ListApp = React.createClass({displayName: 'ListApp',
 							type: "text", 
 							maxLength: "50", 
 							id: "list-filter-input", 
-							placeholder: "Filter your list...", 
+							placeholder: "Type to filter list...", 
 							onChange: this.setTextFilter, 
 							onKeyUp: this.clearTextFilter, 
 							value: this.state.listFilterText}
@@ -21691,7 +21691,7 @@ var Settings = React.createClass({displayName: 'Settings',
 			loaded: false
 		};
 	},
-	componentDidMount: function() {
+	componentDidMount: function(){
 		$.ajax({
 			url: '/api/settings',
 			success: function(user){
@@ -21699,13 +21699,25 @@ var Settings = React.createClass({displayName: 'Settings',
 					user: user,
 					loaded: true
 				});
+				this.animateInForm();
 			}.bind(this)
+		});
+	},
+	animateInForm: function(){
+		$(this.refs.settingsRight.getDOMNode()).find('.visible .set-section').stop(true).velocity('herro.slideUpIn', {
+			duration: 500,
+			stagger: 100
 		});
 	},
 	setTab: function(tabVal){
 		this.setState({
 			tab: tabVal
 		});
+	},
+	componentDidUpdate: function(prevProps, prevState){
+		if(this.state.tab !== prevState.tab){
+			this.animateInForm();
+		}
 	},
 	render: function(){
 		if(!this.state.loaded) return false;
@@ -21732,10 +21744,31 @@ var Settings = React.createClass({displayName: 'Settings',
 						
 					)
 				), 
-				React.DOM.div({id: "settings-right"}, 
-					this.state.tab === 'basic' ? BasicSettings({user: this.state.user}) : null, 
-					this.state.tab === 'password' ? PasswordSettings({user: this.state.user}) : null, 
-					this.state.tab === 'privacy' ? PrivacySettings({user: this.state.user}) : null
+				React.DOM.div({id: "settings-right", ref: "settingsRight"}, 
+					React.DOM.div({className: 
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'basic'
+						})
+					}, 
+						BasicSettings({user: this.state.user})
+					), 
+					React.DOM.div({className: 
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'password'
+						})
+					}, 
+						PasswordSettings({user: this.state.user})
+					), 
+					React.DOM.div({className: 
+						cx({
+							'setting-tab-content': true,
+							'visible': this.state.tab === 'privacy'
+						})
+					}, 
+						PrivacySettings({user: this.state.user})
+					)
 				)
 			)
 		);
@@ -21743,14 +21776,18 @@ var Settings = React.createClass({displayName: 'Settings',
 });
 
 var BasicSettings = React.createClass({displayName: 'BasicSettings',
-	componentDidMount: function() {
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 150
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/basic',
+			type: 'POST',
+			data: $(this.refs.setForm.getDOMNode()).serialize(),
+			success: function(){
+				window.location = '/me/settings/basic';
+			},
+			error: function(){
+				alert('Make sure you email is correct (and not already in use)!');
+			}
 		});
-	},
-	changeEmail: function(){
-		return false;
 	},
 	render: function(){
 		return (
@@ -21784,7 +21821,7 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 							), 
 							React.DOM.div({className: "set-avatar-preview-wrap"}, 
 								React.DOM.img({
-									src: this.props.user.avatar ? this.props.user.avatar.processed : 'http://i.imgur.com/siaPoHT.png', 
+									src: this.props.user.avatar ? 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + this.props.user.avatar.original : 'http://i.imgur.com/siaPoHT.png', 
 									className: "set-avatar"}
 								)
 							)
@@ -21796,12 +21833,12 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 							React.DOM.div({className: "set-desc"}, "Short text about yourself.")
 						), 
 						React.DOM.div({className: "set-right"}, 
-							React.DOM.textarea({className: "set-textarea", rows: "5", name: "biography", type: "text"}, this.props.user.biography)
+							React.DOM.textarea({className: "set-textarea", rows: "5", name: "biography", type: "text", defaultValue: this.props.user.biography})
 						)
 					), 
 					React.DOM.div({className: "set-section"}, 
 						React.DOM.div({className: "set-save-wrap"}, 
-							React.DOM.div({className: "set-save"}, 
+							React.DOM.div({className: "set-save", onClick: this.saveChanges}, 
 								"Save changes"
 							)
 						)
@@ -21813,10 +21850,17 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 });
 
 var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
-	componentDidMount: function() {
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 100
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/password',
+			type: 'POST',
+			data: $(this.refs.setForm.getDOMNode()).serialize(),
+			success: function(){
+				window.location = '/me/settings/password';
+			},
+			error: function(){
+				alert('Make sure the inputs are correct!');
+			}
 		});
 	},
 	render: function(){
@@ -21835,7 +21879,11 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 					React.DOM.div({className: "set-section"}, 
 						React.DOM.div({className: "set-left"}, 
 							React.DOM.div({className: "set-title"}, "New Password"), 
-							React.DOM.div({className: "set-desc"}, "Make sure you remember this.")
+							React.DOM.div({className: "set-desc"}, 
+								"Has to be ", React.DOM.em(null, "at least"), " 6 characters long.", 
+								React.DOM.br(null), React.DOM.br(null), 
+								"PROTIP: Do ", React.DOM.em(null, "NOT"), " use the same password on other services."
+							)
 						), 
 						React.DOM.div({className: "set-right"}, 
 							React.DOM.input({className: "set-input", name: "new_password", type: "password"})
@@ -21843,7 +21891,7 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 					), 
 					React.DOM.div({className: "set-section"}, 
 						React.DOM.div({className: "set-save-wrap"}, 
-							React.DOM.div({className: "set-save"}, 
+							React.DOM.div({className: "set-save", onClick: this.saveChanges}, 
 								"Save changes"
 							)
 						)
@@ -21863,18 +21911,34 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 			stats_private: false
 		}
 	},
-	componentDidMount: function(){
-		this.setState(this.props.settings);
-		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 100
-		});
+	componentDidMount: function() {
+		if(this.props.user && this.props.user.settings){
+			console.log(this.props.user.settings);
+			this.setState({
+				anime_list_private: this.props.user.settings.anime_list_private,
+				manga_list_private: this.props.user.settings.manga_list_private,
+				collections_private: this.props.user.settings.collections_private,
+				stats_private: this.props.user.settings.stats_private
+			});
+		}
 	},
 	toggleCheckbox: function(checkboxVal){
 		var checkObj = {};
-		console.log(checkboxVal);
 		checkObj[checkboxVal] = !this.state[checkboxVal];
 		this.setState(checkObj);
+	},
+	saveChanges: function(){
+		$.ajax({
+			url: '/api/settings/privacy',
+			type: 'POST',
+			data: this.state,
+			success: function(){
+				window.location = '/me/settings/privacy';
+			},
+			error: function(){
+				alert('Something seems to be wrong on our end');
+			}
+		});
 	},
 	render: function(){
 		return (
@@ -21957,7 +22021,7 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 				), 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-save-wrap"}, 
-						React.DOM.div({className: "set-save"}, 
+						React.DOM.div({className: "set-save", onClick: this.saveChanges}, 
 							"Save changes"
 						)
 					)

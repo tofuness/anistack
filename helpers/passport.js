@@ -10,7 +10,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
-	User.findOne({ username: new RegExp(username, 'i') }, { password: 0, API_Key: 0 }, function(err, user){
+	User.findOne({ username: new RegExp(username, 'i') }, function(err, user){
 		done(err, user);
 	});
 });

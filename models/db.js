@@ -6,6 +6,7 @@ var _ = require('lodash');
 var request = require('request');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
+
 if(process.env.NODE_ENV !== 'test'){
 	mongoose.connect('mongodb://localhost:27017/herro_dev');
 } else {
