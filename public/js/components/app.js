@@ -21793,10 +21793,17 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 					React.DOM.div({className: "set-section"}, 
 						React.DOM.div({className: "set-left"}, 
 							React.DOM.div({className: "set-title"}, "Biography"), 
-							React.DOM.div({className: "set-desc"}, "Short text about yourself and what you do.")
+							React.DOM.div({className: "set-desc"}, "Short text about yourself.")
 						), 
 						React.DOM.div({className: "set-right"}, 
 							React.DOM.textarea({className: "set-textarea", rows: "5", name: "biography", type: "text"}, this.props.user.biography)
+						)
+					), 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-save-wrap"}, 
+							React.DOM.div({className: "set-save"}, 
+								"Save changes"
+							)
 						)
 					)
 				)
@@ -21809,7 +21816,7 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 	componentDidMount: function() {
 		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
 			duration: 500,
-			stagger: 150
+			stagger: 100
 		});
 	},
 	render: function(){
@@ -21819,7 +21826,7 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 					React.DOM.div({className: "set-section"}, 
 						React.DOM.div({className: "set-left"}, 
 							React.DOM.div({className: "set-title"}, "Old Password"), 
-							React.DOM.div({className: "set-desc"}, "Just to know that it is you.")
+							React.DOM.div({className: "set-desc"}, "Just to confirm that it is you.")
 						), 
 						React.DOM.div({className: "set-right"}, 
 							React.DOM.input({className: "set-input", name: "old_password", type: "password"})
@@ -21833,6 +21840,13 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 						React.DOM.div({className: "set-right"}, 
 							React.DOM.input({className: "set-input", name: "new_password", type: "password"})
 						)
+					), 
+					React.DOM.div({className: "set-section"}, 
+						React.DOM.div({className: "set-save-wrap"}, 
+							React.DOM.div({className: "set-save"}, 
+								"Save changes"
+							)
+						)
 					)
 				)
 			)
@@ -21843,7 +21857,8 @@ var PasswordSettings = React.createClass({displayName: 'PasswordSettings',
 var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 	getInitialState: function(){
 		return {
-			lists_private: false,
+			anime_list_private: false,
+			manga_list_private: false,
 			collections_private: false,
 			stats_private: false
 		}
@@ -21852,7 +21867,7 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 		this.setState(this.props.settings);
 		$(this.refs.setForm.getDOMNode()).find('>div').stop(true).velocity('herro.slideUpIn', {
 			duration: 500,
-			stagger: 150
+			stagger: 100
 		});
 	},
 	toggleCheckbox: function(checkboxVal){
@@ -21866,26 +21881,45 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 			React.DOM.form({className: "set-form", ref: "setForm"}, 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
-						React.DOM.div({className: "set-title"}, "Protect List"), 
-						React.DOM.div({className: "set-desc"}, "Make your lists private.")
+						React.DOM.div({className: "set-title"}, "Protect anime list"), 
+						React.DOM.div({className: "set-desc"}, "Make your anime list private.")
 					), 
 					React.DOM.div({className: "set-right"}, 
 						React.DOM.div({className: 
 							cx({
 								'set-check': true,
-								'private': this.state.lists_private
+								'private': this.state.anime_list_private
 							})
 						}, 
-							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "lists_private", name: "lists_private", checked: this.state.lists_private, onChange: this.toggleCheckbox.bind(null, 'lists_private')}), 
-							React.DOM.label({className: "set-check-label", htmlFor: "lists_private"}, 
-								this.state.lists_private ? 'Private' : 'Public'
+							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "anime_list_private", name: "anime_list_private", checked: this.state.anime_list_private, onChange: this.toggleCheckbox.bind(null, 'anime_list_private')}), 
+							React.DOM.label({className: "set-check-label", htmlFor: "anime_list_private"}, 
+								this.state.anime_list_private ? 'Private' : 'Public'
 							)
 						)
 					)
 				), 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
-						React.DOM.div({className: "set-title"}, "Protect Stats"), 
+						React.DOM.div({className: "set-title"}, "Protect manga list"), 
+						React.DOM.div({className: "set-desc"}, "Make your manga list private.")
+					), 
+					React.DOM.div({className: "set-right"}, 
+						React.DOM.div({className: 
+							cx({
+								'set-check': true,
+								'private': this.state.manga_list_private
+							})
+						}, 
+							React.DOM.input({type: "checkbox", className: "set-checkbox", id: "manga_list_private", name: "manga_list_private", checked: this.state.manga_list_private, onChange: this.toggleCheckbox.bind(null, 'manga_list_private')}), 
+							React.DOM.label({className: "set-check-label", htmlFor: "manga_list_private"}, 
+								this.state.manga_list_private ? 'Private' : 'Public'
+							)
+						)
+					)
+				), 
+				React.DOM.div({className: "set-section"}, 
+					React.DOM.div({className: "set-left"}, 
+						React.DOM.div({className: "set-title"}, "Protect stats"), 
 						React.DOM.div({className: "set-desc"}, "Make your stats private.")
 					), 
 					React.DOM.div({className: "set-right"}, 
@@ -21904,7 +21938,7 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 				), 
 				React.DOM.div({className: "set-section"}, 
 					React.DOM.div({className: "set-left"}, 
-						React.DOM.div({className: "set-title"}, "Protect Collections"), 
+						React.DOM.div({className: "set-title"}, "Protect collections"), 
 						React.DOM.div({className: "set-desc"}, "Make your collections private.")
 					), 
 					React.DOM.div({className: "set-right"}, 
@@ -21918,6 +21952,13 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 							React.DOM.label({className: "set-check-label", htmlFor: "collections_private"}, 
 								this.state.collections_private ? 'Private' : 'Public'
 							)
+						)
+					)
+				), 
+				React.DOM.div({className: "set-section"}, 
+					React.DOM.div({className: "set-save-wrap"}, 
+						React.DOM.div({className: "set-save"}, 
+							"Save changes"
 						)
 					)
 				)

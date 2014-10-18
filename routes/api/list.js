@@ -218,7 +218,7 @@ module.exports = function(app){
 		}, {
 			$pull: removeListItem
 		}, function(err, status){
-			if(status){
+			if(status === 1){
 				res.status(200).json({
 					status: 'ok',
 					message: 'removed item from list'
@@ -228,7 +228,7 @@ module.exports = function(app){
 			} else {
 				next(new Error('could not remove item from list'));
 			}
-		})
+		});
 	});
 
 	app.route('/list/reset')

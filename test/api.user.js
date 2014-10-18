@@ -32,6 +32,15 @@ describe('routes/api/user', function(){
 			});
 		});
 
+		it('should respond with error when no email is provided', function(done){
+			request(app)
+			.post('/api/validate/email')
+			.send({
+				email: ''
+			})
+			.expect(500, done);
+		});
+
 		it('should respond with "is_valid: false" for invalid email', function(done){
 			request(app)
 			.post('/api/validate/email')
@@ -72,6 +81,15 @@ describe('routes/api/user', function(){
 				res.body.exists.should.equal(false);
 				done();
 			});
+		});
+
+		it('should respond with error when no username is provided', function(done){
+			request(app)
+			.post('/api/validate/username')
+			.send({
+				username: ''
+			})
+			.expect(500, done);
 		});
 
 		it('should respond with "exists: true" for existing username', function(done){

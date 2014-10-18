@@ -5,8 +5,7 @@ module.exports = function(app){
 	app.route('/login')
 	.all(hAuth.unlessAuth)
 	.get(function(req, res, next){
-		console.log(req.flash('error'));
-		res.render('login', { title: 'Log In' });
+		res.render('login', { title: 'Log In', error: req.flash('error') });
 	})
 	.post(passport.authenticate('local', {
 		successRedirect: '/list/anime',

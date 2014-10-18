@@ -1,5 +1,4 @@
-
-if(process.env.NODE_ENV !== 'test'){
+if(process.env.NODE_ENV === 'production'){
 	var cluster = require('cluster');
 
 	if(cluster.isMaster){
@@ -44,7 +43,7 @@ app.disable('x-powered-by');
 
 // Set application port
 
-app.set('port', process.env.APP_PORT || 1337);
+app.set('port', process.env.APP_PORT);
 
 // Set views directory
 
@@ -95,7 +94,7 @@ app.use(session({
 // Enable CSRF protection. Has to come after cookies/session
 
 app.use(lusca({
-    csrf: (process.env.NODE_ENV !== 'test'),
+    csrf: (process.env.NODE_ENV === 'production'),
 	csp: false,
 	xframe: 'DENY', // or SAMEORIGIN
 	p3p: false,
@@ -117,11 +116,6 @@ app.use(passport.session());
 if(process.env.NODE_ENV === 'development'){
 	var morgan = require('morgan');
 	app.use(morgan('dev'));
-	process.send({ cmd: 'NODE_DEV', required: './views/partials/header.hbs' });
-	process.send({ cmd: 'NODE_DEV', required: './views/partials/footer.hbs' });
-	process.send({ cmd: 'NODE_DEV', required: './views/login.hbs' });
-	process.send({ cmd: 'NODE_DEV', required: './views/list.hbs' });
-	process.send({ cmd: 'NODE_DEV', required: './views/search.hbs' });
 }
 
 // Production settings
@@ -148,7 +142,7 @@ app.use(function(req, res, next){
 
 // Run helpers
 
-require('./helpers/hbs');
+require('./helpers/hbs')('./views/partials');
 require('./helpers/passport');
 
 // Web routes
@@ -171,8 +165,8 @@ require('./routes/api/user.js')(apiRouter);
 
 app.use(function(err, req, res, next){
 	if(err){
-		console.log(req.url);
-		console.log(err.stack);
+		//console.log(req.url);
+		//console.log(err.stack);
 		res.status(500).json({ status: 'error', message: err.message });
 	} else {
 		next();

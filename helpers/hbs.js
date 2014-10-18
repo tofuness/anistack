@@ -1,11 +1,13 @@
 var Swag = require('swag');
 var hbs = require('hbs');
+var fs = require('fs');
 
-hbs.registerPartials('./views/partials', function(err){
-	if(err) return console.log('✗ Could not load HBS partials: ' + err);
-	if(process.env.NODE_ENV !== 'test'){
-		console.log('✓ Loaded HBS partials');
+module.exports = function(partialsPath){
+	if(!fs.existsSync(partialsPath)){
+		throw new Error('No such path ' + partialsPath);
 	}
-});
-
-Swag.registerHelpers(hbs);
+	hbs.registerPartials(partialsPath, function(err){
+		if(err) return new Error(err);
+	});
+	Swag.registerHelpers(hbs);
+}

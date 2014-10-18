@@ -9,7 +9,9 @@ module.exports = function(app){
 	app.route('/settings')
 	.all(hAuth.ifAuth)
 	.get(function(req, res, next){
-		req.user.password = null;
+		delete req.user.password;
+		req.user.manga_list = [];
+		req.user.anime_list = [];
 		res.status(200).json(req.user);
 	});
 }

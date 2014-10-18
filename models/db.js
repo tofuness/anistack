@@ -480,7 +480,11 @@ var UserSchema = new Schema({
 			type: Boolean,
 			default: false
 		},
-		lists_private: {
+		anime_list_private: {
+			type: Boolean,
+			default: false
+		},
+		manga_list_private: {
 			type: Boolean,
 			default: false
 		},
