@@ -4,7 +4,8 @@ var PickerApp = React.createClass({
 		collection: React.PropTypes.string,
 		seriesData: React.PropTypes.object,
 		onClose: React.PropTypes.func,
-		onSave: React.PropTypes.func
+		onSave: React.PropTypes.func,
+		onRemove: React.PropTypes.func
 	},
 	getInitialState: function(){
 		return {
@@ -315,9 +316,8 @@ var PickerApp = React.createClass({
 							</div>
 						</div>
 					</div>
-					<div className="picker-cancel" onClick={this.props.onCancel}>
-						Cancel
-					</div>
+					{this.props.onCancel ? <div className="picker-cancel" onClick={this.props.onCancel}>Cancel</div> : null}
+					{this.props.onRemove ? <div className="picker-remove" onClick={this.props.onRemove}>&times; Remove</div> : null}
 				</div>
 			</div>
 		);

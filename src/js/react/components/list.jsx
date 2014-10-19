@@ -284,6 +284,38 @@ var ListItem = React.createClass({
 			}.bind(this));
 		}
 	},
+	remove: function(){
+		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
+
+		$.ajax({
+			url: '/api/list/' + TempListConstants.TYPE + '/Remove',
+			data: { _id: this.props.itemData._id, _csrf: UserConstants.CSRF_TOKEN },
+			type: 'POST',
+			error: function(){
+				alert('Something seems to be wrong on our side! Your list did not get updated :C');
+			}
+		});
+
+		// Remove 43px (list item height) from the div
+		$('#list-content').css('min-height','-=43');
+
+		// If we are changing status, transision the whole div
+		$(this.refs.listItem.getDOMNode()).stop(true).velocity({
+			backgroundColor: ['#e8e8e8', '#fffff'],
+			height: [0, 323]
+		}, {
+			easing: [0.165, 0.84, 0.44, 1],
+			duration: 300,
+			complete: function(){
+				$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
+				this.setState({
+					expanded: false
+				});
+				listStore.splice(itemIndex, 1);
+				PubSub.publishSync(ListConstants.DATA_CHANGE);
+			}.bind(this)
+		});
+	},
 	saveData: function(data){
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
@@ -361,7 +393,7 @@ var ListItem = React.createClass({
 		}
 		var listExpPicker = null;
 		if(this.state.showPicker){
-			listExpPicker = <PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onCancel={this.cancel} onSave={this.saveData} />;
+			listExpPicker = <PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onRemove={this.remove} onSave={this.saveData} />;
 		}
 		return (
 			<div ref="listItem" className="list-item-wrap">

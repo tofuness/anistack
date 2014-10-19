@@ -44,7 +44,7 @@
     "supertest": "~0.14.0",
     "should": "~4.0.4",
     "browserify": "*",
-    "watichify": "*",
+    "watchify": "*",
     "vinyl-source-stream": "*",
     "vinyl-buffer": "*",
     "reactify": "*",

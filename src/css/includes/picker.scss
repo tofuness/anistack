@@ -188,6 +188,18 @@
 	font-size: 11px;
 	line-height: 28px;
 }
+.picker-remove {
+	cursor: pointer;
+	float: right;
+	padding-top: 6px;
+	margin-right: 12px;
+	color: $gray-d-9;
+	font-size: 11px;
+	&:hover {
+		color: $red;
+		@include box-shadow(0 1px 0 $red);
+	}
+}
 .picker-save {
 	cursor: pointer;
 	position: relative;

@@ -14,7 +14,6 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var reactify = require('reactify');
 var uglify = require('gulp-uglify');
-var del = require('del');
 var notify = require('gulp-notify');
 
 var path = {
@@ -108,13 +107,11 @@ gulp.task('watch', function(){
 	gulp.watch(path.scss.files, ['css']);
 	gulp.watch(path.js.files, ['uglify']);
 	gulp.watch(path.jsx.files, ['watchify']);
-	gulp.start(['watchify']);
 });
 
 gulp.task('build', function() {
 	process.env.NODE_ENV = 'production';
 	gulp.start(['sass', 'css', 'uglify', 'browserify']);
 });
-
 
 gulp.task('default', ['sass', 'css', 'uglify', 'watch']);
