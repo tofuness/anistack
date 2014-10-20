@@ -171,7 +171,8 @@ var BasicSettings = React.createClass({
 			// *Toggle* (doesn't matter if it's true or false) to show ok/error state for btn
 			error: false,
 			saved: false,
-			newAvatar: false
+			newAvatar: false,
+			avatarUrl: ''
 		}
 	},
 	saveChanges: function(){
@@ -182,6 +183,7 @@ var BasicSettings = React.createClass({
 			success: function(res){
 				console.log(res);
 				this.setState({
+					avatarUrl: '',
 					newAvatar: (res.avatar) ? res.avatar : false,
 					saved: !this.state.saved
 				});
@@ -192,6 +194,11 @@ var BasicSettings = React.createClass({
 				});
 				alert('Make sure you email is correct (and not already in use)!');
 			}.bind(this)
+		});
+	},
+	onAvatarUrlChange: function(e){
+		this.setState({
+			avatarUrl: e.target.value
 		});
 	},
 	render: function(){
@@ -233,6 +240,8 @@ var BasicSettings = React.createClass({
 								className="set-input"
 								name="avatar"
 								type="text"
+								value={this.state.avatarUrl}
+								onChange={this.onAvatarUrlChange}
 								placeholder="E.g. http://i.imgur.com/2w0zFOH.gif"
 							/>
 							<div className="set-avatar-preview-wrap">
