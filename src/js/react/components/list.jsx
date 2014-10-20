@@ -183,10 +183,15 @@ var ListContent = React.createClass({
 			}
 
 			// Check if item matches search string
+			var matchingGenre= _.findIndex(listItem.series_genres, function(genre){
+				return genre.match(new RegExp(this.props.listFilterText, 'gi'));
+			}.bind(this));
 
 			if(
 				this.props.listFilterText !== '' &&
-				listItem.series_title_main.match(new RegExp(this.props.listFilterText, 'gi'))
+				listItem.series_title_main.match(new RegExp(this.props.listFilterText, 'gi')) ||
+				listItem.series_title_english && listItem.series_title_english.match(new RegExp(this.props.listFilterText, 'gi')) ||
+				matchingGenre > -1
 			){
 				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
 			} else if(this.props.listFilterText === ''){

@@ -170,7 +170,8 @@ var BasicSettings = React.createClass({
 		return {
 			// *Toggle* (doesn't matter if it's true or false) to show ok/error state for btn
 			error: false,
-			saved: false
+			saved: false,
+			newAvatar: false
 		}
 	},
 	saveChanges: function(){
@@ -178,8 +179,10 @@ var BasicSettings = React.createClass({
 			url: '/api/settings/basic',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
-			success: function(){
+			success: function(res){
+				console.log(res);
 				this.setState({
+					newAvatar: (res.avatar) ? res.avatar : false,
 					saved: !this.state.saved
 				});
 			}.bind(this),
@@ -192,6 +195,17 @@ var BasicSettings = React.createClass({
 		});
 	},
 	render: function(){
+		var avatarUrl;
+		if(this.state.newAvatar){
+			avatarUrl = this.state.newAvatar + '?t=' + new Date().getTime();
+		} else if(this.props.user.avatar.processed){
+			avatarUrl = this.props.user.avatar.processed;
+		} else {
+			avatarUrl = '/img/default.gif';
+		}
+
+		$('#top-profile-avatar').css('backgroundImage', 'url(' + avatarUrl + ')');
+
 		return (
 			<div>
 				<form className="set-form" ref="setForm">
@@ -201,7 +215,7 @@ var BasicSettings = React.createClass({
 							<div className="set-desc">Used for account recovery and anime/manga notifications.</div>
 						</div>
 						<div className="set-right">
-							<input className="set-input" name="email" type="text" defaultValue={this.props.user.email} />
+							<input className="set-input" name="email" type="text" defaultValue={this.props.user.email} placeholder="email@address.com" />
 						</div>
 					</div>
 					<div className="set-section">
@@ -219,11 +233,11 @@ var BasicSettings = React.createClass({
 								className="set-input"
 								name="avatar"
 								type="text"
-								placeholder="Imgur link to new avatar..."
+								placeholder="E.g. http://i.imgur.com/2w0zFOH.gif"
 							/>
 							<div className="set-avatar-preview-wrap">
 								<img
-									src={this.props.user.avatar ? 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + this.props.user.avatar.original : 'http://i.imgur.com/siaPoHT.png'}
+									src={avatarUrl}
 									className="set-avatar" 
 								/>
 							</div>

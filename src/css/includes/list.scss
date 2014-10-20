@@ -19,14 +19,14 @@
 	@extend .cf;
 }
 #list-profile-avatar {
-	margin: -40px auto 0 auto;
-	width: 80px;
-	height: 80px;
+	margin: -50px auto 0 auto;
+	display: block;
+	width: 100px;
+	height: 100px;
 	border: 4px solid #fff;
-	background-color: $gray;
-	background-size: cover;
 	@include border-radius(4px);
 	@include box-shadow(0 1px 3px $b15);
+	background-size: cover;
 }
 #list-profile-background {
 	height: 150px;

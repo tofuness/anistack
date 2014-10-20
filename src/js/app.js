@@ -7,7 +7,9 @@ var $profileMenuWrap = $('#top-profile-menu-wrap');
 
 $(document).click(function(e){
 	if($profileMenuWrap.hasClass('visible') && !$(e.target).closest('#top-profile-wrap').length){
-		$profileMenuWrap.removeClass('visible');
+		if(!$(e.target).hasClass('top-profile-menu-link')){
+			$profileMenuWrap.removeClass('visible');
+		}
 	}
 });
 

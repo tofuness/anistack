@@ -166,8 +166,10 @@ require('./routes/api/user.js')(apiRouter);
 
 app.use(function(err, req, res, next){
 	if(err){
-		//console.log(req.url);
-		//console.log(err.stack);
+		if(process.env.NODE_ENV === 'development'){
+			console.log(req.url);
+			console.log(err.stack);
+		}
 		res.status(500).json({ status: 'error', message: err.message });
 	} else {
 		next();

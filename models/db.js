@@ -466,8 +466,14 @@ var UserSchema = new Schema({
 		unique: true
 	},
 	avatar: {
-		processed: String,
-		original: String
+		processed: {
+			type: String,
+			default: ''
+		},
+		original: {
+			type: String,
+			default: ''
+		}
 	},
 	password: {
 		type: String,

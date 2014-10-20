@@ -2,6 +2,8 @@ var request = require('request');
 var hAuth = require('../../helpers/auth.js');
 var db = require('../../models/db.js');
 var bcryptjs = require('bcryptjs');
+var request = require('request');
+var fs = require('fs');
 
 var User = db.User;
 
@@ -31,19 +33,38 @@ module.exports = function(app){
 		}
 
 		if(req.body.avatar){
-			if(req.user.avatar && req.user.avatar.original === req.body.avatar) return false;
-			req.body.avatar = req.body.avatar.replace(/http(s)?:\/\//gi, '');
-			if(/^i\.imgur\.com\/[0-9a-zA-Z]+\.(jpg|png)/i.test(req.body.avatar)){
-				settingsObj['avatar.original'] = req.body.avatar;
+			if(/^http(s)?:\/\/i\.imgur\.com\/[0-9a-zA-Z]+\.(jpg|png|gif)$/i.test(req.body.avatar)){
+				request.head(req.body.avatar, function(err, result, body){
+					var contentType = result.headers['content-type'].match(/^image\/(gif|jpeg|png)$/);
+					if(!err && contentType){
+						var downloadFrom = (contentType[1] === 'gif') ? 'http://localhost:8000/gif?url=' + req.body.avatar : 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + req.body.avatar.replace(/http(s)?:\/\//gi, '');
+						request(downloadFrom)
+						.pipe(fs.createWriteStream('./public/avatars/' + req.user.username + '.' + contentType[1], { flags: 'w' }))
+						.on('close', function(err){
+							settingsObj['avatar.original'] = req.body.avatar;
+							settingsObj['avatar.processed'] = '/avatars/' + req.user.username + '.' + contentType[1];
+							User.updateOne({
+								_id: req.user._id
+							}, settingsObj, function(err, status){
+								if(err) return next(new Error(err));
+								res.status(200).json({ status: 'OK', message: 'updated settings/basic', avatar: settingsObj['avatar.processed'] });
+							});
+						});
+					} else {
+						next(new Error('invalid imgur url'));
+					}
+				});
+			} else {
+				next(new Error('not an imgur url'))
 			}
+		} else {
+			User.updateOne({
+				_id: req.user._id
+			}, settingsObj, function(err, status){
+				if(err) return next(new Error(err));
+				res.status(200).json({ status: 'OK', message: 'updated settings/basic' });
+			});
 		}
-
-		User.updateOne({
-			_id: req.user._id
-		}, settingsObj, function(err, status){
-			if(err) return next(new Error(err));
-			res.status(200).json({ status: 'OK', message: 'updated settings/basic' });
-		});
 	});
 
 	app.route('/settings/password')
@@ -60,7 +81,7 @@ module.exports = function(app){
 					if(err) return next(new Error(err));
 					res.status(200).json({ status: 'OK', message: 'updated settings/password' });
 				});
-			});	
+			});
 		} else {
 			return next(new Error('no old/new password was provided'));
 		}
