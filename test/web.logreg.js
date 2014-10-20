@@ -18,7 +18,7 @@ describe('routes/web/logreg', function(){
 		});
 	});
 
-	describe('GET /register', function(){
+	describe('GET /logout', function(){
 		it('should redirect', function(done){
 			request(app)
 			.get('/logout')

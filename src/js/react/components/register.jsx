@@ -100,7 +100,7 @@ var RegisterForm = React.createClass({
 					<div className={
 						React.addons.classSet({
 							'icon-spam': this.state.usernameValid === false,
-							'icon-check': this.state.usernameValid === true,
+							'icon-check-thin': this.state.usernameValid === true,
 							'icon-ellipsis': this.state.usernameValid === 'loading',
 							'logreg-input-validate': true,
 							'visible': this.state.usernameValid !== null
@@ -114,7 +114,7 @@ var RegisterForm = React.createClass({
 					<div className={
 						React.addons.classSet({
 							'icon-spam':  0 < this.state.passwordVal.length && this.state.passwordVal.length < 6,
-							'icon-check':  this.state.passwordVal.length >= 6,
+							'icon-check-thin':  this.state.passwordVal.length >= 6,
 							'logreg-input-validate': true,
 							'visible': this.state.passwordVal
 						})
@@ -127,7 +127,7 @@ var RegisterForm = React.createClass({
 					<div className={
 						React.addons.classSet({
 							'icon-spam': this.state.emailValid === false,
-							'icon-check': this.state.emailValid === true,
+							'icon-check-thin': this.state.emailValid === true,
 							'icon-ellipsis': this.state.emailValid === 'loading',
 							'logreg-input-validate': true,
 							'visible': this.state.emailValid !== null

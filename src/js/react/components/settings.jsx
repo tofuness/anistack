@@ -91,18 +91,104 @@ var Settings = React.createClass({
 	}
 });
 
+var SettingsSaveBtn = React.createClass({
+	getInitialState: function() {
+		return {
+			loading: false
+		};
+	},
+	componentWillReceiveProps: function(nextProps){
+		if(!this.state.loading) return false;
+		if(this.props.saved !== nextProps.saved){
+			setTimeout(function(){
+				this.animateSave();
+			}.bind(this), 400);
+		} else if(this.props.error !== nextProps.error){
+			console.log('safdsf');
+			this.setState({
+				loading: false
+			});
+		}
+	},
+	animateSave: function(){
+		$(this.refs.saveOvl.getDOMNode()).stop(true).velocity({
+			opacity: [1, 0]
+		}, {
+			duration: 300,
+			complete: function(){
+				this.setState({
+					loading: false
+				});
+			}.bind(this)
+		}).delay(400).velocity('reverse');
+
+		$(this.refs.saveIcon.getDOMNode()).stop(true).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
+	animateLoading: function(){
+		this.setState({
+			loading: true
+		});
+	},
+	componentDidMount: function() {
+		var opts = {
+			lines: 8,
+			length: 2,
+			width: 2,
+			radius: 3,
+			corners: 1,
+			color: '#fff',
+			speed: 1.8,
+			trail: 70,
+			zIndex: 2,
+			hwaccel: true,
+		}
+		var spinner = new Spinner(opts).spin();
+ 		$(this.refs.setSaveLoading.getDOMNode()).append(spinner.el);
+	},
+	render: function(){
+		return (
+			<div className="set-save" onClick={this.animateLoading}>
+				<div className="set-save-ovl" ref="saveOvl">
+					<div className="set-save-icon icon-check-thin" ref="saveIcon">
+					</div>
+				</div>
+				Save
+				<div className={cx({
+					'set-save-loading': true,
+					'visible': this.state.loading
+				})} ref="setSaveLoading"></div>
+			</div>
+		)
+	}
+});
+
 var BasicSettings = React.createClass({
+	getInitialState: function(){
+		return {
+			// *Toggle* (doesn't matter if it's true or false) to show ok/error state for btn
+			error: false,
+			saved: false
+		}
+	},
 	saveChanges: function(){
 		$.ajax({
 			url: '/api/settings/basic',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
 			success: function(){
-				window.location = '/me/settings/basic';
-			},
+				this.setState({
+					saved: !this.state.saved
+				});
+			}.bind(this),
 			error: function(){
+				this.setState({
+					error: !this.state.error
+				});
 				alert('Make sure you email is correct (and not already in use)!');
-			}
+			}.bind(this)
 		});
 	},
 	render: function(){
@@ -154,8 +240,8 @@ var BasicSettings = React.createClass({
 					</div>
 					<div className="set-section">
 						<div className="set-save-wrap">
-							<div className="set-save" onClick={this.saveChanges}>
-								Save changes
+							<div onClick={this.saveChanges}>
+								<SettingsSaveBtn saved={this.state.saved} error={this.state.error} />
 							</div>
 						</div>
 					</div>
@@ -166,17 +252,42 @@ var BasicSettings = React.createClass({
 });
 
 var PasswordSettings = React.createClass({
+	getInitialState: function(){
+		return {
+			old_password: '',
+			new_password: '',
+			saved: false,
+			error: false
+		}
+	},
 	saveChanges: function(){
 		$.ajax({
 			url: '/api/settings/password',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
 			success: function(){
-				window.location = '/me/settings/password';
-			},
+				this.setState({
+					old_password: '',
+					new_password: '',
+					saved: !this.state.saved
+				});
+			}.bind(this),
 			error: function(){
+				this.setState({
+					error: !this.state.error
+				});
 				alert('Make sure the inputs are correct!');
-			}
+			}.bind(this)
+		});
+	},
+	onChangeOldPwd: function(e){
+		this.setState({
+			old_password: e.target.value
+		});
+	},
+	onChangeNewPwd: function(e){
+		this.setState({
+			new_password: e.target.value 
 		});
 	},
 	render: function(){
@@ -189,26 +300,26 @@ var PasswordSettings = React.createClass({
 							<div className="set-desc">Just to confirm that it is you.</div>
 						</div>
 						<div className="set-right">
-							<input className="set-input" name="old_password" type="password" />
+							<input className="set-input" name="old_password" type="password" value={this.state.old_password} onChange={this.onChangeOldPwd} />
 						</div>
 					</div>
 					<div className="set-section">
 						<div className="set-left">
 							<div className="set-title">New Password</div>
 							<div className="set-desc">
-								Has to be <em>at least</em> 6 characters long.
+								Has to be at least 6 characters.
 								<br /><br />
 								PROTIP: Do <em>NOT</em> use the same password on other services.
 							</div>
 						</div>
 						<div className="set-right">
-							<input className="set-input" name="new_password" type="password" />
+							<input className="set-input" name="new_password" type="password" value={this.state.new_password} onChange={this.onChangeNewPwd} />
 						</div>
 					</div>
 					<div className="set-section">
 						<div className="set-save-wrap">
-							<div className="set-save" onClick={this.saveChanges}>
-								Save changes
+							<div onClick={this.saveChanges}>
+								<SettingsSaveBtn saved={this.state.saved} error={this.state.error} />
 							</div>
 						</div>
 					</div>
@@ -224,12 +335,13 @@ var PrivacySettings = React.createClass({
 			anime_list_private: false,
 			manga_list_private: false,
 			collections_private: false,
-			stats_private: false
+			stats_private: false,
+			saved: false,
+			error: false
 		}
 	},
 	componentDidMount: function() {
 		if(this.props.user && this.props.user.settings){
-			console.log(this.props.user.settings);
 			this.setState({
 				anime_list_private: this.props.user.settings.anime_list_private,
 				manga_list_private: this.props.user.settings.manga_list_private,
@@ -249,11 +361,16 @@ var PrivacySettings = React.createClass({
 			type: 'POST',
 			data: this.state,
 			success: function(){
-				window.location = '/me/settings/privacy';
-			},
+				this.setState({
+					saved: !this.state.saved
+				});
+			}.bind(this),
 			error: function(){
+				this.setState({
+					error: !this.state.error
+				});
 				alert('Something seems to be wrong on our end');
-			}
+			}.bind(this)
 		});
 	},
 	render: function(){
@@ -337,8 +454,8 @@ var PrivacySettings = React.createClass({
 				</div>
 				<div className="set-section">
 					<div className="set-save-wrap">
-						<div className="set-save" onClick={this.saveChanges}>
-							Save changes
+						<div onClick={this.saveChanges}>
+							<SettingsSaveBtn saved={this.state.saved} error={this.state.error} />
 						</div>
 					</div>
 				</div>

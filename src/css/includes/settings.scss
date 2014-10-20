@@ -140,13 +140,44 @@
 }
 .set-save {
 	cursor: pointer;
+	position: relative;
 	float: right;
-	padding: 5px 15px;
+	padding: 5px 20px;
 	color: #fff;
 	font-weight: 700;
 	background: #4b99f0;
 	@include border-radius(30px);
 	&:hover {
 		background: $blue-l-3;
+	}
+}
+.set-save-ovl {
+	opacity: 0;
+	z-index: 5;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: $green;
+	text-align: center;
+	@include border-radius(30px);
+}
+.set-save-icon {
+	padding-top: 5px;
+	font-size: 16px;
+}
+.set-save-loading {
+	@extend .ts15;
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: $blue;
+	@include border-radius(30px);
+	&.visible {
+		opacity: 1;
 	}
 }

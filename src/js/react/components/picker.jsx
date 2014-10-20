@@ -183,7 +183,6 @@ var PickerApp = React.createClass({
 			duration: 300
 		}).delay(600).hide();
 		setTimeout(function(){
-			console.log('calling false');
 			this.setState({
 				saving: false
 			});
@@ -312,7 +311,7 @@ var PickerApp = React.createClass({
 					<div className="picker-save" onClick={this.onSave}>
 						Save
 						<div className="picker-save-success" ref="successBtn">
-							<div className="picker-save-success-icon icon-check" ref="successIcon">
+							<div className="picker-save-success-icon icon-check-thin" ref="successIcon">
 							</div>
 						</div>
 					</div>

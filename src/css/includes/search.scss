@@ -142,7 +142,7 @@
 	z-index: $z-up;
 	opacity: 0;
 	background: #fff;
-	@include transform(scale(0.4));
+	@include transform(scale(0.6));
 	@include transform-origin(190px bottom);
 	@include box-shadow(0 1px 6px $b30);
 	@include border-radius(4px);
