@@ -92,12 +92,6 @@ var PickerApp = React.createClass({
 			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
 		}.bind(this));
-
-		$(window).on('keyup', function(e){
-			if(e.keyCode === 27){
-				this.props.onCancel();
-			}
-		}.bind(this));
 	},
 	setStatus: function(e){
 		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');

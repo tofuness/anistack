@@ -20700,7 +20700,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 
 			// Check if item matches search string
 			var matchingGenre= _.findIndex(listItem.series_genres, function(genre){
-				return genre.match(new RegExp(this.props.listFilterText, 'gi'));
+				return genre.match(new RegExp('^' + this.props.listFilterText, 'gi'));
 			}.bind(this));
 
 			if(
@@ -21104,12 +21104,6 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		$(repeatsInput).on('mousewheel', function(e){
 			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
-		}.bind(this));
-
-		$(window).on('keyup', function(e){
-			if(e.keyCode === 27){
-				this.props.onCancel();
-			}
 		}.bind(this));
 	},
 	setStatus: function(e){

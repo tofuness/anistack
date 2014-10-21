@@ -234,6 +234,10 @@
 .list-item-title {
 	float: left;
 	padding: 12px 12px;
+	overflow: hidden;
+	width: 470px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .list-item-right {
 	float: right;

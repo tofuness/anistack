@@ -184,7 +184,7 @@ var ListContent = React.createClass({
 
 			// Check if item matches search string
 			var matchingGenre= _.findIndex(listItem.series_genres, function(genre){
-				return genre.match(new RegExp(this.props.listFilterText, 'gi'));
+				return genre.match(new RegExp('^' + this.props.listFilterText, 'gi'));
 			}.bind(this));
 
 			if(
