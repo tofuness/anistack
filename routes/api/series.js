@@ -1,4 +1,5 @@
 var db = require('../../models/db.js');
+var hAuth = require('../../helpers/auth.js');
 var Anime = db.Anime;
 var Manga = db.Manga;
 var _ = require('lodash');
@@ -21,6 +22,7 @@ module.exports = function(app){
 	// ?: Get all anime/manga
 
 	app.route('/:collection(anime|manga)/all')
+	.all(hAuth.ifStaff)
 	.get(function(req, res, next){
 		Collection.find({},function(err, docs){
 			if(err) return next(new Error(err));
@@ -50,11 +52,24 @@ module.exports = function(app){
 
 	app.route('/:collection(anime|manga)/view/:_id')
 	.get(function(req, res, next){
-		Collection.findOne({
-			_id: req.param('_id')
-		}, function(err, doc){
+		var searchConditions = {};
+
+		if(req.param('_id').match(/^[0-9a-fA-F]{24}$/)){
+			searchConditions['_id'] = req.param('_id');
+		} else {
+			searchConditions['series_slug'] = req.param('_id');
+		}
+
+		Collection.findOne(searchConditions, function(err, seriesDoc){
 			if(err) return next(new Error(err));
-			res.status(200).json(doc);
+			if(!seriesDoc) return next(new Error('series not found'));
+
+			seriesDoc = seriesDoc.toObject();
+			
+			if(req.user && req.user[req.param('collection') + '_list']){
+				seriesDoc['item_data'] = _.find(req.user[req.param('collection') + '_list'], { _id: seriesDoc._id });
+			}
+			res.status(200).json(seriesDoc);
 		});
 	});
 

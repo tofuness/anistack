@@ -16,13 +16,14 @@ module.exports = function(app){
 		next();
 	});
 
-	app.route('/:collection(anime|manga)/:_id')
+	app.route('/:collection(anime|manga)/:slug')
 	.get(function(req, res, next){
 		Collection.findOne({
-			_id: req.param('_id')
+			series_slug: req.param('slug')
 		}, function(err, seriesDoc){
 			if(err || !seriesDoc) return next();
 			res.render('series', {
+				title: seriesDoc.series_title_main,
 				collection: req.param('collection'),
 				series: seriesDoc
 			});

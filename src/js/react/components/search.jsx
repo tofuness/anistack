@@ -48,25 +48,27 @@ var SearchApp = React.createClass({
 	},
 	render: function(){
 		return (
-			<div id="search-page">
+			<div>
 				<div id="search-input-wrap">
 					<input id="search-input" type="text" placeholder="Type to search..." value={this.state.searchText} onChange={this.onSearch} onKeyUp={this.onEsc} />
 				</div>
-				<div id="search-results-wrap">
-				{
-					this.state.searchResults.map(function(searchRes, index){
-						var itemData = null;
-						if(searchRes.item_data){
-							itemData = {
-								item_status: searchRes.item_data.item_status,
-								item_progress: searchRes.item_data.item_progress,
-								item_rating: searchRes.item_data.item_rating,
-								item_repeats: searchRes.item_data.item_repeats
+				<div id="search-page">
+					<div id="search-results-wrap">
+					{
+						this.state.searchResults.map(function(searchRes, index){
+							var itemData = null;
+							if(searchRes.item_data){
+								itemData = {
+									item_status: searchRes.item_data.item_status,
+									item_progress: searchRes.item_data.item_progress,
+									item_rating: searchRes.item_data.item_rating,
+									item_repeats: searchRes.item_data.item_repeats
+								}
 							}
-						}
-						return <SearchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} indexNum={index} />;
-					})
-				}
+							return <SearchItem seriesData={searchRes} key={searchRes._id} itemData={itemData} indexNum={index} />;
+						})
+					}
+					</div>
 				</div>
 			</div>
 		);
@@ -157,9 +159,9 @@ var SearchItem = React.createClass({
 				</div>
 				<div className="search-result-content">
 					<div className="search-result-title-wrap">
-						<div className="search-result-title">
+						<a className="search-result-title link" href={'/' + TempSearchConstants.COLLECTION + '/' + this.props.seriesData.series_slug}>
 							{this.props.seriesData.series_title_main}
-						</div>
+						</a>
 						<div className="search-result-year">
 						{
 							(this.props.seriesData.series_date_start) ? new Date(this.props.seriesData.series_date_start).getFullYear() : ''

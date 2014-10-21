@@ -24,39 +24,35 @@ module.exports = function(app){
 	.post(function(req, res, next){
 		var settingsObj = {};
 
-		if(req.body.email && req.body.email !== req.user.email){
+		if(req.body.email !== req.user.email){
 			settingsObj.email = req.body.email;
 		}
 
-		if(req.body.biography && req.body.biography !== req.user.biography){
+		if(req.body.biography !== req.user.biography){
 			settingsObj.biography = req.body.biography;
 		}
 
-		if(req.body.avatar){
-			if(/^http(s)?:\/\/i\.imgur\.com\/[0-9a-zA-Z]+\.(jpg|png|gif)$/i.test(req.body.avatar)){
-				request.head(req.body.avatar, function(err, result, body){
-					var contentType = result.headers['content-type'].match(/^image\/(gif|jpeg|png)$/);
-					if(!err && contentType){
-						var downloadFrom = (contentType[1] === 'gif') ? 'http://localhost:8000/gif?url=' + req.body.avatar : 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + req.body.avatar.replace(/http(s)?:\/\//gi, '');
-						request(downloadFrom)
-						.pipe(fs.createWriteStream('./public/avatars/' + req.user.username + '.' + contentType[1], { flags: 'w' }))
-						.on('close', function(err){
-							settingsObj['avatar.original'] = req.body.avatar;
-							settingsObj['avatar.processed'] = '/avatars/' + req.user.username + '.' + contentType[1];
-							User.updateOne({
-								_id: req.user._id
-							}, settingsObj, function(err, status){
-								if(err) return next(new Error(err));
-								res.status(200).json({ status: 'OK', message: 'updated settings/basic', avatar: settingsObj['avatar.processed'] });
-							});
+		if(req.body.avatar && /^http(s)?:\/\/i\.imgur\.com\/[0-9a-zA-Z]+\.(jpg|png|gif)$/i.test(req.body.avatar)){
+			request.head(req.body.avatar, function(err, result, body){
+				var contentType = result.headers['content-type'].match(/^image\/(gif|jpeg|png)$/);
+				if(!err && contentType){
+					var downloadFrom = (contentType[1] === 'gif') ? 'http://localhost:8000/gif?url=' + req.body.avatar : 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + req.body.avatar.replace(/http(s)?:\/\//gi, '');
+					request(downloadFrom)
+					.pipe(fs.createWriteStream('./public/avatars/' + req.user.username + '.' + contentType[1], { flags: 'w' }))
+					.on('close', function(err){
+						settingsObj['avatar.original'] = req.body.avatar;
+						settingsObj['avatar.processed'] = '/avatars/' + req.user.username + '.' + contentType[1];
+						User.updateOne({
+							_id: req.user._id
+						}, settingsObj, function(err, status){
+							if(err) return next(new Error(err));
+							res.status(200).json({ status: 'OK', message: 'updated settings/basic', avatar: settingsObj['avatar.processed'] });
 						});
-					} else {
-						next(new Error('invalid imgur url'));
-					}
-				});
-			} else {
-				next(new Error('not an imgur url'))
-			}
+					});
+				} else {
+					next(new Error('invalid imgur url'));
+				}
+			});
 		} else {
 			User.updateOne({
 				_id: req.user._id

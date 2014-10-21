@@ -19,7 +19,6 @@
 }
 #settings {
 	@extend .cf;
-	width: 692px;
 }
 #settings-left {
 	@extend .cf;
@@ -180,4 +179,7 @@
 	&.visible {
 		opacity: 1;
 	}
+}
+#set-expecto {
+	font-weight: bold;
 }

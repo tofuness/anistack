@@ -20914,7 +20914,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 		}
 		var listExpPicker = null;
 		if(this.state.showPicker){
-			listExpPicker = PickerApp({itemData: this.props.itemData, seriesData: this.props.itemData, onRemove: this.remove, onSave: this.saveData});
+			listExpPicker = PickerApp({collection: TempListConstants.TYPE, itemData: this.props.itemData, seriesData: this.props.itemData, onRemove: this.remove, onSave: this.saveData});
 		}
 		return (
 			React.DOM.div({ref: "listItem", className: "list-item-wrap"}, 
@@ -20924,7 +20924,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 				}), onClick: this.toggleExpanded}, 
 					React.DOM.div({className: "list-item-image-preview", style: listItemStyle}
 					), 
-					React.DOM.div({className: "list-item-title"}, 
+					React.DOM.a({className: "list-item-title link", href: '/' + TempListConstants.TYPE + '/' + this.props.itemData.series_slug}, 
 						this.props.itemData.series_title_main
 					), 
 					React.DOM.div({className: "list-item-right"}, 
@@ -21538,25 +21538,27 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 	},
 	render: function(){
 		return (
-			React.DOM.div({id: "search-page"}, 
+			React.DOM.div(null, 
 				React.DOM.div({id: "search-input-wrap"}, 
 					React.DOM.input({id: "search-input", type: "text", placeholder: "Type to search...", value: this.state.searchText, onChange: this.onSearch, onKeyUp: this.onEsc})
 				), 
-				React.DOM.div({id: "search-results-wrap"}, 
-				
-					this.state.searchResults.map(function(searchRes, index){
-						var itemData = null;
-						if(searchRes.item_data){
-							itemData = {
-								item_status: searchRes.item_data.item_status,
-								item_progress: searchRes.item_data.item_progress,
-								item_rating: searchRes.item_data.item_rating,
-								item_repeats: searchRes.item_data.item_repeats
+				React.DOM.div({id: "search-page"}, 
+					React.DOM.div({id: "search-results-wrap"}, 
+					
+						this.state.searchResults.map(function(searchRes, index){
+							var itemData = null;
+							if(searchRes.item_data){
+								itemData = {
+									item_status: searchRes.item_data.item_status,
+									item_progress: searchRes.item_data.item_progress,
+									item_rating: searchRes.item_data.item_rating,
+									item_repeats: searchRes.item_data.item_repeats
+								}
 							}
-						}
-						return SearchItem({seriesData: searchRes, key: searchRes._id, itemData: itemData, indexNum: index});
-					})
-				
+							return SearchItem({seriesData: searchRes, key: searchRes._id, itemData: itemData, indexNum: index});
+						})
+					
+					)
 				)
 			)
 		);
@@ -21647,7 +21649,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 				), 
 				React.DOM.div({className: "search-result-content"}, 
 					React.DOM.div({className: "search-result-title-wrap"}, 
-						React.DOM.div({className: "search-result-title"}, 
+						React.DOM.a({className: "search-result-title link", href: '/' + TempSearchConstants.COLLECTION + '/' + this.props.seriesData.series_slug}, 
 							this.props.seriesData.series_title_main
 						), 
 						React.DOM.div({className: "search-result-year"}, 
@@ -21886,6 +21888,7 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 			error: false,
 			saved: false,
 			newAvatar: false,
+			rainbow: false,
 			avatarUrl: ''
 		}
 	},
@@ -21913,6 +21916,26 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 	onAvatarUrlChange: function(e){
 		this.setState({
 			avatarUrl: e.target.value
+		});
+	},
+	toggleExpectoPatronumLmao: function(){
+		if(this.state.rainbow){
+			$(this.refs.rainbow.getDOMNode()).velocity('stop', true).velocity({
+				translateX: [0, 0]
+			}, {
+				duration: 0
+			}).rainbow(false);
+		} else {
+			$(this.refs.rainbow.getDOMNode()).velocity({
+				translateX: [-5, 5],
+			}, {
+				duration: 300,
+				easing: [0.23, 1, 0.32, 1],
+				loop: true
+			}).rainbow();
+		}
+		this.setState({
+			rainbow: !this.state.rainbow
 		});
 	},
 	render: function(){
@@ -21944,8 +21967,8 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 							React.DOM.div({className: "set-title"}, "Avatar"), 
 							React.DOM.div({className: "set-desc"}, 
 								"Simply give us an ", React.DOM.a({href: "http://imgur.com", rel: "nofollow", target: "_blank"}, "Imgur"), " link to" + ' ' +
-								"your avatar and let us handle the rest.", 
-								React.DOM.br(null), React.DOM.br(null), 
+								"your avatar and let us handle the rest. Yes, we support ", React.DOM.div({id: "set-expecto", ref: "rainbow"}, "animated GIFs!"), 
+								React.DOM.br(null), 
 								"(Suggested: 250 × 250 pixels)"
 							)
 						), 
@@ -21954,6 +21977,8 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 								className: "set-input", 
 								name: "avatar", 
 								type: "text", 
+								onBlur: this.toggleExpectoPatronumLmao, 
+								onFocus: this.toggleExpectoPatronumLmao, 
 								value: this.state.avatarUrl, 
 								onChange: this.onAvatarUrlChange, 
 								placeholder: "E.g. http://i.imgur.com/2w0zFOH.gif"}

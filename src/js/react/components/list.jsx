@@ -398,7 +398,7 @@ var ListItem = React.createClass({
 		}
 		var listExpPicker = null;
 		if(this.state.showPicker){
-			listExpPicker = <PickerApp itemData={this.props.itemData} seriesData={this.props.itemData} onRemove={this.remove} onSave={this.saveData} />;
+			listExpPicker = <PickerApp collection={TempListConstants.TYPE} itemData={this.props.itemData} seriesData={this.props.itemData} onRemove={this.remove} onSave={this.saveData} />;
 		}
 		return (
 			<div ref="listItem" className="list-item-wrap">
@@ -408,9 +408,9 @@ var ListItem = React.createClass({
 				})} onClick={this.toggleExpanded}>
 					<div className="list-item-image-preview" style={listItemStyle}>
 					</div>
-					<div className="list-item-title">
+					<a className="list-item-title link" href={'/' + TempListConstants.TYPE + '/' + this.props.itemData.series_slug}>
 						{this.props.itemData.series_title_main}
-					</div>
+					</a>
 					<div className="list-item-right">
 						<div className="list-item-progress">
 							<div className="list-item-progress-sofar">

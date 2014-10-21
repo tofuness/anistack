@@ -17,15 +17,25 @@
 	}
 }
 
-@media(max-width: 480px){
+@media(max-width: 640px){
 	#top-nav-tagline {
 		display: none;
 	}
-	.logreg-form {
-		position: static;
-		top: auto;
-		left: auto;
-		margin: 0 auto!important;
-		width: 280px;
+	#top-guest-actions {
+		padding-right: 20px;
 	}
+	.logreg-form {
+		@extend .border-box;
+		padding: 30px;
+		width: 100%;
+	}
+	#bottom-logo {
+		display: none;
+	}
+	#bottom-menu-wrap {
+		padding-left: 20px;
+	}
+	@import 'mobile/series';
+	@import 'mobile/search';
+	@import 'mobile/settings';
 }

@@ -110,7 +110,7 @@ var validate = {
 			});
 		},
 		email: function(emailStr, done){
-			if(emailStr === undefined) return done(true);
+			if(!emailStr) return done(true);
 			// ?: This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
 			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + emailStr, function(err, response, body){
 				body = JSON.parse(body);
@@ -234,7 +234,7 @@ var AnimeSchema = new Schema({
 	series_image_reference: String,
 	series_genres: [ String ],
 	series_gallery: [ String ],
-	series_studios: [ Schema.Types.ObjectId ],
+	series_producer: [ Schema.Types.ObjectId ],
 	series_external_ids: {
 		myanimelist: {
 			type: Number,
@@ -285,7 +285,7 @@ var MangaSchema = new Schema({
 	series_image_reference: String,
 	series_genres: [ String ],
 	series_gallery: [ String ],
-	series_studios: [ Schema.Types.ObjectId ],
+	series_producer: [ Schema.Types.ObjectId ],
 	series_external_ids: {
 		myanimelist: {
 			type: Number,
@@ -307,16 +307,16 @@ MangaSchema.plugin(slugin, {
 	]
 });
 
-var StudioSchema = new Schema({
-	studio_title: {
+var ProducerSchema = new Schema({
+	producer_title: {
 		type: String,
 		required: true
 	},
-	studio_image_original: String,
-	studio_image_processed: String,
-	studio_description: String,
-	// ?: Does the "studio" actually do anime, or do they just license?
-	studio_animates: Boolean
+	producer_image_original: String,
+	producer_image_processed: String,
+	producer_description: String,
+	// ?: Does the "producer" actually produce anime, or do they just purchase rights to distribute and shit?
+	producer_animates: Boolean
 });
 
 var AnimeListItemSchema = new Schema({

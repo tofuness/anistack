@@ -9,5 +9,6 @@ module.exports = function(partialsPath){
 	hbs.registerPartials(partialsPath, function(err){
 		if(err) return new Error(err);
 	});
+
 	Swag.registerHelpers(hbs);
 }

@@ -1,0 +1,22 @@
+{{>header}}
+	<div id="middle">
+		<div id="series-top-wrap" class="full-height">
+			<div id="series-top-bg" class="full-height">
+				<div id="series-top-bg-ovl">
+				</div>
+			</div>
+			<div id="series-top-content">
+				<div id="series-top-hd-wrap">
+					<div id="series-top-hd" class="center-vert">
+						<div id="series-top-meta">
+							{{uppercase series.series_type}} with {{default series.series_episodes_total '—'}} Episode(s)
+						</div>
+						<div id="series-top-title">
+							{{series.series_title_main}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{{>footer}}

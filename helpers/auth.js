@@ -31,6 +31,14 @@ module.exports = {
 			res.redirect('/login');
 		}
 	},
+	ifStaff: function(req, res, next){
+		var staffList = process.env.APP_STAFF ? process.env.APP_STAFF.split(',') : [];
+		if(req.isAuthenticated() && staffList.indexOf(req.user.username) > -1){
+			next();
+		} else {
+			res.redirect('/login');
+		}
+	},
 	unlessAuth: function(req, res, next){
 		if(req.isAuthenticated()){
 			res.redirect('/');

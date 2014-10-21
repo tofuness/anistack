@@ -1,0 +1,26 @@
+#search-page-wrap {
+	padding-top: 72px;
+}
+#search-input-wrap {
+	@extend .border-box;
+	padding: 0 20px 20px;
+	width: 100%;}
+#search-input {
+	width: 100%;
+	font-size: 18px;
+}
+.search-result {
+	width: 100%;
+}
+.search-result-image {
+	display: none;
+}
+.search-result-content {
+	float: none;
+	width: auto;
+}
+.search-result-picker.first {
+	top: 50px;
+	right: 0;
+	@include transform-origin(190px top);
+}

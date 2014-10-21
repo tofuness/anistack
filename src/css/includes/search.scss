@@ -12,6 +12,8 @@
 }
 #search-input-wrap {
 	@extend .cf;
+	margin: 0 auto;
+	width: 1000px;
 	padding-bottom: 40px;
 }
 #search-input {
@@ -62,7 +64,7 @@
 	padding-left: 10px;
 	color: $gray-d-9;
 	font-size: 12px;
-	line-height: 24px;
+	line-height: 25px;
 }
 .search-result-desc {
 	line-height: 2em;

@@ -1,0 +1,19 @@
+#series-top-content {
+	padding: 0 20px;
+}
+#series-top-hd-wrap {
+	@extend .border-box;
+	width: 100%;
+}
+#series-top-hd {
+	width: 100%;
+}
+#series-top-meta {
+	font-size: 11px;
+}
+#series-top-title {
+	@extend .border-box;
+	padding-top: 10px;
+	width: 80%;
+	font-size: 37px;
+}

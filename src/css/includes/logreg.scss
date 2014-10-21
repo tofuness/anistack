@@ -1,29 +1,18 @@
 #logreg-bg {
-	position: absolute;
-	top: 52px;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: url(/img/login/sakamoto.jpg) center center fixed;
+	padding-top: 52px;
+	background: url(/img/login/sakamoto.jpg) center center;
 	background-size: cover;
 }
 #logreg-bg-ovl {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	@include linear-gradient(transparent, rgba(99, 114, 124, 0.7));
 }
 .logreg-form {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -150px;
+	margin: 0 auto;
+	padding-bottom: 15px;
 	width: 300px;
 }
 #logreg-form-logo {
-	margin: 30px 0;
+	padding: 60px 0;
 	width: 100%;
 	height: 21px;
 	background: url(/img/login/logo.png) center center no-repeat;
@@ -48,12 +37,6 @@
 		font-size: 11px;
 		text-align: center;
 	}
-}
-#register-form {
-	margin-top: -287px;
-}
-#login-form {
-	margin-top: -176px;
 }
 .logreg-section-wrap {
 	@extend .cf;

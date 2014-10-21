@@ -53,7 +53,7 @@
 #top-profile-menu-wrap {
 	@extend .tsout;
 	position: absolute;
-	top: 55px;
+	top: 45px;
 	right: -10px;
 	background: #fff;
 	opacity: 0;
@@ -62,10 +62,13 @@
 	@include border-radius(4px);
 	@include transform-origin(138px -10px);
 	@include transform(scale(0.4));
+	
 	&.visible {
 		@extend .tsin;
 		visibility: visible;
+		top: 55px;
 		opacity: 1;
+		@include transform(translateY(0));
 		@include transform(scale(1));
 	}
 }

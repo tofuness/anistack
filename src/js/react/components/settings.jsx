@@ -172,6 +172,7 @@ var BasicSettings = React.createClass({
 			error: false,
 			saved: false,
 			newAvatar: false,
+			rainbow: false,
 			avatarUrl: ''
 		}
 	},
@@ -199,6 +200,26 @@ var BasicSettings = React.createClass({
 	onAvatarUrlChange: function(e){
 		this.setState({
 			avatarUrl: e.target.value
+		});
+	},
+	toggleExpectoPatronumLmao: function(){
+		if(this.state.rainbow){
+			$(this.refs.rainbow.getDOMNode()).velocity('stop', true).velocity({
+				translateX: [0, 0]
+			}, {
+				duration: 0
+			}).rainbow(false);
+		} else {
+			$(this.refs.rainbow.getDOMNode()).velocity({
+				translateX: [-5, 5],
+			}, {
+				duration: 300,
+				easing: [0.23, 1, 0.32, 1],
+				loop: true
+			}).rainbow();
+		}
+		this.setState({
+			rainbow: !this.state.rainbow
 		});
 	},
 	render: function(){
@@ -230,8 +251,8 @@ var BasicSettings = React.createClass({
 							<div className="set-title">Avatar</div>
 							<div className="set-desc">
 								Simply give us an <a href="http://imgur.com" rel="nofollow" target="_blank">Imgur</a> link to
-								your avatar and let us handle the rest.
-								<br /><br />
+								your avatar and let us handle the rest. Yes, we support <div id="set-expecto" ref="rainbow">animated GIFs!</div>
+								<br />
 								(Suggested: 250 &times; 250 pixels)
 							</div>
 						</div>
@@ -240,6 +261,8 @@ var BasicSettings = React.createClass({
 								className="set-input"
 								name="avatar"
 								type="text"
+								onBlur={this.toggleExpectoPatronumLmao}
+								onFocus={this.toggleExpectoPatronumLmao}
 								value={this.state.avatarUrl}
 								onChange={this.onAvatarUrlChange}
 								placeholder="E.g. http://i.imgur.com/2w0zFOH.gif"

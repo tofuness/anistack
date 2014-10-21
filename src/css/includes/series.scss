@@ -1,0 +1,51 @@
+#series-top-wrap {
+	background-color: $black;
+}
+#series-top-bg {
+	position: relative;
+	overflow: hidden;
+	opacity: 0;
+	width: 100%;
+	background: url(http://i.imgur.com/JFHlnTd.jpg) center 10%;
+	background-size: cover;
+}
+#series-top-bg-ovl {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	@include linear-gradient-rev($b10, $b60);
+}
+#series-top-content {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+}
+#series-top-hd-wrap {
+	position: relative;
+	margin: 0 auto;
+	width: 1000px;
+	height: 100%;
+}
+#series-top-hd {
+	position: absolute;
+	top: 50%;
+}
+#series-top-meta {
+	@extend .opensans;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+#series-top-title {
+	@extend .playfair;
+	color: #fff;
+	font-size: 59px;
+	letter-spacing: 0.01em;
+}
