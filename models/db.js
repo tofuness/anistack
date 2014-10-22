@@ -8,9 +8,10 @@ var request = require('request');
 var mongooseValidateFilter = require('mongoose-validatefilter');
 
 if(process.env.NODE_ENV !== 'test'){
-	mongoose.connect('mongodb://localhost:27017/herro_dev');
-} else {
-	mongoose.connect('mongodb://localhost:27017/herro_test');
+	mongoose.connect('mongodb://127.0.0.1:' + process.env.DB_PORT + '/' + process.env.DB_NAME, {
+		user: process.env.DB_USERNAME,
+		pass: process.env.DB_PASSWORD
+	});
 }
 
 var validators = {
@@ -232,6 +233,7 @@ var AnimeSchema = new Schema({
 	series_image_original: String,
 	series_image_processed: String,
 	series_image_reference: String,
+	series_image_cover: String,
 	series_genres: [ String ],
 	series_gallery: [ String ],
 	series_producer: [ Schema.Types.ObjectId ],
@@ -283,6 +285,7 @@ var MangaSchema = new Schema({
 	series_image_original: String,
 	series_image_processed: String,
 	series_image_reference: String,
+	series_image_cover: String,
 	series_genres: [ String ],
 	series_gallery: [ String ],
 	series_producer: [ Schema.Types.ObjectId ],

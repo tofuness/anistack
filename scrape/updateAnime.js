@@ -1,3 +1,7 @@
+var dotenv = require('dotenv');
+dotenv._getKeysAndValuesFromEnvFilePath('../.env');
+dotenv._setEnvs();
+
 var async = require('async');
 var request = require('request');
 var _ = require('lodash');

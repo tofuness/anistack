@@ -1,7 +1,5 @@
 #middle {
 	@extend .cf;
-	&.search-page {
-		min-height: 100%;
-		background: #fff;
-	}
+	position: relative;
+	margin-top: 52px;
 }

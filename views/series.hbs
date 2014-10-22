@@ -1,22 +1,45 @@
 {{>header}}
 	<div id="middle">
-		<div id="series-top-wrap" class="full-height">
-			<div id="series-top-bg" class="full-height">
-				<div id="series-top-bg-ovl">
+		<div id="series-cover-wrap" class="full-height">
+			<div id="series-cover-bg" class="full-height" style="background-image: url({{default series.series_image_cover 'http://i.imgur.com/JFHlnTd.jpg'}})">
+				<div id="series-cover-bg-ovl">
 				</div>
 			</div>
-			<div id="series-top-content">
-				<div id="series-top-hd-wrap">
-					<div id="series-top-hd" class="center-vert">
-						<div id="series-top-meta">
-							{{uppercase series.series_type}} with {{default series.series_episodes_total '—'}} Episode(s)
+			<div id="series-cover-content">
+				<div id="series-favorite-btn">
+					<div id="series-favorite-icon" class="icon-bookmark"></div>
+					<div id="series-favorite-text">Add to Favorites</div>
+					
+				</div>
+				<div id="series-cover-hd-wrap">
+					<div id="series-cover-hd" class="center-vert">
+						<div id="series-cover-meta">
+							{{uppercase series.series_type}} with {{default series.series_episodes_total '—'}}{{#is collection 'anime'}} Episode(s){{else}} Chapter(s){{/is}}
 						</div>
-						<div id="series-top-title">
+						<div id="series-cover-title">
 							{{series.series_title_main}}
+						</div>
+						<div id="series-cover-alt-titles">
+							{{#if series.series_title_english}}
+							<div id="series-cover-literal">
+								Lit. {{capitalizeFirst series.series_title_english}}
+							</div>
+							{{/if}}
+							{{#if series.series_title_japanese}}
+							<div id="series-cover-japanese">
+								({{series.series_title_japanese}})
+							</div>
+							{{/if}}
+						</div>
+						<div id="series-cover-actions">
+
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div id="series-info-wrap" class="center-vert">
+
 		</div>
 	</div>
 {{>footer}}

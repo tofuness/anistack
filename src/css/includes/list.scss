@@ -1,6 +1,6 @@
 #list-wrap {
 	@extend .cf;
-	margin: 72px auto 0 auto;
+	margin: 20px auto 0 auto;
 	width: 1000px;
 	background: #fff;
 	@include border-radius(4px);
@@ -46,6 +46,7 @@
 	color: $gray-d-9;
 	font-size: 12px;
 	text-align: left;
+	white-space: pre-wrap;
 }
 .list-nav-item {
 	@extend .cf;
@@ -314,9 +315,8 @@
 .list-exp-ovl {
 	@extend .cf;
 	padding: 15px;
-	height: 280px;
 	@include box-shadow(inset 0 1px 6px $b05);
-	@include linear-gradient(transparent, rgba(99, 114, 124, 0.8));
+	@include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8));
 }
 .list-exp-picker {
 	float: right;

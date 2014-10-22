@@ -27,18 +27,19 @@ $(document).ready(function(){
 	});
 	$(window).resize();
 
-	$('#series-top-bg').velocity({
-		scale: [1.05, 0.95],
+	$('#series-cover-bg').velocity({
+		scale: [1.1, 1.05],
 		opacity: [1, 0],
 		//width: ['100%', '110%'],
-		translateY: [0, 30],
-		borderTopLeftRadius: [0, $(window).height()],
-		borderTopRightRadius: [0, $(window).height()],
+		translateX: [0, 20],
+		translateY: [0, -20],
+		borderTopLeftRadius: [0, $(window).height() / 2],
+		borderTopRightRadius: [0, $(window).height() / 4],
 		borderBottomRightRadius: [0, $(window).height() / 2],
-		borderBottomLeftRadius: [0, $(window).height() / 2]
+		borderBottomLeftRadius: [0, $(window).height() / 1]
 	}, {
-		delay: 600,
-		duration: 800,
+		delay: 300,
+		duration: 600,
 		easing: [0.23, 1, 0.32, 1]
 	});
 

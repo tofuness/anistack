@@ -14,6 +14,7 @@ var SearchApp = React.createClass({
 	},
 	componentDidMount: function(){
 		if(this.state.searchText !== '') this.search();
+		this.refs.searchInput.getDOMNode().focus();
 	},
 	onSearch: function(e){
 		e.persist();
@@ -50,7 +51,7 @@ var SearchApp = React.createClass({
 		return (
 			<div>
 				<div id="search-input-wrap">
-					<input id="search-input" type="text" placeholder="Type to search..." value={this.state.searchText} onChange={this.onSearch} onKeyUp={this.onEsc} />
+					<input id="search-input" type="text" placeholder="Type to search..." ref="searchInput" value={this.state.searchText} onChange={this.onSearch} onKeyUp={this.onEsc} />
 				</div>
 				<div id="search-page">
 					<div id="search-results-wrap">

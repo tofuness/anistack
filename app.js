@@ -81,7 +81,11 @@ app.use(session({
 	name: 'nothingimportant.pls.don.hijack',
 	secret: process.env.SESSION_SECRET,
 	store: new MongoStore({
-		db: 'herro_dev',
+		db: process.env.DB_NAME,
+		port: process.env.DB_PORT,
+		username: process.env.DB_USERNAME,
+		password: process.env.DB_PASSWORD,
+		auto_reconnect: true,
 		clear_interval: 60 // One minute
 	}),
 	cookie: {

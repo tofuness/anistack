@@ -1,52 +1,108 @@
-#series-top-wrap {
+#series-cover-wrap {
 	overflow: hidden;
-	background-color: $black;
+	background-color: #333;
 }
-#series-top-bg {
+#series-cover-bg {
 	position: relative;
 	overflow: hidden;
 	opacity: 0;
-	width: 100%;
-	background: url(http://i.imgur.com/JFHlnTd.jpg) center 10%;
+	width: 50%;
+	background-position: center 10%;
 	background-size: cover;
+	//@include transform(scale(0));
 }
-#series-top-bg-ovl {
+#series-cover-bg-ovl {
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	@include linear-gradient-rev($b10, $b60);
+	@include linear-gradient-rev($b10, $b70);
 }
-#series-top-content {
+#series-cover-content {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
-	right: 0;
+	width: 50%;
 	height: 100%;
 }
-#series-top-hd-wrap {
+#series-cover-hd-wrap {
 	position: relative;
 	margin: 0 auto;
-	width: 1000px;
+	width: 80%;
 	height: 100%;
 }
-#series-top-hd {
+#series-cover-hd {
 	position: absolute;
 	top: 50%;
 }
-#series-top-meta {
-	@extend .opensans;
+#series-cover-meta {
 	color: #fff;
 	font-size: 14px;
 	font-weight: 800;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
-#series-top-title {
+#series-cover-title {
 	@extend .playfair;
 	color: #fff;
 	font-size: 59px;
 	letter-spacing: 0.01em;
+}
+#series-cover-alt-titles {
+	@extend .cf;
+	& >div {
+		padding-left: 10px;
+	}
+	& >div:first-child {
+		padding-left: 0;
+	}
+}
+#series-cover-literal, #series-cover-japanese {
+	float: left;
+	padding-top: 8px;
+	color: $w70;
+	font-size: 14px;
+}
+
+// Favorite
+
+#series-favorite-btn {
+	@extend .cf;
+	@extend .ts15;
+	z-index: 2;
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	padding: 5px 10px;
+	color: #fff;
+	border: 1px solid #fff;
+	@include border-radius(30px);
+	&:hover {
+		background: $blue;
+		border: 1px solid $blue;
+		@include box-shadow(inset 0 1px 0 $w10);
+	}
+}
+#series-favorite-icon {
+	padding-right: 5px;
+	float: left;
+	font-size: 18px;
+	line-height: 14px;
+}
+#series-favorite-text {
+	float: left;
+}
+
+// Info
+
+#series-info-wrap {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	width: 50%;
+	height: 100%;
+	background: #fff;
 }

@@ -1,3 +1,7 @@
+var dotenv = require('dotenv');
+dotenv._getKeysAndValuesFromEnvFilePath('../.env');
+dotenv._setEnvs();
+
 // Not very well written code
 
 var db = require('../models/db.js');

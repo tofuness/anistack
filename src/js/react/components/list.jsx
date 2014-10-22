@@ -370,6 +370,7 @@ var ListItem = React.createClass({
 	},
 	toggleExpanded: function(e){
 		if(!TempListConstants.EDITABLE) return false;
+		if($(e.target).hasClass('list-item-title')) return;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {

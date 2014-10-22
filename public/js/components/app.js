@@ -20886,6 +20886,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	},
 	toggleExpanded: function(e){
 		if(!TempListConstants.EDITABLE) return false;
+		if($(e.target).hasClass('list-item-title')) return;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
@@ -21504,6 +21505,7 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 	},
 	componentDidMount: function(){
 		if(this.state.searchText !== '') this.search();
+		this.refs.searchInput.getDOMNode().focus();
 	},
 	onSearch: function(e){
 		e.persist();
@@ -21540,7 +21542,7 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 		return (
 			React.DOM.div(null, 
 				React.DOM.div({id: "search-input-wrap"}, 
-					React.DOM.input({id: "search-input", type: "text", placeholder: "Type to search...", value: this.state.searchText, onChange: this.onSearch, onKeyUp: this.onEsc})
+					React.DOM.input({id: "search-input", type: "text", placeholder: "Type to search...", ref: "searchInput", value: this.state.searchText, onChange: this.onSearch, onKeyUp: this.onEsc})
 				), 
 				React.DOM.div({id: "search-page"}, 
 					React.DOM.div({id: "search-results-wrap"}, 
