@@ -1,19 +1,31 @@
-#series-top-content {
+#series-cover-content {
 	padding: 0 20px;
 }
-#series-top-hd-wrap {
+#series-cover-hd-wrap {
 	@extend .border-box;
 	width: 100%;
 }
-#series-top-hd {
+#series-cover-bg {
 	width: 100%;
 }
-#series-top-meta {
+#series-cover-content {
+	@extend .border-box;
+	width: 100%;
+}
+#series-cover-hd {
+	width: 100%;
+}
+#series-cover-meta {
 	font-size: 11px;
 }
-#series-top-title {
+#series-cover-title {
 	@extend .border-box;
-	padding-top: 10px;
+	padding-cover: 10px;
 	width: 80%;
 	font-size: 37px;
+}
+#series-info-wrap {
+	position: initial;
+	display: block;
+	margin-top: 0!important;
 }
