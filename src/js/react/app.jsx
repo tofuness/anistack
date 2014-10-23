@@ -6,6 +6,7 @@ var Settings = require('./components/settings.jsx');
 var LoginForm = require('./components/login.jsx');
 var RegisterForm = require('./components/register.jsx');
 var SearchApp = require('./components/search.jsx');
+var PickerButton = require('./components/pickerbutton.jsx');
 
 var listNode = document.getElementById('list-left');
 if(listNode){
@@ -30,4 +31,10 @@ if(loginNode){
 var searchNode = document.getElementById('search-page-wrap');
 if(searchNode){
 	React.renderComponent(<SearchApp />, searchNode);
+}
+
+var seriesActionsNode = document.getElementById('series-cover-actions');
+if(seriesActionsNode){
+	var seriesData = $('#series-cover-actions');
+	React.renderComponent(<PickerButton _id={seriesData.data('id')} collection={seriesData.data('collection')} classPrefix='series' />, seriesActionsNode);
 }

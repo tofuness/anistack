@@ -7,6 +7,7 @@ var Settings = require('./components/settings.jsx');
 var LoginForm = require('./components/login.jsx');
 var RegisterForm = require('./components/register.jsx');
 var SearchApp = require('./components/search.jsx');
+var PickerButton = require('./components/pickerbutton.jsx');
 
 var listNode = document.getElementById('list-left');
 if(listNode){
@@ -32,7 +33,13 @@ var searchNode = document.getElementById('search-page-wrap');
 if(searchNode){
 	React.renderComponent(SearchApp(null), searchNode);
 }
-},{"./components/list.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx","./components/login.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx","./components/register.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx","./components/search.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx","./components/settings.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx","react/addons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js":[function(require,module,exports){
+
+var seriesActionsNode = document.getElementById('series-cover-actions');
+if(seriesActionsNode){
+	var seriesData = $('#series-cover-actions');
+	React.renderComponent(PickerButton({_id: seriesData.data('id'), collection: seriesData.data('collection'), classPrefix: "series"}), seriesActionsNode);
+}
+},{"./components/list.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx","./components/login.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx","./components/pickerbutton.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx","./components/register.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx","./components/search.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx","./components/settings.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx","react/addons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -20513,7 +20520,10 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
+},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\react.js":[function(require,module,exports){
+module.exports = require('./lib/React');
+
+},{"./lib/React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var PickerApp = require('./picker.jsx')
 var listStore = [];
 var cx = React.addons.classSet;
@@ -21332,7 +21342,142 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 });
 
 module.exports = PickerApp;
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
+},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx":[function(require,module,exports){
+/** @jsx React.DOM */var React = require('react');
+var cx = React.addons.classSet;
+var PickerApp = require('./picker.jsx');
+var PickerButton = React.createClass({displayName: 'PickerButton',
+	propTypes: {
+		_id: React.PropTypes.string,
+		collection: React.PropTypes.string,
+		classPrefix: React.PropTypes.string // Prefix for styling
+	},
+	getInitialState: function() {
+		return {
+			loaded: false,
+			pickerVisible: false,
+			seriesData: {},
+			itemAdded: false,
+			itemData: {}
+		};
+	},
+	componentWillMount: function(){
+		$.ajax({
+			url: '/api/' + this.props.collection + '/view/' + this.props._id,
+			type: 'GET',
+			success: function(data){
+				this.setState({
+					loaded: true,
+					itemAdded: (data.item_data) ? true : false,
+					itemData: (data.item_data) ? data.item_data : {},
+					seriesData: data
+				});
+			}.bind(this),
+			error: function(){
+				// Wat..?
+			}
+		});
+	},
+	togglePicker: function(){
+		this.setState({
+			pickerVisible: !this.state.pickerVisible
+		});
+	},
+	onRemove: function(){
+		$.ajax({
+			url: '/api/list/' + this.props.collection + '/remove',
+			type: 'POST',
+			data: {
+				_id: this.state.seriesData._id,
+				_csrf: UserConstants.CSRF_TOKEN
+			},
+			success: function(){
+				this.setState({
+					itemData: {},
+					itemAdded: false
+				});
+			}.bind(this)
+		})
+	},
+	onCancel: function(){
+		this.setState({
+			itemData: this.state.itemData,
+			pickerVisible: false
+		});
+	},
+	onSave: function(newData){
+		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + this.props.collection + '/update' : '/api/list/' + this.props.collection + '/add';
+		newData._id = this.state.seriesData._id;
+		newData._csrf = UserConstants.CSRF_TOKEN;
+
+		$.ajax({
+			type: 'POST',
+			url: APIUrl,
+			data: newData,
+			success: function(res){
+				this.setState({
+					itemData: newData,
+					itemAdded: true,
+					pickerVisible: false
+				});
+			}.bind(this),
+			error: function(){
+				if(!this.state.itemData){
+					this.onRemove();
+				} else {
+					this.onCancel();
+				}
+				confirm('Could not add/update series. Something seems to be wrong on our end!');
+			}.bind(this)
+		});
+	},
+	render: function(){
+		var pbtnStyle = {
+			display: (this.state.loaded) ? 'block' : 'none'
+		}
+		return (
+			React.DOM.div({className: this.props.classPrefix + '-pbtn-wrap', style: pbtnStyle}, 
+				React.DOM.div({className: 
+					cx({
+						'pbtn-remove': true,
+						'visible': UserConstants.LOGGED_IN && this.state.itemAdded,
+					}), 
+				onClick: this.onRemove}, 
+					"× Remove"
+				), 
+				React.DOM.div({className: 
+					cx({
+						'pbtn-add': true,
+						'visible': UserConstants.LOGGED_IN,
+						'added': this.state.itemAdded,
+						'open': this.state.pickerVisible
+					}), 
+				onClick: this.togglePicker}, 
+					
+						(this.state.itemAdded) ? 'Edit info' : '+ Add to list'
+					
+				), 
+				React.DOM.div({className: 
+					cx({
+						'pbtn-picker': true,
+						'visible': this.state.pickerVisible
+					})
+				}, 
+					PickerApp({
+						collection: this.props.collection, 
+						seriesData: this.state.seriesData, 
+						itemData: this.state.itemData, 
+						onSave: this.onSave, 
+						onCancel: this.onCancel}
+					)
+				)
+			)
+		);
+	}
+});
+
+module.exports = PickerButton;
+},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx","react":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\react.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var RegisterForm = React.createClass({displayName: 'RegisterForm',
 	getInitialState: function(){
 		return {

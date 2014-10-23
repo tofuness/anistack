@@ -69,6 +69,7 @@
 // Favorite
 
 #series-favorite-btn {
+	display: none;
 	@extend .cf;
 	@extend .ts15;
 	z-index: 2;
@@ -94,6 +95,71 @@
 }
 #series-favorite-text {
 	float: left;
+}
+
+// Picker
+
+.series-pbtn-wrap {
+	@extend .cf;
+	position: absolute;
+	z-index: 2;
+	top: 20px;
+	right: 20px;
+	& .pbtn-remove {
+		visibility: hidden;
+		float: left;
+		margin-right: 15px;
+		margin-top: 6px;
+		padding-right: 1px;
+		cursor: pointer;
+		color: #fff;
+		font-size: 11px;
+		&:hover {
+			color: $red;
+			@include box-shadow(0 1px 0 $red);
+		}
+		&.visible {
+			visibility: visible;
+		}
+	}
+	& .pbtn-add {
+		@extend .ts10;
+		float: left;
+		cursor: pointer;
+		padding: 3px 13px;
+		color: #fff;
+		font-weight: bold;
+		border: 2px solid #fff;
+		@include border-radius(30px);
+		&:hover {
+			background: $blue;
+			border: 2px solid $blue;
+		}
+		&.open {
+			background: $blue;
+			border: 2px solid $blue;
+		}
+	}
+	& .pbtn-picker {
+		@extend .tsout;
+		position: absolute;
+		visibility: hidden;
+		top: 40px;
+		right: 0;
+		z-index: $z-up;
+		opacity: 0;
+		background: #fff;
+		@include transform(scale(0.4));
+		@include transform-origin(190px top);
+		@include box-shadow(0 1px 6px $b30);
+		@include border-radius(4px);
+		&.visible {
+			@extend .tsin;
+			visibility: visible;
+			opacity: 1;
+			@include transform(scale(1));
+		}
+	}
 }
 
 // Info
