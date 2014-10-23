@@ -20520,10 +20520,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\react.js":[function(require,module,exports){
-module.exports = require('./lib/React');
-
-},{"./lib/React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
+},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var PickerApp = require('./picker.jsx')
 var listStore = [];
 var cx = React.addons.classSet;
@@ -21343,8 +21340,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 module.exports = PickerApp;
 },{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx":[function(require,module,exports){
-/** @jsx React.DOM */var React = require('react');
-var cx = React.addons.classSet;
+/** @jsx React.DOM */var cx = React.addons.classSet;
 var PickerApp = require('./picker.jsx');
 var PickerButton = React.createClass({displayName: 'PickerButton',
 	propTypes: {
@@ -21372,10 +21368,19 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 					itemData: (data.item_data) ? data.item_data : {},
 					seriesData: data
 				});
+				this.animateIn();
 			}.bind(this),
 			error: function(){
 				// Wat..?
 			}
+		});
+	},
+	animateIn: function(){
+		$(this.refs.pbtnWrap.getDOMNode()).velocity({
+			opacity: [1, 0]
+		}, {
+			duration: 300,
+			easing: [0.23, 1, 0.32, 1]
 		});
 	},
 	togglePicker: function(){
@@ -21384,6 +21389,8 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 		});
 	},
 	onRemove: function(){
+		var confirmRemove = confirm('Are you sure you want to remove?');
+		if(!confirmRemove) return false;
 		$.ajax({
 			url: '/api/list/' + this.props.collection + '/remove',
 			type: 'POST',
@@ -21432,11 +21439,11 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 		});
 	},
 	render: function(){
-		var pbtnStyle = {
-			display: (this.state.loaded) ? 'block' : 'none'
+		var pbtnWrapStyle = {
+			visibility: (this.state.loaded) ? 'visible' : 'hidden'
 		}
 		return (
-			React.DOM.div({className: this.props.classPrefix + '-pbtn-wrap', style: pbtnStyle}, 
+			React.DOM.div({className: this.props.classPrefix + '-pbtn-wrap', style: pbtnWrapStyle, ref: "pbtnWrap"}, 
 				React.DOM.div({className: 
 					cx({
 						'pbtn-remove': true,
@@ -21477,7 +21484,7 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 });
 
 module.exports = PickerButton;
-},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx","react":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\react.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
+},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var RegisterForm = React.createClass({displayName: 'RegisterForm',
 	getInitialState: function(){
 		return {

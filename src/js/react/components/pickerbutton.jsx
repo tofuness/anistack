@@ -1,4 +1,3 @@
-var React = require('react');
 var cx = React.addons.classSet;
 var PickerApp = require('./picker.jsx');
 var PickerButton = React.createClass({
@@ -27,10 +26,19 @@ var PickerButton = React.createClass({
 					itemData: (data.item_data) ? data.item_data : {},
 					seriesData: data
 				});
+				this.animateIn();
 			}.bind(this),
 			error: function(){
 				// Wat..?
 			}
+		});
+	},
+	animateIn: function(){
+		$(this.refs.pbtnWrap.getDOMNode()).velocity({
+			opacity: [1, 0]
+		}, {
+			duration: 300,
+			easing: [0.23, 1, 0.32, 1]
 		});
 	},
 	togglePicker: function(){
@@ -39,6 +47,8 @@ var PickerButton = React.createClass({
 		});
 	},
 	onRemove: function(){
+		var confirmRemove = confirm('Are you sure you want to remove?');
+		if(!confirmRemove) return false;
 		$.ajax({
 			url: '/api/list/' + this.props.collection + '/remove',
 			type: 'POST',
@@ -87,11 +97,11 @@ var PickerButton = React.createClass({
 		});
 	},
 	render: function(){
-		var pbtnStyle = {
-			display: (this.state.loaded) ? 'block' : 'none'
+		var pbtnWrapStyle = {
+			visibility: (this.state.loaded) ? 'visible' : 'hidden'
 		}
 		return (
-			<div className={this.props.classPrefix + '-pbtn-wrap'} style={pbtnStyle}>
+			<div className={this.props.classPrefix + '-pbtn-wrap'} style={pbtnWrapStyle} ref="pbtnWrap">
 				<div className={
 					cx({
 						'pbtn-remove': true,

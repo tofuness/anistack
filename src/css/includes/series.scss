@@ -17,7 +17,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	@include linear-gradient-rev($b10, $b70);
+	@include linear-gradient-rev(transparent, $b70);
 }
 #series-cover-content {
 	position: absolute;
