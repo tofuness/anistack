@@ -46,7 +46,7 @@ module.exports = function(app){
 							_id: req.user._id
 						}, settingsObj, function(err, status){
 							if(err) return next(new Error(err));
-							res.status(200).json({ status: 'OK', message: 'updated settings/basic', avatar: settingsObj['avatar.processed'] });
+							res.status(200).json({ status: 'ok', message: 'updated settings/basic', avatar: settingsObj['avatar.processed'] });
 						});
 					});
 				} else {
@@ -58,7 +58,7 @@ module.exports = function(app){
 				_id: req.user._id
 			}, settingsObj, function(err, status){
 				if(err) return next(new Error(err));
-				res.status(200).json({ status: 'OK', message: 'updated settings/basic' });
+				res.status(200).json({ status: 'ok', message: 'updated settings/basic' });
 			});
 		}
 	});
@@ -75,7 +75,7 @@ module.exports = function(app){
 					password: req.body.new_password
 				}, function(err, status){
 					if(err) return next(new Error(err));
-					res.status(200).json({ status: 'OK', message: 'updated settings/password' });
+					res.status(200).json({ status: 'ok', message: 'updated settings/password' });
 				});
 			});
 		} else {
@@ -100,7 +100,7 @@ module.exports = function(app){
 			_id: req.user._id
 		}, settingsObj, function(err, status){
 			if(err) return next(new Error(err));
-			res.status(200).json({ status: 'OK', message: 'updated settings/privacy' });
+			res.status(200).json({ status: 'ok', message: 'updated settings/privacy' });
 		});
 	});
 }

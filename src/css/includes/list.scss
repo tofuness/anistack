@@ -330,6 +330,22 @@
 	text-align: center;
 	line-height: 405px;
 }
+#list-private {
+	@extend .cf;
+	margin: 0 auto;
+	padding-top: 270px;
+	width: 200px;
+	color: $yellow;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+#list-private-icon {
+	float: left;
+	color: $yellow;
+	font-size: 23px;
+	border-radius: 30px;
+}
 
 // List left
 

@@ -20536,6 +20536,7 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			listFilterText: '', // Search text
 			listFilterStatus: 'all', // Which tab to display
 			listLoaded: false, // Display list if true
+			listPrivate: false,
 			listLastSort: 'series_title_main', // Property name from API
 			listLastOrder: 'asc' // Order to sort by
 		}
@@ -20546,10 +20547,16 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			url: '/api/list/' + TempListConstants.TYPE + '/view/' + TempListConstants.USERNAME,
 			type: 'get',
 			success: function(listData){
-				listStore = listData;
-				console.log('listStore length: ' + listStore.length);
-				PubSub.publishSync(ListConstants.DATA_CHANGE);
-			},
+				if(listData.private){
+					this.setState({
+						listPrivate: true,
+						listLoaded: true
+					});
+				} else {
+					listStore = listData;
+					PubSub.publishSync(ListConstants.DATA_CHANGE);
+				}
+			}.bind(this),
 			error: function(err){
 				console.log(err);
 			}
@@ -20602,8 +20609,13 @@ var ListApp = React.createClass({displayName: 'ListApp',
 	},
 	render: function(){
 		var listStyle = {
-			display: this.state.listLoaded
+			display: (this.state.listLoaded) ? 'block' : 'none'
 		}
+
+		if(this.state.listPrivate){
+			return (ListPrivate(null));
+		}
+
 		return (
 			React.DOM.div({style: listStyle}, 
 				React.DOM.div({id: "list-top"}, 
@@ -20684,7 +20696,6 @@ var ListContent = React.createClass({displayName: 'ListContent',
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
 				if(this.state.listEnd < listEnd || listMulti === 1){
-					console.log('listEnd value:' + listEnd);
 					this.setState({ listEnd: listEnd });
 				}
 		}.bind(this));
@@ -20791,6 +20802,15 @@ var ListNoResults = React.createClass({displayName: 'ListNoResults',
 	},
 	render: function(){
 		return (React.DOM.div({ref: "listNoRes", id: "list-noresults"}, "No matches. Try another search term."));
+	}
+});
+
+var ListPrivate = React.createClass({displayName: 'ListPrivate',
+	componentDidMount: function(){
+		
+	},
+	render: function(){
+		return (React.DOM.div({id: "list-private"}, React.DOM.span({id: "list-private-icon", ref: "listPrivateIcon", className: "icon-lock-line"}), "This list is private."));
 	}
 });
 

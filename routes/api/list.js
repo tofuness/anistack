@@ -23,6 +23,9 @@ module.exports = function(app){
 	app.route('/list/:list(anime|manga)/view/:username')
 	.get(function(req, res, next){
 		// Needs cleanup
+		if(req.user.settings[req.param('list') + '_list_private']){
+			return res.status(200).json({ status: 'ok', private: true });
+		}
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, {
