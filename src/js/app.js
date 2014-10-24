@@ -27,23 +27,25 @@ $(document).ready(function(){
 	});
 	$(window).resize();
 
-	$('#series-cover-bg').velocity({
-		scale: [1.1, 1.05],
-		opacity: [1, 0],
-		//width: ['100%', '110%'],
-		translateX: [0, 20],
-		translateY: [0, -20],
-		borderTopLeftRadius: [0, $(window).height() / 2],
-		borderTopRightRadius: [0, $(window).height() / 4],
-		borderBottomRightRadius: [0, $(window).height() / 2],
-		borderBottomLeftRadius: [0, $(window).height() / 1]
-	}, {
-		delay: 300,
-		duration: 600,
-		easing: [0.23, 1, 0.32, 1]
+	$('<img/>').attr('src', $('#series-cover-bg').data('bg')).on('load', function(){
+		$(this).remove();
+		$('#series-cover-bg').css('background-image', 'url(' + $('#series-cover-bg').data('bg') + ')').velocity({
+			scale: [1.1, 1.05],
+			opacity: [1, 0],
+			//width: ['100%', '110%'],
+			translateX: [0, 20],
+			translateY: [0, -20],
+			borderTopLeftRadius: [0, $(window).height() / 2],
+			borderTopRightRadius: [0, $(window).height() / 4],
+			borderBottomRightRadius: [0, $(window).height() / 2],
+			borderBottomLeftRadius: [0, $(window).height() / 1]
+		}, {
+			delay: 100,
+			duration: 600,
+			easing: [0.23, 1, 0.32, 1]
+		});
 	});
-
-
+	
 	$.Velocity.RegisterEffect('herro.slideUpIn', {
 		defaultDuration: 300,
 		calls: [

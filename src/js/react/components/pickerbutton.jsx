@@ -98,7 +98,7 @@ var PickerButton = React.createClass({
 	},
 	render: function(){
 		var pbtnWrapStyle = {
-			visibility: (this.state.loaded) ? 'visible' : 'hidden'
+			visibility: (this.state.loaded && UserConstants.LOGGED_IN) ? 'visible' : 'hidden'
 		}
 		return (
 			<div className={this.props.classPrefix + '-pbtn-wrap'} style={pbtnWrapStyle} ref="pbtnWrap">

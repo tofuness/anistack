@@ -15,6 +15,8 @@
 	#bottom-logo {
 		padding-left: 20px;
 	}
+	// Import this at 1000px-ish, because long titles tend to break the layout early.
+	@import 'mobile/series';
 }
 
 @media(max-width: 640px){
@@ -35,7 +37,6 @@
 	#bottom-menu-wrap {
 		padding-left: 20px;
 	}
-	@import 'mobile/series';
 	@import 'mobile/search';
 	@import 'mobile/settings';
 }
