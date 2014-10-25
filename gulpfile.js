@@ -40,9 +40,9 @@ var path = {
 	}
 }
 
-gulp.task('sass', function(){
+gulp.task('sass', function() {
 	return gulp.src(path.scss.src)
-		.pipe(plumber(function(err){
+		.pipe(plumber(function(err) {
 			console.log(err.message);
 			this.emit('end'); // https://github.com/floatdrop/gulp-plumber/issues/8#issuecomment-41465386
 		}))
@@ -52,9 +52,9 @@ gulp.task('sass', function(){
 		.pipe(gulp.dest(path.scss.dest));
 });
 
-gulp.task('css', function(){
+gulp.task('css', function() {
 	return gulp.src(path.css.src)
-	.pipe(plumber(function(err){
+	.pipe(plumber(function(err) {
 		console.log(err.message);
 		this.emit('end');
 	}))
@@ -65,9 +65,9 @@ gulp.task('css', function(){
 	.pipe(gulp.dest(path.css.dest));
 });
 
-gulp.task('uglify', function(){
+gulp.task('uglify', function() {
 	return gulp.src(path.js.src)
-	.pipe(plumber(function(err){
+	.pipe(plumber(function(err) {
 		console.log(err.message);
 		this.emit('end');
 	}))
@@ -102,7 +102,7 @@ gulp.task('browserify', function() {
 	.pipe(gulp.dest(path.jsx.dest));
 });
 
-gulp.task('watch', function(){
+gulp.task('watch', function() {
 	gulp.watch(path.scss.files, ['sass']);
 	gulp.watch(path.scss.files, ['css']);
 	gulp.watch(path.js.files, ['uglify']);

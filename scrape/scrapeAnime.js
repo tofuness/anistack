@@ -13,14 +13,14 @@ var Anime = db.Anime;
 var fs = require('fs');
 var errorLog = fs.WriteStream('./logs/scrapeAnime-' + new Date().getTime() + '.log');
 
-var getQ = async.queue(function(task, callback){
-	request(task.url, function(err, res, body){
-		if(err || res.statusCode === 404){
+var getQ = async.queue(function(task, callback) {
+	request(task.url, function(err, res, body) {
+		if (err || res.statusCode === 404) {
 			console.log('404 at %s', task.url);
 			console.log('\n');
 			bar.update(task.index / 26200);
 			console.log('\n');
-			setTimeout(function(){
+			setTimeout(function() {
 				callback();
 			}, 200);
 			return false;
@@ -44,8 +44,8 @@ var getQ = async.queue(function(task, callback){
 			}
 		});
 
-		Anime.createOne(anime, function(err, doc){
-			if(err){
+		Anime.createOne(anime, function(err, doc) {
+			if (err) {
 				errorLog.write(err + '\n URL: ' + task.url + '\n\n');
 				console.log('DB ERROR at %s', task.url);
 				console.log('\n');
@@ -57,7 +57,7 @@ var getQ = async.queue(function(task, callback){
 			console.log('\n');
 			bar.update(task.index / 26200);
 			console.log('\n');
-			setTimeout(function(){
+			setTimeout(function() {
 				callback();
 			}, 200);
 			return false;
@@ -65,7 +65,7 @@ var getQ = async.queue(function(task, callback){
 	});
 }, 1);
 
-for(var i = 5615, len = 26200; i < len; i++){
+for (var i = 5615, len = 26200; i < len; i++) {
 	getQ.push({
 		url: 'http://shikimori.org/api/animes/' + i,
 		index: i

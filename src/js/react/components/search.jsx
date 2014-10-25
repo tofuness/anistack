@@ -5,49 +5,49 @@ var TempSearchConstants = {
 var cx = React.addons.classSet;
 var PickerApp = require('./picker.jsx');
 var SearchApp = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		var initState = {
 			searchText: TempSearchConstants.QUERY,
 			searchResults: []
 		}
 		return initState;
 	},
-	componentDidMount: function(){
-		if(this.state.searchText !== '') this.search();
+	componentDidMount: function() {
+		if (this.state.searchText !== '') this.search();
 		this.refs.searchInput.getDOMNode().focus();
 	},
-	onSearch: function(e){
+	onSearch: function(e) {
 		e.persist();
 		this.setState({
 			searchText: e.target.value,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
 		});
-		if(e.target.value !== ''){
+		if (e.target.value !== '') {
 			this.search();
 		}
 	},
-	search: _.debounce(function(){
-		if(this.state.searchText === '') return false;
+	search: _.debounce(function() {
+		if (this.state.searchText === '') return false;
 		$.ajax({
 			type: 'get',
 			url: '/api/' + TempSearchConstants.COLLECTION + '/search/' + this.state.searchText,
-			success: function(searchRes){
+			success: function(searchRes) {
 				this.setState({
 					searchResults: searchRes
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	onEsc: function(e){
+	onEsc: function(e) {
 		// On escape, clear the search
-		if(e.key === 'Escape'){
+		if (e.key === 'Escape') {
 			this.setState({ searchText: '', searchResults: [] });
 		}
 	},
-	render: function(){
+	render: function() {
 		return (
 			<div>
 				<div id="search-input-wrap">
@@ -56,9 +56,9 @@ var SearchApp = React.createClass({
 				<div id="search-page">
 					<div id="search-results-wrap">
 					{
-						this.state.searchResults.map(function(searchRes, index){
+						this.state.searchResults.map(function(searchRes, index) {
 							var itemData = null;
-							if(searchRes.item_data){
+							if (searchRes.item_data) {
 								itemData = {
 									item_status: searchRes.item_data.item_status,
 									item_progress: searchRes.item_data.item_progress,
@@ -84,26 +84,26 @@ var SearchItem = React.createClass({
 			pickerVisible: false 
 		};
 	},
-	componentWillMount: function(){
-		if(this.props.itemData){
+	componentWillMount: function() {
+		if (this.props.itemData) {
 			this.setState({
 				itemData: this.props.itemData,
 				itemAdded: true
 			});
 		}
 	},
-	togglePicker: function(){
+	togglePicker: function() {
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
 		});
 	},
-	closePicker: function(){
+	closePicker: function() {
 		this.setState({
 			itemData: this.state.itemData,
 			pickerVisible: false
 		});
 	},
-	saveData: function(data){
+	saveData: function(data) {
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
 		data._csrf = UserConstants.CSRF_TOKEN;
@@ -112,7 +112,7 @@ var SearchItem = React.createClass({
 			type: 'post',
 			url: APIUrl,
 			data: data,
-			success: function(res){
+			success: function(res) {
 				console.log(res); 
 				this.setState({
 					itemData: data,
@@ -120,8 +120,8 @@ var SearchItem = React.createClass({
 					pickerVisible: false
 				});
 			}.bind(this),
-			error: function(){
-				if(!this.props.itemData){
+			error: function() {
+				if (!this.props.itemData) {
 					this.onRemove();
 				} else {
 					this.closePicker();
@@ -130,7 +130,7 @@ var SearchItem = React.createClass({
 			}.bind(this)
 		});
 	},
-	onRemove: function(){
+	onRemove: function() {
 		$.ajax({
 			type: 'post',
 			url: '/api/list/' + TempSearchConstants.COLLECTION + '/remove',
@@ -138,19 +138,19 @@ var SearchItem = React.createClass({
 				_id: this.props.seriesData._id,
 				_csrf: UserConstants.CSRF_TOKEN
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					itemData: {},
 					itemAdded: false
 				});
 			}.bind(this),
-			error: function(){
+			error: function() {
 				this.closePicker();
 				confirm('Could not remove series. Something seems to be wrong on our end!');
 			}.bind(this)
 		});
 	},
-	render: function(){
+	render: function() {
 		var imageStyle = {
 			backgroundImage: 'url(' + this.props.seriesData.series_image_reference + ')'
 		}

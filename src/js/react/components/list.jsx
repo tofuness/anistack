@@ -8,7 +8,7 @@ var TempListConstants = {
 }
 
 var ListApp = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			listFilterText: '', // Search text
 			listFilterStatus: 'all', // Which tab to display
@@ -18,13 +18,13 @@ var ListApp = React.createClass({
 			listLastOrder: 'asc' // Order to sort by
 		}
 	},
-	componentDidMount: function(){
+	componentDidMount: function() {
 		PubSub.subscribe(ListConstants.DATA_CHANGE, this.reloadList);
 		$.ajax({
 			url: '/api/list/' + TempListConstants.TYPE + '/view/' + TempListConstants.USERNAME,
 			type: 'get',
-			success: function(listData){
-				if(listData.private){
+			success: function(listData) {
+				if (listData.private) {
 					this.setState({
 						listPrivate: true,
 						listLoaded: true
@@ -34,29 +34,29 @@ var ListApp = React.createClass({
 					PubSub.publishSync(ListConstants.DATA_CHANGE);
 				}
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	},
-	reloadList: function(data){
+	reloadList: function(data) {
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
 		// This displays the list after the list is loaded from API
-		if(!this.state.listLoaded){
+		if (!this.state.listLoaded) {
 			this.setState({
 				listLoaded: true
 			});
 		}
 	},
-	sortList: function(sortBy, order){
+	sortList: function(sortBy, order) {
 		sortBy = sortBy || 'series_title_main';
 
 		// Decide if it should be asc or desc
 
-		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
+		if ((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)) {
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
-		} else if(!order){
+		} else if (!order) {
 			order = 'asc';
 		}
 
@@ -67,29 +67,29 @@ var ListApp = React.createClass({
 			listLastOrder: order
 		});
 	},
-	setStatusFilter: function(statusVal){
+	setStatusFilter: function(statusVal) {
 		this.setState({
 			listFilterStatus: statusVal
 		});
 	},
-	setTextFilter: function(e){
+	setTextFilter: function(e) {
 		this.setState({
 			listFilterText: e.target.value
 		});
 	},
-	clearTextFilter: function(e){
-		if(e.key === 'Escape' && this.state.listFilterText !== ''){
+	clearTextFilter: function(e) {
+		if (e.key === 'Escape' && this.state.listFilterText !== '') {
 			this.setState({
 				listFilterText: ''
 			});
 		}
 	},
-	render: function(){
+	render: function() {
 		var listStyle = {
 			display: (this.state.listLoaded) ? 'block' : 'none'
 		}
 
-		if(this.state.listPrivate){
+		if (this.state.listPrivate) {
 			return (<ListPrivate />);
 		}
 
@@ -98,7 +98,7 @@ var ListApp = React.createClass({
 				<div id="list-top">
 					<div id="list-tabs-wrap">
 						{
-							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index){
+							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index) {
 								var statusVal = statusName.toLowerCase().replace(/ /g, '')
 								return (
 									<div className={cx({
@@ -155,24 +155,24 @@ var ListContent = React.createClass({
 		listFilterStatus: React.PropTypes.string,
 		listLoaded: React.PropTypes.bool
 	},
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			batchRendering: (this.props.listData && this.props.listData.length > 150),
 			listBegin: 0,
 			listEnd: 40
 		}
 	},
-	componentDidMount: function(){
-		if(!this.state.batchRendering) return false;
+	componentDidMount: function() {
+		if (!this.state.batchRendering) return false;
 
 		// Decides how much of the list we should render
-		$(window).on('scroll', function(e){
+		$(window).on('scroll', function(e) {
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 				var listItemsOnScreen = window.innerHeight / 43 | 0;
 				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
-				if(this.state.listEnd < listEnd || listMulti === 1){
+				if (this.state.listEnd < listEnd || listMulti === 1) {
 					this.setState({ listEnd: listEnd });
 				}
 		}.bind(this));
@@ -181,8 +181,8 @@ var ListContent = React.createClass({
 		var listDOM = [];
 		var lastStatus = null;
 		var lastStatusCount = 0;
-		if(!this.props.listLoaded) return (<div />);
-		_.each(this.props.listData, function(listItem, index){
+		if (!this.props.listLoaded) return (<div />);
+		_.each(this.props.listData, function(listItem, index) {
 			var listNode = []; // Current node we are iterating over
 
 			if(
@@ -194,7 +194,7 @@ var ListContent = React.createClass({
 			}
 
 			// Check if item matches search string
-			var matchingGenre= _.findIndex(listItem.series_genres, function(genre){
+			var matchingGenre= _.findIndex(listItem.series_genres, function(genre) {
 				return genre.match(new RegExp('^' + this.props.listFilterText, 'gi'));
 			}.bind(this));
 
@@ -205,11 +205,11 @@ var ListContent = React.createClass({
 				matchingGenre > -1
 			){
 				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
-			} else if(this.props.listFilterText === ''){
+			} else if (this.props.listFilterText === '') {
 				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
 			}
 
-			if(lastStatus !== listItem.item_status && listNode.length){
+			if (lastStatus !== listItem.item_status && listNode.length) {
 				lastStatus = listItem.item_status;
 				lastStatusCount++;
 				listDOM.push(
@@ -227,7 +227,7 @@ var ListContent = React.createClass({
 					</div>
 				)
 			}
-			if(listNode.length) listDOM.push(listNode[0]);
+			if (listNode.length) listDOM.push(listNode[0]);
 		}.bind(this));
 	
 		/* 
@@ -238,7 +238,7 @@ var ListContent = React.createClass({
 			paddingBottom: 15
 		}
 
-		if(this.state.batchRendering && lastStatusCount > 0){
+		if (this.state.batchRendering && lastStatusCount > 0) {
 			listStyle.minHeight = (listDOM.length - lastStatusCount) * 43;
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -248,9 +248,9 @@ var ListContent = React.createClass({
 			or becuase nothing matched the search text.
 		*/
 
-		if(listDOM.length === 0 && this.props.listFilterText === ''){
+		if (listDOM.length === 0 && this.props.listFilterText === '') {
 			listDOM = <ListEmpty statusName={this.props.listFilterStatus.replace('onhold', 'on hold')} />;
-		} else if(listDOM.length === 0){
+		} else if (listDOM.length === 0) {
 			listDOM = <ListNoResults />;
 		}
 
@@ -259,36 +259,36 @@ var ListContent = React.createClass({
 });
 
 var ListEmpty = React.createClass({
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
 			delay: 100,
 			duration: 300
 		});
 	},
-	render: function(){
+	render: function() {
 		return (<div ref="listNoRes" id="list-noresults">No series under {this.props.statusName}!</div>);
 	}
 });
 
 var ListNoResults = React.createClass({
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
 			delay: 100,
 			duration: 300
 		});
 	},
-	render: function(){
+	render: function() {
 		return (<div ref="listNoRes" id="list-noresults">No matches. Try another search term.</div>);
 	}
 });
 
 var ListPrivate = React.createClass({
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listPrivate.getDOMNode()).velocity('herro.slideUpIn', {
 			duration: 800
 		});
 	},
-	render: function(){
+	render: function() {
 		return (<div id="list-private" ref="listPrivate"><span id="list-private-icon" className="icon-lock-line"></span>This list is private.</div>);
 	}
 });
@@ -301,9 +301,9 @@ var ListItem = React.createClass({
 			showPicker: false // If the PickerApp component should mount
 		};
 	},
-	cancel: function(){
-		if(this.state.expanded){
-			this.toggleExpanded(function(){
+	cancel: function() {
+		if (this.state.expanded) {
+			this.toggleExpanded(function() {
 				// On cancel, reset the PickerApp component by re-mounting it.
 				this.setState({
 					showPicker: false
@@ -311,14 +311,14 @@ var ListItem = React.createClass({
 			}.bind(this));
 		}
 	},
-	remove: function(){
+	remove: function() {
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
 		$.ajax({
 			url: '/api/list/' + TempListConstants.TYPE + '/Remove',
 			data: { _id: this.props.itemData._id, _csrf: UserConstants.CSRF_TOKEN },
 			type: 'POST',
-			error: function(){
+			error: function() {
 				alert('Something seems to be wrong on our side! Your list did not get updated :C');
 			}
 		});
@@ -333,7 +333,7 @@ var ListItem = React.createClass({
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: 300,
-			complete: function(){
+			complete: function() {
 				$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
 				this.setState({
 					expanded: false
@@ -343,7 +343,7 @@ var ListItem = React.createClass({
 			}.bind(this)
 		});
 	},
-	saveData: function(data){
+	saveData: function(data) {
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
 		data._csrf = UserConstants.CSRF_TOKEN;
@@ -351,12 +351,12 @@ var ListItem = React.createClass({
 			url: '/api/list/' + TempListConstants.TYPE + '/update',
 			data: data,
 			type: 'POST',
-			error: function(){
+			error: function() {
 				alert('Something seems to be wrong on our side! Your list did not get updated :C');
 			}
 		});
 
-		if(data.item_status !== this.props.itemData.item_status){
+		if (data.item_status !== this.props.itemData.item_status) {
 			// Remove 43px (list item height) from the div
 			$('#list-content').css('min-height','-=43');
 
@@ -367,7 +367,7 @@ var ListItem = React.createClass({
 			}, {
 				easing: [0.165, 0.84, 0.44, 1],
 				duration: 300,
-				complete: function(){
+				complete: function() {
 					$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
 					this.setState({
 						expanded: false
@@ -390,22 +390,22 @@ var ListItem = React.createClass({
 			PubSub.publishSync(ListConstants.DATA_CHANGE);
 		}
 	},
-	toggleExpanded: function(e){
-		if(!TempListConstants.EDITABLE) return false;
-		if($(e.target).hasClass('list-item-title')) return;
+	toggleExpanded: function(e) {
+		if (!TempListConstants.EDITABLE) return false;
+		if ($(e.target).hasClass('list-item-title')) return;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,
-			complete: function(){
+			complete: function() {
 				// If e is a function, we know that it should be a callback
-				if(!this.state.expanded){
+				if (!this.state.expanded) {
 					this.setState({
 						showPicker: false
 					});
 				}
-				if(e instanceof Function){
+				if (e instanceof Function) {
 					e();
 				}
 			}.bind(this)
@@ -415,12 +415,12 @@ var ListItem = React.createClass({
 			showPicker: true
 		});
 	},
-	render: function(){
+	render: function() {
 		var listItemStyle = {
 			backgroundImage: 'url(' + this.props.itemData.series_image_reference + ')'
 		}
 		var listExpPicker = null;
-		if(this.state.showPicker){
+		if (this.state.showPicker) {
 			listExpPicker = <PickerApp collection={TempListConstants.TYPE} itemData={this.props.itemData} seriesData={this.props.itemData} onRemove={this.remove} onSave={this.saveData} />;
 		}
 		return (
@@ -483,7 +483,3 @@ var ListItem = React.createClass({
 });
 
 module.exports = ListApp;
-/*
-
-var mountNode = document.getElementById('list-left');
-if(mountNode) React.renderComponent(<ListApp />, mountNode); */

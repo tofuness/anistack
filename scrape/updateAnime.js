@@ -13,9 +13,9 @@ var Anime = db.Anime;
 var fs = require('fs');
 //var errorLog = fs.WriteStream('./logs/updateAnime-' + new Date().getTime() + '.log');
 
-var getQ = async.queue(function(task, callback){
-	request(task.url, function(err, res, body){
-		if(err || res.statusCode === 404){
+var getQ = async.queue(function(task, callback) {
+	request(task.url, function(err, res, body) {
+		if (err || res.statusCode === 404) {
 			console.log('404 at %s', task.url);
 			return callback();
 		}
@@ -37,8 +37,8 @@ var getQ = async.queue(function(task, callback){
 
 		Anime.updateOne({
 			'series_external_ids.myanimelist': task.id
-		}, anime, function(err, doc){
-			if(err){
+		}, anime, function(err, doc) {
+			if (err) {
 				errorLog.write(err + '\n URL: ' + task.url + '\n\n');
 				console.log('DB ERROR at %s', task.url);
 				return callback();

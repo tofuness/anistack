@@ -1,8 +1,8 @@
 var LoginForm = React.createClass({
-	logIn: function(){
+	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},
-	render: function(){
+	render: function() {
 		return (
 			<form id="login-form" className="logreg-form" ref="loginForm" method="post" action="/login">
 				<div id="logreg-form-logo"></div>

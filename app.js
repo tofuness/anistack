@@ -1,9 +1,8 @@
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
 	var cluster = require('cluster');
-
-	if(cluster.isMaster){
+	if (cluster.isMaster) {
 		var cpuCores = require('os').cpus().length;
-		for(var i = 0; i < cpuCores; i++){
+		for (var i = 0; i < cpuCores; i++) {
 			cluster.fork();
 		}
 		return false;
@@ -11,12 +10,10 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 // Load process variables
-
 var dotenv = require('dotenv');
 dotenv.load();
 
 // Main application modules
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -29,54 +26,43 @@ var cors = require('cors');
 var lusca = require('lusca');
 
 // Authentication modules
-
 var passport = require('passport');
 var passportLocal = require('passport-local');
 var MongoStore = require('connect-mongo')(session);
 
 // Express configuration
-
 var app = express();
 var apiRouter = express.Router();
 
 app.disable('x-powered-by');
 
 // Set application port
-
 app.set('port', process.env.APP_PORT);
 
 // Set views directory
-
 app.set('views', path.join(__dirname, 'views'));
 
 // Set view engine
-
 app.set('view engine', 'hbs');
 
 // Set public directory (static assets)
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Enable POS/GET/PUT/DELETE methods
-
 app.use(methodOverride());
 
 // Accept JSON data
-
 app.use(bodyParser.json());
 
 // Accept url encoded data
-
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
 // Parse cookies and populate req.cookies with them
-
 app.use(cookieParser());
 
 // Set up session storage
-
 app.use(session({
 	name: 'nothingimportant.pls.don.hijack',
 	secret: process.env.SESSION_SECRET,
@@ -96,7 +82,6 @@ app.use(session({
 }));
 
 // Enable CSRF protection. Has to come after cookies/session
-
 app.use(lusca({
     csrf: (process.env.NODE_ENV === 'production'),
 	csp: false,
@@ -107,36 +92,31 @@ app.use(lusca({
 }));
 
 // Enable flashes
-
 app.use(flash());
 
 // Initialize authentication module (passport)
-
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Enable logging
-
-if(process.env.NODE_ENV === 'development'){
+if (process.env.NODE_ENV === 'development') {
 	var morgan = require('morgan');
 	app.use(morgan('dev'));
 }
 
 // Production settings
-
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
 	console.log('✓ Enabled trust proxy. Now accepting X-Forwarded-* headers.');
 	app.enable('trust proxy');
-	cluster.on('exit', function(worker){
+	cluster.on('exit', function(worker) {
 		console.log('Worker ' + worker.id + ' died');
 		cluster.fork();
 	});
 }
 
 // Populate res.locals.user with user information if logged in
-
-app.use(function(req, res, next){
-	if(req.isAuthenticated()){
+app.use(function(req, res, next) {
+	if (req.isAuthenticated()) {
 		res.locals.user = req.user
 	} else {
 		res.locals.user = null;
@@ -145,12 +125,10 @@ app.use(function(req, res, next){
 });
 
 // Run helpers
-
 require('./helpers/hbs')('./views/partials');
 require('./helpers/passport');
 
 // Web routes
-
 require('./routes/web/list.js')(app);
 require('./routes/web/search.js')(app);
 require('./routes/web/logreg.js')(app);
@@ -158,7 +136,6 @@ require('./routes/web/settings.js')(app);
 require('./routes/web/series.js')(app);
 
 // API routes
-
 app.use('/api', cors()); // Enable cors on all /api/* routes
 app.use('/api', apiRouter); // Prepends /api/* to all routes
 require('./routes/api/list.js')(apiRouter);
@@ -167,10 +144,9 @@ require('./routes/api/series.js')(apiRouter);
 require('./routes/api/user.js')(apiRouter);
 
 // Basic error handling
-
-app.use(function(err, req, res, next){
-	if(err){
-		if(process.env.NODE_ENV === 'development'){
+app.use(function(err, req, res, next) {
+	if (err) {
+		if (process.env.NODE_ENV === 'development') {
 			console.log(req.url);
 			console.log(err.stack);
 		}
@@ -181,15 +157,13 @@ app.use(function(err, req, res, next){
 });
 
 // If none of the routes are matched, give 'em the 404
-
-app.use(function(req, res, next){
+app.use(function(req, res, next) {
 	res.status(404).send('404 - Page not found');
 });
 
 // Create application server
-
-http.createServer(app).listen(app.get('port'), function(){
-	if(process.env.NODE_ENV !== 'test'){
+http.createServer(app).listen(app.get('port'), function() {
+	if (process.env.NODE_ENV !== 'test') {
 		console.log('✓ Running application in: ' + process.env.NODE_ENV);
 		console.log('✓ Application up and running at port: ' + app.get('port'));
 	}

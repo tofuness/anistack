@@ -10,32 +10,32 @@ var SearchApp = require('./components/search.jsx');
 var PickerButton = require('./components/pickerbutton.jsx');
 
 var listNode = document.getElementById('list-left');
-if(listNode){
+if (listNode) {
 	React.renderComponent(ListApp(null), listNode);
 }
 
 var settingsNode = document.getElementById('settings');
-if(settingsNode){
+if (settingsNode) {
 	React.renderComponent(Settings(null), settingsNode);
 }
 
 var registerNode = document.getElementById('register-form-wrap');
-if(registerNode){
+if (registerNode) {
 	React.renderComponent(RegisterForm(null), registerNode);
 }
 
 var loginNode = document.getElementById('login-form-wrap');
-if(loginNode){
+if (loginNode) {
 	React.renderComponent(LoginForm(null), loginNode);
 }
 
 var searchNode = document.getElementById('search-page-wrap');
-if(searchNode){
+if (searchNode) {
 	React.renderComponent(SearchApp(null), searchNode);
 }
 
 var seriesActionsNode = document.getElementById('series-cover-actions');
-if(seriesActionsNode){
+if (seriesActionsNode) {
 	var seriesData = $('#series-cover-actions');
 	React.renderComponent(PickerButton({_id: seriesData.data('id'), collection: seriesData.data('collection'), classPrefix: "series"}), seriesActionsNode);
 }
@@ -20531,7 +20531,7 @@ var TempListConstants = {
 }
 
 var ListApp = React.createClass({displayName: 'ListApp',
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			listFilterText: '', // Search text
 			listFilterStatus: 'all', // Which tab to display
@@ -20541,13 +20541,13 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			listLastOrder: 'asc' // Order to sort by
 		}
 	},
-	componentDidMount: function(){
+	componentDidMount: function() {
 		PubSub.subscribe(ListConstants.DATA_CHANGE, this.reloadList);
 		$.ajax({
 			url: '/api/list/' + TempListConstants.TYPE + '/view/' + TempListConstants.USERNAME,
 			type: 'get',
-			success: function(listData){
-				if(listData.private){
+			success: function(listData) {
+				if (listData.private) {
 					this.setState({
 						listPrivate: true,
 						listLoaded: true
@@ -20557,29 +20557,29 @@ var ListApp = React.createClass({displayName: 'ListApp',
 					PubSub.publishSync(ListConstants.DATA_CHANGE);
 				}
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	},
-	reloadList: function(data){
+	reloadList: function(data) {
 		this.sortList(this.state.listLastSort, this.state.listLastOrder);
 
 		// This displays the list after the list is loaded from API
-		if(!this.state.listLoaded){
+		if (!this.state.listLoaded) {
 			this.setState({
 				listLoaded: true
 			});
 		}
 	},
-	sortList: function(sortBy, order){
+	sortList: function(sortBy, order) {
 		sortBy = sortBy || 'series_title_main';
 
 		// Decide if it should be asc or desc
 
-		if((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)){
+		if ((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)) {
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
-		} else if(!order){
+		} else if (!order) {
 			order = 'asc';
 		}
 
@@ -20590,29 +20590,29 @@ var ListApp = React.createClass({displayName: 'ListApp',
 			listLastOrder: order
 		});
 	},
-	setStatusFilter: function(statusVal){
+	setStatusFilter: function(statusVal) {
 		this.setState({
 			listFilterStatus: statusVal
 		});
 	},
-	setTextFilter: function(e){
+	setTextFilter: function(e) {
 		this.setState({
 			listFilterText: e.target.value
 		});
 	},
-	clearTextFilter: function(e){
-		if(e.key === 'Escape' && this.state.listFilterText !== ''){
+	clearTextFilter: function(e) {
+		if (e.key === 'Escape' && this.state.listFilterText !== '') {
 			this.setState({
 				listFilterText: ''
 			});
 		}
 	},
-	render: function(){
+	render: function() {
 		var listStyle = {
 			display: (this.state.listLoaded) ? 'block' : 'none'
 		}
 
-		if(this.state.listPrivate){
+		if (this.state.listPrivate) {
 			return (ListPrivate(null));
 		}
 
@@ -20621,7 +20621,7 @@ var ListApp = React.createClass({displayName: 'ListApp',
 				React.DOM.div({id: "list-top"}, 
 					React.DOM.div({id: "list-tabs-wrap"}, 
 						
-							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index){
+							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index) {
 								var statusVal = statusName.toLowerCase().replace(/ /g, '')
 								return (
 									React.DOM.div({className: cx({
@@ -20678,24 +20678,24 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		listFilterStatus: React.PropTypes.string,
 		listLoaded: React.PropTypes.bool
 	},
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			batchRendering: (this.props.listData && this.props.listData.length > 150),
 			listBegin: 0,
 			listEnd: 40
 		}
 	},
-	componentDidMount: function(){
-		if(!this.state.batchRendering) return false;
+	componentDidMount: function() {
+		if (!this.state.batchRendering) return false;
 
 		// Decides how much of the list we should render
-		$(window).on('scroll', function(e){
+		$(window).on('scroll', function(e) {
 				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 				var listItemsOnScreen = window.innerHeight / 43 | 0;
 				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 				var listEnd = listItemsOnScreen * listMulti * 1.5;
 
-				if(this.state.listEnd < listEnd || listMulti === 1){
+				if (this.state.listEnd < listEnd || listMulti === 1) {
 					this.setState({ listEnd: listEnd });
 				}
 		}.bind(this));
@@ -20704,8 +20704,8 @@ var ListContent = React.createClass({displayName: 'ListContent',
 		var listDOM = [];
 		var lastStatus = null;
 		var lastStatusCount = 0;
-		if(!this.props.listLoaded) return (React.DOM.div(null));
-		_.each(this.props.listData, function(listItem, index){
+		if (!this.props.listLoaded) return (React.DOM.div(null));
+		_.each(this.props.listData, function(listItem, index) {
 			var listNode = []; // Current node we are iterating over
 
 			if(
@@ -20717,7 +20717,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			}
 
 			// Check if item matches search string
-			var matchingGenre= _.findIndex(listItem.series_genres, function(genre){
+			var matchingGenre= _.findIndex(listItem.series_genres, function(genre) {
 				return genre.match(new RegExp('^' + this.props.listFilterText, 'gi'));
 			}.bind(this));
 
@@ -20728,11 +20728,11 @@ var ListContent = React.createClass({displayName: 'ListContent',
 				matchingGenre > -1
 			){
 				listNode.push(ListItem({itemData: listItem, key: listItem._id}));
-			} else if(this.props.listFilterText === ''){
+			} else if (this.props.listFilterText === '') {
 				listNode.push(ListItem({itemData: listItem, key: listItem._id}));
 			}
 
-			if(lastStatus !== listItem.item_status && listNode.length){
+			if (lastStatus !== listItem.item_status && listNode.length) {
 				lastStatus = listItem.item_status;
 				lastStatusCount++;
 				listDOM.push(
@@ -20750,7 +20750,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 					)
 				)
 			}
-			if(listNode.length) listDOM.push(listNode[0]);
+			if (listNode.length) listDOM.push(listNode[0]);
 		}.bind(this));
 	
 		/* 
@@ -20761,7 +20761,7 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			paddingBottom: 15
 		}
 
-		if(this.state.batchRendering && lastStatusCount > 0){
+		if (this.state.batchRendering && lastStatusCount > 0) {
 			listStyle.minHeight = (listDOM.length - lastStatusCount) * 43;
 			listDOM = listDOM.slice(0, this.state.listEnd);
 		}
@@ -20771,9 +20771,9 @@ var ListContent = React.createClass({displayName: 'ListContent',
 			or becuase nothing matched the search text.
 		*/
 
-		if(listDOM.length === 0 && this.props.listFilterText === ''){
+		if (listDOM.length === 0 && this.props.listFilterText === '') {
 			listDOM = ListEmpty({statusName: this.props.listFilterStatus.replace('onhold', 'on hold')});
-		} else if(listDOM.length === 0){
+		} else if (listDOM.length === 0) {
 			listDOM = ListNoResults(null);
 		}
 
@@ -20782,36 +20782,36 @@ var ListContent = React.createClass({displayName: 'ListContent',
 });
 
 var ListEmpty = React.createClass({displayName: 'ListEmpty',
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
 			delay: 100,
 			duration: 300
 		});
 	},
-	render: function(){
+	render: function() {
 		return (React.DOM.div({ref: "listNoRes", id: "list-noresults"}, "No series under ", this.props.statusName, "!"));
 	}
 });
 
 var ListNoResults = React.createClass({displayName: 'ListNoResults',
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listNoRes.getDOMNode()).velocity('transition.slideUpIn', {
 			delay: 100,
 			duration: 300
 		});
 	},
-	render: function(){
+	render: function() {
 		return (React.DOM.div({ref: "listNoRes", id: "list-noresults"}, "No matches. Try another search term."));
 	}
 });
 
 var ListPrivate = React.createClass({displayName: 'ListPrivate',
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$(this.refs.listPrivate.getDOMNode()).velocity('herro.slideUpIn', {
 			duration: 800
 		});
 	},
-	render: function(){
+	render: function() {
 		return (React.DOM.div({id: "list-private", ref: "listPrivate"}, React.DOM.span({id: "list-private-icon", className: "icon-lock-line"}), "This list is private."));
 	}
 });
@@ -20824,9 +20824,9 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			showPicker: false // If the PickerApp component should mount
 		};
 	},
-	cancel: function(){
-		if(this.state.expanded){
-			this.toggleExpanded(function(){
+	cancel: function() {
+		if (this.state.expanded) {
+			this.toggleExpanded(function() {
 				// On cancel, reset the PickerApp component by re-mounting it.
 				this.setState({
 					showPicker: false
@@ -20834,14 +20834,14 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			}.bind(this));
 		}
 	},
-	remove: function(){
+	remove: function() {
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
 		$.ajax({
 			url: '/api/list/' + TempListConstants.TYPE + '/Remove',
 			data: { _id: this.props.itemData._id, _csrf: UserConstants.CSRF_TOKEN },
 			type: 'POST',
-			error: function(){
+			error: function() {
 				alert('Something seems to be wrong on our side! Your list did not get updated :C');
 			}
 		});
@@ -20856,7 +20856,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: 300,
-			complete: function(){
+			complete: function() {
 				$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
 				this.setState({
 					expanded: false
@@ -20866,7 +20866,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			}.bind(this)
 		});
 	},
-	saveData: function(data){
+	saveData: function(data) {
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
 		data._csrf = UserConstants.CSRF_TOKEN;
@@ -20874,12 +20874,12 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			url: '/api/list/' + TempListConstants.TYPE + '/update',
 			data: data,
 			type: 'POST',
-			error: function(){
+			error: function() {
 				alert('Something seems to be wrong on our side! Your list did not get updated :C');
 			}
 		});
 
-		if(data.item_status !== this.props.itemData.item_status){
+		if (data.item_status !== this.props.itemData.item_status) {
 			// Remove 43px (list item height) from the div
 			$('#list-content').css('min-height','-=43');
 
@@ -20890,7 +20890,7 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			}, {
 				easing: [0.165, 0.84, 0.44, 1],
 				duration: 300,
-				complete: function(){
+				complete: function() {
 					$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
 					this.setState({
 						expanded: false
@@ -20913,22 +20913,22 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			PubSub.publishSync(ListConstants.DATA_CHANGE);
 		}
 	},
-	toggleExpanded: function(e){
-		if(!TempListConstants.EDITABLE) return false;
-		if($(e.target).hasClass('list-item-title')) return;
+	toggleExpanded: function(e) {
+		if (!TempListConstants.EDITABLE) return false;
+		if ($(e.target).hasClass('list-item-title')) return;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 280] : [280, 0]
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,
-			complete: function(){
+			complete: function() {
 				// If e is a function, we know that it should be a callback
-				if(!this.state.expanded){
+				if (!this.state.expanded) {
 					this.setState({
 						showPicker: false
 					});
 				}
-				if(e instanceof Function){
+				if (e instanceof Function) {
 					e();
 				}
 			}.bind(this)
@@ -20938,12 +20938,12 @@ var ListItem = React.createClass({displayName: 'ListItem',
 			showPicker: true
 		});
 	},
-	render: function(){
+	render: function() {
 		var listItemStyle = {
 			backgroundImage: 'url(' + this.props.itemData.series_image_reference + ')'
 		}
 		var listExpPicker = null;
-		if(this.state.showPicker){
+		if (this.state.showPicker) {
 			listExpPicker = PickerApp({collection: TempListConstants.TYPE, itemData: this.props.itemData, seriesData: this.props.itemData, onRemove: this.remove, onSave: this.saveData});
 		}
 		return (
@@ -21006,16 +21006,12 @@ var ListItem = React.createClass({displayName: 'ListItem',
 });
 
 module.exports = ListApp;
-/*
-
-var mountNode = document.getElementById('list-left');
-if(mountNode) React.renderComponent(<ListApp />, mountNode); */
 },{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var LoginForm = React.createClass({displayName: 'LoginForm',
-	logIn: function(){
+	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},
-	render: function(){
+	render: function() {
 		return (
 			React.DOM.form({id: "login-form", className: "logreg-form", ref: "loginForm", method: "post", action: "/login"}, 
 				React.DOM.div({id: "logreg-form-logo"}), 
@@ -21050,7 +21046,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 		onSave: React.PropTypes.func,
 		onRemove: React.PropTypes.func
 	},
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			item_status: 'current',
 			item_progress: '',
@@ -21061,7 +21057,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			saving: false
 		}
 	},
-	componentDidUpdate: function(prevProps, prevState){
+	componentDidUpdate: function(prevProps, prevState) {
 		var episodesTotal = this.props.seriesData.series_episodes_total;
 
 		// If statement below is there to make sure no infinite-loop happen
@@ -21073,7 +21069,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			// (1) If changed status to completed: bump up the item_progress
 
-			if(this.state.item_status === 'completed' && prevState.item_status !== 'completed'){
+			if (this.state.item_status === 'completed' && prevState.item_status !== 'completed') {
 				this.setState({
 					item_progress: episodesTotal
 				});
@@ -21081,7 +21077,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			// (2) If changed the status from completed: remove the item_progress
 
-			if(prevState.item_status === 'completed' && this.state.item_status !== 'completed'){
+			if (prevState.item_status === 'completed' && this.state.item_status !== 'completed') {
 				this.setState({
 					item_progress: ''
 				});
@@ -21089,7 +21085,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
 
-			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
+			if (prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal) {
 				this.setState({
 					item_status: 'completed'
 				});
@@ -21097,7 +21093,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
 
-			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
+			if (prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal) {
 				this.setState({
 					item_status: 'current'
 				});
@@ -21105,46 +21101,46 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 
 		}
 	},
-	componentWillReceiveProps: function(nextProps){
-		if(nextProps.itemData){
-			if(Object.keys(nextProps.itemData).length === 0){
+	componentWillReceiveProps: function(nextProps) {
+		if (nextProps.itemData) {
+			if (Object.keys(nextProps.itemData).length === 0) {
 				// Timeout to compensate for scaleout animation duration
-				setTimeout(function(){
+				setTimeout(function() {
 					this.setState(this.getInitialState());
 				}.bind(this), 150);
 			} else {
-				setTimeout(function(){
+				setTimeout(function() {
 					this.setState(nextProps.itemData);
 				}.bind(this), 150);
 			}
 		}
 	},
-	componentDidMount: function(){
-		if(this.props.itemData){
+	componentDidMount: function() {
+		if (this.props.itemData) {
 			this.setState(this.props.itemData);
 		}
 
 		var progressInput = this.refs.progressInput.getDOMNode();
-		$(progressInput).on('mousewheel', function(e){
+		$(progressInput).on('mousewheel', function(e) {
 			this.setProgress(Number(this.state.item_progress) + e.deltaY);
 			return false;
 		}.bind(this));
 
 		var repeatsInput = this.refs.repeatsInput.getDOMNode();
-		$(repeatsInput).on('mousewheel', function(e){
+		$(repeatsInput).on('mousewheel', function(e) {
 			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
 		}.bind(this));
 	},
-	setStatus: function(e){
+	setStatus: function(e) {
 		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');
 		this.setState({
 			item_status: statusVal
 		});
 		this.toggleStatusMenu();
 	},
-	toggleStatusMenu: function(){
-		if(this.state.statusMenuVisible){
+	toggleStatusMenu: function() {
+		if (this.state.statusMenuVisible) {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
 		} else {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
@@ -21154,12 +21150,12 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			statusMenuVisible: !this.state.statusMenuVisible
 		});
 	},
-	onProgressChange: function(e){
+	onProgressChange: function(e) {
 		// This function is here because we want to pass
 		// a value to setProgress and not an event.
 		this.setProgress(e.target.value); 
 	},
-	setProgress: function(progressValue){
+	setProgress: function(progressValue) {
 		if(
 			!isNaN(progressValue) &&
 			(progressValue <= this.props.seriesData.series_episodes_total ||
@@ -21171,19 +21167,19 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			});
 		}
 	},
-	onRepeatsChange: function(e){
+	onRepeatsChange: function(e) {
 		this.setRepeats(e.target.value);
 	},
 	setRepeats: function(repeatsValue){
-		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
+		if (!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999) {
 			this.setState({
 				item_repeats: (repeatsValue == 0) ? '' : repeatsValue
 			});
 		}
 	},
-	setRatingPreview: function(rating, e){
+	setRatingPreview: function(rating, e) {
 		var posX = e.pageX - $(e.target).offset().left;
-		if(rating === 1 && posX < 21){
+		if (rating === 1 && posX < 21) {
 			this.setState({
 				ratingPreview: (posX > 10) ? Number(rating) : 0
 			});
@@ -21193,18 +21189,18 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			});
 		}
 	},
-	resetRatingPreview: function(){
+	resetRatingPreview: function() {
 		this.setState({
 			ratingPreview: ''
 		});
 	},
-	onRatingClick: function(e){
+	onRatingClick: function(e) {
 		this.setState({
 			item_rating: this.state.ratingPreview
 		});
 	},
-	onSave: function(){
-		if(this.state.saving) return false;
+	onSave: function() {
+		if (this.state.saving) return false;
 		this.setState({
 			saving: true
 		});
@@ -21219,14 +21215,14 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 			delay: 100,
 			duration: 300
 		}).delay(600).hide();
-		setTimeout(function(){
+		setTimeout(function() {
 			this.setState({
 				saving: false
 			});
 			this.props.onSave(this.state);
 		}.bind(this), 550);
 	},
-	render: function(){
+	render: function() {
 		var heartNodes = [];
 		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.item_rating;
 
@@ -21276,7 +21272,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 								})
 							}, 
 							
-								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
+								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType) {
 									return (
 										React.DOM.div({ref: "pickerStatusItem", className: "picker-status-menu-item", onClick: this.setStatus}, 
 											statusType
@@ -21379,11 +21375,11 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 			itemData: {}
 		};
 	},
-	componentWillMount: function(){
+	componentWillMount: function() {
 		$.ajax({
 			url: '/api/' + this.props.collection + '/view/' + this.props._id,
 			type: 'GET',
-			success: function(data){
+			success: function(data) {
 				this.setState({
 					loaded: true,
 					itemAdded: (data.item_data) ? true : false,
@@ -21392,12 +21388,12 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 				});
 				this.animateIn();
 			}.bind(this),
-			error: function(){
+			error: function() {
 				// Wat..?
 			}
 		});
 	},
-	animateIn: function(){
+	animateIn: function() {
 		$(this.refs.pbtnWrap.getDOMNode()).velocity({
 			opacity: [1, 0]
 		}, {
@@ -21405,14 +21401,14 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 			easing: [0.23, 1, 0.32, 1]
 		});
 	},
-	togglePicker: function(){
+	togglePicker: function() {
 		this.setState({
 			pickerVisible: !this.state.pickerVisible
 		});
 	},
-	onRemove: function(){
+	onRemove: function() {
 		var confirmRemove = confirm('Are you sure you want to remove?');
-		if(!confirmRemove) return false;
+		if (!confirmRemove) return false;
 		$.ajax({
 			url: '/api/list/' + this.props.collection + '/remove',
 			type: 'POST',
@@ -21420,7 +21416,7 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 				_id: this.state.seriesData._id,
 				_csrf: UserConstants.CSRF_TOKEN
 			},
-			success: function(){
+			success: function() {
 				this.setState({
 					itemData: {},
 					itemAdded: false
@@ -21428,13 +21424,13 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 			}.bind(this)
 		})
 	},
-	onCancel: function(){
+	onCancel: function() {
 		this.setState({
 			itemData: this.state.itemData,
 			pickerVisible: false
 		});
 	},
-	onSave: function(newData){
+	onSave: function(newData) {
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + this.props.collection + '/update' : '/api/list/' + this.props.collection + '/add';
 		newData._id = this.state.seriesData._id;
 		newData._csrf = UserConstants.CSRF_TOKEN;
@@ -21443,15 +21439,15 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 			type: 'POST',
 			url: APIUrl,
 			data: newData,
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					itemData: newData,
 					itemAdded: true,
 					pickerVisible: false
 				});
 			}.bind(this),
-			error: function(){
-				if(!this.state.itemData){
+			error: function() {
+				if (!this.state.itemData) {
 					this.onRemove();
 				} else {
 					this.onCancel();
@@ -21460,7 +21456,7 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 			}.bind(this)
 		});
 	},
-	render: function(){
+	render: function() {
 		var pbtnWrapStyle = {
 			visibility: (this.state.loaded && UserConstants.LOGGED_IN) ? 'visible' : 'hidden'
 		}
@@ -21508,7 +21504,7 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 module.exports = PickerButton;
 },{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var RegisterForm = React.createClass({displayName: 'RegisterForm',
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			usernameVal: '',
 			usernameValid: null,
@@ -21517,20 +21513,20 @@ module.exports = PickerButton;
 			emailValid: null
 		}
 	},
-	usernameChange: function(e){
+	usernameChange: function(e) {
 		e.persist();
 		this.setState({
 			usernameVal: e.target.value.replace(/\W+/g, ''),
 			usernameValid: (e.target.value.trim() !== '' && e.target.value.length >= 3 && e.target.value.length <= 40) ? 'loading' : (e.target.value.trim() !== '') ? false : null
 		});
-		if(e.target.value.length >= 3) this.validateUsername(e);
+		if (e.target.value.length >= 3) this.validateUsername(e);
 	},
-	passwordChange: function(e){
+	passwordChange: function(e) {
 		this.setState({
 			passwordVal: e.target.value
 		});
 	},
-	emailChange: function(e){
+	emailChange: function(e) {
 		e.persist();
 		this.setState({
 			emailVal: e.target.value.trim(),
@@ -21538,16 +21534,16 @@ module.exports = PickerButton;
 		});
 		this.validateEmail(e);
 	},
-	registerAccount: function(){
-		if(this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
+	registerAccount: function() {
+		if (this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3) {
 			$.ajax({
 				type: 'post',
 				url: '/api/register',
 				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
-				success: function(res){
+				success: function(res) {
 					window.location = '/login';
 				},
-				error: function(err){
+				error: function(err) {
 					console.log(err);
 				}
 			});
@@ -21555,8 +21551,8 @@ module.exports = PickerButton;
 			alert('Make sure you have filled in all required fields correctly');
 		}   
 	},
-	validateUsername: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ usernameValid: null });
+	validateUsername: _.debounce(function(e) {
+		if (e.target.value === '') return this.setState({ usernameValid: null });
 		$.ajax({
 			type: 'post',
 			url: '/api/validate/username',
@@ -21564,18 +21560,18 @@ module.exports = PickerButton;
 				_csrf: UserConstants.CSRF_TOKEN,
 				username: e.target.value
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					usernameValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	validateEmail: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ emailValid: null });
+	validateEmail: _.debounce(function(e) {
+		if (e.target.value === '') return this.setState({ emailValid: null });
 		$.ajax({
 			type: 'post',
 			url: '/api/validate/email',
@@ -21583,17 +21579,17 @@ module.exports = PickerButton;
 				_csrf: UserConstants.CSRF_TOKEN,
 				email: e.target.value
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					emailValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	render: function(){
+	render: function() {
 		return (
 			React.DOM.form({id: "register-form", className: "logreg-form", ref: "registerForm"}, 
 				React.DOM.div({className: "logreg-section-wrap"}, 
@@ -21668,49 +21664,49 @@ module.exports = RegisterForm;
 var cx = React.addons.classSet;
 var PickerApp = require('./picker.jsx');
 var SearchApp = React.createClass({displayName: 'SearchApp',
-	getInitialState: function(){
+	getInitialState: function() {
 		var initState = {
 			searchText: TempSearchConstants.QUERY,
 			searchResults: []
 		}
 		return initState;
 	},
-	componentDidMount: function(){
-		if(this.state.searchText !== '') this.search();
+	componentDidMount: function() {
+		if (this.state.searchText !== '') this.search();
 		this.refs.searchInput.getDOMNode().focus();
 	},
-	onSearch: function(e){
+	onSearch: function(e) {
 		e.persist();
 		this.setState({
 			searchText: e.target.value,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
 		});
-		if(e.target.value !== ''){
+		if (e.target.value !== '') {
 			this.search();
 		}
 	},
-	search: _.debounce(function(){
-		if(this.state.searchText === '') return false;
+	search: _.debounce(function() {
+		if (this.state.searchText === '') return false;
 		$.ajax({
 			type: 'get',
 			url: '/api/' + TempSearchConstants.COLLECTION + '/search/' + this.state.searchText,
-			success: function(searchRes){
+			success: function(searchRes) {
 				this.setState({
 					searchResults: searchRes
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	onEsc: function(e){
+	onEsc: function(e) {
 		// On escape, clear the search
-		if(e.key === 'Escape'){
+		if (e.key === 'Escape') {
 			this.setState({ searchText: '', searchResults: [] });
 		}
 	},
-	render: function(){
+	render: function() {
 		return (
 			React.DOM.div(null, 
 				React.DOM.div({id: "search-input-wrap"}, 
@@ -21719,9 +21715,9 @@ var SearchApp = React.createClass({displayName: 'SearchApp',
 				React.DOM.div({id: "search-page"}, 
 					React.DOM.div({id: "search-results-wrap"}, 
 					
-						this.state.searchResults.map(function(searchRes, index){
+						this.state.searchResults.map(function(searchRes, index) {
 							var itemData = null;
-							if(searchRes.item_data){
+							if (searchRes.item_data) {
 								itemData = {
 									item_status: searchRes.item_data.item_status,
 									item_progress: searchRes.item_data.item_progress,
@@ -21747,26 +21743,26 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 			pickerVisible: false 
 		};
 	},
-	componentWillMount: function(){
-		if(this.props.itemData){
+	componentWillMount: function() {
+		if (this.props.itemData) {
 			this.setState({
 				itemData: this.props.itemData,
 				itemAdded: true
 			});
 		}
 	},
-	togglePicker: function(){
+	togglePicker: function() {
 		this.setState({
 			pickerVisible: !this.state.pickerVisible 
 		});
 	},
-	closePicker: function(){
+	closePicker: function() {
 		this.setState({
 			itemData: this.state.itemData,
 			pickerVisible: false
 		});
 	},
-	saveData: function(data){
+	saveData: function(data) {
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + TempSearchConstants.COLLECTION + '/update' : '/api/list/' + TempSearchConstants.COLLECTION + '/add';
 		data._id = this.props.seriesData._id;
 		data._csrf = UserConstants.CSRF_TOKEN;
@@ -21775,7 +21771,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 			type: 'post',
 			url: APIUrl,
 			data: data,
-			success: function(res){
+			success: function(res) {
 				console.log(res); 
 				this.setState({
 					itemData: data,
@@ -21783,8 +21779,8 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 					pickerVisible: false
 				});
 			}.bind(this),
-			error: function(){
-				if(!this.props.itemData){
+			error: function() {
+				if (!this.props.itemData) {
 					this.onRemove();
 				} else {
 					this.closePicker();
@@ -21793,7 +21789,7 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 			}.bind(this)
 		});
 	},
-	onRemove: function(){
+	onRemove: function() {
 		$.ajax({
 			type: 'post',
 			url: '/api/list/' + TempSearchConstants.COLLECTION + '/remove',
@@ -21801,19 +21797,19 @@ var SearchItem = React.createClass({displayName: 'SearchItem',
 				_id: this.props.seriesData._id,
 				_csrf: UserConstants.CSRF_TOKEN
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					itemData: {},
 					itemAdded: false
 				});
 			}.bind(this),
-			error: function(){
+			error: function() {
 				this.closePicker();
 				confirm('Could not remove series. Something seems to be wrong on our end!');
 			}.bind(this)
 		});
 	},
-	render: function(){
+	render: function() {
 		var imageStyle = {
 			backgroundImage: 'url(' + this.props.seriesData.series_image_reference + ')'
 		}
@@ -21997,7 +21993,7 @@ var SettingsSaveBtn = React.createClass({displayName: 'SettingsSaveBtn',
 			setTimeout(function() {
 				this.animateSave();
 			}.bind(this), 400);
-		} else if(this.props.error !== nextProps.error) {
+		} else if (this.props.error !== nextProps.error) {
 			this.setState({
 				loading: false
 			});
@@ -22290,7 +22286,7 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 			});
 		}
 	},
-	toggleCheckbox: function(checkboxVal){
+	toggleCheckbox: function(checkboxVal) {
 		var checkObj = {};
 		checkObj[checkboxVal] = !this.state[checkboxVal];
 		this.setState(checkObj);

@@ -15,11 +15,11 @@ var PickerButton = React.createClass({
 			itemData: {}
 		};
 	},
-	componentWillMount: function(){
+	componentWillMount: function() {
 		$.ajax({
 			url: '/api/' + this.props.collection + '/view/' + this.props._id,
 			type: 'GET',
-			success: function(data){
+			success: function(data) {
 				this.setState({
 					loaded: true,
 					itemAdded: (data.item_data) ? true : false,
@@ -28,12 +28,12 @@ var PickerButton = React.createClass({
 				});
 				this.animateIn();
 			}.bind(this),
-			error: function(){
+			error: function() {
 				// Wat..?
 			}
 		});
 	},
-	animateIn: function(){
+	animateIn: function() {
 		$(this.refs.pbtnWrap.getDOMNode()).velocity({
 			opacity: [1, 0]
 		}, {
@@ -41,14 +41,14 @@ var PickerButton = React.createClass({
 			easing: [0.23, 1, 0.32, 1]
 		});
 	},
-	togglePicker: function(){
+	togglePicker: function() {
 		this.setState({
 			pickerVisible: !this.state.pickerVisible
 		});
 	},
-	onRemove: function(){
+	onRemove: function() {
 		var confirmRemove = confirm('Are you sure you want to remove?');
-		if(!confirmRemove) return false;
+		if (!confirmRemove) return false;
 		$.ajax({
 			url: '/api/list/' + this.props.collection + '/remove',
 			type: 'POST',
@@ -56,7 +56,7 @@ var PickerButton = React.createClass({
 				_id: this.state.seriesData._id,
 				_csrf: UserConstants.CSRF_TOKEN
 			},
-			success: function(){
+			success: function() {
 				this.setState({
 					itemData: {},
 					itemAdded: false
@@ -64,13 +64,13 @@ var PickerButton = React.createClass({
 			}.bind(this)
 		})
 	},
-	onCancel: function(){
+	onCancel: function() {
 		this.setState({
 			itemData: this.state.itemData,
 			pickerVisible: false
 		});
 	},
-	onSave: function(newData){
+	onSave: function(newData) {
 		var APIUrl = (Object.keys(this.state.itemData).length > 0) ? '/api/list/' + this.props.collection + '/update' : '/api/list/' + this.props.collection + '/add';
 		newData._id = this.state.seriesData._id;
 		newData._csrf = UserConstants.CSRF_TOKEN;
@@ -79,15 +79,15 @@ var PickerButton = React.createClass({
 			type: 'POST',
 			url: APIUrl,
 			data: newData,
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					itemData: newData,
 					itemAdded: true,
 					pickerVisible: false
 				});
 			}.bind(this),
-			error: function(){
-				if(!this.state.itemData){
+			error: function() {
+				if (!this.state.itemData) {
 					this.onRemove();
 				} else {
 					this.onCancel();
@@ -96,7 +96,7 @@ var PickerButton = React.createClass({
 			}.bind(this)
 		});
 	},
-	render: function(){
+	render: function() {
 		var pbtnWrapStyle = {
 			visibility: (this.state.loaded && UserConstants.LOGGED_IN) ? 'visible' : 'hidden'
 		}

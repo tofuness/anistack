@@ -7,7 +7,7 @@ var PickerApp = React.createClass({
 		onSave: React.PropTypes.func,
 		onRemove: React.PropTypes.func
 	},
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			item_status: 'current',
 			item_progress: '',
@@ -18,7 +18,7 @@ var PickerApp = React.createClass({
 			saving: false
 		}
 	},
-	componentDidUpdate: function(prevProps, prevState){
+	componentDidUpdate: function(prevProps, prevState) {
 		var episodesTotal = this.props.seriesData.series_episodes_total;
 
 		// If statement below is there to make sure no infinite-loop happen
@@ -30,7 +30,7 @@ var PickerApp = React.createClass({
 
 			// (1) If changed status to completed: bump up the item_progress
 
-			if(this.state.item_status === 'completed' && prevState.item_status !== 'completed'){
+			if (this.state.item_status === 'completed' && prevState.item_status !== 'completed') {
 				this.setState({
 					item_progress: episodesTotal
 				});
@@ -38,7 +38,7 @@ var PickerApp = React.createClass({
 
 			// (2) If changed the status from completed: remove the item_progress
 
-			if(prevState.item_status === 'completed' && this.state.item_status !== 'completed'){
+			if (prevState.item_status === 'completed' && this.state.item_status !== 'completed') {
 				this.setState({
 					item_progress: ''
 				});
@@ -46,7 +46,7 @@ var PickerApp = React.createClass({
 
 			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
 
-			if(prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal){
+			if (prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal) {
 				this.setState({
 					item_status: 'completed'
 				});
@@ -54,7 +54,7 @@ var PickerApp = React.createClass({
 
 			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
 
-			if(prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal){
+			if (prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal) {
 				this.setState({
 					item_status: 'current'
 				});
@@ -62,46 +62,46 @@ var PickerApp = React.createClass({
 
 		}
 	},
-	componentWillReceiveProps: function(nextProps){
-		if(nextProps.itemData){
-			if(Object.keys(nextProps.itemData).length === 0){
+	componentWillReceiveProps: function(nextProps) {
+		if (nextProps.itemData) {
+			if (Object.keys(nextProps.itemData).length === 0) {
 				// Timeout to compensate for scaleout animation duration
-				setTimeout(function(){
+				setTimeout(function() {
 					this.setState(this.getInitialState());
 				}.bind(this), 150);
 			} else {
-				setTimeout(function(){
+				setTimeout(function() {
 					this.setState(nextProps.itemData);
 				}.bind(this), 150);
 			}
 		}
 	},
-	componentDidMount: function(){
-		if(this.props.itemData){
+	componentDidMount: function() {
+		if (this.props.itemData) {
 			this.setState(this.props.itemData);
 		}
 
 		var progressInput = this.refs.progressInput.getDOMNode();
-		$(progressInput).on('mousewheel', function(e){
+		$(progressInput).on('mousewheel', function(e) {
 			this.setProgress(Number(this.state.item_progress) + e.deltaY);
 			return false;
 		}.bind(this));
 
 		var repeatsInput = this.refs.repeatsInput.getDOMNode();
-		$(repeatsInput).on('mousewheel', function(e){
+		$(repeatsInput).on('mousewheel', function(e) {
 			this.setRepeats(Number(this.state.item_repeats) + e.deltaY);
 			return false;
 		}.bind(this));
 	},
-	setStatus: function(e){
+	setStatus: function(e) {
 		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');
 		this.setState({
 			item_status: statusVal
 		});
 		this.toggleStatusMenu();
 	},
-	toggleStatusMenu: function(){
-		if(this.state.statusMenuVisible){
+	toggleStatusMenu: function() {
+		if (this.state.statusMenuVisible) {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').hide();
 		} else {
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
@@ -111,12 +111,12 @@ var PickerApp = React.createClass({
 			statusMenuVisible: !this.state.statusMenuVisible
 		});
 	},
-	onProgressChange: function(e){
+	onProgressChange: function(e) {
 		// This function is here because we want to pass
 		// a value to setProgress and not an event.
 		this.setProgress(e.target.value); 
 	},
-	setProgress: function(progressValue){
+	setProgress: function(progressValue) {
 		if(
 			!isNaN(progressValue) &&
 			(progressValue <= this.props.seriesData.series_episodes_total ||
@@ -128,19 +128,19 @@ var PickerApp = React.createClass({
 			});
 		}
 	},
-	onRepeatsChange: function(e){
+	onRepeatsChange: function(e) {
 		this.setRepeats(e.target.value);
 	},
 	setRepeats: function(repeatsValue){
-		if(!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999){
+		if (!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999) {
 			this.setState({
 				item_repeats: (repeatsValue == 0) ? '' : repeatsValue
 			});
 		}
 	},
-	setRatingPreview: function(rating, e){
+	setRatingPreview: function(rating, e) {
 		var posX = e.pageX - $(e.target).offset().left;
-		if(rating === 1 && posX < 21){
+		if (rating === 1 && posX < 21) {
 			this.setState({
 				ratingPreview: (posX > 10) ? Number(rating) : 0
 			});
@@ -150,18 +150,18 @@ var PickerApp = React.createClass({
 			});
 		}
 	},
-	resetRatingPreview: function(){
+	resetRatingPreview: function() {
 		this.setState({
 			ratingPreview: ''
 		});
 	},
-	onRatingClick: function(e){
+	onRatingClick: function(e) {
 		this.setState({
 			item_rating: this.state.ratingPreview
 		});
 	},
-	onSave: function(){
-		if(this.state.saving) return false;
+	onSave: function() {
+		if (this.state.saving) return false;
 		this.setState({
 			saving: true
 		});
@@ -176,14 +176,14 @@ var PickerApp = React.createClass({
 			delay: 100,
 			duration: 300
 		}).delay(600).hide();
-		setTimeout(function(){
+		setTimeout(function() {
 			this.setState({
 				saving: false
 			});
 			this.props.onSave(this.state);
 		}.bind(this), 550);
 	},
-	render: function(){
+	render: function() {
 		var heartNodes = [];
 		var ratingPreview = (this.state.ratingPreview !== '') ? this.state.ratingPreview : this.state.item_rating;
 
@@ -233,7 +233,7 @@ var PickerApp = React.createClass({
 								})
 							}>
 							{
-								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType){
+								['Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusType) {
 									return (
 										<div ref="pickerStatusItem" className="picker-status-menu-item" onClick={this.setStatus}>
 											{statusType}

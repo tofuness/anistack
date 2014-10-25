@@ -9,32 +9,32 @@ var SearchApp = require('./components/search.jsx');
 var PickerButton = require('./components/pickerbutton.jsx');
 
 var listNode = document.getElementById('list-left');
-if(listNode){
+if (listNode) {
 	React.renderComponent(<ListApp />, listNode);
 }
 
 var settingsNode = document.getElementById('settings');
-if(settingsNode){
+if (settingsNode) {
 	React.renderComponent(<Settings />, settingsNode);
 }
 
 var registerNode = document.getElementById('register-form-wrap');
-if(registerNode){
+if (registerNode) {
 	React.renderComponent(<RegisterForm />, registerNode);
 }
 
 var loginNode = document.getElementById('login-form-wrap');
-if(loginNode){
+if (loginNode) {
 	React.renderComponent(<LoginForm />, loginNode);
 }
 
 var searchNode = document.getElementById('search-page-wrap');
-if(searchNode){
+if (searchNode) {
 	React.renderComponent(<SearchApp />, searchNode);
 }
 
 var seriesActionsNode = document.getElementById('series-cover-actions');
-if(seriesActionsNode){
+if (seriesActionsNode) {
 	var seriesData = $('#series-cover-actions');
 	React.renderComponent(<PickerButton _id={seriesData.data('id')} collection={seriesData.data('collection')} classPrefix='series' />, seriesActionsNode);
 }

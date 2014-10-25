@@ -1,5 +1,5 @@
 var RegisterForm = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			usernameVal: '',
 			usernameValid: null,
@@ -8,20 +8,20 @@ var RegisterForm = React.createClass({
 			emailValid: null
 		}
 	},
-	usernameChange: function(e){
+	usernameChange: function(e) {
 		e.persist();
 		this.setState({
 			usernameVal: e.target.value.replace(/\W+/g, ''),
 			usernameValid: (e.target.value.trim() !== '' && e.target.value.length >= 3 && e.target.value.length <= 40) ? 'loading' : (e.target.value.trim() !== '') ? false : null
 		});
-		if(e.target.value.length >= 3) this.validateUsername(e);
+		if (e.target.value.length >= 3) this.validateUsername(e);
 	},
-	passwordChange: function(e){
+	passwordChange: function(e) {
 		this.setState({
 			passwordVal: e.target.value
 		});
 	},
-	emailChange: function(e){
+	emailChange: function(e) {
 		e.persist();
 		this.setState({
 			emailVal: e.target.value.trim(),
@@ -29,16 +29,16 @@ var RegisterForm = React.createClass({
 		});
 		this.validateEmail(e);
 	},
-	registerAccount: function(){
-		if(this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3){
+	registerAccount: function() {
+		if (this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3) {
 			$.ajax({
 				type: 'post',
 				url: '/api/register',
 				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
-				success: function(res){
+				success: function(res) {
 					window.location = '/login';
 				},
-				error: function(err){
+				error: function(err) {
 					console.log(err);
 				}
 			});
@@ -46,8 +46,8 @@ var RegisterForm = React.createClass({
 			alert('Make sure you have filled in all required fields correctly');
 		}   
 	},
-	validateUsername: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ usernameValid: null });
+	validateUsername: _.debounce(function(e) {
+		if (e.target.value === '') return this.setState({ usernameValid: null });
 		$.ajax({
 			type: 'post',
 			url: '/api/validate/username',
@@ -55,18 +55,18 @@ var RegisterForm = React.createClass({
 				_csrf: UserConstants.CSRF_TOKEN,
 				username: e.target.value
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					usernameValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	validateEmail: _.debounce(function(e){
-		if(e.target.value === '') return this.setState({ emailValid: null });
+	validateEmail: _.debounce(function(e) {
+		if (e.target.value === '') return this.setState({ emailValid: null });
 		$.ajax({
 			type: 'post',
 			url: '/api/validate/email',
@@ -74,17 +74,17 @@ var RegisterForm = React.createClass({
 				_csrf: UserConstants.CSRF_TOKEN,
 				email: e.target.value
 			},
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					emailValid: res.is_valid === true && res.exists === false
 				});
 			}.bind(this),
-			error: function(err){
+			error: function(err) {
 				console.log(err);
 			}
 		});
 	}, 500),
-	render: function(){
+	render: function() {
 		return (
 			<form id="register-form" className="logreg-form" ref="registerForm">
 				<div className="logreg-section-wrap">

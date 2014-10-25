@@ -107,7 +107,7 @@ var SettingsSaveBtn = React.createClass({
 			setTimeout(function() {
 				this.animateSave();
 			}.bind(this), 400);
-		} else if(this.props.error !== nextProps.error) {
+		} else if (this.props.error !== nextProps.error) {
 			this.setState({
 				loading: false
 			});
@@ -400,7 +400,7 @@ var PrivacySettings = React.createClass({
 			});
 		}
 	},
-	toggleCheckbox: function(checkboxVal){
+	toggleCheckbox: function(checkboxVal) {
 		var checkObj = {};
 		checkObj[checkboxVal] = !this.state[checkboxVal];
 		this.setState(checkObj);

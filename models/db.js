@@ -7,7 +7,7 @@ var request = require('request');
 
 var mongooseValidateFilter = require('mongoose-validatefilter');
 
-if(process.env.NODE_ENV !== 'test'){
+if (process.env.NODE_ENV !== 'test') {
 	mongoose.connect('mongodb://127.0.0.1:' + process.env.DB_PORT + '/' + process.env.DB_NAME, {
 		user: process.env.DB_USERNAME,
 		pass: process.env.DB_PASSWORD
@@ -46,29 +46,29 @@ var filter = {
 			'supernatural', 'thriller', 'campire',
 			'yaoi', 'yuri'
 		],
-		date: function(dateString, done){
-			if(Date.parse(dateString) !== 0){
+		date: function(dateString, done) {
+			if (Date.parse(dateString) !== 0) {
 				done(dateString);
 			} else {
 				done(null);
 			}
 		},
-		genres: function(genreArr, done){
+		genres: function(genreArr, done) {
 			done(_.intersection(genreArr, filter.anime.allowedGenres));
 		}
 	},
 	user: {
-		password: function(passwordStr, done){
-			bcryptjs.hash(passwordStr, 8, function(err, hash){
-				if(err) throw new Error('bcrypt hash failed');
+		password: function(passwordStr, done) {
+			bcryptjs.hash(passwordStr, 8, function(err, hash) {
+				if (err) throw new Error('bcrypt hash failed');
 				return done(hash);
 			});
 		}
 	},
 	general: {
-		lowerCaseUniq: function(arr, done){
-			if(arr.length){
-				arr = _.uniq(arr.map(function(item){
+		lowerCaseUniq: function(arr, done) {
+			if (arr.length) {
+				arr = _.uniq(arr.map(function(item) {
 					return item.toLowerCase();
 				}));
 				done(arr);
@@ -81,9 +81,9 @@ var filter = {
 
 var validate = {
 	anime: {
-		type: function(typeStr, done){
+		type: function(typeStr, done) {
 			typeStr = typeStr.toLowerCase();
-			if(['tv', 'ova', 'ona', 'movie', 'special', 'music'].indexOf(typeStr) > -1){
+			if (['tv', 'ova', 'ona', 'movie', 'special', 'music'].indexOf(typeStr) > -1) {
 				done(true);
 			} else {
 				done(false);
@@ -91,9 +91,9 @@ var validate = {
 		}
 	},
 	manga: {
-		type: function(typeStr, done){
+		type: function(typeStr, done) {
 			typeStr = typeStr.toLowerCase();
-			if(['manga', 'novel', 'oneshot', 'doujin', 'manhwa', 'manhua', 'oel'].indexOf(typeStr) > -1){
+			if (['manga', 'novel', 'oneshot', 'doujin', 'manhwa', 'manhua', 'oel'].indexOf(typeStr) > -1) {
 				done(true);
 			} else {
 				done(false);
@@ -101,38 +101,38 @@ var validate = {
 		}
 	},
 	user: {
-		username: function(usernameStr, done){
-			if(/^\w+$/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
+		username: function(usernameStr, done) {
+			if (/^\w+$/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
 			this.findOne({
 				username: new RegExp('^' + usernameStr + '$', 'i')
-			}, function(err, doc){
-				if(err) return done(false);
+			}, function(err, doc) {
+				if (err) return done(false);
 				return done(!doc);
 			});
 		},
-		email: function(emailStr, done){
-			if(!emailStr) return done(true);
+		email: function(emailStr, done) {
+			if (!emailStr) return done(true);
 			// ?: This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
-			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + emailStr, function(err, response, body){
+			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + emailStr, function(err, response, body) {
 				body = JSON.parse(body);
-				if(!body.is_valid) return done(false);
+				if (!body.is_valid) return done(false);
 				this.findOne({
 					email: emailStr.toLowerCase()
-				}, function(err, userDoc){
-					if(err) return done(false);
+				}, function(err, userDoc) {
+					if (err) return done(false);
 					return done(!userDoc);
 				});
 			}.bind(this));
 		}
 	},
 	list: {
-		anime: function(_animeId, done){
+		anime: function(_animeId, done) {
 			console.log(animeId);
 			done(false);
 		},
-		status: function(statusStr){
+		status: function(statusStr) {
 			statusStr = statusStr.toLowerCase();
-			if(['current', 'completed', 'planned', 'onhold', 'dropped'].indexOf(statusStr) > -1){
+			if (['current', 'completed', 'planned', 'onhold', 'dropped'].indexOf(statusStr) > -1) {
 				done(true);
 			} else {
 				done(false);
