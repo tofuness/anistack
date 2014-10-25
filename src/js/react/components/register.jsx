@@ -44,7 +44,7 @@ var RegisterForm = React.createClass({
 			});
 		} else {
 			alert('Make sure you have filled in all required fields correctly');
-		}		
+		}   
 	},
 	validateUsername: _.debounce(function(e){
 		if(e.target.value === '') return this.setState({ usernameValid: null });

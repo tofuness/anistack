@@ -1,13 +1,13 @@
 var cx = React.addons.classSet;
 var Settings = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			tab: $('#settings').data('tab') || 'basic',
 			user: {},
 			loaded: false
 		};
 	},
-	componentDidMount: function(){
+	componentDidMount: function() {
 		$.ajax({
 			url: '/api/settings',
 			success: function(user){
@@ -19,24 +19,26 @@ var Settings = React.createClass({
 			}.bind(this)
 		});
 	},
-	animateInForm: function(){
-		$(this.refs.settingsRight.getDOMNode()).find('.visible .set-section').stop(true).velocity('herro.slideUpIn', {
-			duration: 500,
-			stagger: 100
-		});
+	animateInForm: function() {
+		$(this.refs.settingsRight.getDOMNode())
+			.find('.visible .set-section')
+			.stop(true).velocity('herro.slideUpIn', {
+				duration: 500,
+				stagger: 100
+			});
 	},
-	setTab: function(tabVal){
+	setTab: function(tabVal) {
 		this.setState({
 			tab: tabVal
 		});
 	},
-	componentDidUpdate: function(prevProps, prevState){
-		if(this.state.tab !== prevState.tab){
+	componentDidUpdate: function(prevProps, prevState) {
+		if (this.state.tab !== prevState.tab) {
 			this.animateInForm();
 		}
 	},
-	render: function(){
-		if(!this.state.loaded) return false;
+	render: function() {
+		if (!this.state.loaded) return false;
 		return (
 			<div>
 				<div id="settings-left">
@@ -48,12 +50,14 @@ var Settings = React.createClass({
 					</div>
 					<div id="settings-tabs">
 						{
-							['Basic', 'Password', 'Privacy'].map(function(tabName){
+							['Basic', 'Password', 'Privacy'].map(function(tabName) {
 								return (
-								<div className={cx({
+								<div className={
+									cx({
 									'setting-tab': true,
 									'current': this.state.tab === tabName.toLowerCase()
-								})} onClick={this.setTab.bind(null, tabName.toLowerCase())}>
+									})
+								} onClick={this.setTab.bind(null, tabName.toLowerCase())}>
 									{tabName}
 								</div>);
 							}.bind(this))
@@ -97,25 +101,24 @@ var SettingsSaveBtn = React.createClass({
 			loading: false
 		};
 	},
-	componentWillReceiveProps: function(nextProps){
-		if(!this.state.loading) return false;
-		if(this.props.saved !== nextProps.saved){
-			setTimeout(function(){
+	componentWillReceiveProps: function(nextProps) {
+		if (!this.state.loading) return false;
+		if (this.props.saved !== nextProps.saved) {
+			setTimeout(function() {
 				this.animateSave();
 			}.bind(this), 400);
-		} else if(this.props.error !== nextProps.error){
-			console.log('safdsf');
+		} else if(this.props.error !== nextProps.error) {
 			this.setState({
 				loading: false
 			});
 		}
 	},
-	animateSave: function(){
+	animateSave: function() {
 		$(this.refs.saveOvl.getDOMNode()).stop(true).velocity({
 			opacity: [1, 0]
 		}, {
 			duration: 300,
-			complete: function(){
+			complete: function() {
 				this.setState({
 					loading: false
 				});
@@ -127,7 +130,7 @@ var SettingsSaveBtn = React.createClass({
 			duration: 300
 		});
 	},
-	animateLoading: function(){
+	animateLoading: function() {
 		this.setState({
 			loading: true
 		});
@@ -148,7 +151,7 @@ var SettingsSaveBtn = React.createClass({
 		var spinner = new Spinner(opts).spin();
  		$(this.refs.setSaveLoading.getDOMNode()).append(spinner.el);
 	},
-	render: function(){
+	render: function() {
 		return (
 			<div className="set-save" onClick={this.animateLoading}>
 				<div className="set-save-ovl" ref="saveOvl">
@@ -156,17 +159,19 @@ var SettingsSaveBtn = React.createClass({
 					</div>
 				</div>
 				Save
-				<div className={cx({
-					'set-save-loading': true,
-					'visible': this.state.loading
-				})} ref="setSaveLoading"></div>
+				<div className={
+					cx({
+						'set-save-loading': true,
+						'visible': this.state.loading
+					})
+				} ref="setSaveLoading"></div>
 			</div>
 		)
 	}
 });
 
 var BasicSettings = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			// *Toggle* (doesn't matter if it's true or false) to show ok/error state for btn
 			error: false,
@@ -176,20 +181,19 @@ var BasicSettings = React.createClass({
 			avatarUrl: ''
 		}
 	},
-	saveChanges: function(){
+	saveChanges: function() {
 		$.ajax({
 			url: '/api/settings/basic',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
 			success: function(res){
-				console.log(res);
 				this.setState({
 					avatarUrl: '',
 					newAvatar: (res.avatar) ? res.avatar : false,
 					saved: !this.state.saved
 				});
 			}.bind(this),
-			error: function(){
+			error: function() {
 				this.setState({
 					error: !this.state.error
 				});
@@ -202,8 +206,8 @@ var BasicSettings = React.createClass({
 			avatarUrl: e.target.value
 		});
 	},
-	toggleExpectoPatronumLmao: function(){
-		if(this.state.rainbow){
+	toggleExpectoPatronumLmao: function() {
+		if (this.state.rainbow) {
 			$(this.refs.rainbow.getDOMNode()).velocity('stop', true).velocity({
 				translateX: [0, 0]
 			}, {
@@ -222,11 +226,11 @@ var BasicSettings = React.createClass({
 			rainbow: !this.state.rainbow
 		});
 	},
-	render: function(){
+	render: function() {
 		var avatarUrl;
-		if(this.state.newAvatar){
+		if (this.state.newAvatar) {
 			avatarUrl = this.state.newAvatar + '?t=' + new Date().getTime();
-		} else if(this.props.user.avatar.processed){
+		} else if (this.props.user.avatar.processed) {
 			avatarUrl = this.props.user.avatar.processed;
 		} else {
 			avatarUrl = '/img/default.gif';
@@ -298,7 +302,7 @@ var BasicSettings = React.createClass({
 });
 
 var PasswordSettings = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			old_password: '',
 			new_password: '',
@@ -306,19 +310,19 @@ var PasswordSettings = React.createClass({
 			error: false
 		}
 	},
-	saveChanges: function(){
+	saveChanges: function() {
 		$.ajax({
 			url: '/api/settings/password',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
-			success: function(){
+			success: function() {
 				this.setState({
 					old_password: '',
 					new_password: '',
 					saved: !this.state.saved
 				});
 			}.bind(this),
-			error: function(){
+			error: function() {
 				this.setState({
 					error: !this.state.error
 				});
@@ -336,7 +340,7 @@ var PasswordSettings = React.createClass({
 			new_password: e.target.value 
 		});
 	},
-	render: function(){
+	render: function() {
 		return (
 			<div>
 				<form className="set-form" ref="setForm">
@@ -376,7 +380,7 @@ var PasswordSettings = React.createClass({
 });
 
 var PrivacySettings = React.createClass({
-	getInitialState: function(){
+	getInitialState: function() {
 		return {
 			anime_list_private: false,
 			manga_list_private: false,
@@ -387,7 +391,7 @@ var PrivacySettings = React.createClass({
 		}
 	},
 	componentDidMount: function() {
-		if(this.props.user && this.props.user.settings){
+		if (this.props.user && this.props.user.settings) {
 			this.setState({
 				anime_list_private: this.props.user.settings.anime_list_private,
 				manga_list_private: this.props.user.settings.manga_list_private,
@@ -401,17 +405,17 @@ var PrivacySettings = React.createClass({
 		checkObj[checkboxVal] = !this.state[checkboxVal];
 		this.setState(checkObj);
 	},
-	saveChanges: function(){
+	saveChanges: function() {
 		$.ajax({
 			url: '/api/settings/privacy',
 			type: 'POST',
 			data: this.state,
-			success: function(){
+			success: function() {
 				this.setState({
 					saved: !this.state.saved
 				});
 			}.bind(this),
-			error: function(){
+			error: function() {
 				this.setState({
 					error: !this.state.error
 				});
@@ -419,7 +423,7 @@ var PrivacySettings = React.createClass({
 			}.bind(this)
 		});
 	},
-	render: function(){
+	render: function() {
 		return (
 			<form className="set-form" ref="setForm">
 				<div className="set-section">
