@@ -66,7 +66,7 @@ module.exports = function(app) {
 	app.route('/settings/password')
 	.all(hAuth.ifAuth)
 	.post(function(req, res, next) {
-		i f(req.body.old_password && req.body.new_password) {
+		if (req.body.old_password && req.body.new_password) {
 			bcryptjs.compare(req.body.old_password, req.user.password, function(err, matched) {
 				if (!matched || err) return next(new Error('old password did not match'));
 				User.updateOne({

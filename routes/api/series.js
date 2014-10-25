@@ -55,7 +55,7 @@ module.exports = function(app) {
 			searchConditions['series_slug'] = req.param('_id');
 		}
 
-		Collection.findOne(searchConditions, function(err, seriesDoc) 
+		Collection.findOne(searchConditions, function(err, seriesDoc) {
 			if (err) return next(new Error(err));
 			if (!seriesDoc) return next(new Error('series not found'));
 

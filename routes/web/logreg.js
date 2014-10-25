@@ -20,7 +20,7 @@ module.exports = function(app) {
 	});
 
 	app.route('/logout')
-	.get(function(req, res, next {
+	.get(function(req, res, next) {
 		req.logout();
 		res.redirect('back');
 	});
