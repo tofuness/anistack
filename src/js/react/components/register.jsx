@@ -36,14 +36,14 @@ var RegisterForm = React.createClass({
 				url: '/api/register',
 				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
 				success: function(res){
-					console.log(res);
+					window.location = '/login';
 				},
 				error: function(err){
 					console.log(err);
 				}
 			});
 		} else {
-			alert('check the damn form');
+			alert('Make sure you have filled in all required fields correctly');
 		}		
 	},
 	validateUsername: _.debounce(function(e){
@@ -56,7 +56,6 @@ var RegisterForm = React.createClass({
 				username: e.target.value
 			},
 			success: function(res){
-				console.log(res);
 				this.setState({
 					usernameValid: res.is_valid === true && res.exists === false
 				});
@@ -76,7 +75,6 @@ var RegisterForm = React.createClass({
 				email: e.target.value
 			},
 			success: function(res){
-				console.log(res);
 				this.setState({
 					emailValid: res.is_valid === true && res.exists === false
 				});
@@ -92,6 +90,20 @@ var RegisterForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-hd">
 						Let's get this started.
+					</div>
+				</div>
+				<div className="logreg-section-wrap">
+					<div className="logreg-legend">Email <div className="logreg-legend-desc"><b>Optional</b>. You can add/remove it later.</div></div>
+					<input className="logreg-input" type="text" name="email" value={this.state.emailVal} onChange={this.emailChange} />
+					<div className={
+						React.addons.classSet({
+							'icon-spam': this.state.emailValid === false,
+							'icon-check-thin': this.state.emailValid === true,
+							'icon-ellipsis': this.state.emailValid === 'loading',
+							'logreg-input-validate': true,
+							'visible': this.state.emailValid !== null
+						})
+					}>
 					</div>
 				</div>
 				<div className="logreg-section-wrap">
@@ -117,20 +129,6 @@ var RegisterForm = React.createClass({
 							'icon-check-thin':  this.state.passwordVal.length >= 6,
 							'logreg-input-validate': true,
 							'visible': this.state.passwordVal
-						})
-					}>
-					</div>
-				</div>
-				<div className="logreg-section-wrap">
-					<div className="logreg-legend">Email <div className="logreg-legend-desc"><b>Optional</b>. You can add/remove it later.</div></div>
-					<input className="logreg-input" type="text" name="email" value={this.state.emailVal} onChange={this.emailChange} />
-					<div className={
-						React.addons.classSet({
-							'icon-spam': this.state.emailValid === false,
-							'icon-check-thin': this.state.emailValid === true,
-							'icon-ellipsis': this.state.emailValid === 'loading',
-							'logreg-input-validate': true,
-							'visible': this.state.emailValid !== null
 						})
 					}>
 					</div>

@@ -20807,10 +20807,12 @@ var ListNoResults = React.createClass({displayName: 'ListNoResults',
 
 var ListPrivate = React.createClass({displayName: 'ListPrivate',
 	componentDidMount: function(){
-		
+		$(this.refs.listPrivate.getDOMNode()).velocity('herro.slideUpIn', {
+			duration: 800
+		});
 	},
 	render: function(){
-		return (React.DOM.div({id: "list-private"}, React.DOM.span({id: "list-private-icon", ref: "listPrivateIcon", className: "icon-lock-line"}), "This list is private."));
+		return (React.DOM.div({id: "list-private", ref: "listPrivate"}, React.DOM.span({id: "list-private-icon", className: "icon-lock-line"}), "This list is private."));
 	}
 });
 
@@ -21543,14 +21545,14 @@ module.exports = PickerButton;
 				url: '/api/register',
 				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
 				success: function(res){
-					console.log(res);
+					window.location = '/login';
 				},
 				error: function(err){
 					console.log(err);
 				}
 			});
 		} else {
-			alert('check the damn form');
+			alert('Make sure you have filled in all required fields correctly');
 		}		
 	},
 	validateUsername: _.debounce(function(e){
@@ -21563,7 +21565,6 @@ module.exports = PickerButton;
 				username: e.target.value
 			},
 			success: function(res){
-				console.log(res);
 				this.setState({
 					usernameValid: res.is_valid === true && res.exists === false
 				});
@@ -21583,7 +21584,6 @@ module.exports = PickerButton;
 				email: e.target.value
 			},
 			success: function(res){
-				console.log(res);
 				this.setState({
 					emailValid: res.is_valid === true && res.exists === false
 				});
@@ -21599,6 +21599,20 @@ module.exports = PickerButton;
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({id: "logreg-form-hd"}, 
 						"Let's get this started."
+					)
+				), 
+				React.DOM.div({className: "logreg-section-wrap"}, 
+					React.DOM.div({className: "logreg-legend"}, "Email ", React.DOM.div({className: "logreg-legend-desc"}, React.DOM.b(null, "Optional"), ". You can add/remove it later.")), 
+					React.DOM.input({className: "logreg-input", type: "text", name: "email", value: this.state.emailVal, onChange: this.emailChange}), 
+					React.DOM.div({className: 
+						React.addons.classSet({
+							'icon-spam': this.state.emailValid === false,
+							'icon-check-thin': this.state.emailValid === true,
+							'icon-ellipsis': this.state.emailValid === 'loading',
+							'logreg-input-validate': true,
+							'visible': this.state.emailValid !== null
+						})
+					}
 					)
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
@@ -21624,20 +21638,6 @@ module.exports = PickerButton;
 							'icon-check-thin':  this.state.passwordVal.length >= 6,
 							'logreg-input-validate': true,
 							'visible': this.state.passwordVal
-						})
-					}
-					)
-				), 
-				React.DOM.div({className: "logreg-section-wrap"}, 
-					React.DOM.div({className: "logreg-legend"}, "Email ", React.DOM.div({className: "logreg-legend-desc"}, React.DOM.b(null, "Optional"), ". You can add/remove it later.")), 
-					React.DOM.input({className: "logreg-input", type: "text", name: "email", value: this.state.emailVal, onChange: this.emailChange}), 
-					React.DOM.div({className: 
-						React.addons.classSet({
-							'icon-spam': this.state.emailValid === false,
-							'icon-check-thin': this.state.emailValid === true,
-							'icon-ellipsis': this.state.emailValid === 'loading',
-							'logreg-input-validate': true,
-							'visible': this.state.emailValid !== null
 						})
 					}
 					)

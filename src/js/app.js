@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 	$(window).on('resize', function(){
 		$('.full-height').css({
-			'height': $(window).height()
+			'height': $(window).height() - 52
 		});
 		$('.center-vert').each(function(){
 			var $this = $(this);
@@ -40,7 +40,7 @@ $(document).ready(function(){
 			borderBottomRightRadius: [0, $(window).height() / 2],
 			borderBottomLeftRadius: [0, $(window).height() / 1]
 		}, {
-			delay: 100,
+			delay: 1000,
 			duration: 600,
 			easing: [0.23, 1, 0.32, 1]
 		});

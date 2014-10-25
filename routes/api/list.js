@@ -22,10 +22,6 @@ module.exports = function(app){
 
 	app.route('/list/:list(anime|manga)/view/:username')
 	.get(function(req, res, next){
-		// Needs cleanup
-		if(req.user.settings[req.param('list') + '_list_private']){
-			return res.status(200).json({ status: 'ok', private: true });
-		}
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, {
@@ -35,6 +31,9 @@ module.exports = function(app){
 		}, function(err, listDoc){
 			if(err) return next(new Error(err));
 			if(!listDoc) return next(new Error('User not found'));
+			if(listDoc.settings[req.param('list') + '_list_private'] && (!req.user || req.param('username') !== req.user.username)){
+				return res.status(200).json({ status: 'ok', private: true });
+			}
 
 			listDoc = listDoc.toObject()[req.param('list') + '_list'];
 			var seriesIds = _.map(listDoc, function(listItem){

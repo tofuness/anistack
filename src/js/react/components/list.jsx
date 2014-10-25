@@ -284,10 +284,12 @@ var ListNoResults = React.createClass({
 
 var ListPrivate = React.createClass({
 	componentDidMount: function(){
-		
+		$(this.refs.listPrivate.getDOMNode()).velocity('herro.slideUpIn', {
+			duration: 800
+		});
 	},
 	render: function(){
-		return (<div id="list-private"><span id="list-private-icon" ref="listPrivateIcon" className="icon-lock-line"></span>This list is private.</div>);
+		return (<div id="list-private" ref="listPrivate"><span id="list-private-icon" className="icon-lock-line"></span>This list is private.</div>);
 	}
 });
 
