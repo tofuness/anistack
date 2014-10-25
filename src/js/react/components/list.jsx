@@ -53,7 +53,6 @@ var ListApp = React.createClass({
 		sortBy = sortBy || 'series_title_main';
 
 		// Decide if it should be asc or desc
-
 		if ((this.state.listLastSort === sortBy) && (!order || (typeof order).indexOf('object') > -1)) {
 			(this.state.listLastOrder === 'asc') ? order = 'desc' : order = 'asc';
 		} else if (!order) {
@@ -92,7 +91,6 @@ var ListApp = React.createClass({
 		if (this.state.listPrivate) {
 			return (<ListPrivate />);
 		}
-
 		return (
 			<div style={listStyle}>
 				<div id="list-top">
@@ -177,7 +175,7 @@ var ListContent = React.createClass({
 				}
 		}.bind(this));
 	},
-	render: function(){
+	render: function() {
 		var listDOM = [];
 		var lastStatus = null;
 		var lastStatusCount = 0;

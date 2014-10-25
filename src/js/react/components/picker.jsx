@@ -22,14 +22,12 @@ var PickerApp = React.createClass({
 		var episodesTotal = this.props.seriesData.series_episodes_total;
 
 		// If statement below is there to make sure no infinite-loop happen
-
 		if(
 			this.state.item_status === 'completed' !==
 			(this.state.item_progress === episodesTotal) && episodesTotal
 		){
 
 			// (1) If changed status to completed: bump up the item_progress
-
 			if (this.state.item_status === 'completed' && prevState.item_status !== 'completed') {
 				this.setState({
 					item_progress: episodesTotal
@@ -37,7 +35,6 @@ var PickerApp = React.createClass({
 			}
 
 			// (2) If changed the status from completed: remove the item_progress
-
 			if (prevState.item_status === 'completed' && this.state.item_status !== 'completed') {
 				this.setState({
 					item_progress: ''
@@ -45,7 +42,6 @@ var PickerApp = React.createClass({
 			}
 
 			// (3) If changed the progress to e.g. 10/10: change the status to completed. Can be combined with (1)
-
 			if (prevState.item_progress < episodesTotal && this.state.item_progress === episodesTotal) {
 				this.setState({
 					item_status: 'completed'
@@ -53,18 +49,17 @@ var PickerApp = React.createClass({
 			}
 
 			// (4) If changed the progress to e.g. 5/10: change the status to current. Can be combined with (3)
-
 			if (prevState.item_progress === episodesTotal && this.state.item_progress < episodesTotal) {
 				this.setState({
 					item_status: 'current'
 				});
 			}
-
 		}
 	},
 	componentWillReceiveProps: function(nextProps) {
 		if (nextProps.itemData) {
 			if (Object.keys(nextProps.itemData).length === 0) {
+
 				// Timeout to compensate for scaleout animation duration
 				setTimeout(function() {
 					this.setState(this.getInitialState());
@@ -95,9 +90,11 @@ var PickerApp = React.createClass({
 	},
 	setStatus: function(e) {
 		var statusVal = $(e.target).text().toLowerCase().replace(/ /g, '');
+
 		this.setState({
 			item_status: statusVal
 		});
+
 		this.toggleStatusMenu();
 	},
 	toggleStatusMenu: function() {
@@ -107,6 +104,7 @@ var PickerApp = React.createClass({
 			$(this.refs.pickerStatusMenu.getDOMNode()).find('>div').stop(true)
 			.velocity('transition.slideLeftIn', { stagger: 50, duration: 300 });
 		}
+
 		this.setState({
 			statusMenuVisible: !this.state.statusMenuVisible
 		});
@@ -131,7 +129,7 @@ var PickerApp = React.createClass({
 	onRepeatsChange: function(e) {
 		this.setRepeats(e.target.value);
 	},
-	setRepeats: function(repeatsValue){
+	setRepeats: function(repeatsValue) {
 		if (!isNaN(repeatsValue) && repeatsValue >= 0 && repeatsValue <= 999) {
 			this.setState({
 				item_repeats: (repeatsValue == 0) ? '' : repeatsValue
@@ -162,9 +160,11 @@ var PickerApp = React.createClass({
 	},
 	onSave: function() {
 		if (this.state.saving) return false;
+
 		this.setState({
 			saving: true
 		});
+
 		$(this.refs.successBtn.getDOMNode()).stop(true).velocity('transition.fadeIn', {
 			duration: 200
 		}).velocity('reverse', {
@@ -176,6 +176,7 @@ var PickerApp = React.createClass({
 			delay: 100,
 			duration: 300
 		}).delay(600).hide();
+
 		setTimeout(function() {
 			this.setState({
 				saving: false

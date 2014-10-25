@@ -10,7 +10,7 @@ var Settings = React.createClass({
 	componentDidMount: function() {
 		$.ajax({
 			url: '/api/settings',
-			success: function(user){
+			success: function(user) {
 				this.setState({
 					user: user,
 					loaded: true
@@ -186,7 +186,7 @@ var BasicSettings = React.createClass({
 			url: '/api/settings/basic',
 			type: 'POST',
 			data: $(this.refs.setForm.getDOMNode()).serialize(),
-			success: function(res){
+			success: function(res) {
 				this.setState({
 					avatarUrl: '',
 					newAvatar: (res.avatar) ? res.avatar : false,
@@ -201,7 +201,7 @@ var BasicSettings = React.createClass({
 			}.bind(this)
 		});
 	},
-	onAvatarUrlChange: function(e){
+	onAvatarUrlChange: function(e) {
 		this.setState({
 			avatarUrl: e.target.value
 		});
@@ -330,12 +330,12 @@ var PasswordSettings = React.createClass({
 			}.bind(this)
 		});
 	},
-	onChangeOldPwd: function(e){
+	onChangeOldPwd: function(e) {
 		this.setState({
 			old_password: e.target.value
 		});
 	},
-	onChangeNewPwd: function(e){
+	onChangeNewPwd: function(e) {
 		this.setState({
 			new_password: e.target.value 
 		});

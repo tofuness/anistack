@@ -6,8 +6,6 @@ var concat = require('gulp-concat');
 var react = require('gulp-react');
 var cssmin = require('gulp-cssmin');
 
-// Holy shit the deps.
-
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
