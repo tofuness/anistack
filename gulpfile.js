@@ -14,6 +14,9 @@ var reactify = require('reactify');
 var uglify = require('gulp-uglify');
 var notify = require('gulp-notify');
 
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
+
 var path = {
 	scss: {
 		src: 'src/css/app.scss',
@@ -35,6 +38,10 @@ var path = {
 		files: 'src/js/react/**/*.jsx',
 		bundle: 'app.js',
 		dest: './public/js/components'
+	},
+	app: {
+		src: ['routes/web/*.js', 'routes/api/*.js', 'helpers/*.js', '/models/*.js'],
+		files: ['routes/**/*.js', 'helpers/*.js', '/models/*.js']
 	}
 }
 
@@ -100,9 +107,16 @@ gulp.task('browserify', function() {
 	.pipe(gulp.dest(path.jsx.dest));
 });
 
+gulp.task('lint', function(){
+	return gulp.src(path.app.src)
+	.pipe(jshint())
+	.pipe(jshint.reporter(stylish));
+});
+
 gulp.task('watch', function() {
 	gulp.watch(path.scss.files, ['sass']);
 	gulp.watch(path.scss.files, ['css']);
+	gulp.watch(path.app.files, ['lint']);
 	gulp.watch(path.js.files, ['uglify']);
 	gulp.watch(path.jsx.files, ['watchify']);
 });
@@ -112,4 +126,4 @@ gulp.task('build', function() {
 	gulp.start(['sass', 'css', 'uglify', 'browserify']);
 });
 
-gulp.task('default', ['sass', 'css', 'uglify', 'watch']);
+gulp.task('default', ['sass', 'css', 'uglify', 'watchify', 'lint', 'watch']);

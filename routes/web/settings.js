@@ -1,3 +1,5 @@
+'use strict';
+
 var hAuth = require('../../helpers/auth');
 
 module.exports = function(app) {

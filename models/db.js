@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var slugin = require('slugin');
@@ -127,10 +129,9 @@ var validate = {
 	},
 	list: {
 		anime: function(_animeId, done) {
-			console.log(animeId);
 			done(false);
 		},
-		status: function(statusStr) {
+		status: function(statusStr, done) {
 			statusStr = statusStr.toLowerCase();
 			if (['current', 'completed', 'planned', 'onhold', 'dropped'].indexOf(statusStr) > -1) {
 				done(true);

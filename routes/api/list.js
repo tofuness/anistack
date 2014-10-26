@@ -1,3 +1,5 @@
+'use strict';
+
 var db = require('../../models/db.js');
 var hAuth = require('../../helpers/auth.js');
 var listValidate = require('../../helpers/validateListData.js');
@@ -9,17 +11,15 @@ var _ = require('lodash');
 module.exports = function(app) {
 	var listType, Collection;
 
-	// ?: Sets the list type
-
+	// Sets the list type
 	app.route('/list/:list(anime|manga)*')
 	.all(function(req, res, next) {
 		listType = req.param('list');
-		Collection = (listType === 'anime') ? Anime : Manga; // Change to manga later
+		Collection = (listType === 'anime') ? Anime : Manga;
 		next();
 	});
 
-	// ?: Get user's list
-
+	// Get user's list
 	app.route('/list/:list(anime|manga)/view/:username')
 	.get(function(req, res, next) {
 		User.findOne({
@@ -66,7 +66,6 @@ module.exports = function(app) {
 		}
 
 		// Check if anime/manga already exists
-
 		if(
 			_.map(req.user.anime_list, function(list) { return list._id.toString() })
 			.indexOf(req.body._id) > -1 ||

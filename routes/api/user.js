@@ -1,8 +1,8 @@
+'use strict';
+
 var request = require('request');
 var db = require('../../models/db.js');
 var User = db.User;
-
-var _ = require('lodash');
 
 module.exports = function(app) {
 

@@ -48,7 +48,9 @@
     "vinyl-source-stream": "*",
     "vinyl-buffer": "*",
     "reactify": "*",
-    "gulp-notify": "*"
+    "gulp-notify": "*",
+    "gulp-jshint": "~1.8.5",
+    "jshint-stylish": "~1.0.0"
   },
   "scripts": {
     "test": "mocha --require test/support/env --reporter spec --bail --check-leaks test/",

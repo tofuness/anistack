@@ -1,7 +1,9 @@
+'use strict';
+
 var db = require('../models/db.js');
 var Anime = db.Anime;
 var Manga = db.Manga;
-var _ = require('lodash');
+
 var validate = {
 	anime: function(itemData, done) {
 		if (!itemData._id) return done('no _id was provided', null);
@@ -39,4 +41,5 @@ var validate = {
 		});
 	}
 }
+
 module.exports = validate;

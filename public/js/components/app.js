@@ -20825,7 +20825,6 @@ var ListItem = React.createClass({displayName: 'ListItem',
 	cancel: function() {
 		if (this.state.expanded) {
 			this.toggleExpanded(function() {
-
 				// On cancel, reset the PickerApp component by re-mounting it.
 				this.setState({
 					showPicker: false
@@ -21006,7 +21005,9 @@ var ListItem = React.createClass({displayName: 'ListItem',
 
 module.exports = ListApp;
 },{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx":[function(require,module,exports){
-/** @jsx React.DOM */var LoginForm = React.createClass({displayName: 'LoginForm',
+/** @jsx React.DOM */
+
+var LoginForm = React.createClass({displayName: 'LoginForm',
 	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},

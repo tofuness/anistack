@@ -1,6 +1,7 @@
+'use strict';
+
 var db = require('../../models/db.js');
 var hAuth = require('../../helpers/auth.js');
-var listValidate = require('../../helpers/validateListData.js');
 var User = db.User;
 
 module.exports = function(app) {
@@ -9,7 +10,7 @@ module.exports = function(app) {
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, function(err, userDoc) {
-			var listEditable = false;;
+			var listEditable = false;
 			if (req.user && req.user.username === req.param('username').toLowerCase()) {
 				listEditable = true;
 			}

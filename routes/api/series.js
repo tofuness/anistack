@@ -1,3 +1,5 @@
+'use strict';
+
 var db = require('../../models/db.js');
 var hAuth = require('../../helpers/auth.js');
 var Anime = db.Anime;
@@ -50,9 +52,9 @@ module.exports = function(app) {
 		var searchConditions = {};
 
 		if (req.param('_id').match(/^[0-9a-fA-F]{24}$/)) {
-			searchConditions['_id'] = req.param('_id');
+			searchConditions._id = req.param('_id');
 		} else {
-			searchConditions['series_slug'] = req.param('_id');
+			searchConditions.series_slug = req.param('_id');
 		}
 
 		Collection.findOne(searchConditions, function(err, seriesDoc) {
@@ -62,7 +64,7 @@ module.exports = function(app) {
 			seriesDoc = seriesDoc.toObject();
 			
 			if (req.user && req.user[req.param('collection') + '_list']) {
-				seriesDoc['item_data'] = _.find(req.user[req.param('collection') + '_list'], { _id: seriesDoc._id });
+				seriesDoc.item_data = _.find(req.user[req.param('collection') + '_list'], { _id: seriesDoc._id });
 			}
 			res.status(200).json(seriesDoc);
 		});
@@ -110,7 +112,7 @@ module.exports = function(app) {
 						_id: sortedDocs[i]._id
 					});
 					if (findRes){
-						sortedDocs[i]['item_data'] = findRes;
+						sortedDocs[i].item_data = findRes;
 					}
 				}
 			}

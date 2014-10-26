@@ -1,3 +1,5 @@
+'use strict';
+
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var bcryptjs = require('bcryptjs');

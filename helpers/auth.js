@@ -1,3 +1,5 @@
+'use strict';
+
 var db = require('../models/db.js');
 var User = db.User;
 

@@ -1,3 +1,5 @@
+'use strict';
+
 var Swag = require('swag');
 var hbs = require('hbs');
 var fs = require('fs');
