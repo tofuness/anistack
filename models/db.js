@@ -104,7 +104,9 @@ var validate = {
 	},
 	user: {
 		username: function(usernameStr, done) {
-			if (/^\w+$/g.test(usernameStr)) return done(false); // ?: Check if username only includes letters/numbers
+
+			// Check if username only includes letters/numbers
+			if (/^\w+$/g.test(usernameStr)) return done(false); 
 			this.findOne({
 				username: new RegExp('^' + usernameStr + '$', 'i')
 			}, function(err, doc) {
@@ -114,7 +116,8 @@ var validate = {
 		},
 		email: function(emailStr, done) {
 			if (!emailStr) return done(true);
-			// ?: This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
+
+			// This validation method also exists in /routes/user.js. Not very DRY, but still acceptable
 			request('https://api.mailgun.net/v2/address/validate?api_key=' + process.env.MAILGUN_PUBKEY + '&address=' + emailStr, function(err, response, body) {
 				body = JSON.parse(body);
 				if (!body.is_valid) return done(false);
@@ -143,7 +146,6 @@ var validate = {
 }
 
 // Validation/Filtering for AnimeSchema
-
 validators.anime.add('series_type', {
 	callback: validate.anime.type,
 	msg: 'series_type did not pass validation'
@@ -160,7 +162,6 @@ filters.anime.add('series_genres', filter.general.lowerCaseUniq);
 filters.anime.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for MangaSchema
-
 validators.manga.add('series_type', {
 	callback: validate.manga.type,
 	msg: 'series_type did not pass validation'
@@ -171,7 +172,6 @@ filters.manga.add('series_genres', filter.general.lowerCaseUniq);
 filters.manga.add('series_genres', filter.anime.genres);
 
 // Validation/Filtering for UserSchema
-
 validators.user.add('display_name', {
 	minLength: 3,
 	maxLength: 40,
@@ -202,14 +202,14 @@ filters.user.add('password', filter.user.password);
 // Schemas
 
 var AnimeSchema = new Schema({
-	series_title_main: { // Straight from Wikipedia
+	series_title_main: {
 		type: String,
 		required: true
 	},
 	series_title_english: String,
 	series_title_japanese: String,
 	series_title_romanji: String,
-	series_title_synonyms: [ String ], // Abbriviations should be added as "tags"
+	series_title_synonyms: [ String ],
 	series_slug: {
 		type: String,
 		required: true,
@@ -260,14 +260,14 @@ AnimeSchema.plugin(slugin, {
 });
 
 var MangaSchema = new Schema({
-	series_title_main: { // Straight from Wikipedia
+	series_title_main: {
 		type: String,
 		required: true
 	},
 	series_title_english: String,
 	series_title_japanese: String,
 	series_title_romanji: String,
-	series_title_synonyms: [ String ], // Abbriviations should be added as "tags"
+	series_title_synonyms: [ String ],
 	series_slug: {
 		type: String,
 		required: true,
@@ -319,7 +319,8 @@ var ProducerSchema = new Schema({
 	producer_image_original: String,
 	producer_image_processed: String,
 	producer_description: String,
-	// ?: Does the "producer" actually produce anime, or do they just purchase rights to distribute and shit?
+
+	// Does the "producer" actually produce anime, or do they just purchase rights to distribute?
 	producer_animates: Boolean
 });
 
@@ -384,7 +385,8 @@ var MangaListItemSchema = new Schema({
 });
 
 var ActivityItemSchema = new Schema({
-	// ?: Modified version of the ActivityStreams 2.0 Schema
+
+	// Modified version of the ActivityStreams 2.0 Schema
 	verb: {
 		type: String,
 		lowercase: true,
@@ -411,7 +413,7 @@ var ActivityItemSchema = new Schema({
 			type: String,
 			required: true
 		},
-		image: String // ?: For user avatars
+		image: String // For user avatars
 	},
 	object: {
 		objectType: {

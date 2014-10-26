@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 var LoginForm = React.createClass({
 	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
