@@ -39,7 +39,7 @@ if (seriesActionsNode) {
 	var seriesData = $('#series-cover-actions');
 	React.renderComponent(PickerButton({_id: seriesData.data('id'), collection: seriesData.data('collection'), classPrefix: "series"}), seriesActionsNode);
 }
-},{"./components/list.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx","./components/login.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx","./components/pickerbutton.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx","./components/register.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx","./components/search.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx","./components/settings.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx","react/addons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js":[function(require,module,exports){
+},{"./components/list.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/list.jsx","./components/login.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/login.jsx","./components/pickerbutton.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/pickerbutton.jsx","./components/register.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/register.jsx","./components/search.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/search.jsx","./components/settings.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/settings.jsx","react/addons":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/addons.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -47,8 +47,6 @@ var process = module.exports = {};
 process.nextTick = (function () {
     var canSetImmediate = typeof window !== 'undefined'
     && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined'
-    && window.MutationObserver;
     var canPost = typeof window !== 'undefined'
     && window.postMessage && window.addEventListener
     ;
@@ -57,29 +55,8 @@ process.nextTick = (function () {
         return function (f) { return window.setImmediate(f) };
     }
 
-    var queue = [];
-
-    if (canMutationObserver) {
-        var hiddenDiv = document.createElement("div");
-        var observer = new MutationObserver(function () {
-            var queueList = queue.slice();
-            queue.length = 0;
-            queueList.forEach(function (fn) {
-                fn();
-            });
-        });
-
-        observer.observe(hiddenDiv, { attributes: true });
-
-        return function nextTick(fn) {
-            if (!queue.length) {
-                hiddenDiv.setAttribute('yes', 'no');
-            }
-            queue.push(fn);
-        };
-    }
-
     if (canPost) {
+        var queue = [];
         window.addEventListener('message', function (ev) {
             var source = ev.source;
             if ((source === window || source === null) && ev.data === 'process-tick') {
@@ -119,7 +96,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-};
+}
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
@@ -127,10 +104,10 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/addons.js":[function(require,module,exports){
 module.exports = require('./lib/ReactWithAddons');
 
-},{"./lib/ReactWithAddons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactWithAddons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\AutoFocusMixin.js":[function(require,module,exports){
+},{"./lib/ReactWithAddons":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactWithAddons.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/AutoFocusMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -164,7 +141,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-},{"./focusNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\focusNode.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\BeforeInputEventPlugin.js":[function(require,module,exports){
+},{"./focusNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/focusNode.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/BeforeInputEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -388,7 +365,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./SyntheticInputEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticInputEvent.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSCore.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./SyntheticInputEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticInputEvent.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSCore.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -507,7 +484,7 @@ var CSSCore = {
 module.exports = CSSCore;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSProperty.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSProperty.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -630,7 +607,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSPropertyOperations.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSPropertyOperations.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -729,7 +706,7 @@ var CSSPropertyOperations = {
 
 module.exports = CSSPropertyOperations;
 
-},{"./CSSProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSProperty.js","./dangerousStyleValue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\dangerousStyleValue.js","./hyphenateStyleName":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\hyphenateStyleName.js","./memoizeStringOnly":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\memoizeStringOnly.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CallbackQueue.js":[function(require,module,exports){
+},{"./CSSProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSProperty.js","./dangerousStyleValue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/dangerousStyleValue.js","./hyphenateStyleName":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/hyphenateStyleName.js","./memoizeStringOnly":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/memoizeStringOnly.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CallbackQueue.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -836,7 +813,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require('_process'))
-},{"./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ChangeEventPlugin.js":[function(require,module,exports){
+},{"./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ChangeEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -1225,7 +1202,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js","./isEventSupported":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isEventSupported.js","./isTextInputElement":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isTextInputElement.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ClientReactRootIndex.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js","./isEventSupported":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isEventSupported.js","./isTextInputElement":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ClientReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -1257,7 +1234,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CompositionEventPlugin.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CompositionEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -1523,7 +1500,7 @@ var CompositionEventPlugin = {
 
 module.exports = CompositionEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./ReactInputSelection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInputSelection.js","./SyntheticCompositionEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticCompositionEvent.js","./getTextContentAccessor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getTextContentAccessor.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMChildrenOperations.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./ReactInputSelection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInputSelection.js","./SyntheticCompositionEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticCompositionEvent.js","./getTextContentAccessor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getTextContentAccessor.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMChildrenOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -1705,7 +1682,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require('_process'))
-},{"./Danger":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Danger.js","./ReactMultiChildUpdateTypes":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChildUpdateTypes.js","./getTextContentAccessor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getTextContentAccessor.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js":[function(require,module,exports){
+},{"./Danger":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Danger.js","./ReactMultiChildUpdateTypes":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./getTextContentAccessor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getTextContentAccessor.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -2007,7 +1984,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -2204,7 +2181,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./escapeTextForBrowser":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\escapeTextForBrowser.js","./memoizeStringOnly":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\memoizeStringOnly.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Danger.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./escapeTextForBrowser":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/escapeTextForBrowser.js","./memoizeStringOnly":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/memoizeStringOnly.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Danger.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -2395,7 +2372,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./createNodesFromMarkup":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createNodesFromMarkup.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./getMarkupWrap":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getMarkupWrap.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DefaultEventPluginOrder.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./createNodesFromMarkup":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createNodesFromMarkup.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./getMarkupWrap":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DefaultEventPluginOrder.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -2442,7 +2419,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-},{"./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EnterLeaveEventPlugin.js":[function(require,module,exports){
+},{"./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EnterLeaveEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -2589,7 +2566,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./SyntheticMouseEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticMouseEvent.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./SyntheticMouseEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticMouseEvent.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -2668,7 +2645,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-},{"./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventListener.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventListener.js":[function(require,module,exports){
 (function (process){
 /**
  * @providesModule EventListener
@@ -2744,7 +2721,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3038,7 +3015,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginRegistry.js","./EventPluginUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginUtils.js","./accumulate":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\accumulate.js","./forEachAccumulated":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\forEachAccumulated.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./isEventSupported":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isEventSupported.js","./monitorCodeUse":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\monitorCodeUse.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginRegistry.js":[function(require,module,exports){
+},{"./EventPluginRegistry":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginRegistry.js","./EventPluginUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginUtils.js","./accumulate":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/accumulate.js","./forEachAccumulated":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./isEventSupported":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isEventSupported.js","./monitorCodeUse":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/monitorCodeUse.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginRegistry.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3325,7 +3302,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginUtils.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginUtils.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3553,7 +3530,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3700,7 +3677,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js","./accumulate":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\accumulate.js","./forEachAccumulated":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\forEachAccumulated.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js","./accumulate":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/accumulate.js","./forEachAccumulated":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/forEachAccumulated.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -3752,7 +3729,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\HTMLDOMPropertyConfig.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/HTMLDOMPropertyConfig.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -3943,7 +3920,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedStateMixin.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedStateMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -3991,7 +3968,7 @@ var LinkedStateMixin = {
 
 module.exports = LinkedStateMixin;
 
-},{"./ReactLink":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactLink.js","./ReactStateSetters":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactStateSetters.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedValueUtils.js":[function(require,module,exports){
+},{"./ReactLink":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactLink.js","./ReactStateSetters":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactStateSetters.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedValueUtils.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -4154,7 +4131,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require('_process'))
-},{"./ReactPropTypes":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypes.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LocalEventTrapMixin.js":[function(require,module,exports){
+},{"./ReactPropTypes":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypes.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LocalEventTrapMixin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -4210,7 +4187,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./accumulate":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\accumulate.js","./forEachAccumulated":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\forEachAccumulated.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\MobileSafariClickEventPlugin.js":[function(require,module,exports){
+},{"./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./accumulate":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/accumulate.js","./forEachAccumulated":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/forEachAccumulated.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/MobileSafariClickEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -4275,7 +4252,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -4398,7 +4375,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -4553,7 +4530,7 @@ React.version = '0.11.2';
 module.exports = React;
 
 }).call(this,require('_process'))
-},{"./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./EventPluginUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginUtils.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./ReactChildren":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactChildren.js","./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactContext":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactContext.js","./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./ReactDOMComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMComponent.js","./ReactDefaultInjection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultInjection.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactMultiChild":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChild.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./ReactPropTypes":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypes.js","./ReactServerRendering":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactServerRendering.js","./ReactTextComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTextComponent.js","./onlyChild":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\onlyChild.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js":[function(require,module,exports){
+},{"./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./EventPluginUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginUtils.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./ReactChildren":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactChildren.js","./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactContext":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./ReactDOMComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMComponent.js","./ReactDefaultInjection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultInjection.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./ReactPropTypes":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypes.js","./ReactServerRendering":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactServerRendering.js","./ReactTextComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTextComponent.js","./onlyChild":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/onlyChild.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -4603,7 +4580,7 @@ var ReactBrowserComponentMixin = {
 module.exports = ReactBrowserComponentMixin;
 
 }).call(this,require('_process'))
-},{"./ReactEmptyComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEmptyComponent.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js":[function(require,module,exports){
+},{"./ReactEmptyComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEmptyComponent.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -4965,7 +4942,7 @@ var ReactBrowserEventEmitter = merge(ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js","./EventPluginRegistry":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginRegistry.js","./ReactEventEmitterMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEventEmitterMixin.js","./ViewportMetrics":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ViewportMetrics.js","./isEventSupported":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isEventSupported.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCSSTransitionGroup.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js","./EventPluginRegistry":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginRegistry.js","./ReactEventEmitterMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEventEmitterMixin.js","./ViewportMetrics":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ViewportMetrics.js","./isEventSupported":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isEventSupported.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCSSTransitionGroup.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -5034,7 +5011,7 @@ var ReactCSSTransitionGroup = React.createClass({
 
 module.exports = ReactCSSTransitionGroup;
 
-},{"./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js","./ReactCSSTransitionGroupChild":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCSSTransitionGroupChild.js","./ReactTransitionGroup":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionGroup.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCSSTransitionGroupChild.js":[function(require,module,exports){
+},{"./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js","./ReactCSSTransitionGroupChild":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCSSTransitionGroupChild.js","./ReactTransitionGroup":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionGroup.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCSSTransitionGroupChild.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -5173,7 +5150,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
 module.exports = ReactCSSTransitionGroupChild;
 
 }).call(this,require('_process'))
-},{"./CSSCore":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSCore.js","./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js","./ReactTransitionEvents":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionEvents.js","./onlyChild":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\onlyChild.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactChildren.js":[function(require,module,exports){
+},{"./CSSCore":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSCore.js","./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js","./ReactTransitionEvents":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionEvents.js","./onlyChild":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/onlyChild.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -5330,7 +5307,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require('_process'))
-},{"./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./traverseAllChildren":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\traverseAllChildren.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js":[function(require,module,exports){
+},{"./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./traverseAllChildren":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -5780,7 +5757,7 @@ var ReactComponent = {
 module.exports = ReactComponent;
 
 }).call(this,require('_process'))
-},{"./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactOwner.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponentBrowserEnvironment.js":[function(require,module,exports){
+},{"./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactOwner.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponentBrowserEnvironment.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -5909,7 +5886,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 }).call(this,require('_process'))
-},{"./ReactDOMIDOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMIDOperations.js","./ReactMarkupChecksum":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMarkupChecksum.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./ReactReconcileTransaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactReconcileTransaction.js","./getReactRootElementInContainer":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getReactRootElementInContainer.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./setInnerHTML":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\setInnerHTML.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponentWithPureRenderMixin.js":[function(require,module,exports){
+},{"./ReactDOMIDOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMIDOperations.js","./ReactMarkupChecksum":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMarkupChecksum.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./ReactReconcileTransaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactReconcileTransaction.js","./getReactRootElementInContainer":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getReactRootElementInContainer.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/setInnerHTML.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponentWithPureRenderMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -5965,7 +5942,7 @@ var ReactComponentWithPureRenderMixin = {
 
 module.exports = ReactComponentWithPureRenderMixin;
 
-},{"./shallowEqual":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shallowEqual.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js":[function(require,module,exports){
+},{"./shallowEqual":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shallowEqual.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -7394,7 +7371,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require('_process'))
-},{"./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactContext":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactContext.js","./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactDescriptorValidator":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptorValidator.js","./ReactEmptyComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEmptyComponent.js","./ReactErrorUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactErrorUtils.js","./ReactOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactOwner.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./ReactPropTransferer":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTransferer.js","./ReactPropTypeLocationNames":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocationNames.js","./ReactPropTypeLocations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocations.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./instantiateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\instantiateReactComponent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js","./mapObject":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mapObject.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js","./monitorCodeUse":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\monitorCodeUse.js","./shouldUpdateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shouldUpdateReactComponent.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactContext.js":[function(require,module,exports){
+},{"./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactContext":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactDescriptorValidator":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptorValidator.js","./ReactEmptyComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEmptyComponent.js","./ReactErrorUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactErrorUtils.js","./ReactOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactOwner.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./ReactPropTransferer":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTransferer.js","./ReactPropTypeLocationNames":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocationNames.js","./ReactPropTypeLocations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocations.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./instantiateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js","./mapObject":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mapObject.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js","./monitorCodeUse":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/monitorCodeUse.js","./shouldUpdateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactContext.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7463,7 +7440,7 @@ var ReactContext = {
 
 module.exports = ReactContext;
 
-},{"./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js":[function(require,module,exports){
+},{"./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7504,7 +7481,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -7719,7 +7696,7 @@ ReactDOM.injection = injection;
 module.exports = ReactDOM;
 
 }).call(this,require('_process'))
-},{"./ReactDOMComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMComponent.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactDescriptorValidator":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptorValidator.js","./mapObject":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mapObject.js","./mergeInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeInto.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMButton.js":[function(require,module,exports){
+},{"./ReactDOMComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMComponent.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactDescriptorValidator":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptorValidator.js","./mapObject":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mapObject.js","./mergeInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeInto.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMButton.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7790,7 +7767,7 @@ var ReactDOMButton = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMButton;
 
-},{"./AutoFocusMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\AutoFocusMixin.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMComponent.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/AutoFocusMixin.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8212,7 +8189,7 @@ mixInto(ReactDOMComponent, ReactBrowserComponentMixin);
 module.exports = ReactDOMComponent;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSPropertyOperations.js","./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactMultiChild":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChild.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./escapeTextForBrowser":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\escapeTextForBrowser.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMForm.js":[function(require,module,exports){
+},{"./CSSPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSPropertyOperations.js","./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactMultiChild":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChild.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./escapeTextForBrowser":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/escapeTextForBrowser.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMForm.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -8268,7 +8245,7 @@ var ReactDOMForm = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMForm;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./LocalEventTrapMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMIDOperations.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMIDOperations.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8461,7 +8438,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSPropertyOperations.js","./DOMChildrenOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMChildrenOperations.js","./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./setInnerHTML":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\setInnerHTML.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMImg.js":[function(require,module,exports){
+},{"./CSSPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSPropertyOperations.js","./DOMChildrenOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMChildrenOperations.js","./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./setInnerHTML":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/setInnerHTML.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMImg.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -8515,7 +8492,7 @@ var ReactDOMImg = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMImg;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./LocalEventTrapMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMInput.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./LocalEventTrapMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LocalEventTrapMixin.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMInput.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8701,7 +8678,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\AutoFocusMixin.js","./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./LinkedValueUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedValueUtils.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMOption.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedValueUtils.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMOption.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8760,7 +8737,7 @@ var ReactDOMOption = ReactCompositeComponent.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMSelect.js":[function(require,module,exports){
+},{"./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMSelect.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -8943,7 +8920,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMSelect;
 
-},{"./AutoFocusMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\AutoFocusMixin.js","./LinkedValueUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedValueUtils.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMSelection.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/AutoFocusMixin.js","./LinkedValueUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedValueUtils.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMSelection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9159,7 +9136,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./getNodeForCharacterOffset":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getNodeForCharacterOffset.js","./getTextContentAccessor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getTextContentAccessor.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMTextarea.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./getNodeForCharacterOffset":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getNodeForCharacterOffset.js","./getTextContentAccessor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getTextContentAccessor.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMTextarea.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -9305,7 +9282,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\AutoFocusMixin.js","./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./LinkedValueUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedValueUtils.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultBatchingStrategy.js":[function(require,module,exports){
+},{"./AutoFocusMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/AutoFocusMixin.js","./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./LinkedValueUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedValueUtils.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultBatchingStrategy.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9382,7 +9359,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-},{"./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./Transaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Transaction.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultInjection.js":[function(require,module,exports){
+},{"./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./Transaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultInjection.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -9514,7 +9491,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\BeforeInputEventPlugin.js","./ChangeEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ChangeEventPlugin.js","./ClientReactRootIndex":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ClientReactRootIndex.js","./CompositionEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CompositionEventPlugin.js","./DefaultEventPluginOrder":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DefaultEventPluginOrder.js","./EnterLeaveEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EnterLeaveEventPlugin.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./HTMLDOMPropertyConfig":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\HTMLDOMPropertyConfig.js","./MobileSafariClickEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\MobileSafariClickEventPlugin.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactComponentBrowserEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponentBrowserEnvironment.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./ReactDOMButton":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMButton.js","./ReactDOMForm":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMForm.js","./ReactDOMImg":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMImg.js","./ReactDOMInput":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMInput.js","./ReactDOMOption":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMOption.js","./ReactDOMSelect":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMSelect.js","./ReactDOMTextarea":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMTextarea.js","./ReactDefaultBatchingStrategy":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultBatchingStrategy.js","./ReactDefaultPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultPerf.js","./ReactEventListener":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEventListener.js","./ReactInjection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInjection.js","./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./SVGDOMPropertyConfig":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SVGDOMPropertyConfig.js","./SelectEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SelectEventPlugin.js","./ServerReactRootIndex":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ServerReactRootIndex.js","./SimpleEventPlugin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SimpleEventPlugin.js","./createFullPageComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createFullPageComponent.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultPerf.js":[function(require,module,exports){
+},{"./BeforeInputEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/BeforeInputEventPlugin.js","./ChangeEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ChangeEventPlugin.js","./ClientReactRootIndex":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ClientReactRootIndex.js","./CompositionEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CompositionEventPlugin.js","./DefaultEventPluginOrder":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DefaultEventPluginOrder.js","./EnterLeaveEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EnterLeaveEventPlugin.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./HTMLDOMPropertyConfig":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/HTMLDOMPropertyConfig.js","./MobileSafariClickEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/MobileSafariClickEventPlugin.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactComponentBrowserEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponentBrowserEnvironment.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./ReactDOMButton":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMButton.js","./ReactDOMForm":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMForm.js","./ReactDOMImg":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMImg.js","./ReactDOMInput":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMInput.js","./ReactDOMOption":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMOption.js","./ReactDOMSelect":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMSelect.js","./ReactDOMTextarea":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMTextarea.js","./ReactDefaultBatchingStrategy":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultBatchingStrategy.js","./ReactDefaultPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultPerf.js","./ReactEventListener":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEventListener.js","./ReactInjection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInjection.js","./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./SVGDOMPropertyConfig":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SVGDOMPropertyConfig.js","./SelectEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SelectEventPlugin.js","./ServerReactRootIndex":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ServerReactRootIndex.js","./SimpleEventPlugin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SimpleEventPlugin.js","./createFullPageComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createFullPageComponent.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultPerf.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9777,7 +9754,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./ReactDefaultPerfAnalysis":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultPerfAnalysis.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./performanceNow":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\performanceNow.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultPerfAnalysis.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./ReactDefaultPerfAnalysis":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultPerfAnalysis.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./performanceNow":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/performanceNow.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultPerfAnalysis.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9982,7 +9959,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-},{"./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js":[function(require,module,exports){
+},{"./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -10237,7 +10214,7 @@ ReactDescriptor.isValidDescriptor = function(object) {
 module.exports = ReactDescriptor;
 
 }).call(this,require('_process'))
-},{"./ReactContext":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactContext.js","./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptorValidator.js":[function(require,module,exports){
+},{"./ReactContext":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactContext.js","./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptorValidator.js":[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -10522,7 +10499,7 @@ var ReactDescriptorValidator = {
 
 module.exports = ReactDescriptorValidator;
 
-},{"./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactPropTypeLocations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocations.js","./monitorCodeUse":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\monitorCodeUse.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEmptyComponent.js":[function(require,module,exports){
+},{"./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactPropTypeLocations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocations.js","./monitorCodeUse":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/monitorCodeUse.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEmptyComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -10604,7 +10581,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactErrorUtils.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactErrorUtils.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10643,7 +10620,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEventEmitterMixin.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEventEmitterMixin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10700,7 +10677,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-},{"./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEventListener.js":[function(require,module,exports){
+},{"./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEventListener.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10891,7 +10868,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-},{"./EventListener":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventListener.js","./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./getEventTarget":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventTarget.js","./getUnboundedScrollPosition":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getUnboundedScrollPosition.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInjection.js":[function(require,module,exports){
+},{"./EventListener":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventListener.js","./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./getEventTarget":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventTarget.js","./getUnboundedScrollPosition":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getUnboundedScrollPosition.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInjection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10938,7 +10915,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./ReactEmptyComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactEmptyComponent.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./ReactRootIndex":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactRootIndex.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInputSelection.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./ReactEmptyComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactEmptyComponent.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./ReactRootIndex":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactRootIndex.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInputSelection.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -11081,7 +11058,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-},{"./ReactDOMSelection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOMSelection.js","./containsNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\containsNode.js","./focusNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\focusNode.js","./getActiveElement":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getActiveElement.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js":[function(require,module,exports){
+},{"./ReactDOMSelection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOMSelection.js","./containsNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/containsNode.js","./focusNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/focusNode.js","./getActiveElement":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getActiveElement.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -11423,7 +11400,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require('_process'))
-},{"./ReactRootIndex":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactRootIndex.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactLink.js":[function(require,module,exports){
+},{"./ReactRootIndex":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactRootIndex.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactLink.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -11503,7 +11480,7 @@ ReactLink.PropTypes = {
 
 module.exports = ReactLink;
 
-},{"./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMarkupChecksum.js":[function(require,module,exports){
+},{"./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMarkupChecksum.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -11558,7 +11535,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-},{"./adler32":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\adler32.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js":[function(require,module,exports){
+},{"./adler32":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/adler32.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -12243,7 +12220,7 @@ var ReactMount = {
 module.exports = ReactMount;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./containsNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\containsNode.js","./getReactRootElementInContainer":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getReactRootElementInContainer.js","./instantiateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\instantiateReactComponent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./shouldUpdateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shouldUpdateReactComponent.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChild.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./containsNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/containsNode.js","./getReactRootElementInContainer":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getReactRootElementInContainer.js","./instantiateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./shouldUpdateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shouldUpdateReactComponent.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChild.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -12675,7 +12652,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-},{"./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactMultiChildUpdateTypes":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChildUpdateTypes.js","./flattenChildren":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\flattenChildren.js","./instantiateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\instantiateReactComponent.js","./shouldUpdateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shouldUpdateReactComponent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMultiChildUpdateTypes.js":[function(require,module,exports){
+},{"./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactMultiChildUpdateTypes":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChildUpdateTypes.js","./flattenChildren":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/flattenChildren.js","./instantiateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/instantiateReactComponent.js","./shouldUpdateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shouldUpdateReactComponent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMultiChildUpdateTypes.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -12715,7 +12692,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-},{"./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactOwner.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactOwner.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -12878,7 +12855,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require('_process'))
-},{"./emptyObject":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyObject.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js":[function(require,module,exports){
+},{"./emptyObject":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyObject.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -12967,7 +12944,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require('_process'))
-},{"_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTransferer.js":[function(require,module,exports){
+},{"_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTransferer.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -13133,7 +13110,7 @@ var ReactPropTransferer = {
 module.exports = ReactPropTransferer;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./joinClasses":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\joinClasses.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocationNames.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./joinClasses":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/joinClasses.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocationNames.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -13168,7 +13145,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require('_process'))
-},{"_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocations.js":[function(require,module,exports){
+},{"_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocations.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13199,7 +13176,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-},{"./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypes.js":[function(require,module,exports){
+},{"./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypes.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13544,7 +13521,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-},{"./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactPropTypeLocationNames":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTypeLocationNames.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPutListenerQueue.js":[function(require,module,exports){
+},{"./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactPropTypeLocationNames":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTypeLocationNames.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPutListenerQueue.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13607,7 +13584,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-},{"./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactReconcileTransaction.js":[function(require,module,exports){
+},{"./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactReconcileTransaction.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13791,7 +13768,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-},{"./CallbackQueue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CallbackQueue.js","./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./ReactInputSelection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInputSelection.js","./ReactPutListenerQueue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPutListenerQueue.js","./Transaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Transaction.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactRootIndex.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CallbackQueue.js","./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactInputSelection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInputSelection.js","./ReactPutListenerQueue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Transaction.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13829,7 +13806,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactServerRendering.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactServerRendering.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -13922,7 +13899,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactMarkupChecksum":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMarkupChecksum.js","./ReactServerRenderingTransaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactServerRenderingTransaction.js","./instantiateReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\instantiateReactComponent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactServerRenderingTransaction.js":[function(require,module,exports){
+},{"./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactMarkupChecksum":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMarkupChecksum.js","./ReactServerRenderingTransaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactServerRenderingTransaction.js","./instantiateReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/instantiateReactComponent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactServerRenderingTransaction.js":[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -14039,7 +14016,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-},{"./CallbackQueue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CallbackQueue.js","./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./ReactPutListenerQueue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPutListenerQueue.js","./Transaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Transaction.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactStateSetters.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CallbackQueue.js","./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./ReactPutListenerQueue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPutListenerQueue.js","./Transaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Transaction.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactStateSetters.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14152,7 +14129,7 @@ ReactStateSetters.Mixin = {
 
 module.exports = ReactStateSetters;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTestUtils.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTestUtils.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14566,7 +14543,7 @@ for (eventType in topLevelTypes) {
 
 module.exports = ReactTestUtils;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPluginHub":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginHub.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js","./ReactBrowserEventEmitter":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserEventEmitter.js","./ReactDOM":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDOM.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./ReactMount":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactMount.js","./ReactTextComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTextComponent.js","./ReactUpdates":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js","./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js","./copyProperties":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\copyProperties.js","./mergeInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTextComponent.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPluginHub":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginHub.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js","./ReactBrowserEventEmitter":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserEventEmitter.js","./ReactDOM":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDOM.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./ReactMount":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactMount.js","./ReactTextComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTextComponent.js","./ReactUpdates":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js","./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js","./copyProperties":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/copyProperties.js","./mergeInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTextComponent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14675,7 +14652,7 @@ mixInto(ReactTextComponent, {
 
 module.exports = ReactDescriptor.createFactory(ReactTextComponent);
 
-},{"./DOMPropertyOperations":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMPropertyOperations.js","./ReactBrowserComponentMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactBrowserComponentMixin.js","./ReactComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponent.js","./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./escapeTextForBrowser":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\escapeTextForBrowser.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionChildMapping.js":[function(require,module,exports){
+},{"./DOMPropertyOperations":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMPropertyOperations.js","./ReactBrowserComponentMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactBrowserComponentMixin.js","./ReactComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponent.js","./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./escapeTextForBrowser":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/escapeTextForBrowser.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionChildMapping.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14783,7 +14760,7 @@ var ReactTransitionChildMapping = {
 
 module.exports = ReactTransitionChildMapping;
 
-},{"./ReactChildren":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactChildren.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionEvents.js":[function(require,module,exports){
+},{"./ReactChildren":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactChildren.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionEvents.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14901,7 +14878,7 @@ var ReactTransitionEvents = {
 
 module.exports = ReactTransitionEvents;
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionGroup.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionGroup.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15093,7 +15070,7 @@ var ReactTransitionGroup = React.createClass({
 
 module.exports = ReactTransitionGroup;
 
-},{"./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js","./ReactTransitionChildMapping":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionChildMapping.js","./cloneWithProps":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\cloneWithProps.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactUpdates.js":[function(require,module,exports){
+},{"./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js","./ReactTransitionChildMapping":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionChildMapping.js","./cloneWithProps":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/cloneWithProps.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactUpdates.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15362,7 +15339,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require('_process'))
-},{"./CallbackQueue":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CallbackQueue.js","./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./ReactCurrentOwner":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCurrentOwner.js","./ReactPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPerf.js","./Transaction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Transaction.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./mixInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactWithAddons.js":[function(require,module,exports){
+},{"./CallbackQueue":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CallbackQueue.js","./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./ReactCurrentOwner":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCurrentOwner.js","./ReactPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPerf.js","./Transaction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Transaction.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./mixInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactWithAddons.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15422,7 +15399,7 @@ module.exports = React;
 
 
 }).call(this,require('_process'))
-},{"./LinkedStateMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\LinkedStateMixin.js","./React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js","./ReactCSSTransitionGroup":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCSSTransitionGroup.js","./ReactComponentWithPureRenderMixin":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactComponentWithPureRenderMixin.js","./ReactDefaultPerf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDefaultPerf.js","./ReactTestUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTestUtils.js","./ReactTransitionGroup":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTransitionGroup.js","./cloneWithProps":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\cloneWithProps.js","./cx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\cx.js","./update":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\update.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SVGDOMPropertyConfig.js":[function(require,module,exports){
+},{"./LinkedStateMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/LinkedStateMixin.js","./React":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/React.js","./ReactCSSTransitionGroup":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCSSTransitionGroup.js","./ReactComponentWithPureRenderMixin":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactComponentWithPureRenderMixin.js","./ReactDefaultPerf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDefaultPerf.js","./ReactTestUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTestUtils.js","./ReactTransitionGroup":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTransitionGroup.js","./cloneWithProps":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/cloneWithProps.js","./cx":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/cx.js","./update":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/update.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SVGDOMPropertyConfig.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15521,7 +15498,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-},{"./DOMProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\DOMProperty.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SelectEventPlugin.js":[function(require,module,exports){
+},{"./DOMProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/DOMProperty.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SelectEventPlugin.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15723,7 +15700,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./ReactInputSelection":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInputSelection.js","./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js","./getActiveElement":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getActiveElement.js","./isTextInputElement":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isTextInputElement.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js","./shallowEqual":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shallowEqual.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ServerReactRootIndex.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./ReactInputSelection":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInputSelection.js","./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js","./getActiveElement":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getActiveElement.js","./isTextInputElement":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isTextInputElement.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js","./shallowEqual":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shallowEqual.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ServerReactRootIndex.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15761,7 +15738,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SimpleEventPlugin.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SimpleEventPlugin.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -16184,7 +16161,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require('_process'))
-},{"./EventConstants":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventConstants.js","./EventPluginUtils":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPluginUtils.js","./EventPropagators":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\EventPropagators.js","./SyntheticClipboardEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticClipboardEvent.js","./SyntheticDragEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticDragEvent.js","./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js","./SyntheticFocusEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticFocusEvent.js","./SyntheticKeyboardEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticKeyboardEvent.js","./SyntheticMouseEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticMouseEvent.js","./SyntheticTouchEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticTouchEvent.js","./SyntheticUIEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js","./SyntheticWheelEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticWheelEvent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticClipboardEvent.js":[function(require,module,exports){
+},{"./EventConstants":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventConstants.js","./EventPluginUtils":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPluginUtils.js","./EventPropagators":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/EventPropagators.js","./SyntheticClipboardEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticClipboardEvent.js","./SyntheticDragEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticDragEvent.js","./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js","./SyntheticFocusEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticFocusEvent.js","./SyntheticKeyboardEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticKeyboardEvent.js","./SyntheticMouseEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticMouseEvent.js","./SyntheticTouchEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticTouchEvent.js","./SyntheticUIEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js","./SyntheticWheelEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticWheelEvent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticClipboardEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16237,7 +16214,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 
-},{"./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticCompositionEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticCompositionEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16290,7 +16267,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticCompositionEvent;
 
 
-},{"./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticDragEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticDragEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16336,7 +16313,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-},{"./SyntheticMouseEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticMouseEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js":[function(require,module,exports){
+},{"./SyntheticMouseEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16502,7 +16479,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-},{"./PooledClass":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\PooledClass.js","./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","./getEventTarget":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventTarget.js","./merge":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js","./mergeInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticFocusEvent.js":[function(require,module,exports){
+},{"./PooledClass":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/PooledClass.js","./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","./getEventTarget":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventTarget.js","./merge":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js","./mergeInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticFocusEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16548,7 +16525,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-},{"./SyntheticUIEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticInputEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticInputEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -16602,7 +16579,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticInputEvent;
 
 
-},{"./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticKeyboardEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticKeyboardEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16691,7 +16668,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-},{"./SyntheticUIEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js","./getEventKey":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventKey.js","./getEventModifierState":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventModifierState.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticMouseEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js","./getEventKey":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventKey.js","./getEventModifierState":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventModifierState.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticMouseEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16781,7 +16758,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-},{"./SyntheticUIEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js","./ViewportMetrics":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ViewportMetrics.js","./getEventModifierState":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventModifierState.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticTouchEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js","./ViewportMetrics":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ViewportMetrics.js","./getEventModifierState":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventModifierState.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticTouchEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16836,7 +16813,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-},{"./SyntheticUIEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js","./getEventModifierState":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventModifierState.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticUIEvent.js":[function(require,module,exports){
+},{"./SyntheticUIEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js","./getEventModifierState":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventModifierState.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticUIEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16905,7 +16882,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-},{"./SyntheticEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticEvent.js","./getEventTarget":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventTarget.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticWheelEvent.js":[function(require,module,exports){
+},{"./SyntheticEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticEvent.js","./getEventTarget":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventTarget.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticWheelEvent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16973,7 +16950,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-},{"./SyntheticMouseEvent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\SyntheticMouseEvent.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\Transaction.js":[function(require,module,exports){
+},{"./SyntheticMouseEvent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/SyntheticMouseEvent.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/Transaction.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17221,7 +17198,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ViewportMetrics.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ViewportMetrics.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17260,7 +17237,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-},{"./getUnboundedScrollPosition":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getUnboundedScrollPosition.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\accumulate.js":[function(require,module,exports){
+},{"./getUnboundedScrollPosition":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getUnboundedScrollPosition.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/accumulate.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17318,7 +17295,7 @@ function accumulate(current, next) {
 module.exports = accumulate;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\adler32.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/adler32.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17359,7 +17336,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\cloneWithProps.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/cloneWithProps.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17424,7 +17401,7 @@ function cloneWithProps(child, props) {
 module.exports = cloneWithProps;
 
 }).call(this,require('_process'))
-},{"./ReactPropTransferer":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactPropTransferer.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\containsNode.js":[function(require,module,exports){
+},{"./ReactPropTransferer":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactPropTransferer.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/containsNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17475,7 +17452,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-},{"./isTextNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isTextNode.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\copyProperties.js":[function(require,module,exports){
+},{"./isTextNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isTextNode.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/copyProperties.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17533,7 +17510,7 @@ function copyProperties(obj, a, b, c, d, e, f) {
 module.exports = copyProperties;
 
 }).call(this,require('_process'))
-},{"_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createArrayFrom.js":[function(require,module,exports){
+},{"_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createArrayFrom.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17626,7 +17603,7 @@ function createArrayFrom(obj) {
 
 module.exports = createArrayFrom;
 
-},{"./toArray":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\toArray.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createFullPageComponent.js":[function(require,module,exports){
+},{"./toArray":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/toArray.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createFullPageComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17693,7 +17670,7 @@ function createFullPageComponent(componentClass) {
 module.exports = createFullPageComponent;
 
 }).call(this,require('_process'))
-},{"./ReactCompositeComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactCompositeComponent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createNodesFromMarkup.js":[function(require,module,exports){
+},{"./ReactCompositeComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactCompositeComponent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createNodesFromMarkup.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17790,7 +17767,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./createArrayFrom":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\createArrayFrom.js","./getMarkupWrap":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getMarkupWrap.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\cx.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./createArrayFrom":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/createArrayFrom.js","./getMarkupWrap":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getMarkupWrap.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/cx.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17836,7 +17813,7 @@ function cx(classNames) {
 
 module.exports = cx;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\dangerousStyleValue.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/dangerousStyleValue.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17901,7 +17878,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-},{"./CSSProperty":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\CSSProperty.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js":[function(require,module,exports){
+},{"./CSSProperty":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/CSSProperty.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17946,7 +17923,7 @@ copyProperties(emptyFunction, {
 
 module.exports = emptyFunction;
 
-},{"./copyProperties":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\copyProperties.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyObject.js":[function(require,module,exports){
+},{"./copyProperties":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/copyProperties.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyObject.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17977,7 +17954,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require('_process'))
-},{"_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\escapeTextForBrowser.js":[function(require,module,exports){
+},{"_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/escapeTextForBrowser.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18025,7 +18002,7 @@ function escapeTextForBrowser(text) {
 
 module.exports = escapeTextForBrowser;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\flattenChildren.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/flattenChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18088,7 +18065,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require('_process'))
-},{"./traverseAllChildren":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\traverseAllChildren.js","./warning":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\focusNode.js":[function(require,module,exports){
+},{"./traverseAllChildren":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/traverseAllChildren.js","./warning":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/focusNode.js":[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -18123,7 +18100,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\forEachAccumulated.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/forEachAccumulated.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18161,7 +18138,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getActiveElement.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getActiveElement.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18197,7 +18174,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventKey.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventKey.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18316,7 +18293,7 @@ function getEventKey(nativeEvent) {
 module.exports = getEventKey;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventModifierState.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventModifierState.js":[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -18370,7 +18347,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getEventTarget.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getEventTarget.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18408,7 +18385,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getMarkupWrap.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getMarkupWrap.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18532,7 +18509,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getNodeForCharacterOffset.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getNodeForCharacterOffset.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18614,7 +18591,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getReactRootElementInContainer.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getReactRootElementInContainer.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18656,7 +18633,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getTextContentAccessor.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getTextContentAccessor.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18700,7 +18677,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\getUnboundedScrollPosition.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/getUnboundedScrollPosition.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18747,7 +18724,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\hyphenate.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/hyphenate.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18787,7 +18764,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\hyphenateStyleName.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/hyphenateStyleName.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18835,7 +18812,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-},{"./hyphenate":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\hyphenate.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\instantiateReactComponent.js":[function(require,module,exports){
+},{"./hyphenate":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/hyphenate.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/instantiateReactComponent.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18901,7 +18878,7 @@ function instantiateReactComponent(descriptor) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18965,7 +18942,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isEventSupported.js":[function(require,module,exports){
+},{"_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isEventSupported.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19037,7 +19014,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isNode.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19072,7 +19049,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isTextInputElement.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isTextInputElement.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19123,7 +19100,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isTextNode.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isTextNode.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19155,7 +19132,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-},{"./isNode":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\isNode.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\joinClasses.js":[function(require,module,exports){
+},{"./isNode":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/isNode.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/joinClasses.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19201,7 +19178,7 @@ function joinClasses(className/*, ... */) {
 
 module.exports = joinClasses;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19263,7 +19240,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19306,7 +19283,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mapObject.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mapObject.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19360,7 +19337,7 @@ function mapObject(obj, func, context) {
 
 module.exports = mapObject;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\memoizeStringOnly.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/memoizeStringOnly.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19401,7 +19378,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\merge.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/merge.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19440,7 +19417,7 @@ var merge = function(one, two) {
 
 module.exports = merge;
 
-},{"./mergeInto":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeInto.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeHelpers.js":[function(require,module,exports){
+},{"./mergeInto":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeInto.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeHelpers.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19591,7 +19568,7 @@ var mergeHelpers = {
 module.exports = mergeHelpers;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyMirror":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyMirror.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeInto.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyMirror":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyMirror.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeInto.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19639,7 +19616,7 @@ function mergeInto(one, two) {
 
 module.exports = mergeInto;
 
-},{"./mergeHelpers":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mergeHelpers.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\mixInto.js":[function(require,module,exports){
+},{"./mergeHelpers":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mergeHelpers.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/mixInto.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19675,7 +19652,7 @@ var mixInto = function(constructor, methodBag) {
 
 module.exports = mixInto;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\monitorCodeUse.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/monitorCodeUse.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -19716,7 +19693,7 @@ function monitorCodeUse(eventName, data) {
 module.exports = monitorCodeUse;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\onlyChild.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/onlyChild.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19763,7 +19740,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require('_process'))
-},{"./ReactDescriptor":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactDescriptor.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\performance.js":[function(require,module,exports){
+},{"./ReactDescriptor":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactDescriptor.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/performance.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19798,7 +19775,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\performanceNow.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/performanceNow.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19833,7 +19810,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-},{"./performance":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\performance.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\setInnerHTML.js":[function(require,module,exports){
+},{"./performance":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/performance.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/setInnerHTML.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19920,7 +19897,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-},{"./ExecutionEnvironment":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ExecutionEnvironment.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shallowEqual.js":[function(require,module,exports){
+},{"./ExecutionEnvironment":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ExecutionEnvironment.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shallowEqual.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19971,7 +19948,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\shouldUpdateReactComponent.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/shouldUpdateReactComponent.js":[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20017,7 +19994,7 @@ function shouldUpdateReactComponent(prevDescriptor, nextDescriptor) {
 
 module.exports = shouldUpdateReactComponent;
 
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\toArray.js":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/toArray.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -20096,7 +20073,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require('_process'))
-},{"./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\traverseAllChildren.js":[function(require,module,exports){
+},{"./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/traverseAllChildren.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -20293,7 +20270,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require('_process'))
-},{"./ReactInstanceHandles":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactInstanceHandles.js","./ReactTextComponent":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\ReactTextComponent.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\update.js":[function(require,module,exports){
+},{"./ReactInstanceHandles":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactInstanceHandles.js","./ReactTextComponent":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/ReactTextComponent.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/update.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -20468,7 +20445,7 @@ function update(value, spec) {
 module.exports = update;
 
 }).call(this,require('_process'))
-},{"./copyProperties":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\copyProperties.js","./invariant":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\invariant.js","./keyOf":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\keyOf.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\warning.js":[function(require,module,exports){
+},{"./copyProperties":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/copyProperties.js","./invariant":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/invariant.js","./keyOf":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/keyOf.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/warning.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -20520,7 +20497,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
+},{"./emptyFunction":"/Users/dennis/Development/Bitbucket/herro/node_modules/react/lib/emptyFunction.js","_process":"/Users/dennis/Development/Bitbucket/herro/node_modules/browserify/node_modules/process/browser.js"}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/list.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var PickerApp = require('./picker.jsx')
 var listStore = [];
 var cx = React.addons.classSet;
@@ -21004,10 +20981,8 @@ var ListItem = React.createClass({displayName: 'ListItem',
 });
 
 module.exports = ListApp;
-},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx":[function(require,module,exports){
-/** @jsx React.DOM */
-
-var LoginForm = React.createClass({displayName: 'LoginForm',
+},{"./picker.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/picker.jsx"}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/login.jsx":[function(require,module,exports){
+/** @jsx React.DOM */var LoginForm = React.createClass({displayName: 'LoginForm',
 	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},
@@ -21036,7 +21011,7 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
 });
 
 module.exports = LoginForm;
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/picker.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var cx = React.addons.classSet;
 var PickerApp = React.createClass({displayName: 'PickerApp',
 	propTypes: {
@@ -21358,7 +21333,7 @@ var PickerApp = React.createClass({displayName: 'PickerApp',
 });
 
 module.exports = PickerApp;
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/pickerbutton.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var cx = React.addons.classSet;
 var PickerApp = require('./picker.jsx');
 var PickerButton = React.createClass({displayName: 'PickerButton',
@@ -21503,7 +21478,7 @@ var PickerButton = React.createClass({displayName: 'PickerButton',
 });
 
 module.exports = PickerButton;
-},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx":[function(require,module,exports){
+},{"./picker.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/picker.jsx"}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/register.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var RegisterForm = React.createClass({displayName: 'RegisterForm',
 	getInitialState: function() {
 		return {
@@ -21657,7 +21632,7 @@ module.exports = PickerButton;
 });
 
 module.exports = RegisterForm;
-},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx":[function(require,module,exports){
+},{}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/search.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var TempSearchConstants = {
 	QUERY: $('#search-page-wrap').data('query'),
 	COLLECTION: $('#search-page-wrap').data('collection')
@@ -21884,7 +21859,7 @@ module.exports = SearchApp;
 
 
 
-},{"./picker.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\picker.jsx"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx":[function(require,module,exports){
+},{"./picker.jsx":"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/picker.jsx"}],"/Users/dennis/Development/Bitbucket/herro/src/js/react/components/settings.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var cx = React.addons.classSet;
 var Settings = React.createClass({displayName: 'Settings',
 	getInitialState: function() {

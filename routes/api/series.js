@@ -1,8 +1,10 @@
 'use strict';
 
 var db = require('../../models/db.js');
+var mongoose = require('mongoose');
 var hAuth = require('../../helpers/auth.js');
 var Anime = db.Anime;
+var User = db.User;
 var Manga = db.Manga;
 var _ = require('lodash');
 
@@ -67,6 +69,33 @@ module.exports = function(app) {
 				seriesDoc.item_data = _.find(req.user[req.param('collection') + '_list'], { _id: seriesDoc._id });
 			}
 			res.status(200).json(seriesDoc);
+		});
+	});
+
+	// Get count for each rating number from user lists
+	app.route('/:collection(anime|manga)/stats/:_id')
+	.get(function(req, res, next) {
+		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
+
+		User.aggregate({
+			$unwind: '$anime_list'
+		}, {
+			$match: {
+				'anime_list._id': mongoose.Types.ObjectId(req.param('_id'))
+			}
+		}, {
+			$project: {
+				rating: '$anime_list.item_rating'
+			}
+		}, {
+			$group: {
+				_id: '$rating',
+				count: { $sum: 1 }
+			}
+		}, function(err, ratingResult) {
+			if (!err) {
+				res.status(200).json(ratingResult);
+			}
 		});
 	});
 
