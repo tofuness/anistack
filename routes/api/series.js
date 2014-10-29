@@ -11,7 +11,7 @@ var _ = require('lodash');
 module.exports = function(app) {
 	var Collection;
 
-	// ?: Sets the collection type
+	// Sets the collection type
 	app.route('/:collection(anime|manga)*')
 	.all(function(req, res, next) {
 		if (req.param('collection') === 'anime') {
@@ -22,7 +22,7 @@ module.exports = function(app) {
 		next();
 	});
 
-	// ?: Get all anime/manga
+	// Get all anime/manga
 	app.route('/:collection(anime|manga)/all')
 	.all(hAuth.ifStaff)
 	.get(function(req, res, next) {
@@ -32,11 +32,11 @@ module.exports = function(app) {
 		});
 	});
 
-	// ?: Random thing used for testing
+	// Random thing used for testing
 	app.route('/:collection(anime|manga)/test')
 	.get(function(req, res, next) {
 
-		// ?: List all genres
+		// List all genres
 		Collection.find({}, function(err, docs) {
 			if (err) return next(err);
 			var docsLen = docs.length;
@@ -48,7 +48,7 @@ module.exports = function(app) {
 		});
 	});
 
-	// ?: Get one anime/manga by _id
+	// Get one anime/manga by _id
 	app.route('/:collection(anime|manga)/view/:_id')
 	.get(function(req, res, next) {
 		var searchConditions = {};
@@ -77,29 +77,93 @@ module.exports = function(app) {
 	.get(function(req, res, next) {
 		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
 
-		User.aggregate({
-			$unwind: '$anime_list'
-		}, {
-			$match: {
-				'anime_list._id': mongoose.Types.ObjectId(req.param('_id'))
-			}
-		}, {
-			$project: {
-				rating: '$anime_list.item_rating'
-			}
-		}, {
-			$group: {
-				_id: '$rating',
-				count: { $sum: 1 }
-			}
-		}, function(err, ratingResult) {
+		var statsQuery;
+
+		// Maybe there is a better way of splitting up these queries?
+		if (req.param('collection') === 'anime'){
+			statsQuery = [{
+				$unwind: '$anime_list'
+			}, {
+				$match: {
+					'anime_list._id': mongoose.Types.ObjectId(req.param('_id'))
+				}
+			}, {
+				$project: {
+					rating: '$anime_list.item_rating'
+				}
+			}, {
+				$match: {
+					rating: {
+						$gt: 0
+					}
+				}
+			}, {
+				$group: {
+					_id: '$rating',
+					count: { $sum: 1 }
+				}
+			}];
+		} else {
+			statsQuery = [{
+				$unwind: '$manga_list'
+			}, {
+				$match: {
+					'manga_list._id': mongoose.Types.ObjectId(req.param('_id'))
+				}
+			}, {
+				$project: {
+					rating: '$manga_list.item_rating'
+				}
+			}, {
+				$match: {
+					rating: {
+						$gt: 0
+					}
+				}
+			}, {
+				$group: {
+					_id: '$rating',
+					count: { $sum: 1 }
+				}
+			}];
+		}
+
+		User.aggregate(statsQuery, function(err, ratingsResult) {
 			if (!err) {
-				res.status(200).json(ratingResult);
+
+				// Add missing ratings
+				if (ratingsResult.length < 10) {
+					var ratings = _.pluck(ratingsResult, function(rating) {
+						return rating._id;
+					});
+					var missingRatings = _.difference(_.range(1, 11), ratings);
+
+					for (var i = 0; i < missingRatings.length; i++) {
+						ratingsResult.push({
+							_id: missingRatings[i],
+							count: 0
+						});
+					}
+				}
+
+				ratingsResult = _.sortBy(ratingsResult, function(rating) {
+					return rating._id
+				});
+
+				res.status(200).json(ratingsResult);
+			} else {
+				next(new Error('could not aggregate ratings'));
 			}
 		});
 	});
 
-	// ?: Search for anime/manga, returns max 15 results, sorted by date in desc order
+	
+	app.route('/:collection(anime|manga)/similar')
+	.get(function(req, res, next){
+		
+	});
+
+	// Search for anime/manga, returns max 15 results, sorted by date in desc order
 	app.route('/:collection(anime|manga)/search/:query')
 	.get(function(req, res, next) {
 		if (!req.param('query')) return res.status(200).json([]);

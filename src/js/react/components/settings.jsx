@@ -193,10 +193,11 @@ var BasicSettings = React.createClass({
 					saved: !this.state.saved
 				});
 			}.bind(this),
-			error: function() {
+			error: function(err) {
 				this.setState({
 					error: !this.state.error
 				});
+				console.log(err);
 				alert('Make sure you email is correct (and not already in use)!');
 			}.bind(this)
 		});

@@ -6,9 +6,8 @@ var User = db.User;
 
 module.exports = function(app) {
 
-	// ?: Check if an email already exists
+	// Check if an email already exists
 	// Uses the mailgun API to check if the email address is valid first
-
 	app.route('/validate/email')
 	.post(function(req, res, next) {
 		if (req.body.email) {
@@ -30,8 +29,7 @@ module.exports = function(app) {
 		}
 	});
 
-	// ?: Check if an username already exists
-
+	// Check if an username already exists
 	app.route('/validate/username')
 	.post(function(req, res, next) {
 		if (req.body.username) {

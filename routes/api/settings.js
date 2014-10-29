@@ -36,8 +36,13 @@ module.exports = function(app) {
 			request.head(req.body.avatar, function(err, result, body) {
 				var contentType = result.headers['content-type'].match(/^image\/(gif|jpeg|png)$/);
 				if (!err && contentType) {
+					
 					var downloadFrom = (contentType[1] === 'gif') ? 'http://localhost:8000/gif?url=' + req.body.avatar : 'https://images.weserv.nl/?w=250&h=250&t=squaredown&url=' + req.body.avatar.replace(/http(s)?:\/\//gi, '');
+
 					request(downloadFrom)
+					.on('error', function(err) {
+						return next(new Error('could not upload avatar'));
+					})
 					.pipe(fs.createWriteStream('./public/avatars/' + req.user.username + '.' + contentType[1], { flags: 'w' }))
 					.on('close', function(err) {
 						settingsObj['avatar.original'] = req.body.avatar;

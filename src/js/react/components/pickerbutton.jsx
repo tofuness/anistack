@@ -47,8 +47,7 @@ var PickerButton = React.createClass({
 		});
 	},
 	onRemove: function() {
-		var confirmRemove = confirm('Are you sure you want to remove?');
-		if (!confirmRemove) return false;
+		if (!confirm('Are you sure you want to remove?')) return false;
 		$.ajax({
 			url: '/api/list/' + this.props.collection + '/remove',
 			type: 'POST',

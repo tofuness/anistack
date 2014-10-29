@@ -35,6 +35,7 @@
 }
 #series-cover-hd {
 	position: absolute;
+	width: 100%;
 	top: 50%;
 }
 #series-cover-meta {
@@ -46,28 +47,19 @@
 }
 #series-cover-title {
 	@extend .playfair;
+	width: 80%;
 	color: #fff;
 	font-size: 59px;
 	letter-spacing: 0.01em;
 }
 #series-cover-alt-titles {
-	@extend .cf;
-	& >div {
-		padding-left: 10px;
-	}
-	& >div:first-child {
-		padding-left: 0;
-	}
-}
-#series-cover-literal, #series-cover-japanese {
-	float: left;
+	width: 100%;
 	padding-top: 8px;
 	color: $w70;
 	font-size: 14px;
 }
 
 // Favorite
-
 #series-favorite-btn {
 	display: none;
 	@extend .cf;
@@ -98,7 +90,6 @@
 }
 
 // Picker
-
 .series-pbtn-wrap {
 	@extend .cf;
 	position: absolute;
@@ -168,8 +159,29 @@
 	}
 }
 
-// Info
+// Rating graph
+#series-rating-graph {
+	@extend .cf;
+	position: relative;
+	overflow: hidden;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 60px;
+}
+@for $i from 1 to 11 {
+	.series-rating-bar:nth-child(#{$i}) {
+		opacity: 0;
+		position: absolute;
+		left: 10% * ($i - 1);
+		bottom: 0;
+		width: calc(10% - 1px);
+		min-height: 5px;
+		background: $text-3;
+	}
+}
 
+// Info
 #series-info-wrap {
 	position: absolute;
 	top: 50%;

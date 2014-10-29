@@ -310,10 +310,12 @@ var ListItem = React.createClass({
 		}
 	},
 	remove: function() {
+		if (!confirm('Are you sure you want to remove?')) return false;
+		
 		var itemIndex = _.findIndex(listStore, { _id: this.props.itemData._id });
 
 		$.ajax({
-			url: '/api/list/' + TempListConstants.TYPE + '/Remove',
+			url: '/api/list/' + TempListConstants.TYPE + '/remove',
 			data: { _id: this.props.itemData._id, _csrf: UserConstants.CSRF_TOKEN },
 			type: 'POST',
 			error: function() {

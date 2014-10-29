@@ -57,7 +57,8 @@ module.exports = function(app) {
 			});
 		});
 	});
-
+	
+	// Add series to list
 	app.route('/list/:list(anime|manga)/add')
 	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next) {
@@ -125,7 +126,8 @@ module.exports = function(app) {
 			});
 		}
 	});
-
+	
+	// Update series in list
 	app.route('/list/:list(anime|manga)/update')
 	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next) {
@@ -140,6 +142,7 @@ module.exports = function(app) {
 			item_status: req.body.item_status || 'current',
 			item_repeats: req.body.item_repeats
 		}
+		
 		if (listType === 'anime') {
 			listValidate.anime(listItem, function(err, itemDoc) {
 				if (!err) {
@@ -205,6 +208,7 @@ module.exports = function(app) {
 		}
 	});
 
+	// Remove series from list
 	app.route('/list/:list(anime|manga)/remove')
 	.all(hAuth.ifAnyAuth)
 	.post(function(req, res, next) {

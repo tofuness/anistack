@@ -58,16 +58,16 @@
 	background: #fff;
 	opacity: 0;
 	visibility: hidden;
-	@include box-shadow(0 1px 6px $b20);
 	@include border-radius(4px);
 	@include transform-origin(138px -10px);
-	@include transform(scale(0.4));
+	@include transform(scale(0.9));
 	
 	&.visible {
 		@extend .tsin;
 		visibility: visible;
 		top: 55px;
 		opacity: 1;
+		@include box-shadow(0 2px 10px $b20);
 		@include transform(translateY(0));
 		@include transform(scale(1));
 	}

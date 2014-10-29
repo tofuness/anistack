@@ -25,10 +25,13 @@ module.exports = function(app) {
 			if (err || !seriesDoc){
 				return next();
 			}
-			res.render('series', {
+
+			var pageDesign = seriesDoc.series_image_cover ? 'series' : 'series-no-cover';
+
+			res.render(pageDesign, {
 				title: seriesDoc.series_title_main,
 				collection: req.param('collection'),
-				series: seriesDoc
+				series: seriesDoc.toObject()
 			});
 		});
 	});

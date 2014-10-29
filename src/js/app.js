@@ -16,6 +16,10 @@ $(document).ready(function() {
 		}
 	});
 
+	// Fittext
+	$("#series-cover-title").fitText(1.2, { minFontSize: '37px' });
+	$("#search-result-title").fitText(1.2, { maxFontSize: '18px' });
+
 	$(window).on('resize', function(){
 
 		// Elements with class full-height gets adjusted on window resize.
