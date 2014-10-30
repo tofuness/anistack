@@ -468,7 +468,7 @@ var ListItem = React.createClass({
 						'list-item-expanded': true,
 						'visible': this.state.expanded
 					})
-				} style={listItemStyle}>	
+				}>	
 					<div className="list-exp-ovl">
 						<div className="list-exp-image" style={listItemStyle}>
 						</div>

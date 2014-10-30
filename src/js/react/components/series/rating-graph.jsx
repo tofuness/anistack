@@ -38,16 +38,21 @@ var SeriesRatingGraph = React.createClass({
 		});
 	},
 	render: function() {
+		var highestCount = _.max(this.state.ratingsData, function(rating) { return rating.count }).count;
+
+		// We do not want division by zero
+		if(highestCount === 0) highestCount = 1;
+		
 		return (
 			<div id="series-rating-graph" ref="seriesRatingGraph">{
 				this.state.ratingsData.map(function(rating, index) {
+					var percentageOfTotal = rating.count / this.state.ratingsTotal * 100 + '%';
 					var barStyle = {
-						height: rating.count / this.state.ratingsTotal * 100 + '%'
+						height: rating.count / highestCount * 100 + '%'
 					}
-
 					// By doing (+ index + 1) we force a mathematical operation
 					return (
-						<div className="series-rating-bar" title={barStyle.height + ' gave this a rating of ' + (+ index + 1)} style={barStyle}>
+						<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1)} style={barStyle}>
 						</div>
 					)
 				}.bind(this))

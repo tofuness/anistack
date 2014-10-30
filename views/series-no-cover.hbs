@@ -36,6 +36,18 @@
 				</div>
 			</div>
 			<div id="series-ncov-right">
+				{{#if series.series_title_synonyms}}
+				<div class="series-ncov-info-section">
+					<div class="series-ncov-info-title">
+						Alternative titles
+					</div>
+					<div class="series-ncov-info-value">
+						{{#each series.series_title_synonyms}}
+							{{this}}<br />
+						{{/each}}
+					</div>
+				</div>
+				{{/if}}
 				<div class="series-ncov-info-section">
 					<div class="series-ncov-info-title">
 						Genres
@@ -46,13 +58,22 @@
 				</div>
 				<div class="series-ncov-info-section">
 					<div class="series-ncov-info-title">
-						Aired
+						Aired {{#if series.series_date_end}} (from - to) {{/if}}
 					</div>
 					<div class="series-ncov-info-value">
 						<span title="{{timeago series.series_date_start date}}">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
 						{{#if series.series_date_end}}
 							&mdash; <span title="{{timeago series.series_date_end date}}">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
 						{{/if}}
+					</div>
+				</div>
+				<div class="series-ncov-info-section">
+					<div class="series-ncov-info-title">
+						Score distribution
+					</div>
+					<div class="series-ncov-info-value">
+						<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+						</div>
 					</div>
 				</div>
 			</div>

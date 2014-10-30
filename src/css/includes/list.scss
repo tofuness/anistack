@@ -219,7 +219,7 @@
 	border-bottom: 1px solid $gray-l-3;
 	@include box-shadow(1px 0 0 $gray-l-3);
 	&.expanded {
-		border-bottom: 1px solid transparent;
+		//border-bottom: 1px solid transparent;
 	}
 }
 .list-item-image-preview {
@@ -300,8 +300,10 @@
 .list-item-expanded {
 	overflow: hidden;
 	height: 0;
+	background: $gray-l-3;
+	/*
 	background-size: cover;
-	background-position: center center;
+	background-position: center center; */
 }
 .list-exp-image {
 	float: left;
@@ -310,16 +312,18 @@
 	background-size: cover;
 	background-position: center center;
 	@include border-radius(4px);
-	@include box-shadow(inset 0 1px 0 $w15, 0 1px 3px $b15);
+	@include box-shadow(0 1px 3px $b05);
 }
 .list-exp-ovl {
 	@extend .cf;
 	padding: 15px;
-	@include box-shadow(inset 0 1px 6px $b05);
-	@include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8));
+	/*@include box-shadow(inset 0 1px 6px $b05);*/
+	/* @include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8)); */
 }
 .list-exp-picker {
 	float: right;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 3px $b05);
 }
 
 #list-noresults {

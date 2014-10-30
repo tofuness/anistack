@@ -180,6 +180,10 @@
 		background: $text-3;
 	}
 }
+.series-rating-bar:hover {
+	@extend .ts15;
+	background: $yellow;
+}
 
 // Info
 #series-info-wrap {
