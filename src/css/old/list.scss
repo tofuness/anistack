@@ -1,0 +1,523 @@
+#list-wrap {
+	@extend .cf;
+	margin: 80px auto 20px auto;
+	width: 1000px;
+	background: #fff;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 3px $b15);
+}
+#list-onboard {
+	padding: 100px 0;
+	text-align: center;
+}
+#onboard-welcome {
+	padding-bottom: 60px;
+	font-size: 32px;
+	font-weight: bold;
+}
+#onboard-wrap {
+	@extend .cf;
+	margin: 0 auto;
+	width: 741px;
+}
+#onboard-left {
+	float: left;
+	@include border-top-left-radius(4px);
+	@include border-bottom-left-radius(4px);	
+}
+#onboard-right {
+	float: right;
+	@include border-top-right-radius(4px);
+	@include border-bottom-right-radius(4px);	
+}
+.onboard-option {
+	padding: 60px;
+	width: 250px;
+}
+#onboard-sep {
+	float: left;
+	width: 1px;
+	height: 334px;
+	background: $gray-l-3; 
+}
+.onboard-image {
+	@extend .ts15;
+	padding-bottom: 30px;
+	font-size: 32px;
+}
+.onboard-title {
+	padding-bottom: 15px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.onboard-desc {
+	line-height: 2em;
+}
+.onboard-tiny {
+	display: block;
+	padding-top: 15px;
+	color: $gray-d-9;
+	font-size: 11px;
+	line-height: 2em;
+}
+.onboard-btn {
+	cursor: pointer;
+	display: block;
+	margin-top: 30px;
+	padding: 12px;
+	font-weight: bold;
+	@include border-radius(4px);
+}
+#onboard-btn-new {
+	color: #fff;
+	background: $blue;
+	border: 2px solid $blue-d-3;
+	@include box-shadow(inset 0 1px 0 $w05);
+	&:hover {
+		background: $blue-d-3;
+	}
+}
+#onboard-btn-sync {
+	border: 2px solid $black;
+	&:hover {
+		color: #fff;
+		background: $black;
+	}
+}
+#list-noresults {
+	color: $gray-d-9;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 337px;
+}
+#list-error {
+	margin: 0 auto;
+	padding: 184px 0;
+	width: 800px;
+	text-align: center;
+	background: url(/img/nooo.png) no-repeat;
+	background-size: 30%;
+	background-position: 0 385px;
+}
+#list-error-image {
+	margin: 0 auto;
+	padding-bottom: 30px;
+	width: 350px;
+	color: $red;
+	font-size: 32px;
+}
+#list-error-title {
+	margin: 0 auto;
+	padding-bottom: 15px;
+	width: 350px;
+	font-size: 14px;
+	font-weight: bold;
+}
+#list-error-desc {
+	margin: 0 auto;
+	width: 350px;
+}
+#list-left {
+	float: left;
+	width: 960px;
+	@include box-shadow(1px 0 0 $gray-l-3);
+}
+#list-top {
+	@extend .cf;
+	border-bottom: 2px solid $gray-l-3;
+}
+#list-filter-wrap {
+	width: 100%;
+}
+#list-filter-input {
+	// WORK: Not sure why this isn't the same height as the element below
+	border: 0;
+	padding: 15px;
+	width: 100%;
+	font-size: 12px;
+}
+
+#list-tabs-wrap {
+	@extend .cf;
+}
+.list-tab {
+	@extend .ns;
+	cursor: pointer;
+	float: left;
+	width: 16.667%;
+	color: $bluegray;
+	font-weight: bold;
+	line-height: 45px;
+	text-align: center;
+	background: $gray-l-3;
+	@include box-shadow(inset 0 -2px 0 $bluegray-l-12);
+	&:hover {
+		@include box-shadow(inset 0 -2px 0 $bluegray-l-12);
+	}
+	&.current {
+		@include box-shadow(inset 0 -2px 0 $bluegray);
+	}
+	&:first-child {
+		@include border-top-left-radius(4px);
+	}
+}
+
+
+#list-sort {
+	@extend .cf;
+	position: relative;
+	border-bottom: 2px solid $gray-l-3;
+}
+
+.list-sort-hd {
+	@extend .ns;
+	cursor: pointer;
+	float: left;
+	padding: 15px;
+	color: $gray-d-9;
+	font-weight: bold;
+	text-align: left;
+	border-right: 1px
+}
+#list-sort-title {
+	width: 665px;
+}
+#list-sort-progress {
+	width: 73px;
+	text-align: center;
+}
+#list-sort-rating {
+	width: 51px;
+	text-align: center;
+}
+#list-sort-type {
+	width: 51px;
+	text-align: center;
+}
+
+.list-itemstatus-wrap {
+	@extend .cf;
+	position: relative;
+	height: 0;
+	&.current {
+		& .list-itemstatus-tag {
+			background: $orange;
+		}
+		& .list-itemstatus-line {
+			background: $orange;
+		}
+	}
+}
+.list-itemstatus-tag {
+	float: left;
+	margin-top: -10px;
+	margin-left: -90px;
+	padding: 5px;
+	width: 65px;
+	height: 10px;
+	color: #fff;
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 10px;
+	text-align: center;
+	text-transform: uppercase;
+	background: $blue;
+	@include border-radius(50px);
+}
+.list-itemstatus-line {
+	float: left;
+	margin-top: -2px;
+	margin-left: -15px;
+	width: 975px;
+	height: 2px;
+	background: $blue;
+}
+
+.list-item-icons {
+	@extend .cf;
+	float: left;
+	width: 0;
+	height: 0;
+}
+.list-item-airing-icon {
+	float: left;
+	margin: 14px 0 0 -28px;
+	color: $blue;
+	font-size: 16px;
+	text-shadow: 0 1px 0 $w30;
+}
+.list-item-tag-icon {
+	float: left;
+	margin: 14px 0 0 -54px;
+	color: $blue;
+	font-size: 16px;
+	text-shadow: 0 1px 0 $w30;
+}
+
+#list {
+	float: left;
+	width: 960px;
+	min-height: 300px;
+	background: #fff;
+	@include border-top-left-radius(4px);
+	@include border-bottom-left-radius(4px);
+}
+.list-item {
+	@extend .cf;
+	min-height: 45px;
+	border-bottom: 1px solid $gray-l-3;
+
+	&:hover {
+		& .list-item-plusone:not(.hidden) {
+			display: block;
+		}
+	}
+}
+.list-item-content {
+	@extend .cf;
+	@extend .ns;
+	cursor: pointer;
+	font-weight: bold;
+}
+.list-item-left {
+	float: left;
+	padding: 15px;
+}
+.list-item-title {
+	color: $black;
+	text-decoration: none;
+	@include box-shadow(0 0px 0 $blue);
+	&:hover {
+		color: $blue;
+		@include box-shadow(0 1px 0 $blue);
+	}
+}
+.list-item-right {
+	float: right;
+}
+.list-item-plusone {
+	cursor: pointer;
+	display: none;
+	float: left;
+	margin: 14px 15px 0 0;
+	height: 12px;
+	color: $gray-d-3;
+	font-size: 16px;
+	&:hover {
+		color: $blue;
+	}
+}
+.list-item-progress {
+	@extend .cf;
+	@extend .ns;
+	position: relative;
+	cursor: pointer;
+	float: left;
+	padding: 15px;
+	text-align: center;
+	border-left: 1px solid $gray-l-3;
+}
+.list-progress-current {
+	float: left;
+	width: 26px;
+	text-align: center;
+}
+.list-progress-sep {
+	float: left;
+	width: 20px;
+	color: $gray-d-3;
+	text-align: center;
+}
+.list-progress-total {
+	float: left;
+	color: $gray-d-9;
+	width: 26px;
+	text-align: center;
+}
+.list-item-rating {
+	@extend .cf;
+	@extend .ns;
+	position: relative;
+	cursor: pointer;
+	float: left;
+	padding: 15px;
+	width: 50px;
+	text-align: center;
+	border-left: 1px solid $gray-l-3;
+}
+.list-rating-icon {
+	float: left;
+	height: 12px;
+	color: $red;
+}
+.list-item-type {
+	float: left;
+	padding: 15px;
+	width: 50px;
+	text-align: center;
+	border-left: 1px solid $gray-l-3;
+}
+.list-type-icon {
+	display: block;
+	color: $gray-d-9;
+	text-align: center;
+}
+
+/* Expanded content */
+
+.list-item-exp {
+	overflow: hidden;
+	height: 0;
+	background: url(/img/sao.jpg) center center no-repeat;
+	background-size: cover;
+}
+.list-exp-wrap {
+	height: 100%;
+	@include linear-gradient(transparent, rgba(99, 114, 124, 0.8));
+	@include box-shadow(inset 0 1px 4px -1px $b30);
+}
+.list-exp-left {
+	@extend .cf;
+	float: left;
+	opacity: 0;
+	padding-left: 15px;
+}
+.list-exp-image {
+	float: left;
+	width: 150px;
+	height: 200px;
+	background: url(/img/sao.jpg) center center no-repeat;
+	background-size: cover;
+	@include border-radius(4px);
+}
+.list-exp-info {
+	float: left;
+	padding-left: 15px;
+	width: 400px;
+}
+.list-exp-header {
+	padding: 10px 0;
+	color: $w80;
+	font-size: 11px;
+	font-weight: bold;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	@include box-shadow(inset 0 1px 0 $w80);
+}
+.list-exp-note {
+	width: 400px;
+	color: $w80;
+	line-height: 2em;
+}
+.list-exp-right {
+	opacity: 0;
+	float: right;
+}
+.list-exp-status-wrap {
+	padding-right: 15px;
+	width: 250px;
+}
+.list-exp-status {
+	padding-left: 15px;
+	height: 39px;
+	font-weight: bold;
+	text-align: left;
+	line-height: 39px;
+	background: #fff;
+	border-top: 1px solid $gray-l-3;
+	&:first-child {
+		border-top: 0;
+		@include border-top-right-radius(4px);
+		@include border-top-left-radius(4px);
+	}
+	&:last-child {
+		@include border-bottom-right-radius(4px);
+		@include border-bottom-left-radius(4px);
+	}
+}
+
+
+#list-right {
+	float: right;
+	width: 220px;
+	height: 100%;
+	background: #fff;
+	@include box-shadow(inset 1px 0 0 $gray-l-3);
+	@include border-top-right-radius(4px);
+	@include border-bottom-right-radius(4px);
+}
+#list-profile {
+	@extend .cf;
+}
+#list-profile-avatar {
+	margin: -40px auto 0 auto;
+	width: 80px;
+	height: 80px;
+	border: 4px solid #fff;
+	background-color: $gray;
+	background-size: cover;
+	@include border-radius(4px);
+	@include box-shadow(0 1px 3px $b15);
+}
+#list-profile-background {
+	height: 150px;
+	background: $brand-black;
+	/*background: url(/img/profilebg.jpg) center center no-repeat;*/
+	background-size: cover;
+	@include border-top-right-radius(4px);
+}
+#list-profile-name {
+	padding: 20px 0 10px 0;
+	font-size: 14px;
+	font-weight: 800;
+	text-align: center;
+}
+#list-profile-bio {
+	padding: 10px 20px;
+	color: $gray-d-9;
+	text-align: left;
+}
+.list-nav-item {
+	@extend .cf;
+	cursor: pointer;
+	display: block;
+	padding: 10px 20px;
+	font-size: 11px;
+	text-transform: uppercase;
+	&.current {
+		color: $blue;
+		& .list-nav-count {
+			color: #fff;
+			background: $blue;
+		}
+	}
+	&:last-child {
+		margin-bottom: 20px;
+	}
+
+	&:hover:not(.current) {
+		color: $blue;
+	}
+}
+.list-nav-sep {
+	margin-bottom: 10px;
+	padding-top: 10px;
+	border-bottom: 1px solid $gray-l-3;
+}
+.list-nav-icon {
+	font-size: 8px;
+}
+.list-nav-text {
+	font-weight: 800;
+	line-height: 23px;
+}
+.list-nav-private {
+	float: right;
+	color: $yellow-d-6;
+	padding: 3px 5px;
+	font-weight: 700;
+	text-align: center;
+	background: $yellow-l-6;
+	@include border-radius(4px);
+}

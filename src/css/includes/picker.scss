@@ -1,0 +1,231 @@
+.picker-wrap {
+	width: 236px; // WORK: Needs some tweaking
+	height: auto;
+	background: #fff;
+	//@include box-shadow(0 1px 6px $b30);
+	@include border-radius(4px);
+}
+.picker-top {
+	padding: 10px;
+}
+.picker-status-wrap {
+	height: 40px;
+	margin-bottom: 10px;
+}
+.picker-status-val {
+	@extend .cf;
+	@extend .ns;
+	position: relative;
+	z-index: 3;
+	cursor: pointer;
+	padding: 10px;
+	color: $black;
+	font-weight: 700;
+	background: $gray-l-3;
+	text-transform: capitalize;
+	@include border-radius(4px);
+
+	&.visible {
+		color: $w70;
+		background: $brand-black;
+	}
+}
+.picker-status-legend {
+	float: right;
+	padding-right: 10px;
+	font-size: 10px;
+	line-height: 18px;
+	text-transform: uppercase;
+}
+.picker-status-menu-icon {
+	@extend .ts30;
+	float: right;
+	padding-top: 2px;
+	@include transform-origin(6px 9px);
+	&.rotate {
+		@include rotate(180);
+	}
+}
+.picker-status-menu {
+	@extend .ts15;
+	display: none;
+	position: relative;
+	padding-top: 10px;
+	margin-top: -10px;
+	height: 195px;
+	background: $brand-black;
+	z-index: $z-up;
+	@include border-bottom-left-radius(4px);
+	@include border-bottom-right-radius(4px);
+	@include box-shadow(0 1px 3px $b60);
+
+	&.visible {
+		display: block;
+	}
+}
+.picker-status-menu-item {
+	cursor: pointer;
+	display: none;
+	padding: 10px;
+	color: $w70;
+	&:first-child {
+		border-top: 1px dotted $w10;
+	}
+	&:hover {
+		color: #fff;
+		background: $w05;
+	}
+	&:last-child {
+		@include border-bottom-left-radius(4px);
+		@include border-bottom-right-radius(4px);
+	}
+}
+.picker-inputs-wrap {
+	// Contains both rewatched and progress
+	@extend .cf;
+	margin-bottom: 10px;
+}
+.picker-progress-wrap {
+	@extend .cf;
+	float: left;
+	margin-left: 10px;
+	padding-left: 10px;
+}
+.picker-title {
+	margin-bottom: 5px;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+.picker-input-val {
+	@extend .ts10;
+	float: left;
+	padding: 3px 0 4px 0;
+	width: 40px;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	border: 2px solid $gray;
+	@include border-radius(4px);
+	&:focus {
+		border: 2px solid $brand-black;
+	}
+}
+.picker-input-sep {
+	float: left;
+	padding: 0 10px;
+	color: $gray-d-9;
+	line-height: 30px;
+}
+.picker-input-times {
+	float: left;
+	padding-left: 10px;
+	color: $gray-d-9;
+	line-height: 30px;
+}
+.picker-input-total {
+	float: left;
+	width: 40px;
+	color: $gray-d-9;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	line-height: 30px;
+	background: $gray-l-3;
+	@include border-radius(4px);
+}
+.picker-repeats-wrap {
+	@extend .cf;
+	float: left;
+
+}
+.picker-rating-wrap {
+	@extend .cf;
+}
+.picker-rating-hearts {
+	@extend .cf;
+	float: left;
+	margin-left: -10px;
+}
+.picker-heart {
+	float: left;
+	cursor: pointer;
+	padding: 4px 5px;
+	color: $red;
+	font-size: 23px;
+	line-height: 18px;
+	&:hover {
+		color: $red-d-3;
+	}
+	&:first-child {
+		padding-left: 10px;
+	}
+	&:last-child {
+		padding-right: 0;
+	}
+}
+.picker-rating-val {
+	float: right;
+	width: 50px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 30px;
+	text-align: center;
+}
+.picker-bottom {
+	@extend .cf;
+	padding: 10px;
+	background: $gray-hover;
+	border-top: 1px solid $gray-l-3;
+	@include border-bottom-left-radius(4px);
+	@include border-bottom-right-radius(4px);
+}
+.picker-cancel {
+	cursor: pointer;
+	float: right;
+	margin-right: 15px;
+	color: $gray-d-9;
+	font-size: 11px;
+	line-height: 28px;
+}
+.picker-remove {
+	cursor: pointer;
+	float: right;
+	padding-top: 6px;
+	margin-right: 15px;
+	color: $gray-d-9;
+	font-size: 11px;
+	&:hover {
+		color: $red;
+		@include box-shadow(0 1px 0 $red);
+	}
+}
+.picker-save {
+	cursor: pointer;
+	position: relative;
+	float: right;
+	padding: 5px 20px;
+	color: #fff;
+	font-weight: 700;
+	background: $blue;
+	@include border-radius(30px);
+	&:hover {
+		background: $blue-l-3;
+	}
+}
+.picker-save-success {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	text-align: center;
+	background: $green;
+	@include border-radius(30px);
+}
+.picker-save-success-icon {
+	padding-top: 5px;
+	font-size: 16px;
+}

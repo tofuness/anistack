@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+	<title>{{title}} - Herro.co</title>
+	<!--<link href="/css/external.css" rel="stylesheet" type="text/css" media="all" />-->
+	<link href="https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/icons.css" rel="stylesheet" />
+	<link href="/css/app.css" rel="stylesheet" type="text/css" media="all" />
+	<!--
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Playfair+Display:400,700,900,400italic,700italic,900italic" rel="stylesheet" type="text/css" media="all" />-->
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Playfair+Display:400,400italic" rel="stylesheet" type="text/css" media="all" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+</head>
+<body>
+<div id="top">
+	<div id="top-nav-wrap">
+		<div id="top-nav">
+			<a id="top-nav-logo" href="#"></a>
+			<div id="top-nav-tagline">Simple, Anime &amp; Manga Tracking</div>
+		</div>
+		{{#if user}}
+		<div id="top-profile-wrap">
+			<!-- If avatar is spooked, the site will be interpreted as an image -->
+			<div id="top-profile-avatar" style="background-image: url({{user.avatar.processed}})">
+			</div>
+		</div>
+		<div id="top-profile-menu-wrap">
+			<div id="top-profile-menu">
+				<div class="top-profile-menu-section">
+					<a href="/list/anime/{{user.username}}" class="top-profile-menu-link first">
+						<b>{{user.display_name}}</b>
+						<span class="top-profile-menu-desc">
+							View your profile
+						</span>
+					</a>
+				</div>
+				<div class="top-profile-menu-section">
+					<a href="/list/anime/{{user.username}}" class="top-profile-menu-link">Anime List</a>
+					<a href="/list/manga/{{user.username}}" class="top-profile-menu-link">Manga List</a>
+					<a href="" class="top-profile-menu-link">Stats</a>
+				</div>
+				<div class="top-profile-menu-section">
+					<a href="/search/anime" class="top-profile-menu-link">Search Anime</a>
+					<a href="/search/manga" class="top-profile-menu-link">Search Manga</a>
+				</div>
+				<div class="top-profile-menu-section">
+					<a href="/me/settings" class="top-profile-menu-link">Settings</a>
+					<a href="/logout" class="top-profile-menu-link last">Log out</a>
+				</div>
+			</div>
+		</div>
+		{{else}}
+		<div id="top-guest-actions">
+			<a id="top-register-link" href="/register">
+				Register Free
+			</a>
+			<a id="top-login-link" href="/login">
+				Log In
+			</a>
+		</div>
+		{{/if}}
+	</div>
+</div>

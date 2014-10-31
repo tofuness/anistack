@@ -1,0 +1,69 @@
+// Series page with no cover image
+
+#series-ncov-wrap {
+	position: relative;
+	padding-bottom: 40px;
+	width: 100%;
+	background: #fff;
+}
+#series-ncov-hd {
+	margin: 0 auto;
+	padding: 80px 0;
+	width: 1000px;
+	text-align: center;
+}
+#series-ncov-meta {
+	color: $text-2;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+#series-ncov-title {
+	@extend .playfair;
+	color: #000; // In order to bring out that strong feeeeeeel. This is where #000 truly shines.
+	width: 100%;
+	font-size: 37px;
+}
+#series-ncov-alt-titles {
+	padding-top: 10px;
+	color: $text-3;
+}
+#series-ncov {
+	@extend .cf;
+	margin: 0 auto;
+	width: 1000px;
+}
+#series-ncov-left {
+	@extend .cf;
+	float: left;
+	width: 70%;
+}
+#series-ncov-image {
+	float: left;
+	width: 200px;
+	height: 300px;
+	background-size: cover;
+	@include border-radius(4px);
+}
+#series-ncov-desc {
+	padding-right: 20px;
+	display: inline-block;
+}
+#series-ncov-right {
+	float: right;
+	width: 30%;
+}
+.series-ncov-info-section {
+	@extend .cf;
+	padding-bottom: 20px;
+	&:last-child {
+		padding-bottom: 0;
+	}
+}
+.series-ncov-info-title {
+	font-weight: 800;
+	text-transform: uppercase;
+}
+.series-ncov-info-value {
+	padding-top: 1em;
+}

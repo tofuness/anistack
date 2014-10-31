@@ -1,0 +1,42 @@
+@media(max-width: 1060px){
+	#top-nav-wrap {
+		width: 100%;
+	}
+	#top-nav-logo {
+		margin-left: 20px;
+	}
+	#search-page {
+		padding: 0 20px;
+		width: auto;
+	}
+	#bottom {
+		width: 100%;
+	}
+	#bottom-logo {
+		padding-left: 20px;
+	}
+	// Import this at 1000px-ish, because long titles tend to break the layout early.
+	@import 'mobile/series';
+}
+
+@media(max-width: 640px){
+	#top-nav-tagline {
+		display: none;
+	}
+	#top-guest-actions {
+		padding-right: 20px;
+	}
+	.logreg-form {
+		@extend .border-box;
+		padding: 30px;
+		width: 100%;
+	}
+	#bottom-logo {
+		display: none;
+	}
+	#bottom-menu-wrap {
+		padding-left: 20px;
+	}
+	@import 'mobile/search';
+	@import 'mobile/settings';
+}
