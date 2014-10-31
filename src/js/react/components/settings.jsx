@@ -231,13 +231,12 @@ var BasicSettings = React.createClass({
 		var avatarUrl;
 		if (this.state.newAvatar) {
 			avatarUrl = this.state.newAvatar + '?t=' + new Date().getTime();
+			$('#top-profile-avatar').css('backgroundImage', 'url(' + avatarUrl + ')');
 		} else if (this.props.user.avatar.processed) {
 			avatarUrl = this.props.user.avatar.processed;
 		} else {
-			avatarUrl = '/img/default.gif';
+			avatarUrl = '/img/default_avatar.jpg';
 		}
-
-		$('#top-profile-avatar').css('backgroundImage', 'url(' + avatarUrl + ')');
 
 		return (
 			<div>

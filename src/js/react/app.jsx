@@ -3,6 +3,7 @@ window.React = React;
 
 var ListApp = require('./components/list.jsx');
 var Settings = require('./components/settings.jsx');
+var ForgotForm = require('./components/forgot.jsx');
 var LoginForm = require('./components/login.jsx');
 var RegisterForm = require('./components/register.jsx');
 var SearchApp = require('./components/search.jsx');
@@ -27,6 +28,11 @@ if (registerNode) {
 var loginNode = document.getElementById('login-form-wrap');
 if (loginNode) {
 	React.renderComponent(<LoginForm />, loginNode);
+}
+
+var forgotNode = document.getElementById('forgot-form-wrap');
+if (forgotNode) {
+	React.renderComponent(<ForgotForm />, forgotNode);
 }
 
 var searchNode = document.getElementById('search-page-wrap');

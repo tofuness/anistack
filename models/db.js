@@ -509,7 +509,8 @@ var UserSchema = new Schema({
 	anime_list: [ AnimeListItemSchema ],
 	manga_list: [ MangaListItemSchema ],
 	activity_feed: [ ActivityItemSchema ],
-	api_token: String
+	api_token: String,
+	reset_pass_token: String
 });
 
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);

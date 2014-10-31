@@ -36,6 +36,17 @@ $(document).ready(function() {
 		});
 	});
 
+	$('#logreg-error').velocity({
+		opacity: [0, 1],
+		height: [0, 'auto'],
+		paddingTop: [0, 15],
+		paddingBottom: [0, 15],
+	}, {
+		easing: [0.23, 1, 0.32, 1],
+		delay: 3000,
+		duration: 300
+	});
+
 	// Run window resize at least once so that the styles get apples.
 	$(window).resize();
 

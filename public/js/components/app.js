@@ -4,6 +4,7 @@ window.React = React;
 
 var ListApp = require('./components/list.jsx');
 var Settings = require('./components/settings.jsx');
+var ForgotForm = require('./components/forgot.jsx');
 var LoginForm = require('./components/login.jsx');
 var RegisterForm = require('./components/register.jsx');
 var SearchApp = require('./components/search.jsx');
@@ -30,6 +31,11 @@ if (loginNode) {
 	React.renderComponent(LoginForm(null), loginNode);
 }
 
+var forgotNode = document.getElementById('forgot-form-wrap');
+if (forgotNode) {
+	React.renderComponent(ForgotForm(null), forgotNode);
+}
+
 var searchNode = document.getElementById('search-page-wrap');
 if (searchNode) {
 	React.renderComponent(SearchApp(null), searchNode);
@@ -46,7 +52,7 @@ if (seriesRatingGraphNode) {
 	var seriesData = $(seriesRatingGraphNode);
 	React.renderComponent(SeriesRatingGraph({_id: seriesData.data('id'), collection: seriesData.data('collection')}), seriesRatingGraphNode);
 }
-},{"./components/list.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx","./components/login.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx","./components/pickerbutton.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx","./components/register.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx","./components/search.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx","./components/series/rating-graph.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\series\\rating-graph.jsx","./components/settings.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx","react/addons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js":[function(require,module,exports){
+},{"./components/forgot.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\forgot.jsx","./components/list.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx","./components/login.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\login.jsx","./components/pickerbutton.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\pickerbutton.jsx","./components/register.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\register.jsx","./components/search.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\search.jsx","./components/series/rating-graph.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\series\\rating-graph.jsx","./components/settings.jsx":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\settings.jsx","react/addons":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\addons.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -20530,7 +20536,33 @@ module.exports = warning;
 },{"./emptyFunction":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\emptyFunction.js","_process":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\browserify\\node_modules\\process\\browser.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\react.js":[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
+},{"./lib/React":"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\node_modules\\react\\lib\\React.js"}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\forgot.jsx":[function(require,module,exports){
+/** @jsx React.DOM */var ForgotForm = React.createClass({displayName: 'ForgotForm',
+	submitForm: function() {
+		$(this.refs.forgotForm.getDOMNode()).submit();
+	},
+	render: function() {
+		return (
+			React.DOM.form({id: "forgot-form", className: "logreg-form", ref: "forgotForm", method: "post", action: "/forgot"}, 
+				React.DOM.div({id: "logreg-form-logo"}), 
+				React.DOM.div({className: "logreg-section-wrap"}, 
+					React.DOM.div({className: "logreg-legend"}, "Email ", React.DOM.div({className: "logreg-legend-desc"}, "Forgot to add one? RIP.")), 
+					React.DOM.input({className: "logreg-input", type: "text", name: "email", tabIndex: "1"})
+				), 
+				React.DOM.div({className: "logreg-section-wrap"}, 
+					React.DOM.div({id: "logreg-submit", onClick: this.submitForm}, "Request new password")
+				), 
+				React.DOM.div({className: "logreg-section-wrap"}, 
+					React.DOM.a({className: "logreg-link", href: "/register"}, "or Register for Free")
+				), 
+				React.DOM.input({type: "hidden", value: UserConstants.CSRF_TOKEN, name: "_csrf"})
+			)
+		)
+	}
+});
+
+module.exports = ForgotForm;
+},{}],"c:\\Users\\Voyager\\Documents\\Bitbucket\\herro\\src\\js\\react\\components\\list.jsx":[function(require,module,exports){
 /** @jsx React.DOM */var PickerApp = require('./picker.jsx')
 var listStore = [];
 var cx = React.addons.classSet;
@@ -21545,18 +21577,10 @@ module.exports = PickerButton;
 		this.validateEmail(e);
 	},
 	registerAccount: function() {
+		$(this.refs.registerForm.getDOMNode()).submit();
+		return false;
 		if (this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3) {
-			$.ajax({
-				type: 'post',
-				url: '/api/register',
-				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
-				success: function(res) {
-					window.location = '/login';
-				},
-				error: function(err) {
-					console.log(err);
-				}
-			});
+			$(this.refs.registerForm.getDOMNode()).submit();
 		} else {
 			alert('Make sure you have filled in all required fields correctly');
 		}   
@@ -21601,7 +21625,7 @@ module.exports = PickerButton;
 	}, 500),
 	render: function() {
 		return (
-			React.DOM.form({id: "register-form", className: "logreg-form", ref: "registerForm"}, 
+			React.DOM.form({id: "register-form", className: "logreg-form", ref: "registerForm", method: "post", action: "/register"}, 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.div({id: "logreg-form-hd"}, 
 						"Let's get this started."
@@ -21659,7 +21683,8 @@ module.exports = PickerButton;
 				), 
 				React.DOM.div({className: "logreg-section-wrap"}, 
 					React.DOM.a({className: "logreg-link", href: "/login"}, "Already registered?")
-				)
+				), 
+				React.DOM.input({type: "hidden", value: UserConstants.CSRF_TOKEN, name: "_csrf"})
 			)
 		)
 	}
@@ -22195,11 +22220,9 @@ var BasicSettings = React.createClass({displayName: 'BasicSettings',
 		} else if (this.props.user.avatar.processed) {
 			avatarUrl = this.props.user.avatar.processed;
 		} else {
-			avatarUrl = '/img/default.gif';
+			avatarUrl = '/img/default_avatar.jpg';
 		}
-
-		$('#top-profile-avatar').css('backgroundImage', 'url(' + avatarUrl + ')');
-
+		
 		return (
 			React.DOM.div(null, 
 				React.DOM.form({className: "set-form", ref: "setForm"}, 
@@ -22473,6 +22496,11 @@ var PrivacySettings = React.createClass({displayName: 'PrivacySettings',
 				)
 			)
 		)
+	}
+});
+
+module.exports = Settings;
+},{}]},{},["./src/js/react/app.jsx"]);
 	}
 });
 

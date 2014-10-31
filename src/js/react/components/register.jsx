@@ -30,18 +30,10 @@ var RegisterForm = React.createClass({
 		this.validateEmail(e);
 	},
 	registerAccount: function() {
+		$(this.refs.registerForm.getDOMNode()).submit();
+		return false;
 		if (this.state.emailValid !== false && this.state.usernameValid !== false && this.state.passwordVal.length >= 6 && this.state.usernameVal.length >= 3) {
-			$.ajax({
-				type: 'post',
-				url: '/api/register',
-				data: $(this.refs.registerForm.getDOMNode()).serialize() + '&_csrf=' + UserConstants.CSRF_TOKEN,
-				success: function(res) {
-					window.location = '/login';
-				},
-				error: function(err) {
-					console.log(err);
-				}
-			});
+			$(this.refs.registerForm.getDOMNode()).submit();
 		} else {
 			alert('Make sure you have filled in all required fields correctly');
 		}   
@@ -86,7 +78,7 @@ var RegisterForm = React.createClass({
 	}, 500),
 	render: function() {
 		return (
-			<form id="register-form" className="logreg-form" ref="registerForm">
+			<form id="register-form" className="logreg-form" ref="registerForm" method="post" action="/register">
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-hd">
 						Let's get this started.
@@ -145,6 +137,7 @@ var RegisterForm = React.createClass({
 				<div className="logreg-section-wrap">
 					<a className="logreg-link" href="/login">Already registered?</a>
 				</div>
+				<input type="hidden" value={UserConstants.CSRF_TOKEN} name="_csrf" />
 			</form>
 		)
 	}

@@ -51,23 +51,4 @@ module.exports = function(app) {
 			next(new Error('No username provided'));
 		}
 	});
-
-	app.route('/register')
-	.post(function(req, res, next) {
-		var user = new User({
-			display_name: req.body.username,
-			username: req.body.username,
-			password: req.body.password
-		});
-		if (req.body.email !== '') {
-			user.email = req.body.email;
-		}
-		User.createOne(user, function(err, userDoc) {
-			if (err) {
-				console.log(err);
-				return next(new Error('/register error'));
-			}
-			if (userDoc) return res.status(200).json({ status: 'ok', message: 'user has been regisered' });
-		});
-	});
 }
