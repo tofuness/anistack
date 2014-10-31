@@ -135,7 +135,7 @@ var RegisterForm = React.createClass({
 				</div>
 				<div className="logreg-section-wrap">
 					<div id="logreg-form-desc">
-						Most of Herro's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
+						Most of Anistack's features do not require that you have an email. However, if you forget your login credentials you will be shit out of luck.
 						<div className="logreg-form-desc-small">(You may add an email later)</div>
 					</div>
 				</div>

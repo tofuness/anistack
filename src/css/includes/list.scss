@@ -312,18 +312,18 @@
 	background-size: cover;
 	background-position: center center;
 	@include border-radius(4px);
-	@include box-shadow(0 1px 3px $b05);
+	@include box-shadow(0 1px 3px $b10);
 }
 .list-exp-ovl {
 	@extend .cf;
 	padding: 15px;
-	/*@include box-shadow(inset 0 1px 6px $b05);*/
+	/*@include box-shadow(inset 0 1px 6px $b10);*/
 	/* @include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8)); */
 }
 .list-exp-picker {
 	float: right;
 	@include border-radius(4px);
-	@include box-shadow(0 1px 3px $b05);
+	@include box-shadow(0 1px 3px $b10);
 }
 
 #list-noresults {
