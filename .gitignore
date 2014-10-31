@@ -4,5 +4,7 @@ node_modules
 **/*.log
 .DS_Store
 .env
-public/avatars/*
+public/*
+!public/img
+!public/fonts
 coverage
