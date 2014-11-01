@@ -52,7 +52,7 @@ var SeriesRatingGraph = React.createClass({
 					}
 					// By doing (+ index + 1) we force a mathematical operation
 					return (
-						<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1)} style={barStyle}>
+						<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1) / 2} style={barStyle}>
 						</div>
 					)
 				}.bind(this))

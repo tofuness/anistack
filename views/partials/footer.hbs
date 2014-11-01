@@ -5,11 +5,12 @@
 			<div id="bottom-menu-main">
 				<a href="">Anime</a>
 				<a href="">Manga</a>
-				<a href="">Register for Free</a>
+				{{#unless user}}
+				<a href="/register">Register for Free</a>
+				{{/unless}}
 			</div>
 			<div id="bottom-menu-sub">
 				<a href="">What exatly is Anistack?</a>
-				<a href="">Hangout with us</a>
 				<a href="">Contact us</a>
 			</div>
 		</div>
