@@ -146,7 +146,7 @@ require('./routes/api/user.js')(apiRouter);
 // Basic error handling
 app.use(function(err, req, res, next) {
 	if (err) {
-		if (process.env.NODE_ENV === 'development') {
+		if (process.env.NODE_ENV !== 'production') {
 			console.log(req.url);
 			console.log(err.stack);
 		}

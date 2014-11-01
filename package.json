@@ -53,6 +53,7 @@
     "jshint-stylish": "~1.0.0"
   },
   "scripts": {
+    "app": "node ./app.js",
     "test": "mocha --require test/support/env --reporter spec --bail --check-leaks test/",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --require test/support/env --reporter dot --check-leaks test/"
   },
