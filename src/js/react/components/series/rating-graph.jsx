@@ -22,7 +22,7 @@ var SeriesRatingGraph = React.createClass({
 					ratingsTotal += ratingsData[i].count;
 					ratingsAverage += ratingsData[i].count * ratingsData[i]._id;
 				}
-				ratingsAverage = ratingsAverage / (2 * ratingsTotal);
+				if (ratingsAverage) ratingsAverage = (ratingsAverage / (2 * ratingsTotal));
 
 				this.setState({
 					ratingsAverage: ratingsAverage.toFixed(1),
