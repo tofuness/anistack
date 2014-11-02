@@ -40,7 +40,6 @@
 }
 #series-cover-meta {
 	color: #fff;
-	font-size: 14px;
 	font-weight: 800;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
@@ -55,8 +54,7 @@
 #series-cover-alt-titles {
 	width: 100%;
 	padding-top: 8px;
-	color: $w70;
-	font-size: 14px;
+	color: $w80;
 }
 
 // Favorite
@@ -97,77 +95,110 @@
 	top: 20px;
 	right: 20px;
 	& .pbtn-remove {
-		visibility: hidden;
-		float: left;
-		margin-right: 15px;
-		margin-top: 6px;
-		padding-right: 1px;
-		cursor: pointer;
 		color: #fff;
-		font-size: 11px;
-		&:hover {
-			color: $red;
-			@include box-shadow(0 1px 0 $red);
-		}
-		&.visible {
-			visibility: visible;
-		}
 	}
 	& .pbtn-add {
-		@extend .ts15;
-		float: left;
-		cursor: pointer;
-		padding: 3px 13px;
 		color: #fff;
-		font-weight: bold;
 		border: 2px solid #fff;
 		text-shadow: 0 0 3px $b10;
-		@include border-radius(30px);
-		@include box-shadow(0 1px 2px $b10);
-		&:hover {
-			background: $blue;
-			border: 2px solid $blue;
-			text-shadow: none;
-			@include box-shadow(none);
-		}
-		&.open {
-			background: $blue;
-			border: 2px solid $blue;
-			text-shadow: none;
-			@include box-shadow(none);
-		}
 	}
-	& .pbtn-picker {
-		@extend .tsout;
-		position: absolute;
-		visibility: hidden;
-		top: 40px;
-		right: 0;
-		z-index: $z-up;
-		opacity: 0;
-		background: #fff;
-		@include transform(scale(0.4));
-		@include transform-origin(190px top);
-		@include box-shadow(0 1px 6px $b30);
-		@include border-radius(4px);
-		&.visible {
-			@extend .tsin;
-			visibility: visible;
-			opacity: 1;
-			@include transform(scale(1));
-		}
+}
+
+.pbtn-remove {
+	visibility: hidden;
+	float: left;
+	margin-right: 15px;
+	margin-top: 6px;
+	padding-right: 1px;
+	cursor: pointer;
+	font-size: 11px;
+	&:hover {
+		color: $red;
+		@include box-shadow(0 1px 0 $red);
+	}
+	&.visible {
+		visibility: visible;
+	}
+}
+.pbtn-add {
+	@extend .ts15;
+	float: left;
+	cursor: pointer;
+	padding: 3px 13px;
+	font-weight: bold;
+	@include border-radius(30px);
+	&:hover {
+		color: #fff;
+		background: $blue;
+		border: 2px solid $blue;
+		text-shadow: none;
+		@include box-shadow(none);
+	}
+	&.open {
+		color: #fff;
+		background: $blue;
+		border: 2px solid $blue;
+		text-shadow: none;
+		@include box-shadow(none);
+	}
+}
+.pbtn-picker {
+	@extend .tsout;
+	position: absolute;
+	visibility: hidden;
+	top: 40px;
+	right: 0;
+	z-index: $z-up;
+	opacity: 0;
+	background: #fff;
+	@include transform(scale(0.4));
+	@include transform-origin(190px top);
+	@include box-shadow(0 1px 6px $b30);
+	@include border-radius(4px);
+	&.visible {
+		@extend .tsin;
+		visibility: visible;
+		opacity: 1;
+		@include transform(scale(1));
 	}
 }
 
 // Rating graph
 #series-rating-graph {
+
+}
+#series-rating-graph-left {
 	@extend .cf;
+	float: left;
 	position: relative;
 	overflow: hidden;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	width: 70%;
 	height: 60px;
+}
+#series-rating-graph-right {
+	float: right;
+	width: 30%;
+}
+.series-rating-graph-average {
+	margin-left: 20px;
+	padding: 6px 0;
+	height: 48px;
+	color: $text;
+	font-size: 23px;
+	font-weight: 800;
+	text-align: center;
+	border-left: 1px solid $gray-l-3;
+}
+.series-rating-graph-average-value {
+	opacity: 0;
+}
+.series-rating-graph-desc {
+	opacity: 0;
+	color: $text-2;
+	font-size: 10px;
+	font-weight: 400;
+	text-align: center;
+	text-transform: uppercase;
 }
 @for $i from 1 to 11 {
 	.series-rating-bar:nth-child(#{$i}) {
@@ -177,12 +208,8 @@
 		bottom: 0;
 		width: calc(10% - 1px);
 		min-height: 5px;
-		background: $text-3;
+		background: $gray;
 	}
-}
-.series-rating-bar:hover {
-	@extend .ts15;
-	background: $yellow;
 }
 
 // Info

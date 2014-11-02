@@ -7,6 +7,7 @@ module.exports = function(app) {
 	.all(hAuth.ifAuth)
 	.get(function(req, res, next) {
 		res.render('settings', {
+			title: 'Settings',
 			tab: req.param('tab')
 		});
 	});

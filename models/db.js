@@ -231,6 +231,7 @@ var AnimeSchema = new Schema({
 		max: 9999,
 		required: true
 	},
+	series_episodes_duration: Number,
 	series_image_original: String,
 	series_image_processed: String,
 	series_image_reference: String,

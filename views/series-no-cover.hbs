@@ -23,17 +23,33 @@
 		</div>
 		<div id="series-ncov">
 			<div id="series-ncov-left">
+				<div class="series-ncov-info-section">
+					<div id="series-ncov-image-wrap">
+						{{#if series.series_image_reference}}
+						<div id="series-ncov-image" style="background-image: url({{series.series_image_reference}})">
+						</div>
+						{{else}}
+						<div id="series-ncov-image" style="background-image: url(/img/default_series_image.jpg)">
+						</div>		
+						{{/if}}
+					</div>
+					<div id="series-ncov-desc-wrap">
+						<div class="series-ncov-info-title">
+							Synopsis
+						</div>
+						<div id="series-ncov-desc">
+							{{series.series_description}}
+						</div>
+						{{#if user}}
+							<div id="series-ncov-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+							</div>
+						{{/if}}
+					</div>
+				</div>
 			<!--
 				<div id="series-ncov-image" style="background-image: url({{series.series_image_reference}})">
 				</div> -->
-				<div id="series-ncov-desc">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</div>
+
 			</div>
 			<div id="series-ncov-right">
 				{{#if series.series_title_synonyms}}
@@ -58,12 +74,15 @@
 				</div>
 				<div class="series-ncov-info-section">
 					<div class="series-ncov-info-title">
-						Aired {{#if series.series_date_end}} (from - to) {{/if}}
+						Airing date(s)
 					</div>
 					<div class="series-ncov-info-value">
-						<span title="{{timeago series.series_date_start date}}">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
+						<a href="" class="series-ncov-date-interval">
+						<span class="series-ncov-date" title="{{timeago series.series_date_start date}}">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
 						{{#if series.series_date_end}}
-							&mdash; <span title="{{timeago series.series_date_end date}}">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
+							&mdash; <span class="series-ncov-date" title="{{timeago series.series_date_end date}}">{{formatDate series.series_date_end '%e %B, %Y'}}</span></a>
+						{{else}}
+						</a>
 						{{/if}}
 					</div>
 				</div>

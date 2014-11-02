@@ -129,6 +129,7 @@ require('./helpers/hbs')('./views/partials');
 require('./helpers/passport');
 
 // Web routes
+require('./routes/web/index.js')(app);
 require('./routes/web/list.js')(app);
 require('./routes/web/search.js')(app);
 require('./routes/web/logreg.js')(app);

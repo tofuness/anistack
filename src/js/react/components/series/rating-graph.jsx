@@ -17,11 +17,15 @@ var SeriesRatingGraph = React.createClass({
 			type: 'GET',
 			success: function(ratingsData) {
 				var ratingsTotal = 0;
+				var ratingsAverage = 0;
 				for (var i = 0; i < ratingsData.length; i++) {
 					ratingsTotal += ratingsData[i].count;
+					ratingsAverage += ratingsData[i].count * ratingsData[i]._id;
 				}
+				ratingsAverage = ratingsAverage / (2 * ratingsTotal);
 
 				this.setState({
+					ratingsAverage: ratingsAverage.toFixed(1),
 					ratingsTotal: ratingsTotal,
 					ratingsData: ratingsData
 				});
@@ -36,6 +40,12 @@ var SeriesRatingGraph = React.createClass({
 			duration: 300,
 			stagger: 50
 		});
+
+		$(this.refs.seriesRatingAverage.getDOMNode()).find('>div').velocity('transition.slideUpIn', {
+			delay: 300,
+			duration: 400,
+			stagger: 100
+		});
 	},
 	render: function() {
 		var highestCount = _.max(this.state.ratingsData, function(rating) { return rating.count }).count;
@@ -44,19 +54,31 @@ var SeriesRatingGraph = React.createClass({
 		if(highestCount === 0) highestCount = 1;
 		
 		return (
-			<div id="series-rating-graph" ref="seriesRatingGraph">{
-				this.state.ratingsData.map(function(rating, index) {
-					var percentageOfTotal = rating.count / this.state.ratingsTotal * 100 + '%';
-					var barStyle = {
-						height: rating.count / highestCount * 100 + '%'
+			<div id="series-rating-graph">
+				<div id="series-rating-graph-left" ref="seriesRatingGraph">
+					{
+						this.state.ratingsData.map(function(rating, index) {
+							var percentageOfTotal = rating.count / this.state.ratingsTotal * 100 + '%';
+							var barStyle = {
+								height: rating.count / highestCount * 100 + '%'
+							}
+							// By doing (+ index + 1) we force a mathematical operation
+							return (
+								<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1) / 2} style={barStyle}>
+								</div>
+							)
+						}.bind(this))
 					}
-					// By doing (+ index + 1) we force a mathematical operation
-					return (
-						<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1) / 2} style={barStyle}>
+				</div>
+				<div id="series-rating-graph-right">
+					<div className="series-rating-graph-average" ref="seriesRatingAverage">
+						<div className="series-rating-graph-average-value">{this.state.ratingsAverage}</div>
+						<div className="series-rating-graph-desc">
+							Average
 						</div>
-					)
-				}.bind(this))
-			}</div>
+					</div>
+				</div>
+			</div>
 		);
 	}
 });

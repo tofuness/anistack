@@ -8,9 +8,8 @@
 }
 #series-ncov-hd {
 	margin: 0 auto;
-	padding: 80px 0;
+	padding: 40px 0;
 	width: 1000px;
-	text-align: center;
 }
 #series-ncov-meta {
 	color: $text-2;
@@ -22,10 +21,10 @@
 	@extend .playfair;
 	color: #000; // In order to bring out that strong feeeeeeel. This is where #000 truly shines.
 	width: 100%;
-	font-size: 37px;
+	font-size: 32px;
 }
 #series-ncov-alt-titles {
-	padding-top: 10px;
+	padding-top: 5px;
 	color: $text-3;
 }
 #series-ncov {
@@ -38,16 +37,27 @@
 	float: left;
 	width: 70%;
 }
-#series-ncov-image {
+#series-ncov-image-wrap {
 	float: left;
+	width: 200px;
+}
+#series-ncov-image {
 	width: 200px;
 	height: 300px;
 	background-size: cover;
+	background-position: center center;
 	@include border-radius(4px);
 }
+#series-ncov-desc-wrap {
+	@extend .cf;
+	float: left;
+	width: 420px;
+	padding: 0 40px;
+}
 #series-ncov-desc {
-	padding-right: 20px;
+	padding-top: 10px;
 	display: inline-block;
+	line-height: 2;
 }
 #series-ncov-right {
 	float: right;
@@ -65,5 +75,42 @@
 	text-transform: uppercase;
 }
 .series-ncov-info-value {
+	@extend .cf;
 	padding-top: 1em;
+}
+.series-ncov-date-interval {
+	padding: 2px 10px;
+	color: $blue;
+	font-size: 11px;
+	border: 1px solid $blue;
+	@include border-radius(30px);
+	text-decoration: none;
+	&:hover {
+		color: #fff;
+		background: $blue;
+	}
+}
+#series-ncov-actions {
+	@extend .cf;
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid $gray-l-3;
+}
+.ncov-pbtn-wrap {
+	@extend .cf;
+	float: right;
+
+	position: relative;
+	& .pbtn-remove {
+		color: $text-3;
+	}
+	& .pbtn-add {
+		color: $text-3;
+		border: 2px solid $text-3;
+	}
+	& .pbtn-picker {
+		top: -267px;
+		right: 0;
+		@include transform-origin(190px bottom);
+	}
 }
