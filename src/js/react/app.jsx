@@ -54,10 +54,10 @@ if (seriesActionsNode) {
 }
 
 // Series page, without cover
-var ncovActionsNode = document.getElementById('series-ncov-actions');
-if (ncovActionsNode) {
-	var seriesData = $(ncovActionsNode);
-	React.renderComponent(<PickerButton _id={seriesData.data('id')} collection={seriesData.data('collection')} classPrefix='ncov' />, ncovActionsNode);
+var infoActionsNode = document.getElementById('series-info-actions');
+if (infoActionsNode) {
+	var seriesData = $(infoActionsNode);
+	React.renderComponent(<PickerButton _id={seriesData.data('id')} collection={seriesData.data('collection')} classPrefix='info' />, infoActionsNode);
 }
 
 // Series page

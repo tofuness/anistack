@@ -384,7 +384,7 @@ var PrivacySettings = React.createClass({
 		return {
 			anime_list_private: false,
 			manga_list_private: false,
-			collections_private: false,
+			stacks_private: false,
 			stats_private: false,
 			saved: false,
 			error: false
@@ -395,7 +395,7 @@ var PrivacySettings = React.createClass({
 			this.setState({
 				anime_list_private: this.props.user.settings.anime_list_private,
 				manga_list_private: this.props.user.settings.manga_list_private,
-				collections_private: this.props.user.settings.collections_private,
+				stacks_private: this.props.user.settings.stacks_private,
 				stats_private: this.props.user.settings.stats_private
 			});
 		}
@@ -485,19 +485,19 @@ var PrivacySettings = React.createClass({
 				</div>
 				<div className="set-section">
 					<div className="set-left">
-						<div className="set-title">Protect collections</div>
-						<div className="set-desc">Make your collections private.</div>
+						<div className="set-title">Protect stacks</div>
+						<div className="set-desc">Make your stacks private.</div>
 					</div>
 					<div className="set-right">
 						<div className={
 							cx({
 								'set-check': true,
-								'private': this.state.collections_private
+								'private': this.state.stacks_private
 							})
 						}>
-							<input type="checkbox" className="set-checkbox" id="collections_private" name="collections_private" checked={this.state.collections_private} onChange={this.toggleCheckbox.bind(null, 'collections_private')} />
-							<label className="set-check-label" htmlFor="collections_private">
-								{this.state.collections_private ? 'Private' : 'Public'}
+							<input type="checkbox" className="set-checkbox" id="stacks_private" name="stacks_private" checked={this.state.stacks_private} onChange={this.toggleCheckbox.bind(null, 'stacks_private')} />
+							<label className="set-check-label" htmlFor="stacks_private">
+								{this.state.stacks_private ? 'Private' : 'Public'}
 							</label>
 						</div>
 					</div>

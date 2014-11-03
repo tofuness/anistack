@@ -502,7 +502,7 @@ var UserSchema = new Schema({
 			type: Boolean,
 			default: false
 		},
-		collections_private: {
+		stacks_private: {
 			type: Boolean,
 			default: false
 		}

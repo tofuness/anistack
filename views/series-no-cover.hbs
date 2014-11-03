@@ -1,102 +1,27 @@
 {{>header}}
-<div id="middle">
-	<div id="series-ncov-wrap">
-		<div id="series-ncov-hd">
-			<div id="series-ncov-meta">
-				{{uppercase series.series_type}} with {{default series.series_episodes_total '—'}}{{#is collection 'anime'}} Episode(s){{else}} Chapter(s){{/is}}
-			</div>
-			<div id="series-ncov-title">
-				{{series.series_title_main}}
-			</div>
-			<div id="series-ncov-alt-titles">
-				{{#if series.series_title_english}}
-				<span id="series-ncov-literal">
-					Lit. {{capitalizeFirst series.series_title_english}}
-				</span>
-				{{/if}}
-				{{#if series.series_title_japanese}}
-				<span id="series-ncov-japanese">
-					({{series.series_title_japanese}})
-				</span>
-				{{/if}}
-			</div>
-		</div>
-		<div id="series-ncov">
-			<div id="series-ncov-left">
-				<div class="series-ncov-info-section">
-					<div id="series-ncov-image-wrap">
-						{{#if series.series_image_reference}}
-						<div id="series-ncov-image" style="background-image: url({{series.series_image_reference}})">
-						</div>
-						{{else}}
-						<div id="series-ncov-image" style="background-image: url(/img/default_series_image.jpg)">
-						</div>		
-						{{/if}}
+	<div id="middle">
+		<div id="series-ncov-wrap">
+			<div id="series-ncov-content">
+				<div id="series-ncov-hd">
+					<div id="series-ncov-meta">
+						{{series.series_type}} with {{default series.series_episodes_total '—'}} episode(s)
 					</div>
-					<div id="series-ncov-desc-wrap">
-						<div class="series-ncov-info-title">
-							Synopsis
-						</div>
-						<div id="series-ncov-desc">
-							{{series.series_description}}
-						</div>
-						{{#if user}}
-							<div id="series-ncov-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-							</div>
+					<div id="series-ncov-title">
+						{{series.series_title_main}}
+					</div>
+					<div id="series-ncov-alt-titles">
+						{{#if series.series_title_english}}
+							Lit. {{capitalizeFirst series.series_title_english}}
+						{{/if}}
+						{{#if series.series_title_japanese}}
+							({{series.series_title_japanese}})
 						{{/if}}
 					</div>
 				</div>
-			<!--
-				<div id="series-ncov-image" style="background-image: url({{series.series_image_reference}})">
-				</div> -->
-
-			</div>
-			<div id="series-ncov-right">
-				{{#if series.series_title_synonyms}}
-				<div class="series-ncov-info-section">
-					<div class="series-ncov-info-title">
-						Alternative titles
-					</div>
-					<div class="series-ncov-info-value">
-						{{#each series.series_title_synonyms}}
-							{{this}}<br />
-						{{/each}}
-					</div>
-				</div>
-				{{/if}}
-				<div class="series-ncov-info-section">
-					<div class="series-ncov-info-title">
-						Genres
-					</div>
-					<div class="series-ncov-info-value">
-					{{join series.series_genres ', '}}
-					</div>
-				</div>
-				<div class="series-ncov-info-section">
-					<div class="series-ncov-info-title">
-						Airing date(s)
-					</div>
-					<div class="series-ncov-info-value">
-						<a href="" class="series-ncov-date-interval">
-						<span class="series-ncov-date" title="{{timeago series.series_date_start date}}">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
-						{{#if series.series_date_end}}
-							&mdash; <span class="series-ncov-date" title="{{timeago series.series_date_end date}}">{{formatDate series.series_date_end '%e %B, %Y'}}</span></a>
-						{{else}}
-						</a>
-						{{/if}}
-					</div>
-				</div>
-				<div class="series-ncov-info-section">
-					<div class="series-ncov-info-title">
-						Score distribution
-					</div>
-					<div class="series-ncov-info-value">
-						<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
-						</div>
-					</div>
+				<div id="series-ncov-info-wrap">
+					{{>series_info}}
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 {{>footer}}

@@ -1,5 +1,7 @@
+// Series cover
 #series-cover-wrap {
 	overflow: hidden;
+	position: relative;
 	background-color: #333;
 }
 #series-cover-bg {
@@ -9,7 +11,6 @@
 	width: 50%;
 	background-position: center 10%;
 	background-size: cover;
-	//@include transform(scale(0));
 }
 #series-cover-bg-ovl {
 	position: absolute;
@@ -57,34 +58,18 @@
 	color: $w80;
 }
 
-// Favorite
-#series-favorite-btn {
-	display: none;
-	@extend .cf;
-	@extend .ts15;
-	z-index: 2;
-	cursor: pointer;
+// Right part of series page, with cover
+#series-cover-info-wrap {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	padding: 5px 10px;
-	color: #fff;
-	border: 1px solid #fff;
-	@include border-radius(30px);
-	&:hover {
-		background: $blue;
-		border: 1px solid $blue;
-		@include box-shadow(inset 0 1px 0 $w10);
-	}
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 50%;
+	height: 100%;
+	background: #fff;
 }
-#series-favorite-icon {
-	padding-right: 5px;
-	float: left;
-	font-size: 18px;
-	line-height: 14px;
-}
-#series-favorite-text {
-	float: left;
+#series-cover-info {
+	padding: 40px;
 }
 
 // Picker
@@ -104,68 +89,102 @@
 	}
 }
 
-.pbtn-remove {
-	visibility: hidden;
-	float: left;
-	margin-right: 15px;
-	margin-top: 6px;
-	padding-right: 1px;
-	cursor: pointer;
-	font-size: 11px;
-	&:hover {
-		color: $red;
-		@include box-shadow(0 1px 0 $red);
-	}
-	&.visible {
-		visibility: visible;
-	}
+// Series info
+#series-info-wrap {
+	@extend .cf;
 }
-.pbtn-add {
-	@extend .ts15;
+#series-info-left {
+	@extend .border-box;
 	float: left;
-	cursor: pointer;
-	padding: 3px 13px;
-	font-weight: bold;
-	@include border-radius(30px);
-	&:hover {
-		color: #fff;
-		background: $blue;
-		border: 2px solid $blue;
-		text-shadow: none;
-		@include box-shadow(none);
-	}
-	&.open {
-		color: #fff;
-		background: $blue;
-		border: 2px solid $blue;
-		text-shadow: none;
-		@include box-shadow(none);
-	}
+	padding-right: 40px;
+	width: 70%;
 }
-.pbtn-picker {
-	@extend .tsout;
-	position: absolute;
-	visibility: hidden;
-	top: 40px;
-	right: 0;
-	z-index: $z-up;
-	opacity: 0;
-	background: #fff;
-	@include transform(scale(0.4));
-	@include transform-origin(190px top);
-	@include box-shadow(0 1px 6px $b30);
+#series-info-image {
+	float: left;
+	margin-right: 40px;
+	width: 160px;
+	height: 240px;
+	background-size: cover;
+	background-position: center center;
 	@include border-radius(4px);
-	&.visible {
-		@extend .tsin;
-		visibility: visible;
-		opacity: 1;
-		@include transform(scale(1));
+}
+#series-info-desc-wrap {
+	float: right;
+	width: calc(100% - 200px);
+}
+#series-info-desc {
+	white-space: pre-wrap;
+	line-height: 2em;
+}
+#series-info-actions {
+	@extend .cf;
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid $gray-l-3;
+}
+.info-pbtn-wrap {
+	@extend .cf;
+	position: relative;
+	float: right;
+	& .pbtn-remove {
+		color: $text;
+		&:hover {
+			color: $red;
+		}
+	}
+	& .pbtn-add {
+		color: $text;
+		border: 2px solid $text;
+		&:hover {
+			color: #fff;
+			border: 2px solid $blue;
+		}
+	}
+	& .pbtn-picker {
+		top: -267px;
+		right: 0;
+		@include transform-origin(190px bottom);
+	}
+}
+
+#series-info-right {
+	float: right;
+	width: 30%;
+}
+.series-info-section {
+	padding-bottom: 20px;
+}
+.series-info-title {
+	padding-bottom: 10px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+.series-info-value {
+	line-height: 2em;
+}
+.series-info-genre {
+	color: $blue;
+	font-weight: 700;
+	text-decoration: none;
+	&:hover {
+		@include box-shadow(0 1px 0 $blue);
+	}
+}
+.series-info-dateinterval {
+	padding: 2px 10px;
+	color: $blue;
+	border: 1px solid $blue;
+	text-decoration: none;
+	@include border-radius(20px);
+	&:hover {
+		color: #fff;
+		background: $blue;
 	}
 }
 
 // Rating graph
-#series-rating-graph {
-
+#series-rating-graph-top {
+	@extend .cf;
 }
 #series-rating-graph-left {
 	@extend .cf;
@@ -179,7 +198,7 @@
 	float: right;
 	width: 30%;
 }
-.series-rating-graph-average {
+#series-rating-graph-average {
 	margin-left: 20px;
 	padding: 6px 0;
 	height: 48px;
@@ -189,10 +208,22 @@
 	text-align: center;
 	border-left: 1px solid $gray-l-3;
 }
-.series-rating-graph-average-value {
+#series-rating-graph-average-value {
 	opacity: 0;
 }
-.series-rating-graph-desc {
+#series-rating-graph-axis {
+	@extend .cf;
+	width: 70%;
+}
+.series-rating-graph-axis-label {
+	float: left;
+	padding-top: 5px;
+	width: 10%;
+	color: $text-3;
+	font-size: 10px;
+	text-align: center;
+}
+#series-rating-graph-desc {
 	opacity: 0;
 	color: $text-2;
 	font-size: 10px;
@@ -212,12 +243,29 @@
 	}
 }
 
-// Info
-#series-info-wrap {
-	position: absolute;
-	top: 50%;
-	right: 0;
-	width: 50%;
-	height: 100%;
+// Series ncov
+#series-ncov-wrap {
 	background: #fff;
+}
+#series-ncov-content {
+	margin: 0 auto;
+	width: 1000px;
+}
+#series-ncov-hd {
+	padding: 40px 0;
+}
+#series-ncov-title {
+	@extend .playfair;
+	color: #000;
+	font-size: 23px;
+}
+#series-ncov-meta {
+	color: $text-3;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+#series-ncov-alt-titles {
+	padding-top: 5px;
+	color: $text-3;
 }

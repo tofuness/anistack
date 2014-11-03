@@ -47,6 +47,10 @@ $(document).ready(function() {
 		duration: 300
 	});
 
+	$('#series-ncov-nsfw-wrap').click(function() {
+		$(this).toggle();
+	});
+
 	// Run window resize at least once so that the styles get apples.
 	$(window).resize();
 

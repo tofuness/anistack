@@ -6,10 +6,6 @@
 				</div>
 			</div>
 			<div id="series-cover-content">
-				<div id="series-favorite-btn">
-					<div id="series-favorite-icon" class="icon-bookmark"></div>
-					<div id="series-favorite-text">Add to Favorites</div>
-				</div>
 				<div id="series-cover-actions" data-id="{{series._id}}" data-collection="{{collection}}">
 				</div>
 				<div id="series-cover-hd-wrap">
@@ -32,8 +28,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="series-info-wrap" class="center-vert">
-			<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+		<div id="series-cover-info-wrap">
+			<div id="series-cover-info">
+				{{>series_info}}
 			</div>
 		</div>
 	</div>

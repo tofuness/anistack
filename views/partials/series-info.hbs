@@ -1,0 +1,76 @@
+<div id="series-info-wrap">
+	<div id="series-info-left">
+		<div id="series-info-image" style="background-image: url({{series.series_image_reference}})">
+			{{#inArray series.series_genres 'hentai'}}
+				<div id="series-info-nsfw-ovl">
+					<div id="series-info-nsfw-hd" class="center-vert">
+						<div id="series-info-nsfw-title">
+						</div>
+						<div id="series-info-nsfw-desc">
+						</div>
+					</div>
+				</div>
+			{{/inArray}}
+		</div>
+		<div id="series-info-desc-wrap">
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Synopsis
+				</div>
+				<div id="series-info-desc">{{series.series_description}}</div>
+				<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="series-info-right">
+		<div class="series-info-section">
+			<div class="series-info-title">
+				Genres
+			</div>
+			<div class="series-info-value">
+				{{#each series.series_genres}}
+					{{#unless @last}}
+						<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>,
+					{{else}}
+						and <a href="" class="series-info-genre">{{capitalizeFirst this}}</a>
+					{{/unless}}
+				{{/each}}
+			</div>
+		</div>
+		<div class="series-info-section">
+			<div class="series-info-title">
+				Airing date(s)
+			</div>
+			<div class="series-info-value">
+				<a href="" class="series-info-dateinterval">
+					<span class="series-info-date-value">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
+					{{#if series.series_date_end}}
+					&mdash; <span class="series-info-date-value">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
+					{{/if}}
+				</a>
+			</div>
+		</div>
+		{{#if series.series_title_synonyms}}
+		<div class="series-info-section">
+			<div class="series-info-title">
+				Alternative titles
+			</div>
+			<div class="series-info-value">
+				{{#each series.series_title_synonyms}}
+					{{this}}<br />
+				{{/each}}
+			</div>
+		</div>
+		{{/if}}
+		<div class="series-info-section">
+			<div class="series-info-title">
+				Score distribution
+			</div>
+			<div class="series-info-value">
+				<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

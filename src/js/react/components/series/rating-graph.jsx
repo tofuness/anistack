@@ -55,28 +55,37 @@ var SeriesRatingGraph = React.createClass({
 		
 		return (
 			<div id="series-rating-graph">
-				<div id="series-rating-graph-left" ref="seriesRatingGraph">
-					{
-						this.state.ratingsData.map(function(rating, index) {
-							var percentageOfTotal = rating.count / this.state.ratingsTotal * 100 + '%';
-							var barStyle = {
-								height: rating.count / highestCount * 100 + '%'
-							}
-							// By doing (+ index + 1) we force a mathematical operation
-							return (
-								<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1) / 2} style={barStyle}>
-								</div>
-							)
-						}.bind(this))
-					}
-				</div>
-				<div id="series-rating-graph-right">
-					<div className="series-rating-graph-average" ref="seriesRatingAverage">
-						<div className="series-rating-graph-average-value">{this.state.ratingsAverage}</div>
-						<div className="series-rating-graph-desc">
-							Average
+				<div id="series-ratingr-graph-top">
+					<div id="series-rating-graph-left" ref="seriesRatingGraph">
+						{
+							this.state.ratingsData.map(function(rating, index) {
+								var percentageOfTotal = Math.round(rating.count / this.state.ratingsTotal * 1000) / 10 + '%';
+								var barStyle = {
+									height: rating.count / highestCount * 100 + '%'
+								}
+								// By doing (+ index + 1) we force a mathematical operation
+								return (
+									<div className="series-rating-bar" title={percentageOfTotal + ' gave this a rating of ' + (+ index + 1) / 2} style={barStyle}>
+									</div>
+								)
+							}.bind(this))
+						}
+					</div>
+					<div id="series-rating-graph-right">
+						<div id="series-rating-graph-average" ref="seriesRatingAverage">
+							<div id="series-rating-graph-average-value">{this.state.ratingsAverage}</div>
+							<div id="series-rating-graph-desc">
+								Average
+							</div>
 						</div>
 					</div>
+				</div>
+				<div id="series-rating-graph-axis">
+					{
+						_.range(1, 11).map(function(rating) {
+							return (<div className="series-rating-graph-axis-label">{rating / 2}</div>);
+						})
+					}
 				</div>
 			</div>
 		);
