@@ -75,6 +75,7 @@ app.use(session({
 		clear_interval: 60 // One minute
 	}),
 	cookie: {
+		httpOnly: true,
 		maxAge: 1000 * 2630000 * 5 // 5 months
 	},
 	resave: true,

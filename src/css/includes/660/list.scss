@@ -1,0 +1,40 @@
+#list-wrap {
+	margin: 20px auto 0 auto;
+	width: calc(100% - 40px);
+}
+.list-nav-item {
+	float: none;
+}
+.list-tab {
+	font-size: 10px;
+}
+.list-item-image-preview {
+	display: none;
+}
+.list-item {
+	width: 100%;
+	border-bottom: 2px solid $gray-l-3;
+}
+.list-item-title-wrap {
+	@extend .border-box;
+	max-width: 100%;
+	padding: 12px;
+	width: 100%;
+	border-bottom: 1px dotted $gray-l-3;
+}
+.list-item-title-wrap {
+	margin: 0;
+	float: none;
+}
+.list-item-progress {
+	border-left: 0;
+}
+.list-exp-image {
+	display: none;
+}
+.list-exp-picker {
+	float: left;
+}
+.list-item-right {
+	float: none;
+}

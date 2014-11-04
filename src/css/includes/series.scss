@@ -116,6 +116,13 @@
 	white-space: pre-wrap;
 	line-height: 2em;
 }
+#series-info-nodesc {
+	padding: 80px 40px;
+	color: $text-3;
+	text-align: center;
+	border: 1px solid $gray-l-3;
+	@include border-radius(4px);
+}
 #series-info-actions {
 	@extend .cf;
 	margin-top: 20px;
@@ -237,9 +244,10 @@
 		position: absolute;
 		left: 10% * ($i - 1);
 		bottom: 0;
-		width: calc(10% - 1px);
+		width: 10%;
 		min-height: 5px;
 		background: $gray;
+		@include box-shadow(inset -1px 0 0 #fff);
 	}
 }
 

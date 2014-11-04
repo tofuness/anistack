@@ -1,0 +1,55 @@
+#list-wrap {
+	@extend .border-box;
+	margin-right: 40px;
+	width: calc(100% - 150px);
+}
+#list-left {
+	width: 100%;
+}
+#list-tabs-wrap {
+	width: 100%;
+}
+.list-tab {
+	width: 16.667%;
+	&:first-child {
+		@include border-top-left-radius(0);
+	}
+}
+#list-filter-input {
+	width: 100%;
+}
+#list-sort-title {
+	width: calc(100% - 266px);
+}
+.list-itemstatus-line {
+	width: calc(100% + 15px);
+}
+#list-content {
+	@include box-shadow(none);
+}
+.list-item-title {
+	max-width: 38%;
+}
+
+// Right profile part
+#list-right {
+	width: 100%;
+	@include box-shadow(none);
+	@include border-top-left-radius(4px);
+}
+#list-profile-background {
+	@include border-top-left-radius(4px);
+}
+.list-nav {
+	@extend .cf;
+}
+.list-nav-item {
+	@extend .border-box;
+	float: left;
+}
+.list-nav-tag, .list-nav-private {
+	margin-left: 10px;
+}
+.list-nav-sep {
+	clear: both;
+}

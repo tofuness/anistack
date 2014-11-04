@@ -1,9 +1,12 @@
 #search-page-wrap {
 	padding-top: 20px;
 }
+#search-page {
+	padding: 0 20px;
+	width: auto;
+}
 #search-input-wrap {
 	@extend .border-box;
-	margin-bottom: 20px;
 	padding: 0 20px 20px;
 	width: 100%;
 	border-bottom: 1px dotted $gray-l-3;
@@ -14,9 +17,9 @@
 }
 .search-result {
 	width: 100%;
-}
-.search-result-image {
-	display: none;
+	&:first-child {
+		padding-top: 20px;
+	}
 }
 .search-result-content {
 	float: none;

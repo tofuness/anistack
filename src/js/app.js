@@ -43,7 +43,7 @@ $(document).ready(function() {
 		paddingBottom: [0, 15],
 	}, {
 		easing: [0.23, 1, 0.32, 1],
-		delay: 3000,
+		delay: 5000,
 		duration: 300
 	});
 

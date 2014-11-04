@@ -17,9 +17,18 @@
 				<div class="series-info-title">
 					Synopsis
 				</div>
+				{{#if series.series_description}}
 				<div id="series-info-desc">{{series.series_description}}</div>
+				{{else}}
+				<div id="series-info-nodesc">
+					¯\_(ツ)_/¯<br />
+					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
+				</div>
+				{{/if}}
+				{{#unless useCover}}
 				<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
 				</div>
+				{{/unless}}
 			</div>
 		</div>
 	</div>

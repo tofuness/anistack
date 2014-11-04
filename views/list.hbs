@@ -1,13 +1,6 @@
 {{>header}}
 <div id="middle">
 	<div id="list-wrap">
-		<div id="list-left"
-			data-username="{{profile.username}}"
-			data-editable="{{listEditable}}"
-			data-list-type="{{listType}}"
-		>
-		<!-- Mount stuff here -->
-		</div>
 		<div id="list-right">
 			<div id="list-profile">
 				<div id="list-profile-background">
@@ -83,6 +76,13 @@
 				</a>
 				{{/if}}
 			</div>
+		</div>
+		<div id="list-left"
+			data-username="{{profile.username}}"
+			data-editable="{{listEditable}}"
+			data-list-type="{{listType}}"
+		>
+		<!-- Mount stuff here -->
 		</div>
 	</div>
 </div>

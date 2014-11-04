@@ -232,9 +232,11 @@
 	background-size: cover;
 	@include border-radius(2px);
 }
-.list-item-title, .list-item-title:visited {
+.list-item-title-wrap {
 	float: left;
 	margin: 12px 0 0 12px;
+}
+.list-item-title, .list-item-title:visited {
 	overflow: hidden;
 	max-width: 450px;
 	white-space: nowrap;
