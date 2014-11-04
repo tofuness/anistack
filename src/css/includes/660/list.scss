@@ -38,3 +38,28 @@
 .list-item-right {
 	float: none;
 }
+
+#list-left {
+	width: 100%;
+}
+#list-right {
+	width: 100%;
+	@include box-shadow(none);
+	@include border-top-left-radius(4px);
+}
+#list-profile-background {
+	@include border-top-left-radius(4px);
+}
+.list-nav {
+	@extend .cf;
+}
+.list-nav-item {
+	@extend .border-box;
+	float: left;
+}
+.list-nav-tag, .list-nav-private {
+	margin-left: 10px;
+}
+.list-nav-sep {
+	clear: both;
+}

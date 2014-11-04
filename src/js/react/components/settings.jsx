@@ -59,6 +59,7 @@ var Settings = React.createClass({
 									})
 								} onClick={this.setTab.bind(null, tabName.toLowerCase())}>
 									{tabName}
+									{tabName === 'Privacy' ? ' & Site' : null}
 								</div>);
 							}.bind(this))
 						}
@@ -386,6 +387,7 @@ var PrivacySettings = React.createClass({
 			manga_list_private: false,
 			stacks_private: false,
 			stats_private: false,
+			series_show_cover: true,
 			saved: false,
 			error: false
 		}
@@ -396,7 +398,8 @@ var PrivacySettings = React.createClass({
 				anime_list_private: this.props.user.settings.anime_list_private,
 				manga_list_private: this.props.user.settings.manga_list_private,
 				stacks_private: this.props.user.settings.stacks_private,
-				stats_private: this.props.user.settings.stats_private
+				stats_private: this.props.user.settings.stats_private,
+				series_show_cover: this.props.user.settings.series_show_cover
 			});
 		}
 	},
@@ -498,6 +501,25 @@ var PrivacySettings = React.createClass({
 							<input type="checkbox" className="set-checkbox" id="stacks_private" name="stacks_private" checked={this.state.stacks_private} onChange={this.toggleCheckbox.bind(null, 'stacks_private')} />
 							<label className="set-check-label" htmlFor="stacks_private">
 								{this.state.stacks_private ? 'Private' : 'Public'}
+							</label>
+						</div>
+					</div>
+				</div>
+				<div className="set-section">
+					<div className="set-left">
+						<div className="set-title">Show large cover</div>
+						<div className="set-desc">The large image covers on series pages.</div>
+					</div>
+					<div className="set-right">
+						<div className={
+							cx({
+								'set-check': true,
+								'enabled': this.state.series_show_cover
+							})
+						}>
+							<input type="checkbox" className="set-checkbox" id="series_show_cover" name="series_show_cover" checked={this.state.series_show_cover} onChange={this.toggleCheckbox.bind(null, 'series_show_cover')} />
+							<label className="set-check-label" htmlFor="series_show_cover">
+								{this.state.series_show_cover ? 'Yes' : 'No'}
 							</label>
 						</div>
 					</div>

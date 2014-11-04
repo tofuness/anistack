@@ -113,6 +113,10 @@
 		color: $yellow-d-6;
 		background: $yellow-l-6;
 	}
+	&.enabled {
+		color: #fff;
+		background: $green-l-3;
+	}
 }
 .set-checkbox {
 	margin-top: 11px;

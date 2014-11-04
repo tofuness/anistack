@@ -505,6 +505,10 @@ var UserSchema = new Schema({
 		stacks_private: {
 			type: Boolean,
 			default: false
+		},
+		series_show_cover: {
+			type: Boolean,
+			default: true
 		}
 	},
 	anime_list: [ AnimeListItemSchema ],
