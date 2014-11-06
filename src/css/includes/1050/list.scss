@@ -11,9 +11,6 @@
 }
 .list-tab {
 	width: 16.667%;
-	&:first-child {
-		@include border-top-left-radius(0);
-	}
 }
 #list-filter-input {
 	width: 100%;

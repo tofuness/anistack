@@ -28,7 +28,7 @@ module.exports = function(app) {
 
 			var pageDesign = seriesDoc.series_image_cover ? 'series' : 'series-no-cover';
 
-			res.render(pageDesign, {
+			res.render('series-no-cover', {
 				title: seriesDoc.series_title_main,
 				useCover: pageDesign === 'series',
 				collection: req.param('collection'),

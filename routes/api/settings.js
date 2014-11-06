@@ -97,7 +97,8 @@ module.exports = function(app) {
 				anime_list_private: req.body.anime_list_private,
 				manga_list_private: req.body.manga_list_private,
 				stacks_private: req.body.stacks_private,
-				stats_private: req.body.stats_private
+				stats_private: req.body.stats_private,
+				series_show_cover: req.body.series_show_cover
 			}
 		};
 
