@@ -30,7 +30,7 @@ module.exports = function(app) {
 
 			res.render('series-no-cover', {
 				title: seriesDoc.series_title_main,
-				useCover: pageDesign === 'series',
+				useCover: pageDesign === '0',
 				collection: req.param('collection'),
 				series: seriesDoc.toObject()
 			});

@@ -11,7 +11,7 @@ var ListApp = React.createClass({
 	getInitialState: function() {
 		return {
 			listFilterText: '', // Search text
-			listFilterStatus: 'all', // Which tab to display
+			listFilterStatus: 'current', // Which tab to display
 			listLoaded: false, // Display list if true
 			listPrivate: false,
 			listLastSort: 'series_title_main', // Property name from API
@@ -329,7 +329,7 @@ var ListItem = React.createClass({
 		// If we are changing status, transision the whole div
 		$(this.refs.listItem.getDOMNode()).stop(true).velocity({
 			backgroundColor: ['#e8e8e8', '#fffff'],
-			height: [0, 323]
+			height: [0, 333]
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: 300,
@@ -363,7 +363,7 @@ var ListItem = React.createClass({
 			// If we are changing status, transision the whole div
 			$(this.refs.listItem.getDOMNode()).stop(true).velocity({
 				backgroundColor: ['#e8e8e8', '#fffff'],
-				height: [0, 323]
+				height: [0, 333]
 			}, {
 				easing: [0.165, 0.84, 0.44, 1],
 				duration: 300,
@@ -394,7 +394,7 @@ var ListItem = React.createClass({
 		if (!TempListConstants.EDITABLE) return false;
 		if ($(e.target).hasClass('list-item-title')) return;
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
-			height: (this.state.expanded) ? [0, 280] : [280, 0]
+			height: (this.state.expanded) ? [0, 290] : [290, 0]
 		}, {
 			easing: [0.165, 0.84, 0.44, 1],
 			duration: (this.state.expanded) ? 200 : 300,

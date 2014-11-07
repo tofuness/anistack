@@ -4,7 +4,10 @@
 			<div id="series-ncov-content">
 				<div id="series-ncov-hd">
 					<div id="series-ncov-meta">
-						{{series.series_type}} with {{default series.series_episodes_total '—'}} episode(s)
+						{{series.series_type}}
+						{{#if series.series_episodes_total}}
+						with {{series.series_episodes_total}} episode(s)
+						{{/if}}
 					</div>
 					<div id="series-ncov-title">
 						{{series.series_title_main}}

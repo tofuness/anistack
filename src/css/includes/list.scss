@@ -236,16 +236,17 @@
 .list-item-title-wrap {
 	float: left;
 	margin: 12px 0 0 12px;
-}
-.list-item-title, .list-item-title:visited {
 	overflow: hidden;
 	max-width: 450px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+.list-item-title, .list-item-title:visited {
+
+}
 .list-item-right {
 	float: right;
-	width: 251px;
+	width: 250px;
 }
 .list-item-progress {
 	@extend .cf;
@@ -319,7 +320,7 @@
 }
 .list-exp-ovl {
 	@extend .cf;
-	padding: 15px;
+	padding: 20px;
 	/*@include box-shadow(inset 0 1px 6px $b10);*/
 	/* @include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8)); */
 }

@@ -385,6 +385,13 @@ var MangaListItemSchema = new Schema({
 	}
 });
 
+var StackItemSchema = new Schema({
+	_id: {
+		type: Schema.Types.ObjectId,
+		required: true
+	}
+});
+
 var ActivityItemSchema = new Schema({
 
 	// Modified version of the ActivityStreams 2.0 Schema
@@ -513,6 +520,7 @@ var UserSchema = new Schema({
 	},
 	anime_list: [ AnimeListItemSchema ],
 	manga_list: [ MangaListItemSchema ],
+	stacks: [ StackItemSchema ],
 	activity_feed: [ ActivityItemSchema ],
 	api_token: String,
 	reset_pass_token: String
