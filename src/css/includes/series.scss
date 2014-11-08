@@ -97,25 +97,27 @@
 #series-info-left {
 	@extend .border-box;
 	float: left;
-	padding-right: 40px;
+	padding-right: 20px;
 	width: 70%;
 }
 #series-info-image {
 	float: left;
-	margin-right: 40px;
-	width: 160px;
-	height: 240px;
+	margin-right: 20px;
+	width: 170px;
+	height: 250px;
 	background-size: cover;
 	background-position: center center;
 	@include border-radius(4px);
 }
 #series-info-desc-wrap {
 	float: right;
-	width: calc(100% - 200px);
+	width: calc(100% - 190px);
 }
 #series-info-desc {
-	white-space: pre-wrap;
-	line-height: 2em;
+	& p {
+		margin-bottom: 1em;
+		line-height: 2em;
+	}
 }
 #series-info-nodesc {
 	padding: 80px;

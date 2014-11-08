@@ -27,7 +27,8 @@
     "slugin": "git://github.com/Desuvader/slugin",
     "lusca": "git://github.com/krakenjs/lusca",
     "shortid": "~2.0.1",
-    "react": "~0.11.2"
+    "react": "~0.11.2",
+    "string": "~2.2.0"
   },
   "devDependencies": {
     "gulp": "~3.8.7",

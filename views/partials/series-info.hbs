@@ -18,7 +18,11 @@
 					Synopsis
 				</div>
 				{{#if series.series_description}}
-				<div id="series-info-desc">{{series.series_description}}</div>
+				<div id="series-info-desc">
+					{{#each series.series_description}}
+						<p>{{this}}</p>
+					{{/each}}
+				</div>
 				{{else}}
 				<div id="series-info-nodesc">
 					¯\_(ツ)_/¯<br />

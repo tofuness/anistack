@@ -10,16 +10,12 @@ module.exports = function(app) {
 		User.findOne({
 			username: req.param('username').toLowerCase()
 		}, function(err, userDoc) {
-			var listEditable = false;
-			if (req.user && req.user.username === req.param('username').toLowerCase()) {
-				listEditable = true;
-			}
 			if (userDoc) {
 				res.render('list', {
 					title: userDoc.display_name,
 					profile: userDoc,
 					listType: req.param('listType'),
-					listEditable: listEditable
+					editable: req.user && req.user.username === req.param('username').toLowerCase()
 				});
 			} else {
 				next();

@@ -1,6 +1,7 @@
 'use strict';
 
 var db = require('../../models/db.js');
+var S = require('string');
 var Anime = db.Anime;
 var Manga = db.Manga;
 
@@ -26,13 +27,14 @@ module.exports = function(app) {
 				return next();
 			}
 
-			var pageDesign = seriesDoc.series_image_cover ? 'series' : 'series-no-cover';
+			seriesDoc = seriesDoc.toObject();
+			seriesDoc.series_description = (seriesDoc.series_description) ? S(seriesDoc.series_description).lines() : '';
 
 			res.render('series-no-cover', {
 				title: seriesDoc.series_title_main,
-				useCover: pageDesign === '0',
+				useCover: false,
 				collection: req.param('collection'),
-				series: seriesDoc.toObject()
+				series: seriesDoc
 			});
 		});
 	});
