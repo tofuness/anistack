@@ -28,7 +28,7 @@ module.exports = function(app) {
 			}
 
 			seriesDoc = seriesDoc.toObject();
-			seriesDoc.series_description = (seriesDoc.series_description) ? S(seriesDoc.series_description).lines() : '';
+			seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? S(seriesDoc.series_synopsis).lines() : '';
 
 			res.render('series-no-cover', {
 				title: seriesDoc.series_title_main,

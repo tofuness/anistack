@@ -170,7 +170,7 @@ var SearchItem = React.createClass({
 						</div>
 					</div>
 					<div className="search-result-desc">
-						{this.props.seriesData.series_description}
+						{this.props.seriesData.series_synopsis}
 					</div>
 					<div className="search-result-meta-wrap">
 						<span className="search-result-meta">

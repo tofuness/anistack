@@ -224,7 +224,7 @@ var AnimeSchema = new Schema({
 	},
 	series_date_start: Date,
 	series_date_end: Date,
-	series_description: String,
+	series_synopsis: String,
 	series_episodes_total: {
 		type: Number,
 		min: 0,
@@ -283,7 +283,7 @@ var MangaSchema = new Schema({
 	},
 	series_date_start: Date,
 	series_date_end: Date,
-	series_description: String,
+	series_synopsis: String,
 	series_image_original: String,
 	series_image_processed: String,
 	series_image_reference: String,
