@@ -11,7 +11,7 @@ var ListApp = React.createClass({
 	getInitialState: function() {
 		return {
 			listFilterText: '', // Search text
-			listFilterStatus: 'current', // Which tab to display
+			listFilterStatus: 'all', // Which tab to display
 			listLoaded: false, // Display list if true
 			listPrivate: false,
 			listLastSort: 'series_title_main', // Property name from API
@@ -155,24 +155,26 @@ var ListContent = React.createClass({
 	},
 	getInitialState: function() {
 		return {
-			batchRendering: (this.props.listData && this.props.listData.length > 150),
+			batchRendering: false,
 			listBegin: 0,
 			listEnd: 40
 		}
 	},
-	componentDidMount: function() {
-		if (!this.state.batchRendering) return false;
-
-		// Decides how much of the list we should render
+	componentWillReceiveProps: function(nextProps) {
+		// If batch rendering isn't 
+		if (!this.props.listData || this.props.listData.length < 150 || this.props.batchRendering) return false;
+		this.setState({
+			batchRendering: true
+		});
 		$(window).on('scroll', function(e) {
-				var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
-				var listItemsOnScreen = window.innerHeight / 43 | 0;
-				var listMulti = Math.ceil(scrollBottom / window.innerHeight);
-				var listEnd = listItemsOnScreen * listMulti * 1.5;
+			var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
+			var listItemsOnScreen = window.innerHeight / 43 | 0;
+			var listMulti = Math.ceil(scrollBottom / window.innerHeight);
+			var listEnd = listItemsOnScreen * listMulti * 1.5;
 
-				if (this.state.listEnd < listEnd || listMulti === 1) {
-					this.setState({ listEnd: listEnd });
-				}
+			if (this.state.listEnd < listEnd || listMulti === 1) {
+				this.setState({ listEnd: listEnd });
+			}
 		}.bind(this));
 	},
 	render: function() {

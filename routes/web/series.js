@@ -1,7 +1,6 @@
 'use strict';
 
 var db = require('../../models/db.js');
-var S = require('string');
 var Anime = db.Anime;
 var Manga = db.Manga;
 
@@ -23,12 +22,12 @@ module.exports = function(app) {
 		Collection.findOne({
 			series_slug: req.param('slug')
 		}, function(err, seriesDoc) {
-			if (err || !seriesDoc){
+			if (err || !seriesDoc) {
 				return next();
 			}
 
 			seriesDoc = seriesDoc.toObject();
-			seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? S(seriesDoc.series_synopsis).lines() : '';
+			seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? seriesDoc.series_synopsis.replace('\r\n', '\n').split('\n') : '';
 
 			res.render('series-no-cover', {
 				title: seriesDoc.series_title_main,

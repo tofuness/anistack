@@ -80,6 +80,7 @@ var SearchItem = React.createClass({
 	getInitialState: function() {
 		return {
 			itemData: {}, // List item data,
+			itemExcerpt: '',
 			itemAdded: false, // If the item added in list
 			pickerVisible: false 
 		};
@@ -91,6 +92,11 @@ var SearchItem = React.createClass({
 				itemAdded: true
 			});
 		}
+		if (!this.props.seriesData.series_synopsis) return false;
+		var exceprtSuggestions = new JsSummarize().summarize(this.props.seriesData.series_title_main, this.props.seriesData.series_synopsis);
+		this.setState({
+			itemExcerpt: exceprtSuggestions[0]
+		});
 	},
 	togglePicker: function() {
 		this.setState({
@@ -170,7 +176,7 @@ var SearchItem = React.createClass({
 						</div>
 					</div>
 					<div className="search-result-desc">
-						{this.props.seriesData.series_synopsis}
+						{this.state.itemExcerpt}
 					</div>
 					<div className="search-result-meta-wrap">
 						<span className="search-result-meta">
