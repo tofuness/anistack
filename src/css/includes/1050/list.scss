@@ -21,9 +21,6 @@
 .list-itemstatus-line {
 	width: calc(100% + 15px);
 }
-#list-content {
-	@include box-shadow(none);
-}
 .list-item-title {
 	max-width: 38%;
 }

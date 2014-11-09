@@ -30,8 +30,10 @@
 				</div>
 				{{/if}}
 				{{#unless useCover}}
-				<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-				</div>
+					{{#if user}}
+						<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+						</div>
+					{{/if}}
 				{{/unless}}
 			</div>
 		</div>
