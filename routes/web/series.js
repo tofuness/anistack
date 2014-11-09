@@ -23,18 +23,18 @@ module.exports = function(app) {
 			series_slug: req.param('slug')
 		}, function(err, seriesDoc) {
 			if (err || !seriesDoc) {
-				return next();
+				next();
+			} else {
+				seriesDoc = seriesDoc.toObject();
+				seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? seriesDoc.series_synopsis.replace('\r\n', '\n').split('\n') : '';
+
+				res.render('series-no-cover', {
+					title: seriesDoc.series_title_main,
+					useCover: false,
+					collection: req.param('collection'),
+					series: seriesDoc
+				});
 			}
-
-			seriesDoc = seriesDoc.toObject();
-			seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? seriesDoc.series_synopsis.replace('\r\n', '\n').split('\n') : '';
-
-			res.render('series-no-cover', {
-				title: seriesDoc.series_title_main,
-				useCover: false,
-				collection: req.param('collection'),
-				series: seriesDoc
-			});
 		});
 	});
 }

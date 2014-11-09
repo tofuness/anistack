@@ -170,9 +170,8 @@ var ListContent = React.createClass({
 			var scrollBottom = $(window).scrollTop().valueOf() + $(window).height();
 			var listItemsOnScreen = window.innerHeight / 43 | 0;
 			var listMulti = Math.ceil(scrollBottom / window.innerHeight);
-			var listEnd = listItemsOnScreen * listMulti * 1.5;
-
-			if (this.state.listEnd < listEnd || listMulti === 1) {
+			var listEnd = listItemsOnScreen * listMulti * 1.2;
+			if (this.state.listEnd !== listEnd || listMulti === 1) {
 				this.setState({ listEnd: listEnd });
 			}
 		}.bind(this));
