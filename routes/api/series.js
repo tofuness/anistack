@@ -168,10 +168,33 @@ module.exports = function(app) {
 		});
 	});
 
-	
-	app.route('/:collection(anime|manga)/similar')
-	.get(function(req, res, next){
-		
+	// Find series that share similar genres
+	app.route('/:collection(anime|manga)/similar/:_id')
+	.get(function(req, res, next) {
+		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
+		Collection.findOne({
+			_id: req.param('_id')
+		}, function(err, seriesDoc) {
+			if (err || !seriesDoc) return next(new Error(err));
+			Collection.find({
+				_id: { $ne: seriesDoc._id },
+				series_type: seriesDoc.series_type, // Same series type
+				series_date_start: { $gte: new Date('2006') }, // People prefer newer series
+				series_date_end: { $lte: new Date('2014') }, // People prefer newer series
+				series_genres: { $in: seriesDoc.series_genres }
+			}).sort({
+				series_date_start: -1
+			}).limit(1000).exec(function(err, seriesSimilar) {
+
+				// Sort by number of matching genres
+				seriesSimilar = _.sortBy(seriesSimilar, function(series) {
+					if (!series.series_genres) return -1;
+					var intersectionLen = _.intersection(seriesDoc.series_genres, series.series_genres).length;
+					return intersectionLen * 1 / (intersectionLen - series.series_genres.length + 1);
+				});
+				res.status(200).json(seriesSimilar.slice(0, 5));
+			});
+		});
 	});
 
 	// Search for anime/manga, returns max 15 results, sorted by date in desc order

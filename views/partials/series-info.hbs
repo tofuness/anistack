@@ -5,8 +5,10 @@
 				<div id="series-info-nsfw-ovl">
 					<div id="series-info-nsfw-hd" class="center-vert">
 						<div id="series-info-nsfw-title">
+							NSFW 18+
 						</div>
 						<div id="series-info-nsfw-desc">
+							Click here to show anyway
 						</div>
 					</div>
 				</div>
@@ -29,12 +31,13 @@
 					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
 				</div>
 				{{/if}}
-				{{#unless useCover}}
-					{{#if user}}
-						<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-						</div>
-					{{/if}}
-				{{/unless}}
+			</div>
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Similar series
+				</div>
+				<div id="series-info-similar-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -87,5 +90,11 @@
 				</div>
 			</div>
 		</div>
+		{{#unless useCover}}
+			{{#if user}}
+				<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			{{/if}}
+		{{/unless}}
 	</div>
 </div>

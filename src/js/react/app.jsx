@@ -9,6 +9,7 @@ var RegisterForm = require('./components/register.jsx');
 var SearchApp = require('./components/search.jsx');
 var PickerButton = require('./components/pickerbutton.jsx');
 var SeriesRatingGraph = require('./components/series/rating-graph.jsx');
+var SimilarSeries = require('./components/series/similar.jsx');
 
 // List page
 var listNode = document.getElementById('list-left');
@@ -65,4 +66,11 @@ var seriesRatingGraphNode = document.getElementById('series-rating-graph-wrap');
 if (seriesRatingGraphNode) {
 	var seriesData = $(seriesRatingGraphNode);
 	React.renderComponent(<SeriesRatingGraph _id={seriesData.data('id')} collection={seriesData.data('collection')} />, seriesRatingGraphNode);
+}
+
+// Series page, similar seriesRatingGraphNode
+var similarSeriesNode = document.getElementById('series-info-similar-wrap');
+if (similarSeriesNode) {
+	var seriesData = $(similarSeriesNode);
+	React.renderComponent(<SimilarSeries _id={seriesData.data('id')} collection={seriesData.data('collection')} />, similarSeriesNode);
 }

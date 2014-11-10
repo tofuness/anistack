@@ -47,8 +47,8 @@ $(document).ready(function() {
 		duration: 300
 	});
 
-	$('#series-ncov-nsfw-wrap').click(function() {
-		$(this).toggle();
+	$('#series-info-nsfw-ovl').click(function() {
+		$(this).toggleClass('hidden');
 	});
 
 	// Run window resize at least once so that the styles get apples.
