@@ -142,6 +142,7 @@ require('./routes/web/series.js')(app);
 app.use('/api', cors()); // Enable cors on all /api/* routes
 app.use('/api', apiRouter); // Prepends /api/* to all routes
 require('./routes/api/list.js')(apiRouter);
+require('./routes/api/stacks.js')(apiRouter);
 require('./routes/api/settings.js')(apiRouter);
 require('./routes/api/series.js')(apiRouter);
 require('./routes/api/user.js')(apiRouter);

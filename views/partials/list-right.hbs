@@ -1,0 +1,76 @@
+		<div id="list-right">
+			<div id="list-profile">
+				<div id="list-profile-background">
+				</div>
+				<img id="list-profile-avatar" src="{{profile.avatar.processed}}" title="{{#if editable}}Teemo is da best.{{else}}{{profile.display_name}}'s avatar!{{/if}}" />
+				<div id="list-profile-name">
+					{{profile.display_name}}
+				</div>
+				<div id="list-profile-bio"><p>{{profile.biography}}</p></div>
+			</div>
+			<div class="list-nav">
+				<div class="list-nav-sep">
+				</div>
+				<a class="list-nav-item {{#is listType 'anime'}}current{{/is}}" href="/list/anime/{{profile.username}}">
+					<span class="list-nav-text">
+						Anime List
+					</span>
+					{{#if profile.settings.anime_list_private}}
+					<span class="list-nav-private">
+						<span class="icon-lock-line list-nav-icon"></span>
+						Private
+					</span>
+					{{else}}
+					<span class="list-nav-tag">
+						{{length profile.anime_list}} Entries
+					</span>
+					{{/if}}
+				</a>
+				<a class="list-nav-item {{#is listType 'manga'}}current{{/is}}" href="/list/manga/{{profile.username}}">
+					<span class="list-nav-text">
+						Manga List
+					</span>
+					{{#if profile.settings.manga_list_private}}
+					<span class="list-nav-private">
+						<span class="icon-lock-line list-nav-icon"></span>
+						Private
+					</span>
+					{{else}}
+					<span class="list-nav-tag">
+						{{length profile.manga_list}} Entries
+					</span>
+					{{/if}}
+				</a>
+				<a class="list-nav-item" href="/stacks/{{profile.username}}">
+					<span class="list-nav-text">
+						Stacks
+					</span>
+					{{#if profile.settings.stacks_private}}
+					<span class="list-nav-private">
+						<span class="icon-lock-line list-nav-icon"></span>
+						Private
+					</span>
+					{{/if}}
+				</a>
+				<div class="list-nav-sep">
+				</div>
+				<a class="list-nav-item">
+					<span class="list-nav-text">
+						Stats
+					</span>
+					{{#if profile.settings.stats_private}}
+					<span class="list-nav-private">
+						<span class="icon-lock-line list-nav-icon"></span>
+						Private
+					</span>
+					{{/if}}
+				</a>
+				{{#if editable}}
+				<a class="list-nav-item" href="/me/settings">
+					<span class="list-nav-text">
+						Settings
+					</span>
+				</a>
+				{{/if}}
+			</div>
+		</div>
