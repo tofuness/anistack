@@ -31,6 +31,12 @@
 					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
 				</div>
 				{{/if}}
+				{{#unless useCover}}
+					{{#if user}}
+						<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+						</div>
+					{{/if}}
+				{{/unless}}
 			</div>
 			<div class="series-info-section">
 				<div class="series-info-title">
@@ -90,11 +96,5 @@
 				</div>
 			</div>
 		</div>
-		{{#unless useCover}}
-			{{#if user}}
-				<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-				</div>
-			{{/if}}
-		{{/unless}}
 	</div>
 </div>
