@@ -202,20 +202,25 @@ module.exports = function(app) {
 	.get(function(req, res, next) {
 		if (!req.param('query')) return res.status(200).json([]);
 		var searchQuery = req.param('query');
+		var dbSearchQuery = new RegExp(searchQuery, 'gi');
 
 		Collection.find(
-			{ $text: { $search: searchQuery }},
+			{ $or: [
+				{ $text: { $search: searchQuery, $language: 'none' }},
+				{ series_title_main: dbSearchQuery },
+				{ series_title_english: dbSearchQuery }
+			]},
 			{ score: { $meta: 'textScore' }}
 		)
 		.sort({ score: { $meta: 'textScore' }})
 		.limit(15)
 		.exec(function(err, docs) {
 			if (err) return next(new Error(err));
+			console.log(docs);
 			var sortedDocs = _.sortBy(docs, function(series) {
 
 				// Hacky sort function
-				//return ['movie', 'tv', 'manga'].indexOf(series.series_type) * -1;
-				return 1;
+				return ['movie', 'tv', 'manga'].indexOf(series.series_type) * -1;
 			});
 
 			sortedDocs = sortedDocs.map(function(series) {

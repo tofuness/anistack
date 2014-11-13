@@ -554,12 +554,24 @@ AnimeSchema.index({
 	series_title_main: 'text',
 	series_title_english: 'text',
 	series_title_synonyms: 'text'
+}, {
+	weights: {
+		series_title_main: 4,
+		series_title_english: 3,
+		series_title_synonyms: 1
+	}
 });
 
 MangaSchema.index({
 	series_title_main: 'text',
 	series_title_english: 'text',
 	series_title_synonyms: 'text'
+}, {
+	weights: {
+		series_title_main: 4,
+		series_title_english: 3,
+		series_title_synonyms: 1
+	}
 });
 
 var Anime = mongoose.model('Anime', AnimeSchema);
