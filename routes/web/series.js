@@ -28,9 +28,8 @@ module.exports = function(app) {
 				seriesDoc = seriesDoc.toObject();
 				seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? seriesDoc.series_synopsis.replace('\r\n', '\n').split('\n') : '';
 
-				res.render('series-no-cover', {
+				res.render((seriesDoc.series_image_cover) ? 'series' : 'series-no-cover', {
 					title: seriesDoc.series_title_main,
-					useCover: false,
 					collection: req.param('collection'),
 					series: seriesDoc
 				});

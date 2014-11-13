@@ -216,7 +216,6 @@ module.exports = function(app) {
 		.limit(15)
 		.exec(function(err, docs) {
 			if (err) return next(new Error(err));
-			console.log(docs);
 			var sortedDocs = _.sortBy(docs, function(series) {
 
 				// Hacky sort function

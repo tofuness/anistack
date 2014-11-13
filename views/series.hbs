@@ -1,36 +1,37 @@
 {{>header}}
 	<div id="middle">
-		<div id="series-cover-wrap" class="full-height">
-			<div id="series-cover-bg" class="full-height" data-bg="{{default series.series_image_cover 'http://i.imgur.com/JFHlnTd.jpg'}}">
-				<div id="series-cover-bg-ovl">
+		<div id="series-cover-content-wrap">
+			<div id="series-cover-hd-wrap">
+				<div id="series-cover-hd" class="center-vert">
+					<div id="series-cover-meta">
+						{{series.series_type}}
+						{{#if series.series_episodes_total}}
+						with {{series.series_episodes_total}} episode(s)
+						{{/if}}
+					</div>
+					<div id="series-cover-title">
+						{{series.series_title_main}}
+					</div>
+					<div id="series-cover-alt-titles">
+						{{#if series.series_title_english}}
+							Lit. {{capitalizeFirst series.series_title_english}}
+						{{/if}}
+						{{#if series.series_title_japanese}}
+							({{series.series_title_japanese}})
+						{{/if}}
+					</div>
 				</div>
-			</div>
-			<div id="series-cover-content">
-				<div id="series-cover-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-				</div>
-				<div id="series-cover-hd-wrap">
-					<div id="series-cover-hd" class="center-vert">
-						<div id="series-cover-meta">
-							{{uppercase series.series_type}} with {{default series.series_episodes_total '—'}}{{#is collection 'anime'}} Episode(s){{else}} Chapter(s){{/is}}
-						</div>
-						<div id="series-cover-title">
-							{{series.series_title_main}}
-						</div>
-						<div id="series-cover-alt-titles">
-							{{#if series.series_title_english}}
-								Lit. {{capitalizeFirst series.series_title_english}}
-							{{/if}}
-							{{#if series.series_title_japanese}}
-								({{series.series_title_japanese}})
-							{{/if}}
+				<div id="series-cover-bg-wrap">
+					<div id="series-cover-bg" data-bg="{{series.series_image_cover}}">
+						<div id="series-cover-bg-ovl">
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div id="series-cover-info-wrap">
-			<div id="series-cover-info">
-				{{>series_info}}
+			<div id="series-cover-content">
+				<div id="series-cover-info-wrap">
+					{{>series_info}}
+				</div>
 			</div>
 		</div>
 	</div>
