@@ -22,18 +22,21 @@
 	font-weight: bold;
 	@include border-radius(30px);
 	&:hover {
+		/*
 		color: #fff;
 		background: $blue;
 		border: 2px solid $blue;
 		text-shadow: none;
-		@include box-shadow(none);
+		@include box-shadow(none); */
 	}
 	&.open {
+		/*
 		color: #fff;
 		background: $blue;
 		border: 2px solid $blue;
 		text-shadow: none;
 		@include box-shadow(none);
+		*/
 	}
 }
 .pbtn-picker {

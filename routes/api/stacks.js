@@ -10,6 +10,7 @@ module.exports = function(app) {
 			username: req.param('username')
 		}, function(err, userDoc) {
 			if (err || !userDoc) return next(new Error('User not found'));
+			res.status(200).json(userDoc.stacks);
 		});
 	});
 }

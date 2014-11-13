@@ -93,31 +93,28 @@
 	cursor: pointer;
 	float: right;
 	padding: 3px 13px;
-	color: #fff;
+	color: $blue;
 	font-weight: 700;
 	text-align: center;
-	background: $blue;
+	background: #fff;
 	border: 2px solid $blue;
 	@include border-radius(15px);
 	&.visible {
 		display: block;
 	}
 	&.added {
+		color: $gray-d-9;
 		border: 2px solid $gray-d-9;
-		background: $gray-d-9;
+		background: #fff;
 		&.open {
-			color: $blue;
+			color: #fff;
 			border: 2px solid $blue;
-			background: #fff;
-		}
-		&:hover:not(.open) {
-			border: 2px solid $blue; 
 			background: $blue;
 		}
 	}
 	&.open {
-		color: $blue;
-		background: #fff;
+		color: #fff;
+		background: $blue;
 	}
 }
 .search-result-remove {

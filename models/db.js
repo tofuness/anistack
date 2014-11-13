@@ -385,13 +385,6 @@ var MangaListItemSchema = new Schema({
 	}
 });
 
-var StackItemSchema = new Schema({
-	_id: {
-		type: Schema.Types.ObjectId,
-		required: true
-	}
-});
-
 var ActivityItemSchema = new Schema({
 
 	// Modified version of the ActivityStreams 2.0 Schema
@@ -459,6 +452,20 @@ var ActivityItemSchema = new Schema({
 			required: true
 		}
 	}
+});
+
+var StackItemSchema = new Schema({
+	stack_title: {
+		required: true,
+		type: String
+	},
+	stack_series: [{
+		_id: {
+			type: Schema.Types.ObjectId,
+			required: true
+		},
+		type: String
+	}]
 });
 
 var UserSchema = new Schema({

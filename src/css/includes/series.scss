@@ -100,9 +100,13 @@
 	padding-right: 20px;
 	width: 70%;
 }
-#series-info-image {
+#series-info-image-wrap {
 	float: left;
 	margin-right: 20px;
+	width: 170px;
+}
+#series-info-image {
+	margin-bottom: 20px;
 	width: 170px;
 	height: 250px;
 	background-size: cover;
@@ -154,8 +158,8 @@
 }
 #series-info-actions {
 	@extend .cf;
-	margin-top: 20px;
-	padding-top: 20px;
+	margin-top: 10px;
+	padding-top: 10px;
 	border-top: 1px solid $gray-l-3;
 }
 .info-pbtn-wrap {
@@ -163,21 +167,30 @@
 	position: relative;
 	float: right;
 	& .pbtn-remove {
-		color: $text;
+		color: $gray-d-9;
 		&:hover {
 			color: $red;
 		}
 	}
 	& .pbtn-add {
-		color: $text;
-		border: 2px solid $text;
-		&:hover {
+		color: $blue;
+		border: 2px solid $blue;
+		&.open {
 			color: #fff;
-			border: 2px solid $blue;
+			background: $blue;
+		}
+		&.added {
+			color: $gray-d-9;
+			border-color: $gray-d-9;
+			&.open {
+				color: #fff;
+				background: $blue;
+				border-color: $blue;
+			}
 		}
 	}
 	& .pbtn-picker {
-		top: -267px;
+		top: -272px;
 		right: 0;
 		@include transform-origin(190px bottom);
 	}

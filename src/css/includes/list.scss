@@ -212,6 +212,7 @@
 }
 .list-item-wrap {
 	overflow: hidden;
+	will-change: height, background-color;
 }
 .list-item {
 	@extend .cf;
@@ -305,6 +306,7 @@
 	overflow: hidden;
 	height: 0;
 	background: $gray-l-3;
+	will-change: height;
 	/*
 	background-size: cover;
 	background-position: center center; */
@@ -320,7 +322,7 @@
 }
 .list-exp-ovl {
 	@extend .cf;
-	padding: 20px;
+	padding: 10px;
 	/*@include box-shadow(inset 0 1px 6px $b10);*/
 	/* @include linear-gradient-rev(rgba(99, 114, 124, 0.4), rgba(99, 114, 124, 0.8)); */
 }
