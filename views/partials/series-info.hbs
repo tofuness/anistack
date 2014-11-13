@@ -60,13 +60,15 @@
 				Genres
 			</div>
 			<div class="series-info-value">
+			{{#if series.series_genres}}
 				{{#each series.series_genres}}
 					{{#unless @last}}
 						<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>,
 					{{else}}
-						and <a href="" class="series-info-genre">{{capitalizeFirst this}}</a>
+						{{^lengthEqual ../../series.series_genres 1}}and {{else}}Just...{{/lengthEqual}}<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>
 					{{/unless}}
 				{{/each}}
+			{{/if}}
 			</div>
 		</div>
 		<div class="series-info-section">

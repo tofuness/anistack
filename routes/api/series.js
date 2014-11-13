@@ -202,31 +202,20 @@ module.exports = function(app) {
 	.get(function(req, res, next) {
 		if (!req.param('query')) return res.status(200).json([]);
 		var searchQuery = req.param('query');
-		var dbSearchQuery;
 
-		if (searchQuery.match(/^".*"$/)) {
-			dbSearchQuery = new RegExp('^' + searchQuery.substring(1, searchQuery.length - 1) + '$', 'i');
-		} else {
-			dbSearchQuery = new RegExp(searchQuery, 'gi');
-		}
-		
-		var searchConditions = {
-			$or: [
-				{ series_title_main: dbSearchQuery },				
-				{ series_title_english: dbSearchQuery },				
-				{ series_title_romanji: dbSearchQuery },
-				{ series_title_japanese: dbSearchQuery },
-				{ series_title_synonyms: dbSearchQuery },
-			]
-		}
-		Collection.find(searchConditions)
+		Collection.find(
+			{ $text: { $search: searchQuery }},
+			{ score: { $meta: 'textScore' }}
+		)
+		.sort({ score: { $meta: 'textScore' }})
 		.limit(15)
 		.exec(function(err, docs) {
 			if (err) return next(new Error(err));
 			var sortedDocs = _.sortBy(docs, function(series) {
 
 				// Hacky sort function
-				return ['movie', 'tv', 'manga'].indexOf(series.series_type) * -1;
+				//return ['movie', 'tv', 'manga'].indexOf(series.series_type) * -1;
+				return 1;
 			});
 
 			sortedDocs = sortedDocs.map(function(series) {

@@ -204,12 +204,18 @@ filters.user.add('password', filter.user.password);
 var AnimeSchema = new Schema({
 	series_title_main: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
-	series_title_english: String,
+	series_title_english: {
+		type: String,
+		index: true
+	},
+	series_title_synonyms: [{
+		type: String,
+	 	index: true
+	}],
 	series_title_japanese: String,
-	series_title_romanji: String,
-	series_title_synonyms: [ String ],
 	series_slug: {
 		type: String,
 		required: true,
@@ -263,12 +269,18 @@ AnimeSchema.plugin(slugin, {
 var MangaSchema = new Schema({
 	series_title_main: {
 		type: String,
-		required: true
+		required: true,
+		index: true
 	},
-	series_title_english: String,
+	series_title_english: {
+		type: String,
+		index: true
+	},
+	series_title_synonyms: [{
+		type: String,
+	 	index: true
+	}],
 	series_title_japanese: String,
-	series_title_romanji: String,
-	series_title_synonyms: [ String ],
 	series_slug: {
 		type: String,
 		required: true,
@@ -455,6 +467,7 @@ var ActivityItemSchema = new Schema({
 });
 
 var StackItemSchema = new Schema({
+	_id: Schema.Types.ObjectId,
 	stack_title: {
 		required: true,
 		type: String
@@ -536,6 +549,18 @@ var UserSchema = new Schema({
 mongooseValidateFilter.validateFilter(AnimeSchema, validators.anime, filters.anime);
 mongooseValidateFilter.validateFilter(MangaSchema, validators.manga, filters.manga);
 mongooseValidateFilter.validateFilter(UserSchema, validators.user, filters.user);
+
+AnimeSchema.index({
+	series_title_main: 'text',
+	series_title_english: 'text',
+	series_title_synonyms: 'text'
+});
+
+MangaSchema.index({
+	series_title_main: 'text',
+	series_title_english: 'text',
+	series_title_synonyms: 'text'
+});
 
 var Anime = mongoose.model('Anime', AnimeSchema);
 var Manga = mongoose.model('Manga', MangaSchema);

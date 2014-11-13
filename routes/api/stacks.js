@@ -2,6 +2,7 @@
 
 var db = require('../../models/db.js');
 var User = db.User;
+var hAuth = require('../../helpers/auth.js');
 
 module.exports = function(app) {
 	app.route('/stacks/view/:username')
@@ -12,5 +13,11 @@ module.exports = function(app) {
 			if (err || !userDoc) return next(new Error('User not found'));
 			res.status(200).json(userDoc.stacks);
 		});
+	});
+
+	app.route('/stacks/add')
+	.all(hAuth.ifAnyAuth)
+	.post(function(req, res, next) {
+		
 	});
 }

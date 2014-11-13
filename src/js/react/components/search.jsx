@@ -51,6 +51,7 @@ var SearchApp = React.createClass({
 		return (
 			<div>
 				<div id="search-input-wrap">
+					<div id="seach-input-protip">Tip: Use quotes ("K-ON!") to search <em>exactly</em> for that term.</div>
 					<input id="search-input" type="text" placeholder="Type to search..." ref="searchInput" value={this.state.searchText} onChange={this.onSearch} onKeyUp={this.onEsc} />
 				</div>
 				<div id="search-page">
