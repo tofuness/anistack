@@ -4,7 +4,8 @@ var cx = React.addons.classSet;
 var TempListConstants = {
 	TYPE: $('#list-left').data('list-type'),
 	USERNAME: $('#list-left').data('username'),
-	EDITABLE: $('#list-left').data('editable')
+	EDITABLE: $('#list-left').data('editable'),
+	STATUS_ORDER: ['current', 'planned', 'completed', 'onhold', 'dropped']
 }
 
 var ListApp = React.createClass({
@@ -59,7 +60,25 @@ var ListApp = React.createClass({
 			order = 'asc';
 		}
 
-		var listSorted = keysort(listStore, 'item_status, ' + sortBy + ' ' + order +', series_title_main');
+		console.time('thing');
+
+		var listGrouped = _.groupBy(listStore, function(listItem) {
+			return listItem.item_status;
+		});
+
+		listGrouped = _.forIn(listGrouped, function(listPart, status) {
+			listGrouped[status] = keysort(listPart, sortBy + ' ' + order +', series_title_main');
+		});
+
+		var listSorted = [];
+
+		for (var i = 0; i < TempListConstants.STATUS_ORDER.length; i++) {
+			var listPart = listGrouped[TempListConstants.STATUS_ORDER[i]];
+			if (listPart) {
+				listSorted = listSorted.concat(listPart);
+			}
+		}
+
 		this.setState({
 			listData: listSorted,
 			listLastSort: sortBy,
@@ -96,7 +115,7 @@ var ListApp = React.createClass({
 				<div id="list-top">
 					<div id="list-tabs-wrap">
 						{
-							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index) {
+							['All', 'Current', 'Planned', 'Completed', 'On Hold', 'Dropped'].map(function(statusName, index) {
 								var statusVal = statusName.toLowerCase().replace(/ /g, '')
 								return (
 									<div className={cx({

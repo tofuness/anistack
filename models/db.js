@@ -90,6 +90,14 @@ var validate = {
 			} else {
 				done(false);
 			}
+		},
+		status: function(statusStr, done) {
+			statusStr = statusStr.toLowerCase();
+			if (['finished', 'ongoing', 'upcoming'].indexOf(statusStr) > -1) {
+				done(true);
+			} else {
+				done(false);
+			}
 		}
 	},
 	manga: {
@@ -157,7 +165,13 @@ validators.anime.add('series_episodes_total', {
 	msg: 'series_episodes_total did not pass validation'
 });
 
+validators.anime.add('series_status', {
+	callback: validate.anime.status,
+	msg: 'series_status did not pass validation'
+});
+
 filters.anime.add('series_type', 'lowercase');
+filters.anime.add('series_status', 'lowercase');
 filters.anime.add('series_genres', filter.general.lowerCaseUniq);
 filters.anime.add('series_genres', filter.anime.genres);
 
@@ -165,6 +179,11 @@ filters.anime.add('series_genres', filter.anime.genres);
 validators.manga.add('series_type', {
 	callback: validate.manga.type,
 	msg: 'series_type did not pass validation'
+});
+
+validators.manga.add('series_status', {
+	callback: validate.anime.status,
+	msg: 'series_status did not pass validation'
 });
 
 filters.manga.add('series_type', 'lowercase');
@@ -227,6 +246,11 @@ var AnimeSchema = new Schema({
 		lowercase: true,
 		enum: ['tv', 'ova', 'ona', 'movie', 'special', 'music'],
 		required: true
+	},
+	series_status: {
+		type: String,
+		lowercase: true,
+		enum: ['finished', 'ongoing', 'upcoming']
 	},
 	series_date_start: Date,
 	series_date_end: Date,
@@ -292,6 +316,11 @@ var MangaSchema = new Schema({
 		lowercase: true,
 		enum: ['manga', 'novel', 'oneshot', 'doujin', 'manhwa', 'manhua', 'oel'],
 		required: true
+	},
+	series_status: {
+		type: String,
+		lowercase: true,
+		enum: ['finished', 'ongoing', 'upcoming']
 	},
 	series_date_start: Date,
 	series_date_end: Date,

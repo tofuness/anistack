@@ -28,7 +28,14 @@ module.exports = function(app) {
 				seriesDoc = seriesDoc.toObject();
 				seriesDoc.series_synopsis = (seriesDoc.series_synopsis) ? seriesDoc.series_synopsis.replace('\r\n', '\n').split('\n') : '';
 
-				res.render((seriesDoc.series_image_cover) ? 'series' : 'series-no-cover', {
+				var pageDesign;
+				if (req.user && !req.user.settings.series_show_cover && seriesDoc.series_image_cover) {
+					pageDesign = 'series-no-cover';
+				} else {
+					pageDesign = (seriesDoc.series_image_cover) ? 'series' : 'series-no-cover';
+				}
+
+				res.render(pageDesign, {
 					title: seriesDoc.series_title_main,
 					collection: req.param('collection'),
 					series: seriesDoc

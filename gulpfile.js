@@ -77,7 +77,7 @@ gulp.task('uglify', function() {
 		this.emit('end');
 	}))
 	.pipe(concat('app.js'))
-	.pipe(uglify())
+	//.pipe(uglify())
 	.pipe(gulp.dest(path.js.dest));
 });
 
