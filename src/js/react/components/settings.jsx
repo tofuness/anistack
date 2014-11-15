@@ -508,7 +508,7 @@ var PrivacySettings = React.createClass({
 				<div className="set-section">
 					<div className="set-left">
 						<div className="set-title">Show large cover</div>
-						<div className="set-desc">The large image covers on series pages.</div>
+						<div className="set-desc">The large image covers on series pages when possible.</div>
 					</div>
 					<div className="set-right">
 						<div className={
