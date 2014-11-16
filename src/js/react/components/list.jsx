@@ -5,7 +5,7 @@ var TempListConstants = {
 	TYPE: $('#list-left').data('list-type'),
 	USERNAME: $('#list-left').data('username'),
 	EDITABLE: $('#list-left').data('editable'),
-	STATUS_ORDER: ['current', 'planned', 'completed', 'onhold', 'dropped']
+	STATUS_ORDER: ['current', 'completed', 'planned', 'onhold', 'dropped']
 }
 
 var ListApp = React.createClass({
@@ -60,14 +60,12 @@ var ListApp = React.createClass({
 			order = 'asc';
 		}
 
-		console.time('thing');
-
 		var listGrouped = _.groupBy(listStore, function(listItem) {
 			return listItem.item_status;
 		});
 
 		listGrouped = _.forIn(listGrouped, function(listPart, status) {
-			listGrouped[status] = keysort(listPart, sortBy + ' ' + order +', series_title_main');
+			listGrouped[status] = keysort(listPart, ' ' + sortBy + ' ' + order +', series_title_main');
 		});
 
 		var listSorted = [];
@@ -115,7 +113,7 @@ var ListApp = React.createClass({
 				<div id="list-top">
 					<div id="list-tabs-wrap">
 						{
-							['All', 'Current', 'Planned', 'Completed', 'On Hold', 'Dropped'].map(function(statusName, index) {
+							['All', 'Current', 'Completed', 'Planned', 'On Hold', 'Dropped'].map(function(statusName, index) {
 								var statusVal = statusName.toLowerCase().replace(/ /g, '')
 								return (
 									<div className={cx({

@@ -78,6 +78,10 @@
 					<span class="series-info-date-value">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
 					{{#if series.series_date_end}}
 					&mdash; <span class="series-info-date-value">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
+					{{else}}
+						{{#is series.series_status 'ongoing'}}
+						&mdash; <span class="series-info-date-value">Ongoing</span>
+						{{/is}}
 					{{/if}}
 				</a>
 			</div>

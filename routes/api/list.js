@@ -143,11 +143,8 @@ module.exports = function(app) {
 			item_repeats: req.body.item_repeats
 		}
 
-		console.log(listItem);
-		
 		if (listType === 'anime') {
 			listValidate.anime(listItem, function(err, itemDoc) {
-				console.log(itemDoc);
 				if (!err) {
 					var itemData = {};
 					itemData['anime_list.$.item_status'] = itemDoc.item_status;

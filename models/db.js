@@ -506,7 +506,7 @@ var StackItemSchema = new Schema({
 			type: Schema.Types.ObjectId,
 			required: true
 		},
-		type: String
+		type: String // Either anime or manga
 	}]
 });
 
