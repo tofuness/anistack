@@ -59,7 +59,7 @@ var SeriesRatingGraph = React.createClass({
 					<div id="series-rating-graph-left" ref="seriesRatingGraph">
 						{
 							this.state.ratingsData.map(function(rating, index) {
-								var percentageOfTotal = Math.round(rating.count / this.state.ratingsTotal * 1000) / 10 + '%';
+								var percentageOfTotal = (this.state.ratingsTotal === 0) ? '0%' : Math.round(rating.count / this.state.ratingsTotal * 1000) / 10 + '%';
 								var barStyle = {
 									height: rating.count / highestCount * 100 + '%'
 								}
