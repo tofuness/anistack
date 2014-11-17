@@ -219,7 +219,6 @@
 	cursor: pointer;
 	position: relative;
 	border-bottom: 1px solid $gray-l-3;
-	@include box-shadow(1px 0 0 $gray-l-3);
 	&.expanded {
 		//border-bottom: 1px solid transparent;
 	}

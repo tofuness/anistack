@@ -65,7 +65,7 @@ var ListApp = React.createClass({
 		});
 
 		listGrouped = _.forIn(listGrouped, function(listPart, status) {
-			listGrouped[status] = keysort(listPart, ' ' + sortBy + ' ' + order +', series_title_main');
+			listGrouped[status] = keysort(listPart, sortBy + ' ' + order +', series_title_main');
 		});
 
 		var listSorted = [];

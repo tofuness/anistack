@@ -149,19 +149,8 @@ module.exports = function(app) {
 				ratingsResult = _.sortBy(ratingsResult, function(rating) {
 					return rating._id
 				});
-
-				res.status(200).json([
-					{"_id":1,"count":5},
-					{"_id":2,"count":15},
-					{"_id":3,"count":35},
-					{"_id":4,"count":55},
-					{"_id":5,"count":88},
-					{"_id":6,"count":95},
-					{"_id":7,"count":75},
-					{"_id":8,"count":55},
-					{"_id":9,"count":56},
-					{"_id":10,"count":48}
-				]);
+				
+				res.status(200).json(ratingsResult);
 			} else {
 				next(new Error('could not aggregate ratings'));
 			}
@@ -197,7 +186,7 @@ module.exports = function(app) {
 		});
 	});
 
-	// Search for anime/manga, returns max 15 results, sorted by date in desc order
+	// Search for anime/manga, returns max 15 results, sorted by textScore
 	app.route('/:collection(anime|manga)/search/:query')
 	.get(function(req, res, next) {
 		if (!req.param('query')) return res.status(200).json([]);
