@@ -7,7 +7,7 @@ var ForgotForm = React.createClass({
 			<form id="forgot-form" className="logreg-form" ref="forgotForm" method="post" action="/forgot">
 				<div id="logreg-form-logo"></div>
 				<div className="logreg-section-wrap">
-					<div className="logreg-legend">Email <div className="logreg-legend-desc">Forgot to add one? RIP.</div></div>
+					<div className="logreg-legend">Email <div className="logreg-legend-desc">Forgot to add an email? RIP.</div></div>
 					<input className="logreg-input" type="text" name="email" tabIndex="1" /> 
 				</div>
 				<div className="logreg-section-wrap">
