@@ -161,6 +161,11 @@ PIXELS  EMS
 
 // Helpers
 
+.ts0 {
+	-webkit-transition: 0s ease all;
+	-moz-transition: 0s ease all;
+	transition: 0s ease all;
+}
 .ts10 {
 	-webkit-transition: 0.1s ease all;
 	-moz-transition: 0.1s ease all;

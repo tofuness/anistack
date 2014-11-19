@@ -3,7 +3,8 @@ var AppConstants = {
 }
 
 var ListConstants = {
-	DATA_CHANGE: 'DATA_CHANGE'
+	DATA_CHANGE: 'DATA_CHANGE',
+	TAB_CHANGE: 'TAB_CHANGE'
 }
 
 var UserConstants = {

@@ -108,12 +108,13 @@
 
 #list-tabs-wrap {
 	@extend .cf;
+	width: 780px;
 }
 .list-tab {
 	cursor: pointer;
 	float: left;
 	padding: 10px 0;
-	width: 130px;
+	width: 16.6667%;
 	color: $gray-d-9;
 	font-weight: 700;
 	background: $gray-l-3;

@@ -16,11 +16,12 @@ var ListApp = React.createClass({
 			listLoaded: false, // Display list if true
 			listPrivate: false,
 			listLastSort: 'series_title_main', // Property name from API
-			listLastOrder: 'asc' // Order to sort by
+			listLastOrder: 'asc'  // Order to sort by
 		}
 	},
 	componentDidMount: function() {
 		PubSub.subscribe(ListConstants.DATA_CHANGE, this.reloadList);
+		
 		$.ajax({
 			url: '/api/list/' + TempListConstants.TYPE + '/view/' + TempListConstants.USERNAME,
 			type: 'get',
