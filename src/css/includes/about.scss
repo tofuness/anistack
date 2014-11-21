@@ -1,0 +1,37 @@
+#about-wrap {
+	text-align: center;
+	background: #fff;
+}
+#about-hd {
+	margin: 0 auto;
+	padding: 80px 0;
+	width: 1000px;
+	border-bottom: 1px solid $gray-l-3;
+}
+#about-hd-title {
+	@extend .playfair;
+	font-size: 32px;
+	font-weight: 400;
+}
+#about-hd-desc {
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+.about-section {
+	margin: 0 auto;
+	padding: 80px 0;
+	width: 1000px;
+}
+.about-section-title {
+	font-size: 23px;
+	font-weight: 700;
+}
+.about-section-desc {
+	color: $text-2;
+	font-size: 16px;
+}
+.about-section-disclaimer {
+	color: $text-3;
+	font-size: 11px;
+}

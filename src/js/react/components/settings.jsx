@@ -24,7 +24,7 @@ var Settings = React.createClass({
 			.find('.visible .set-section')
 			.stop(true).velocity('herro.slideUpIn', {
 				duration: 500,
-				stagger: 100
+				stagger: 50
 			});
 	},
 	setTab: function(tabVal) {
