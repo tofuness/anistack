@@ -4,12 +4,20 @@
 }
 #about-hd {
 	margin: 0 auto;
-	padding: 80px 0;
 	width: 1000px;
 	border-bottom: 1px solid $gray-l-3;
+	background-size: cover;
+	background: url(http://i.imgur.com/KUvfRxf.gif) center center no-repeat;
+}
+#about-hd-ovl {
+	margin: 0 auto;
+	padding: 120px 0;
+	width: 630px;
+	background-image: linear-gradient(90deg, #fff, $w60 50%, #fff);
 }
 #about-hd-title {
 	@extend .playfair;
+	padding-bottom: 15px;
 	font-size: 32px;
 	font-weight: 400;
 }
@@ -17,6 +25,20 @@
 	font-size: 11px;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
+}
+#about-hd-register {
+	@extend .opensans;
+	margin-right: 10px;
+	padding: 7px 10px;
+	color: #fff;
+	background: $blue;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: uppercase;
+	@include border-radius(4px);
+	&:hover {
+		background: $blue-l-3;
+	}
 }
 .about-section {
 	margin: 0 auto;
