@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 	app.route('/whatisthis')
 	.get(function(req, res, next) {
-		var aboutTitle = req.user ? 'What is Anistack? (In case you forgot ' + req.user.username + ')' : 'What is Anistack?';
+		var aboutTitle = req.user ? 'What is Anistack? (In case you forgot ' + req.user.display_name + ')' : 'What is Anistack?';
 		res.render('about', { title: aboutTitle });
 	});
 }
