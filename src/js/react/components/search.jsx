@@ -8,6 +8,7 @@ var SearchApp = React.createClass({
 	getInitialState: function() {
 		var initState = {
 			searchText: TempSearchConstants.QUERY,
+			searchLoading: false,
 			searchResults: []
 		}
 		return initState;
@@ -20,6 +21,7 @@ var SearchApp = React.createClass({
 		e.persist();
 		this.setState({
 			searchText: e.target.value,
+			searchLoading: true,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
 		});
 		if (e.target.value !== '') {
@@ -33,6 +35,7 @@ var SearchApp = React.createClass({
 			url: '/api/' + TempSearchConstants.COLLECTION + '/search/' + this.state.searchText,
 			success: function(searchRes) {
 				this.setState({
+					searchLoading: false,
 					searchResults: searchRes
 				});
 			}.bind(this),
@@ -57,6 +60,7 @@ var SearchApp = React.createClass({
 					<input id="search-input" type="text" placeholder="Type to search..." ref="searchInput" value={this.state.searchText} onChange={this.onSearch} onKeyUp={this.onEsc} />
 				</div>
 				<div id="search-page">
+					{(this.state.searchResults.length === 0 && this.state.searchText !== '' && !this.state.searchLoading) ? <SearchNoResults /> : null}
 					<div id="search-results-wrap">
 					{
 						this.state.searchResults.map(function(searchRes, index) {
@@ -78,6 +82,22 @@ var SearchApp = React.createClass({
 		);
 	}
 });
+
+var SearchNoResults = React.createClass({
+	componentDidMount: function() {
+		$(this.refs.searchNoRes.getDOMNode()).velocity('transition.slideUpIn', {
+			delay: 100,
+			duration: 300
+		});
+	},
+	render: function() {
+		return (
+			<div id="search-results-empty" ref="searchNoRes">
+				No matches. Try another search term.
+			</div>
+		);
+	}
+})
 
 var SearchItem = React.createClass({
 	getInitialState: function() {

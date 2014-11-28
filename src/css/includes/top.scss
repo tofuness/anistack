@@ -60,7 +60,7 @@
 	visibility: hidden;
 	@include border-radius(4px);
 	@include transform-origin(138px -10px);
-	@include transform(scale(0.9));
+	@include transform(scale(0.6));
 	
 	&.visible {
 		@extend .tsin;

@@ -15,6 +15,7 @@
 	}
 }
 .pbtn-add {
+	@extend .ns;
 	@extend .ts15;
 	float: left;
 	cursor: pointer;
