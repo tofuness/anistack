@@ -104,7 +104,7 @@ var PickerButton = React.createClass({
 				<div className={
 					cx({
 						'pbtn-remove': true,
-						'visible': UserConstants.LOGGED_IN && this.state.itemAdded,
+						'visible': UserConstants.LOGGED_IN && this.state.itemAdded
 					})
 				} onClick={this.onRemove}>
 					&times; Remove

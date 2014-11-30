@@ -1,5 +1,6 @@
 .pbtn-remove {
 	visibility: hidden;
+	display: none;
 	float: left;
 	margin-right: 15px;
 	margin-top: 6px;
@@ -12,6 +13,7 @@
 	}
 	&.visible {
 		visibility: visible;
+		display: block;
 	}
 }
 .pbtn-add {
