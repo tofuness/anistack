@@ -6,7 +6,10 @@
 					<div id="series-cover-meta">
 						{{series.series_type}}
 						{{#if series.series_episodes_total}}
-						with {{series.series_episodes_total}} episode(s)
+							with {{series.series_episodes_total}} {{inflect series.series_episodes_total "episode" "episodes"}}
+						{{/if}}
+						{{#if series.series_episodes_duration}}
+							&times; {{series.series_episodes_duration}} min.
 						{{/if}}
 					</div>
 					<div id="series-cover-title">

@@ -44,14 +44,12 @@
 	@extend .playfair;
 }
 #series-cover-meta {
-	color: $w90;
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
 #series-cover-alt-titles {
 	padding-top: 10px;
-	color: $w90;
 }
 #series-cover-content {
 	padding-top: 20px;
@@ -111,7 +109,7 @@
 #series-ncov-meta {
 	color: $text-3;
 	font-weight: 700;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.05em;
 	text-transform: uppercase;
 }
 #series-ncov-alt-titles {
@@ -133,12 +131,12 @@
 #series-info-image-wrap {
 	float: left;
 	margin-right: 20px;
-	width: 170px;
+	width: 200px;
 }
 #series-info-image {
 	margin-bottom: 20px;
-	width: 170px;
-	height: 250px;
+	width: 200px;
+	height: 300px;
 	background-size: cover;
 	background-position: center center;
 	@include border-radius(4px);
@@ -147,7 +145,7 @@
 	@extend .ts15;
 	cursor: pointer;
 	position: relative;
-	width: 170px;
+	width: 200px;
 	height: 250px;
 	background: rgba(231, 91, 137, 0.95);
 	@include border-radius(4px);
@@ -158,7 +156,7 @@
 #series-info-nsfw-hd {
 	position: absolute;
 	top: 50%;
-	width: 170px;
+	width: 200px;
 	color: #fff;
 	text-align: center;
 }
@@ -170,7 +168,7 @@
 }
 #series-info-desc-wrap {
 	float: right;
-	width: calc(100% - 190px);
+	width: calc(100% - 220px);
 }
 #series-info-desc {
 	& p {
@@ -253,9 +251,10 @@
 	}
 }
 .series-info-dateinterval {
-	padding: 2px 10px;
+	padding: 3px 10px;
 	color: $blue;
-	border: 1px solid $blue;
+	font-weight: 700;
+	border: 2px solid $blue;
 	text-decoration: none;
 	@include border-radius(20px);
 	&:hover {

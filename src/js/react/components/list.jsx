@@ -448,8 +448,6 @@ var ListItem = React.createClass({
 					'list-item':  true,
 					'expanded': this.state.expanded
 				})} onClick={this.toggleExpanded}>
-					<div className="list-item-image-preview" style={listItemStyle}>
-					</div>
 					<div className="list-item-title-wrap">
 						<a className="list-item-title link" href={'/' + TempListConstants.TYPE + '/' + this.props.itemData.series_slug} title={this.props.itemData.series_title_main}>
 							{this.props.itemData.series_title_main}

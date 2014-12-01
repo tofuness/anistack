@@ -360,7 +360,7 @@ var PasswordSettings = React.createClass({
 							<div className="set-desc">
 								Has to be at least 6 characters.
 								<br /><br />
-								PROTIP: Do <em>NOT</em> use the same password on other services.
+								PROTIP: Do <em>NOT</em> use the same password for other stuff.
 							</div>
 						</div>
 						<div className="set-right">
