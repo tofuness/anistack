@@ -36,7 +36,7 @@ $(document).ready(function() {
 		});
 
 		// Adjust large covers
-		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.6);
+		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.75);
 	});
 
 	$('#logreg-error').velocity({
@@ -64,7 +64,7 @@ $(document).ready(function() {
 		.velocity({
 			//scale: [1.1, 1.05],
 			opacity: [1, 0],
-			translateY: [0, -10]
+			translateY: [0, -20]
 		}, {
 			delay: 200,
 			duration: 600,

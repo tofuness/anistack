@@ -63,7 +63,7 @@
 }
 .set-left{
 	float: left;
-	width: 160px;
+	width: 200px;
 }
 .set-title {
 	font-weight: 700;
@@ -136,7 +136,7 @@
 }
 .set-save-wrap {
 	@extend .cf;
-	width: 450px;
+	width: 490px;
 	border-top: 1px solid $gray-l-3;
 	padding-top: 20px;
 }
@@ -184,5 +184,7 @@
 	}
 }
 #set-expecto {
+	display: inline-block;
 	font-weight: bold;
+	text-shadow: 0 0 3px #fff;
 }

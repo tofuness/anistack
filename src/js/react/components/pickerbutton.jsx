@@ -118,7 +118,7 @@ var PickerButton = React.createClass({
 					})
 				} onClick={this.togglePicker}>
 					{
-						(this.state.itemAdded) ? 'Edit info' : '+ Add to list'
+						(this.state.itemAdded) ? 'Edit entry' : '+ Add to list'
 					}
 				</div>
 				<div className={

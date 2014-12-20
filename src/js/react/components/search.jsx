@@ -8,14 +8,21 @@ var SearchApp = React.createClass({
 	getInitialState: function() {
 		var initState = {
 			searchText: TempSearchConstants.QUERY,
-			searchLoading: false,
+			searchLoading: true,
 			searchResults: []
 		}
 		return initState;
 	},
 	componentDidMount: function() {
 		if (this.state.searchText !== '') this.search();
-		this.refs.searchInput.getDOMNode().focus();
+		$(this.refs.searchInput.getDOMNode()).blur().focus().val(this.state.searchText);
+	},
+	setUrl: function(searchQuery) {
+		if (window.history) {
+			window.history.replaceState({
+				searchQuery: searchQuery
+			}, document.title, '/search/' + TempSearchConstants.COLLECTION + '/' + searchQuery);
+		}
 	},
 	onSearch: function(e) {
 		e.persist();
@@ -24,6 +31,9 @@ var SearchApp = React.createClass({
 			searchLoading: true,
 			searchResults: (e.target.value === '') ? [] : this.state.searchResults
 		});
+
+		this.setUrl(e.target.value);
+
 		if (e.target.value !== '') {
 			this.search();
 		}
@@ -48,6 +58,7 @@ var SearchApp = React.createClass({
 		// On escape, clear the search
 		if (e.key === 'Escape') {
 			this.setState({ searchText: '', searchResults: [] });
+			this.setUrl('');
 		}
 	},
 	render: function() {
@@ -115,11 +126,12 @@ var SearchItem = React.createClass({
 				itemAdded: true
 			});
 		}
+		/*
 		if (!this.props.seriesData.series_synopsis) return false;
-		var exceprtSuggestions = new JsSummarize().summarize(this.props.seriesData.series_title_main, this.props.seriesData.series_synopsis);
+		var excerptSuggestions = new JsSummarize().summarize(this.props.seriesData.series_title_main, this.props.seriesData.series_synopsis);
 		this.setState({
-			itemExcerpt: exceprtSuggestions[0]
-		});
+			itemExcerpt: excerptSuggestions[0]
+		}); */
 	},
 	togglePicker: function() {
 		this.setState({
@@ -192,14 +204,14 @@ var SearchItem = React.createClass({
 						<a className="search-result-title link" href={'/' + TempSearchConstants.COLLECTION + '/' + this.props.seriesData.series_slug}>
 							{this.props.seriesData.series_title_main}
 						</a>
-						<div className="search-result-year">
+						<span className="search-result-year">
 						{
 							(this.props.seriesData.series_date_start) ? new Date(this.props.seriesData.series_date_start).getFullYear() : ''
 						}
-						</div>
+						</span>
 					</div>
 					<div className="search-result-desc">
-						{this.state.itemExcerpt}
+						{this.props.seriesData.series_synopsis}
 					</div>
 					<div className="search-result-meta-wrap">
 						<span className="search-result-meta">
@@ -216,7 +228,7 @@ var SearchItem = React.createClass({
 							})
 						} onClick={this.togglePicker}>
 							{
-								(this.state.itemAdded) ? 'Edit info' : '+ Add to list'
+								(this.state.itemAdded) ? 'Edit entry' : '+ Add to list'
 							}
 						</div>
 						<div className={

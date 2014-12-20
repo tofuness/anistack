@@ -44,12 +44,14 @@
 	@extend .playfair;
 }
 #series-cover-meta {
-	font-weight: 700;
+	color: $w80;
+	font-weight: 800;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
 #series-cover-alt-titles {
 	padding-top: 10px;
+	color: $w80;
 }
 #series-cover-content {
 	padding-top: 20px;
@@ -108,7 +110,7 @@
 }
 #series-ncov-meta {
 	color: $text-3;
-	font-weight: 700;
+	font-weight: 800;
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 }
@@ -122,11 +124,10 @@
 	@extend .cf;
 	padding-bottom: 40px;
 }
-#series-info-left {
+#series-info {
 	@extend .border-box;
 	float: left;
 	padding-right: 20px;
-	width: 70%;
 }
 #series-info-image-wrap {
 	float: left;
@@ -146,7 +147,7 @@
 	cursor: pointer;
 	position: relative;
 	width: 200px;
-	height: 250px;
+	height: 300px;
 	background: rgba(231, 91, 137, 0.95);
 	@include border-radius(4px);
 	&.hidden {
@@ -224,10 +225,6 @@
 	}
 }
 
-#series-info-right {
-	float: right;
-	width: 30%;
-}
 .series-info-section {
 	padding-bottom: 20px;
 	&:last-child {
@@ -240,7 +237,7 @@
 	text-transform: uppercase;
 }
 .series-info-value {
-	line-height: 2em;
+	line-height: 2;
 }
 .series-info-genre {
 	color: $blue;
@@ -264,37 +261,36 @@
 }
 
 // Rating graph
+#series-rating-graph-clear {
+	@extend .cf;
+}
 #series-rating-graph-top {
 	@extend .cf;
-}
-#series-rating-graph-left {
-	@extend .cf;
-	float: left;
 	position: relative;
 	overflow: hidden;
-	width: 70%;
+	width: 100%;
 	height: 60px;
 }
-#series-rating-graph-right {
-	float: right;
-	width: 30%;
+#series-rating-graph-bottom {
+	@extend .cf;
 }
 #series-rating-graph-average {
-	margin-left: 20px;
-	padding: 6px 0;
-	height: 48px;
-	color: $text;
-	font-size: 23px;
-	font-weight: 800;
 	text-align: center;
-	border-left: 1px solid $gray-l-3;
 }
 #series-rating-graph-average-value {
 	opacity: 0;
+	color: $text;
+	font-weight: 800;
+}
+#series-rating-graph-desc {
+	opacity: 0;
+	color: $text-2;
+	font-weight: 400;
+	text-transform: uppercase;
 }
 #series-rating-graph-axis {
 	@extend .cf;
-	width: 70%;
+	width: 100%;
 }
 .series-rating-graph-axis-label {
 	float: left;
@@ -303,14 +299,6 @@
 	color: $text-3;
 	font-size: 10px;
 	text-align: center;
-}
-#series-rating-graph-desc {
-	opacity: 0;
-	color: $text-2;
-	font-size: 10px;
-	font-weight: 400;
-	text-align: center;
-	text-transform: uppercase;
 }
 @for $i from 1 to 11 {
 	.series-rating-bar:nth-child(#{$i}) {
@@ -371,7 +359,7 @@
 .series-similar-desc {
 	& p {
 		margin-bottom: 1em;
-		line-height: 2em;
+		line-height: 2;
 		&:last-child {
 			margin-bottom: 0;
 		}

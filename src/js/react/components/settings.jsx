@@ -31,6 +31,12 @@ var Settings = React.createClass({
 		this.setState({
 			tab: tabVal
 		});
+
+		if (window.history) {
+			window.history.replaceState({
+				currentTab: this.state.tab
+			}, document.title, '/me/settings/' + tabVal);
+		}
 	},
 	componentDidUpdate: function(prevProps, prevState) {
 		if (this.state.tab !== prevState.tab) {
@@ -211,13 +217,13 @@ var BasicSettings = React.createClass({
 	toggleExpectoPatronumLmao: function() {
 		if (this.state.rainbow) {
 			$(this.refs.rainbow.getDOMNode()).velocity('stop', true).velocity({
-				translateX: [0, 0]
+				scale: [1, 1]
 			}, {
 				duration: 0
 			}).rainbow(false);
 		} else {
 			$(this.refs.rainbow.getDOMNode()).velocity({
-				translateX: [-5, 5],
+				scale: [1.1, 0.9]
 			}, {
 				duration: 300,
 				easing: [0.23, 1, 0.32, 1],
@@ -256,7 +262,7 @@ var BasicSettings = React.createClass({
 							<div className="set-title">Avatar</div>
 							<div className="set-desc">
 								Simply give us an <a href="http://imgur.com" rel="nofollow" target="_blank">Imgur</a> link to
-								your avatar and let us handle the rest. Yes, we support <div id="set-expecto" ref="rainbow">animated GIFs!</div>
+								your avatar and let us handle the rest. Yes, we support <span id="set-expecto" ref="rainbow">animated GIFs!</span>
 								<br />
 								(Suggested: 250 &times; 250 pixels)
 							</div>
@@ -508,7 +514,7 @@ var PrivacySettings = React.createClass({
 				<div className="set-section">
 					<div className="set-left">
 						<div className="set-title">Show large cover</div>
-						<div className="set-desc">The large image covers on series pages when possible.</div>
+						<div className="set-desc">Display large image covers on series pages when possible.</div>
 					</div>
 					<div className="set-right">
 						<div className={

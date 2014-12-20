@@ -41,7 +41,7 @@ var SeriesRatingGraph = React.createClass({
 			stagger: 50
 		});
 
-		$(this.refs.seriesRatingAverage.getDOMNode()).find('>div').velocity('transition.slideUpIn', {
+		$(this.refs.seriesRatingAverage.getDOMNode()).find('>span').velocity('transition.slideUpIn', {
 			delay: 300,
 			duration: 400,
 			stagger: 100
@@ -55,8 +55,8 @@ var SeriesRatingGraph = React.createClass({
 		
 		return (
 			<div id="series-rating-graph">
-				<div id="series-ratingr-graph-top">
-					<div id="series-rating-graph-left" ref="seriesRatingGraph">
+				<div id="series-rating-graph-clear">
+					<div id="series-rating-graph-top" ref="seriesRatingGraph">
 						{
 							this.state.ratingsData.map(function(rating, index) {
 								var percentageOfTotal = (this.state.ratingsTotal === 0) ? '0%' : Math.round(rating.count / this.state.ratingsTotal * 1000) / 10 + '%';
@@ -71,21 +71,18 @@ var SeriesRatingGraph = React.createClass({
 							}.bind(this))
 						}
 					</div>
-					<div id="series-rating-graph-right">
+					<div id="series-rating-graph-axis">
+						{
+							_.range(1, 11).map(function(rating) {
+								return (<div className="series-rating-graph-axis-label">{rating / 2}</div>);
+							})
+						}
+					</div>
+					<div id="series-rating-graph-bottom">
 						<div id="series-rating-graph-average" ref="seriesRatingAverage">
-							<div id="series-rating-graph-average-value">{this.state.ratingsAverage}</div>
-							<div id="series-rating-graph-desc">
-								Average
-							</div>
+							<span id="series-rating-graph-average-value">{this.state.ratingsAverage}</span> <span id="series-rating-graph-desc">Average</span>
 						</div>
 					</div>
-				</div>
-				<div id="series-rating-graph-axis">
-					{
-						_.range(1, 11).map(function(rating) {
-							return (<div className="series-rating-graph-axis-label">{rating / 2}</div>);
-						})
-					}
 				</div>
 			</div>
 		);
