@@ -156,6 +156,7 @@ var ListApp = React.createClass({
 				<ListContent
 					listData={this.state.listData}
 					listLoaded={this.state.listLoaded}
+					listLastSort={this.state.listLastSort}
 					listFilterText={this.state.listFilterText}
 					listFilterStatus={this.state.listFilterStatus}
 				/>
@@ -167,6 +168,7 @@ var ListApp = React.createClass({
 var ListContent = React.createClass({
 	propTypes: {
 		listData: React.PropTypes.array,
+		listLastSort: React.PropTypes.string,
 		listFilterText: React.PropTypes.string,
 		listFilterStatus: React.PropTypes.string,
 		listLoaded: React.PropTypes.bool
@@ -215,15 +217,16 @@ var ListContent = React.createClass({
 				return genre.match(new RegExp('^' + this.props.listFilterText, 'gi'));
 			}.bind(this));
 
+			// Filter "algorithm" for list
 			if(
 				this.props.listFilterText !== '' &&
 				listItem.series_title_main.match(new RegExp(this.props.listFilterText, 'gi')) ||
 				listItem.series_title_english && listItem.series_title_english.match(new RegExp(this.props.listFilterText, 'gi')) ||
 				matchingGenre > -1
 			){
-				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
+				listNode.push(<ListItem itemData={listItem} key={listItem._id} listLastSort={this.props.listLastSort} />);
 			} else if (this.props.listFilterText === '') {
-				listNode.push(<ListItem itemData={listItem} key={listItem._id} />);
+				listNode.push(<ListItem itemData={listItem} key={listItem._id} listLastSort={this.props.listLastSort} />);
 			}
 
 			if (lastStatus !== listItem.item_status && listNode.length) {
@@ -375,7 +378,21 @@ var ListItem = React.createClass({
 			}
 		});
 
-		if (data.item_status !== this.props.itemData.item_status) {
+		var shouldAnimate = false;
+
+		switch (this.props.listLastSort) {
+			case 'series_title_main': 
+				if (data.item_status !== this.props.itemData.item_status) shouldAnimate = true;
+				break;
+			case 'item_rating':
+				if (data.item_rating !== this.props.itemData.item_rating) shouldAnimate = true;
+				break;
+			case 'item_progress':
+				if (data.item_progress !== this.props.itemData.item_progress) shouldAnimate = true;
+				break;
+		}
+
+		if (shouldAnimate) {
 			// Remove 43px (list item height) from the div
 			$('#list-content').css('min-height','-=43');
 
