@@ -40,12 +40,6 @@ var SeriesRatingGraph = React.createClass({
 			duration: 300,
 			stagger: 50
 		});
-
-		$(this.refs.seriesRatingAverage.getDOMNode()).find('>span').velocity('transition.slideUpIn', {
-			delay: 300,
-			duration: 400,
-			stagger: 100
-		});
 	},
 	render: function() {
 		var highestCount = _.max(this.state.ratingsData, function(rating) { return rating.count }).count;
@@ -80,7 +74,8 @@ var SeriesRatingGraph = React.createClass({
 					</div>
 					<div id="series-rating-graph-bottom">
 						<div id="series-rating-graph-average" ref="seriesRatingAverage">
-							<span id="series-rating-graph-average-value">{this.state.ratingsAverage}</span> <span id="series-rating-graph-desc">Average</span>
+							<span id="series-rating-graph-average-value">{this.state.ratingsAverage}&nbsp;</span>
+							<span id="series-rating-graph-desc">Average</span>
 						</div>
 					</div>
 				</div>

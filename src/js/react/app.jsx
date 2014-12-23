@@ -10,6 +10,7 @@ var SearchApp = require('./components/search.jsx');
 var PickerButton = require('./components/pickerbutton.jsx');
 var SeriesRatingGraph = require('./components/series/rating-graph.jsx');
 var SimilarSeries = require('./components/series/similar.jsx');
+var RelatedSeries = require('./components/series/related.jsx');
 
 // List page
 var listNode = document.getElementById('list-left');
@@ -73,4 +74,11 @@ var similarSeriesNode = document.getElementById('series-info-similar-wrap');
 if (similarSeriesNode) {
 	var seriesData = $(similarSeriesNode);
 	React.renderComponent(<SimilarSeries _id={seriesData.data('id')} collection={seriesData.data('collection')} />, similarSeriesNode);
+}
+
+// Series page, related
+var relatedSeriesNode = document.getElementById('series-info-related-wrap');
+if (relatedSeriesNode) {
+	var seriesData = $(relatedSeriesNode);
+	React.renderComponent(<RelatedSeries _id={seriesData.data('id')} collection={seriesData.data('collection')} />, relatedSeriesNode);
 }

@@ -42,13 +42,6 @@ var SimilarSeries = React.createClass({
 											<a href={'/' + this.props.collection + '/' + series.series_slug} className="link">{series.series_title_main}</a>
 										</div>
 									</div>
-									<div className="series-similar-desc">
-										{
-											series.series_synopsis.replace('\r\n', '\n').split('\n').map(function(line) {
-												return <p>{line}</p>
-											})
-										}
-									</div>
 								</div>
 							</div>
 						)

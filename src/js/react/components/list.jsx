@@ -102,15 +102,11 @@ var ListApp = React.createClass({
 		}
 	},
 	render: function() {
-		var listStyle = {
-			display: (this.state.listLoaded) ? 'block' : 'none'
-		}
-
 		if (this.state.listPrivate) {
 			return (<ListPrivate />);
 		}
 		return (
-			<div style={listStyle}>
+			<div>
 				<div id="list-top">
 					<div id="list-tabs-wrap">
 						{
@@ -129,6 +125,7 @@ var ListApp = React.createClass({
 					</div>
 					<div id="list-filter-wrap">
 						<input
+							autoFocus
 							type="text"
 							maxLength="50"
 							id="list-filter-input"
@@ -466,7 +463,7 @@ var ListItem = React.createClass({
 					'expanded': this.state.expanded
 				})} onClick={this.toggleExpanded}>
 					<div className="list-item-title-wrap">
-						<a className="list-item-title link" href={'/' + TempListConstants.TYPE + '/' + this.props.itemData.series_slug} title={this.props.itemData.series_title_main}>
+						<a className="list-item-title" href={'/' + TempListConstants.TYPE + '/' + this.props.itemData.series_slug} title={this.props.itemData.series_title_main}>
 							{this.props.itemData.series_title_main}
 						</a>
 					</div>

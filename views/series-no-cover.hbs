@@ -17,13 +17,13 @@
 					</div>
 					<div id="series-ncov-alt-titles">
 						{{#if series.series_title_english}}
-							Lit. <i>{{capitalizeFirst series.series_title_english}}</i>
+							Lit. {{capitalizeFirst series.series_title_english}}
 						{{/if}}
 						{{#if series.series_title_japanese}}
 							{{#if series.series_title_english}}
-								|
+								<span id="series-ncov-sep"></span>
 							{{/if}}
-							<i>{{series.series_title_japanese}}</i>
+							{{series.series_title_japanese}}
 						{{/if}}
 					</div>
 				</div>

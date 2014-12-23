@@ -158,7 +158,7 @@ module.exports = function(app) {
 	});
 
 	// Find series that share similar genres
-	app.route('/:collection(anime|manga)/similar/:_id')
+	app.route('/:collection(anime|manga)/similargenres/:_id')
 	.get(function(req, res, next) {
 		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
 		Collection.findOne({
@@ -182,6 +182,56 @@ module.exports = function(app) {
 					return intersectionLen * 1 / (intersectionLen - series.series_genres.length + 1);
 				});
 				res.status(200).json(seriesSimilar.slice(0, 5));
+			});
+		});
+	});
+
+	// Get similar series
+	app.route('/:collection(anime|manga)/similar/:_id')
+	.get(function(req, res, next) {
+		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
+		Collection.findOne({
+			_id: req.param('_id')
+		}, function(err, seriesDoc) {
+			if (err || !seriesDoc) return next(new Error(err));
+			Collection.find({
+				'series_external_ids.myanimelist': {
+					$in: seriesDoc.series_similar
+				}
+			}, function(err, seriesSimilar) {
+				seriesSimilar = _.sortBy(seriesSimilar, function(series){
+					return seriesDoc.series_similar.indexOf(series.series_external_ids.myanimelist);
+				});
+				res.status(200).json(seriesSimilar.slice(0, 5));
+			});
+		});
+	});
+
+	// Get related series
+	app.route('/:collection(anime|manga)/related/:_id')
+	.get(function(req, res, next) {
+		if (!req.param('_id').match(/^[0-9a-fA-F]{24}$/)) return false;
+		Collection.findOne({
+			_id: req.param('_id')
+		}, function(err, seriesDoc) {
+			if (err || !seriesDoc) return next(new Error(err));
+
+			var animeRelations = _.where(seriesDoc.series_related, { relation_collection: 'anime' });
+			var mangaRelatioons = _.where(seriesDoc.series_related, { relation_collection: 'manga' });
+
+			Anime.find({
+				'series_external_ids.myanimelist': {
+					$in: _.pluck(animeRelations, 'myanimelist')
+				}
+			}, function(err, seriesRelated) {
+				seriesRelated = seriesRelated.map(function(series) {
+					var tempSeries = series.toObject();
+					tempSeries.relation = _.findWhere(seriesDoc.series_related, {
+						myanimelist: series.series_external_ids.myanimelist
+					});
+					return tempSeries;
+				});
+				res.status(200).json(seriesRelated);
 			});
 		});
 	});

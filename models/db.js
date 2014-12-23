@@ -48,6 +48,15 @@ var filter = {
 			'supernatural', 'thriller', 'campire',
 			'yaoi', 'yuri'
 		],
+		allowedRelations: [
+			'adaptation',
+			'parent story',
+			'prequel',
+			'sequel',
+			'side story',
+			'summary',
+			'other'
+		],
 		date: function(dateString, done) {
 			if (Date.parse(dateString) !== 0) {
 				done(dateString);
@@ -57,6 +66,17 @@ var filter = {
 		},
 		genres: function(genreArr, done) {
 			done(_.intersection(genreArr, filter.anime.allowedGenres));
+		},
+		related: function(relatedArr, done) {
+			if (!relatedArr.length) return done([]);
+
+			var tempRelatedArr = relatedArr;
+
+			for (var i = 0; i < tempRelatedArr.length; i++) {
+				tempRelatedArr[i].relation = tempRelatedArr[i].relation.toLowerCase();
+			}
+
+			done(tempRelatedArr);
 		}
 	},
 	user: {
@@ -77,6 +97,14 @@ var filter = {
 			} else {
 				done([]);
 			}
+		},
+		uniq: function(arr, done) {
+			if (arr.length) {
+				arr = _.uniq(arr);
+				done(arr);
+			} else {
+				done([]);
+			}
 		}
 	}
 }
@@ -92,6 +120,7 @@ var validate = {
 			}
 		},
 		status: function(statusStr, done) {
+			if (!statusStr) return done(true);
 			statusStr = statusStr.toLowerCase();
 			if (['finished', 'ongoing', 'upcoming'].indexOf(statusStr) > -1) {
 				done(true);
@@ -174,6 +203,8 @@ filters.anime.add('series_type', 'lowercase');
 filters.anime.add('series_status', 'lowercase');
 filters.anime.add('series_genres', filter.general.lowerCaseUniq);
 filters.anime.add('series_genres', filter.anime.genres);
+filters.anime.add('series_related', filter.anime.related);
+filters.anime.add('series_similar', filter.general.uniq);
 
 // Validation/Filtering for MangaSchema
 validators.manga.add('series_type', {
@@ -273,14 +304,23 @@ var AnimeSchema = new Schema({
 		myanimelist: {
 			type: Number,
 			unique: true
-		},
-		anidb: Number
+		}
 	},
 	series_external_links: [{
 		_id: false,
 		title: String,
 		url: String
-	}]
+	}],
+	series_related: [{
+		_id: false,
+		relation: {
+			type: String,
+			lowercase: true
+		},
+		relation_collection: String, // Either anime or manga
+		myanimelist: Number
+	}],
+	series_similar: [ Number ]
 });
 
 AnimeSchema.plugin(slugin, {

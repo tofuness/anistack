@@ -1,6 +1,6 @@
 <div id="series-info-wrap">
 	<div id="series-info">
-		<div id="series-info-image-wrap">
+		<div id="series-info-left">
 			<div id="series-info-image" style="background-image: url({{series.series_image_reference}})">
 				{{#inArray series.series_genres 'hentai'}}
 					<div id="series-info-nsfw-ovl">
@@ -17,53 +17,6 @@
 			</div>
 			<div class="series-info-section">
 				<div class="series-info-title">
-					Genres
-				</div>
-				<div class="series-info-value">
-					{{#if series.series_genres}}
-						{{#each series.series_genres}}
-							{{#unless @last}}
-								<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>,
-							{{else}}
-								{{^lengthEqual ../../series.series_genres 1}}and {{else}}Just...{{/lengthEqual}}<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>
-							{{/unless}}
-						{{/each}}
-					{{/if}}
-				</div>
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Original run 
-				</div>
-				<div class="series-info-value">
-					<a href="" class="series-info-dateinterval">
-						<span class="series-info-date-value">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
-						{{#if series.series_date_end}}
-						&mdash; <span class="series-info-date-value">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
-						{{else}}
-							{{#is series.series_status 'ongoing'}}
-							&mdash; <span class="series-info-date-value">Ongoing</span>
-							{{/is}}
-						{{/if}}
-					</a>
-				</div>
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Score distribution
-				</div>
-				<div class="series-info-value">
-					<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
-					</div>
-				</div>
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Related series
-				</div>
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
 					More info
 				</div>
 				<div id="series-external-info-wrap">
@@ -73,7 +26,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="series-info-desc-wrap">
+		<div id="series-info-center">
 			<div class="series-info-section">
 				<div class="series-info-title">
 					Synopsis
@@ -100,6 +53,55 @@
 					Similar series
 				</div>
 				<div id="series-info-similar-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+		</div>
+		<div id="series-info-right">
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Related series
+				</div>
+				<div id="series-info-related-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Rating distribution
+				</div>
+				<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Genres
+				</div>
+				<div class="series-info-value">
+					{{#if series.series_genres}}
+						{{#each series.series_genres}}
+							{{#unless @last}}
+								<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>,
+							{{else}}
+								{{^lengthEqual ../../series.series_genres 1}}and {{else}}Only {{/lengthEqual}}<a href="" class="series-info-genre">{{capitalizeFirst this}}</a>
+							{{/unless}}
+						{{/each}}
+					{{/if}}
+				</div>
+			</div>
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Original run 
+				</div>
+				<div class="series-info-value">
+					<a href="" class="series-info-dateinterval">
+						<span class="series-info-date-value">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
+						{{#if series.series_date_end}}
+						&mdash; <span class="series-info-date-value">{{formatDate series.series_date_end '%e %B, %Y'}}</span>
+						{{else}}
+							{{#is series.series_status 'ongoing'}}
+							&mdash; <span class="series-info-date-value">Ongoing</span>
+							{{/is}}
+						{{/if}}
+					</a>
 				</div>
 			</div>
 		</div>

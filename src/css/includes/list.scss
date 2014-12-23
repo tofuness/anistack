@@ -232,8 +232,8 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-.list-item-title, .list-item-title:visited {
-
+.list-item-title {
+	@extend .linkblack;
 }
 .list-item-right {
 	float: right;

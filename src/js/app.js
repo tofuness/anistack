@@ -36,7 +36,7 @@ $(document).ready(function() {
 		});
 
 		// Adjust large covers
-		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.75);
+		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.7);
 	});
 
 	$('#logreg-error').velocity({
@@ -62,9 +62,8 @@ $(document).ready(function() {
 		$(this).remove();
 		$('#series-cover-bg').css('background-image', 'url(' + $('#series-cover-bg').data('bg') + ')')
 		.velocity({
-			//scale: [1.1, 1.05],
 			opacity: [1, 0],
-			translateY: [0, -20]
+			translateY: [0, 10]
 		}, {
 			delay: 200,
 			duration: 600,
