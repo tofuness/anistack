@@ -226,7 +226,7 @@ var BasicSettings = React.createClass({
 				scale: [1.1, 0.9]
 			}, {
 				duration: 300,
-				easing: [0.23, 1, 0.32, 1],
+				easing: easing.easeOutQuint,
 				loop: true
 			}).rainbow();
 		}

@@ -42,10 +42,11 @@
 }
 #series-cover-title {
 	@extend .playfair;
+	@extend .cf;
+	letter-spacing: 0.01em;
 }
-#series-cover-date {
-	font-size: 18px;
-	@include box-shadow(0 1px 0 $w70);
+#series-cover-title-main {
+	float: left;
 }
 #series-cover-meta {
 	font-weight: 700;
@@ -81,16 +82,8 @@
 	@extend .cf;
 }
 .external-info-icon {
-	display: block;
-	padding: 10px;
+	@extend .linkblue;
 	font-weight: 700;
-	text-decoration: none;
-	@include border-radius(4px);
-
-	&#myanimelist {
-		color: #fff;
-		background: #2e51a2;
-	}
 }
 
 // Series ncov
@@ -106,7 +99,10 @@
 }
 #series-ncov-title {
 	@extend .playfair;
+	@extend .cf;
 	margin-left: -1px;
+}
+#series-ncov-title-main {
 	color: #000;
 	font-size: 32px;
 }
@@ -145,7 +141,7 @@
 #series-info {
 	@extend .border-box;
 	float: left;
-	padding-right: 20px;
+	width: 100%;
 }
 #series-info-left {
 	float: left;
@@ -195,9 +191,6 @@
 		margin-bottom: 1em;
 		line-height: 2;
 		font-size: 16px;
-		&:last-child {
-			margin-bottom: 0;
-		}
 	}
 }
 #series-info-nodesc {
@@ -252,7 +245,7 @@
 	}
 }
 .series-info-title {
-	padding-bottom: 1em;
+	padding-bottom: 10px;
 	font-weight: 800;
 	text-transform: uppercase;
 }
@@ -283,6 +276,9 @@
 
 // Rating graph
 
+#series-rating-graph-wrap {
+	padding-top: 5px;
+}
 #series-rating-graph-clear {
 	@extend .cf;
 }
@@ -293,21 +289,27 @@
 	width: 100%;
 	height: 60px;
 }
-#series-rating-graph-average {
+#series-rating-graph-bottom {
+	@extend .cf;
 	margin-top: 10px;
 	padding-top: 10px;
 	font-size: 11px;
 	text-align: center;
 	border-top: 1px dotted $gray;
 }
+#series-rating-graph-hearticon {
+	float: left;
+	padding-right: 10px;
+	color: $red;
+	font-size: 10px;
+	line-height: 18px;
+}
+#series-rating-graph-average {
+	float: left;
+}
 #series-rating-graph-average-value {
 	color: $text;
 	font-weight: 800;
-}
-#series-rating-graph-desc {
-	color: $text-2;
-	font-weight: 400;
-	text-transform: uppercase;
 }
 #series-rating-graph-axis {
 	@extend .cf;
@@ -373,4 +375,50 @@
 }
 .series-similar-title {
 	font-size: 23px;
+}
+
+// Related series
+
+#series-info-related-wrap {
+	padding-top: 5px;
+}
+.series-related-item {
+	@extend .cf;
+	padding-bottom: 10px;
+}
+.series-related-left {
+	float: left;
+}
+.series-related-right {
+	float: left;
+	padding-left: 10px;
+	width: calc(100% - 70px);
+}
+.series-related-relation {
+	color: $text-2;
+	font-size: 11px;
+	text-transform: capitalize;
+}
+.series-related-image {
+	display: block;
+	width: 40px;
+	height: 60px;
+	background-size: cover;
+	background-position: center center;
+	@include border-radius(2px);
+}
+.series-related-title {
+	@extend .ptserif;
+	@extend .linkblack;
+	font-size: 16px;
+	font-weight: 700;
+}
+.series-related-alt-titles {
+	padding-top: 2px;
+	color: $text-3;
+	font-size: 11px;
+}
+.series-related-type {
+	font-weight: 700;
+	text-transform: uppercase;
 }

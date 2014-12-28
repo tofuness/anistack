@@ -2,9 +2,12 @@ var LoginForm = React.createClass({
 	logIn: function() {
 		$(this.refs.loginForm.getDOMNode()).submit();
 	},
+	ifEnter: function(e) {
+		if (e.key === 'Enter') this.logIn();
+	},
 	render: function() {
 		return (
-			<form id="login-form" className="logreg-form" ref="loginForm" method="post" action="/login">
+			<form id="login-form" className="logreg-form" ref="loginForm" method="post" action="/login" onKeyUp={this.ifEnter}>
 				<div id="logreg-form-logo"></div>
 				<div className="logreg-section-wrap">
 					<div className="logreg-legend">Username</div>

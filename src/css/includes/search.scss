@@ -63,10 +63,11 @@
 .search-result-title-wrap {
 	@extend .cf;
 	margin-top: -5px;
-	padding-bottom: 10px;
 }
 .search-result-title {
-	font-size: 14px;
+	@extend .ptserif;
+	@extend .linkblack;
+	font-size: 16px;
 	font-weight: 700;
 }
 .search-result-year {
@@ -152,7 +153,7 @@
 	z-index: $z-up;
 	opacity: 0;
 	background: #fff;
-	@include transform(scale(0.4));
+	@include transform(scale(0.9));
 	@include transform-origin(190px bottom);
 	@include box-shadow(0 1px 6px $b30);
 	@include border-radius(4px);

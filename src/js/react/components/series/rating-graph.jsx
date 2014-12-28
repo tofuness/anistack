@@ -73,9 +73,9 @@ var SeriesRatingGraph = React.createClass({
 						}
 					</div>
 					<div id="series-rating-graph-bottom">
-						<div id="series-rating-graph-average" ref="seriesRatingAverage">
-							<span id="series-rating-graph-average-value">{this.state.ratingsAverage}&nbsp;</span>
-							<span id="series-rating-graph-desc">Average</span>
+						<div id="series-rating-graph-hearticon" className="icon-heart-full"></div>
+						<div id="series-rating-graph-average">
+							<span id="series-rating-graph-average-value">{this.state.ratingsAverage}</span> / <span id="series-rating-graph-average-total">5.0</span> (average user rating)
 						</div>
 					</div>
 				</div>

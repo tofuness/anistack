@@ -13,12 +13,11 @@
 						{{/if}}
 					</div>
 					<div id="series-cover-title">
-						{{series.series_title_main}}
-						<span id="series-cover-date">{{formatDate series.series_date_start '%Y'}}</span>
+						<span id="series-cover-title-main">{{series.series_title_main}}</span>
 					</div>
 					<div id="series-cover-alt-titles">
 						{{#if series.series_title_english}}
-							Lit. {{capitalizeFirst series.series_title_english}}
+							{{capitalizeFirst series.series_title_english}}
 						{{/if}}
 						{{#if series.series_title_japanese}}
 							{{#if series.series_title_english}}

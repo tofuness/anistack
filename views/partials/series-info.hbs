@@ -17,55 +17,6 @@
 			</div>
 			<div class="series-info-section">
 				<div class="series-info-title">
-					More info
-				</div>
-				<div id="series-external-info-wrap">
-					<a href="http://myanimelist.net/{{collection}}/{{series.series_external_ids.myanimelist}}" rel="nofollow" class="external-info-icon" id="myanimelist" target="_blank">
-						MyAnimeList						
-					</a>
-				</div>
-			</div>
-		</div>
-		<div id="series-info-center">
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Synopsis
-				</div>
-				{{#if series.series_synopsis}}
-				<div id="series-info-desc">
-					{{#each series.series_synopsis}}
-						<p>{{this}}</p>
-					{{/each}}
-				</div>
-				{{else}}
-				<div id="series-info-nodesc">
-					¯\_(ツ)_/¯<br />
-					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
-				</div>
-				{{/if}}
-				{{#if user}}
-					<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
-					</div>
-				{{/if}}
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Similar series
-				</div>
-				<div id="series-info-similar-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
-				</div>
-			</div>
-		</div>
-		<div id="series-info-right">
-			<div class="series-info-section">
-				<div class="series-info-title">
-					Related series
-				</div>
-				<div id="series-info-related-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
-				</div>
-			</div>
-			<div class="series-info-section">
-				<div class="series-info-title">
 					Rating distribution
 				</div>
 				<div id="series-rating-graph-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
@@ -104,6 +55,58 @@
 					</a>
 				</div>
 			</div>
+			<div class="series-info-section">
+				<div class="series-info-title">
+					More info
+				</div>
+				<div id="series-external-info-wrap">
+					<a href="http://myanimelist.net/{{collection}}/{{series.series_external_ids.myanimelist}}" rel="nofollow" class="external-info-icon" id="myanimelist" target="_blank">
+						MyAnimeList						
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="series-info-center">
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Synopsis
+				</div>
+				{{#if series.series_synopsis}}
+				<div id="series-info-desc">
+					{{#each series.series_synopsis}}
+						<p>{{this}}</p>
+					{{/each}}
+				</div>
+				{{else}}
+				<div id="series-info-nodesc">
+					¯\_(ツ)_/¯<br />
+					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
+				</div>
+				{{/if}}
+				{{#if user}}
+					<div id="series-info-actions" data-id="{{series._id}}" data-collection="{{collection}}">
+					</div>
+				{{/if}}
+			</div>
+			{{#if series.series_related}}
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Related series
+				</div>
+				<div id="series-info-related-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+			{{/if}}
+			<div class="series-info-section">
+				<div class="series-info-title">
+					Similar series
+				</div>
+				<div id="series-info-similar-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				</div>
+			</div>
+		</div>
+		<div id="series-info-right">
+
 		</div>
 	</div>
 </div>

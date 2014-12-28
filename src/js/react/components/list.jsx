@@ -350,7 +350,7 @@ var ListItem = React.createClass({
 			backgroundColor: ['#e8e8e8', '#fffff'],
 			height: [0, 313]
 		}, {
-			easing: [0.165, 0.84, 0.44, 1],
+			easing: easing.easeOutQuart,
 			duration: 300,
 			complete: function() {
 				$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
@@ -398,7 +398,7 @@ var ListItem = React.createClass({
 				backgroundColor: ['#e8e8e8', '#fffff'],
 				height: [0, 313]
 			}, {
-				easing: [0.165, 0.84, 0.44, 1],
+				easing: easing.easeOutQuart,
 				duration: 300,
 				complete: function() {
 					$(this.refs.listItemExpanded.getDOMNode()).css('height', 0);
@@ -412,7 +412,7 @@ var ListItem = React.createClass({
 				backgroundColor: ['#ffffff', '#e8e8e8'],
 				height: [43, 0]
 			}, {
-				easing: [0.165, 0.84, 0.44, 1],
+				easing: easing.easeOutQuart,
 				duration: 300
 			}).velocity({
 				height: '100%'
@@ -429,7 +429,7 @@ var ListItem = React.createClass({
 		$(this.refs.listItemExpanded.getDOMNode()).stop(true).velocity({
 			height: (this.state.expanded) ? [0, 270] : [270, 0]
 		}, {
-			easing: [0.165, 0.84, 0.44, 1],
+			easing: easing.easeOutQuart,
 			duration: (this.state.expanded) ? 200 : 300,
 			complete: function() {
 				// If e is a function, we know that it should be a callback

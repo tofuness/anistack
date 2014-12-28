@@ -201,7 +201,7 @@ var SearchItem = React.createClass({
 				</div>
 				<div className="search-result-content">
 					<div className="search-result-title-wrap">
-						<a className="search-result-title link" href={'/' + TempSearchConstants.COLLECTION + '/' + this.props.seriesData.series_slug}>
+						<a className="search-result-title" href={'/' + TempSearchConstants.COLLECTION + '/' + this.props.seriesData.series_slug}>
 							{this.props.seriesData.series_title_main}
 						</a>
 						<span className="search-result-year">

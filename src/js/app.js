@@ -45,7 +45,7 @@ $(document).ready(function() {
 		paddingTop: [0, 15],
 		paddingBottom: [0, 15],
 	}, {
-		easing: [0.23, 1, 0.32, 1],
+		easing: easing.easeOutQuint,
 		delay: 5000,
 		duration: 300
 	});
@@ -67,7 +67,7 @@ $(document).ready(function() {
 		}, {
 			delay: 200,
 			duration: 600,
-			easing: [0.23, 1, 0.32, 1]
+			easing: easing.easeOutQuint
 		});
 	});
 
@@ -80,7 +80,7 @@ $(document).ready(function() {
 				translateY: [0, 30],
 				translateX: [0, 0]
 			}, 1, {
-				easing: [0.23, 1, 0.32, 1]
+				easing: easing.easeOutQuint
 			}]
 		]
 	});

@@ -6,6 +6,7 @@ var hAuth = require('../../helpers/auth.js');
 var Anime = db.Anime;
 var User = db.User;
 var Manga = db.Manga;
+var async = require('async');
 var _ = require('lodash');
 
 module.exports = function(app) {
@@ -150,7 +151,18 @@ module.exports = function(app) {
 					return rating._id
 				});
 				
-				res.status(200).json(ratingsResult);
+				res.status(200).json([
+					{"_id":1,"count":23},
+					{"_id":2,"count":45},
+					{"_id":3,"count":44},
+					{"_id":4,"count":56},
+					{"_id":5,"count":58},
+					{"_id":6,"count":78},
+					{"_id":7,"count":87},
+					{"_id":8,"count":92},
+					{"_id":9,"count":82},
+					{"_id":10,"count":55}
+				]);
 			} else {
 				next(new Error('could not aggregate ratings'));
 			}
@@ -217,21 +229,49 @@ module.exports = function(app) {
 			if (err || !seriesDoc) return next(new Error(err));
 
 			var animeRelations = _.where(seriesDoc.series_related, { relation_collection: 'anime' });
-			var mangaRelatioons = _.where(seriesDoc.series_related, { relation_collection: 'manga' });
+			var mangaRelations = _.where(seriesDoc.series_related, { relation_collection: 'manga' });
 
-			Anime.find({
-				'series_external_ids.myanimelist': {
-					$in: _.pluck(animeRelations, 'myanimelist')
-				}
-			}, function(err, seriesRelated) {
-				seriesRelated = seriesRelated.map(function(series) {
-					var tempSeries = series.toObject();
-					tempSeries.relation = _.findWhere(seriesDoc.series_related, {
-						myanimelist: series.series_external_ids.myanimelist
+			async.parallel([
+				function(cb) {
+					if (!animeRelations.length) return cb(null, []);
+					Anime.find({
+						'series_external_ids.myanimelist': {
+							$in: _.pluck(animeRelations, 'myanimelist')
+						}
+					}, function(err, seriesRelated) {
+						seriesRelated = seriesRelated.map(function(series) {
+							var tempSeries = series.toObject();
+							tempSeries.relation = _.findWhere(seriesDoc.series_related, {
+								myanimelist: series.series_external_ids.myanimelist
+							});
+							return tempSeries;
+						});
+						cb(null, seriesRelated);
 					});
-					return tempSeries;
-				});
-				res.status(200).json(seriesRelated);
+				},
+				function(cb) {
+					if (!mangaRelations.length) return cb(null, []);
+					Manga.find({
+						'series_external_ids.myanimelist': {
+							$in: _.pluck(mangaRelations, 'myanimelist')
+						}
+					}, function(err, seriesRelated) {
+						seriesRelated = seriesRelated.map(function(series) {
+							var tempSeries = series.toObject();
+							tempSeries.relation = _.findWhere(seriesDoc.series_related, {
+								myanimelist: series.series_external_ids.myanimelist
+							});
+							return tempSeries;
+						});
+						cb(null, seriesRelated);
+					});
+				}
+			], function(err, result) {
+				var allRelations = result[0].concat(result[1]);
+				allRelations = _.sortBy(allRelations, function(series) {
+					return ['adaptation', 'sequel', 'prequel'].indexOf(series.relation.relation) * -1; 
+				})
+				res.status(200).json(allRelations);
 			});
 		});
 	});

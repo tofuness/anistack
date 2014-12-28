@@ -30,9 +30,8 @@
 	background-size: cover;
 }
 #list-profile-background {
-	height: 150px;
+	height: 126px;
 	background: $brand-black;
-	/*background: url(/img/profilebg.jpg) center center no-repeat;*/
 	background-size: cover;
 	@include border-top-right-radius(4px);
 }
