@@ -51,7 +51,8 @@
     "gulp-notify": "*",
     "gulp-jshint": "~1.8.5",
     "jshint-stylish": "~1.0.0",
-    "string": "~2.2.0"
+    "string": "~2.2.0",
+    "blocked": "~1.0.0"
   },
   "scripts": {
     "app": "node ./app.js",

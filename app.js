@@ -1,3 +1,7 @@
+// Load process variables
+var dotenv = require('dotenv');
+dotenv.load();
+
 if (process.env.NODE_ENV === 'production') {
 	var cluster = require('cluster');
 	if (cluster.isMaster) {
@@ -8,10 +12,6 @@ if (process.env.NODE_ENV === 'production') {
 		return false;
 	}
 }
-
-// Load process variables
-var dotenv = require('dotenv');
-dotenv.load();
 
 // Main application modules
 var express = require('express');
@@ -146,6 +146,7 @@ require('./routes/api/stacks.js')(apiRouter);
 require('./routes/api/settings.js')(apiRouter);
 require('./routes/api/series.js')(apiRouter);
 require('./routes/api/user.js')(apiRouter);
+
 
 // Basic error handling
 app.use(function(err, req, res, next) {

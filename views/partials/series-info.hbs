@@ -51,6 +51,9 @@
 							{{#is series.series_status 'ongoing'}}
 							&mdash; <span class="series-info-date-value">Ongoing</span>
 							{{/is}}
+							{{#is series.series_status 'upcoming'}}
+							(<span class="series-info-date-value">Upcoming</span>)
+							{{/is}}
 						{{/if}}
 					</a>
 				</div>

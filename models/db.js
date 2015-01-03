@@ -220,6 +220,8 @@ validators.manga.add('series_status', {
 filters.manga.add('series_type', 'lowercase');
 filters.manga.add('series_genres', filter.general.lowerCaseUniq);
 filters.manga.add('series_genres', filter.anime.genres);
+filters.manga.add('series_related', filter.anime.related);
+filters.manga.add('series_similar', filter.general.uniq);
 
 // Validation/Filtering for UserSchema
 validators.user.add('display_name', {
@@ -383,7 +385,17 @@ var MangaSchema = new Schema({
 		_id: false,
 		title: String,
 		url: String
-	}]
+	}],
+	series_related: [{
+		_id: false,
+		relation: {
+			type: String,
+			lowercase: true
+		},
+		relation_collection: String, // Either anime or manga
+		myanimelist: Number
+	}],
+	series_similar: [ Number ]
 });
 
 MangaSchema.plugin(slugin, {
