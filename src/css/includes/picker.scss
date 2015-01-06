@@ -40,7 +40,6 @@
 .picker-status-menu-icon {
 	@extend .ts30;
 	float: right;
-	padding-top: 2px;
 	@include transform-origin(6px 9px);
 	&.rotate {
 		@include rotate(180);
@@ -155,7 +154,7 @@
 	padding: 4px 5px;
 	color: $red;
 	font-size: 23px;
-	line-height: 18px;
+	line-height: 23px;
 	&:hover {
 		color: $red-d-3;
 	}

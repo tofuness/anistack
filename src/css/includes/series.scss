@@ -302,7 +302,6 @@
 	padding-right: 10px;
 	color: $red;
 	font-size: 10px;
-	line-height: 18px;
 }
 #series-rating-graph-average {
 	float: left;
@@ -433,4 +432,20 @@
 .series-related-type {
 	font-weight: 700;
 	text-transform: uppercase;
+}
+
+.series-viewmore {
+	cursor: pointer;
+	display: none;
+	padding-top: 10px;
+	color: $text-3;
+	font-size: 11px;
+	text-align: center;
+	border-top: 1px solid $gray-l-3;
+	&.visible {
+		display: block;
+	}
+	&:hover {
+		color: $text;
+	}
 }

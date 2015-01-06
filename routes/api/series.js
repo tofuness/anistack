@@ -203,7 +203,7 @@ module.exports = function(app) {
 				seriesSimilar = _.sortBy(seriesSimilar, function(series){
 					return seriesDoc.series_similar.indexOf(series.series_external_ids.myanimelist);
 				});
-				res.status(200).json(seriesSimilar.slice(0, 5));
+				res.status(200).json(seriesSimilar.slice(0, 8));
 			});
 		});
 	});

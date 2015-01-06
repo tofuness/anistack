@@ -1,9 +1,11 @@
 var React = require('react');
 
+var cx = React.addons.classSet;
 var RelatedSeries = React.createClass({
 	getInitialState: function() {
 		return {
-			relatedSeries: []
+			relatedSeries: [],
+			expanded: false
 		};
 	},
 	componentWillMount: function() {
@@ -16,14 +18,22 @@ var RelatedSeries = React.createClass({
 			}.bind(this)
 		});
 	},
+	toggleViewMore: function() {
+		this.setState({
+			expanded: !this.state.expanded
+		});
+	},
 	render: function() {
 		return (
 			<div>
 				{
-					this.state.relatedSeries.map(function(series) {
+					this.state.relatedSeries.map(function(series, index) {
 						var seriesRelatedStyle = {
 							backgroundImage: 'url(' + series.series_image_reference + ')'
 						}
+
+						if (!this.state.expanded && index > 2) return null;
+
 						return (
 							<div className="series-related-item">
 								<div className="series-related-left">
@@ -43,8 +53,21 @@ var RelatedSeries = React.createClass({
 								</div>
 							</div>
 						)
-					})
+					}.bind(this))
 				}
+				<div className={
+					cx({
+						'series-viewmore': true,
+						'visible': (this.state.relatedSeries.length > 3)
+					})
+				} onClick={this.toggleViewMore}>
+					 <span className={
+					 	cx({
+					 		'icon-down-open': !this.state.expanded,
+					 		'icon-up-open': this.state.expanded
+					 	})
+					 }></span> {this.state.expanded ? 'Show less' : 'View ' + (this.state.relatedSeries.length - 3) + ' more'}
+				</div>
 			</div>
 		);
 	}
