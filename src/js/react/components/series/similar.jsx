@@ -36,10 +36,13 @@ var SimilarSeries = React.createClass({
 								<div className="series-similar-right">
 									<div className="series-similar-hd">
 										<div className="series-similar-meta">
-											{series.series_type} {this.props.collection === 'anime' ? ' with ' + (series.series_episodes_total || '???') + ' episodes' : ''}
+											<span className="series-similar-type">{series.series_type}</span> {this.props.collection === 'anime' ? ' with ' + (series.series_episodes_total || '???') + ' episodes' : ''}
 										</div>
-										<div className="series-similar-title">
-											<a href={'/' + this.props.collection + '/' + series.series_slug} className="link">{series.series_title_main}</a>
+										<a className="series-similar-title" href={'/' + this.props.collection + '/' + series.series_slug}>
+											{series.series_title_main}
+										</a>
+										<div className="series-similar-alt-titles">
+											{series.series_title_english} {(series.series_title_english) ? '|' : ''} {series.series_title_japanese}
 										</div>
 									</div>
 								</div>

@@ -350,20 +350,20 @@
 }
 .series-similar-left {
 	float: left;
-	width: 80px;
-	margin-right: 20px;
+	width: 40px;
 }
 .series-similar-right {
 	float: left;
-	width: calc(100% - 100px);
+	padding-left: 10px;
+	width: calc(100% - 70px);
 }
 .series-similar-image {
 	display: block;
-	width: 80px;
-	height: 120px;
+	width: 40px;
+	height: 60px;
 	background-size: cover;
 	background-position: center center;
-	@include border-radius(4px);
+	@include border-radius(2px);
 }
 .series-similar-hd {
 
@@ -371,10 +371,22 @@
 .series-similar-meta {
 	color: $text-2;
 	font-size: 11px;
-	text-transform: uppercase;
+	text-transform: capitalize;
 }
 .series-similar-title {
-	font-size: 23px;
+	@extend .ptserif;
+	@extend .linkblack;
+	font-size: 16px;
+	font-weight: 700;
+}
+.series-similar-alt-titles {
+	padding-top: 2px;
+	color: $text-3;
+	font-size: 11px;
+}
+.series-similar-type {
+	font-weight: 700;
+	text-transform: uppercase;
 }
 
 // Related series

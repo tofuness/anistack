@@ -165,7 +165,7 @@ var SettingsSaveBtn = React.createClass({
 					<div className="set-save-icon icon-check-thin" ref="saveIcon">
 					</div>
 				</div>
-				Save
+				Save changes
 				<div className={
 					cx({
 						'set-save-loading': true,

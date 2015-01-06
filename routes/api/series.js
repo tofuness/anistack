@@ -151,18 +151,7 @@ module.exports = function(app) {
 					return rating._id
 				});
 				
-				res.status(200).json([
-					{"_id":1,"count":23},
-					{"_id":2,"count":45},
-					{"_id":3,"count":44},
-					{"_id":4,"count":56},
-					{"_id":5,"count":58},
-					{"_id":6,"count":78},
-					{"_id":7,"count":87},
-					{"_id":8,"count":92},
-					{"_id":9,"count":82},
-					{"_id":10,"count":55}
-				]);
+				res.status(200).json(ratingsResult);
 			} else {
 				next(new Error('could not aggregate ratings'));
 			}
