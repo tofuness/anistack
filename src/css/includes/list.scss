@@ -171,6 +171,7 @@
 	font-weight: 700;
 }
 #list-content {
+	position: relative;
 	@include box-shadow(1px 0 0 $gray-l-3);
 }
 .list-itemstatus-wrap {
@@ -328,7 +329,6 @@
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
-	line-height: 505px;
 }
 #list-private {
 	@extend .cf;

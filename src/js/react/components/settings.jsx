@@ -520,6 +520,7 @@ var PrivacySettings = React.createClass({
 						<div className={
 							cx({
 								'set-check': true,
+								'greenred': true,
 								'enabled': this.state.series_show_cover
 							})
 						}>

@@ -178,7 +178,6 @@ var ListContent = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function(nextProps) {
-		// If batch rendering isn't 
 		if (!this.props.listData || this.props.listData.length < 150 || this.props.batchRendering) return false;
 		this.setState({
 			batchRendering: true
@@ -188,7 +187,8 @@ var ListContent = React.createClass({
 			var listItemsOnScreen = window.innerHeight / 43 | 0;
 			var listMulti = Math.ceil(scrollBottom / window.innerHeight);
 			var listEnd = listItemsOnScreen * listMulti * 1.2;
-			if (this.state.listEnd !== listEnd || listMulti === 1) {
+			if (this.state.listEnd < listEnd || listMulti === 1) {
+				console.log(listEnd);
 				this.setState({ listEnd: listEnd });
 			}
 		}.bind(this));
@@ -283,7 +283,10 @@ var ListEmpty = React.createClass({
 		});
 	},
 	render: function() {
-		return (<div ref="listNoRes" id="list-noresults">No series under {this.props.statusName}!</div>);
+		var style = {
+			lineHeight: $('#list-right').height() - $('#list-top').height() - 15 + 'px'
+		}
+		return (<div style={style} ref="listNoRes" id="list-noresults">No series under {this.props.statusName}!</div>);
 	}
 });
 
@@ -295,7 +298,10 @@ var ListNoResults = React.createClass({
 		});
 	},
 	render: function() {
-		return (<div ref="listNoRes" id="list-noresults">No matches. Try another search term.</div>);
+		var style = {
+			lineHeight: $('#list-right').height() - $('#list-top').height() - 15 + 'px'
+		}
+		return (<div style={style} ref="listNoRes" id="list-noresults">No matches. Try another search term.</div>);
 	}
 });
 
