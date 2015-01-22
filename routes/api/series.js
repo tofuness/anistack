@@ -170,7 +170,6 @@ module.exports = function(app) {
 				_id: { $ne: seriesDoc._id },
 				series_type: seriesDoc.series_type, // Same series type
 				series_date_start: { $gte: new Date('2006') }, // People prefer newer series
-				series_date_end: { $lte: new Date('2014') }, // People prefer newer series
 				series_genres: { $in: seriesDoc.series_genres }
 			}).sort({
 				series_date_start: -1

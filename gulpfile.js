@@ -115,7 +115,7 @@ gulp.task('lint', function(){
 
 gulp.task('watch', function() {
 	gulp.watch(path.scss.files, ['sass']);
-	gulp.watch(path.scss.files, ['css']);
+	gulp.watch(path.css.files, ['css']);
 	gulp.watch(path.app.files, ['lint']);
 	gulp.watch(path.js.files, ['uglify']);
 	gulp.watch(path.jsx.files, ['watchify']);

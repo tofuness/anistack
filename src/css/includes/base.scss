@@ -51,3 +51,14 @@ input {
 	@extend .border-box;
 	padding: 0;
 }
+
+// Base elements (optional)
+
+.input {
+	padding: 10px;
+	border: 1px solid $gray-l-3;
+	@include border-radius(4px);
+	&:focus {
+		border: 1px solid $blue;
+	}
+}

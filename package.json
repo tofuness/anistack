@@ -52,7 +52,12 @@
     "gulp-jshint": "~1.8.5",
     "jshint-stylish": "~1.0.0",
     "string": "~2.2.0",
-    "blocked": "~1.0.0"
+    "blocked": "~1.0.0",
+    "cheerio": "~0.18.0",
+    "superagent": "~0.21.0",
+    "difflet": "~0.2.6",
+    "mapreplace": "~1.0.1",
+    "promise": "~6.1.0"
   },
   "scripts": {
     "app": "node ./app.js",

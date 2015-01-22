@@ -73,7 +73,7 @@ if (seriesRatingGraphNode) {
 var similarSeriesNode = document.getElementById('series-info-similar-wrap');
 if (similarSeriesNode) {
 	var seriesData = $(similarSeriesNode);
-	React.renderComponent(<SimilarSeries _id={seriesData.data('id')} collection={seriesData.data('collection')} />, similarSeriesNode);
+	React.renderComponent(<SimilarSeries _id={seriesData.data('id')} collection={seriesData.data('collection')} similargenres={seriesData.data('similargenres')} />, similarSeriesNode);
 }
 
 // Series page, related

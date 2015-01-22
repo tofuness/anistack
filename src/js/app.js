@@ -36,7 +36,7 @@ $(document).ready(function() {
 		});
 
 		// Adjust large covers
-		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.666);
+		$('#series-cover-hd-wrap').css('height', $(window).height() * 0.5);
 	});
 
 	$('#logreg-error').velocity({

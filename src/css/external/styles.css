@@ -3,11 +3,11 @@
 /* herro-icon */
 @font-face {
   font-family: "herro-icon";
-  src:url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1417593422.eot");
-  src:url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1417593422.eot?#iefix") format("embedded-opentype"),
-    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1417593422.woff") format("woff"),
-    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1417593422.ttf") format("truetype"),
-    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1417593422.svg#1417593422") format("svg");
+  src:url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1421526830.eot");
+  src:url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1421526830.eot?#iefix") format("embedded-opentype"),
+    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1421526830.woff") format("woff"),
+    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1421526830.ttf") format("truetype"),
+    url("https://fontastic.s3.amazonaws.com/qqbsSUN4xGFjBfyRcreGCc/fonts/1421526830.svg#1421526830") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -116,4 +116,10 @@
 }
 .icon-down-open-big:before {
   content: "n";
+}
+.icon-right-open:before {
+  content: "o";
+}
+.icon-left-open:before {
+  content: "p";
 }

@@ -83,13 +83,8 @@
 	padding-left: 40px;
 }
 .set-textarea, .set-input {
-	padding: 10px;
+	@extend .input;
 	width: 250px;
-	border: 1px solid $gray-l-3;
-	@include border-radius(4px);
-	&:focus {
-		border: 1px solid $blue;
-	}
 }
 .set-textarea {
 	resize: vertical;

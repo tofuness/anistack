@@ -187,6 +187,7 @@
 }
 #series-info-desc {
 	@extend .ptserif;
+	color: $text;
 	& p {
 		margin-bottom: 1em;
 		line-height: 2;
@@ -197,6 +198,7 @@
 	padding: 80px;
 	color: $text-3;
 	text-align: center;
+	line-height: 2;
 }
 #series-info-actions {
 	@extend .cf;
@@ -250,6 +252,7 @@
 	text-transform: uppercase;
 }
 .series-info-value {
+	@extend .cf;
 	line-height: 2;
 }
 .series-info-genre {
@@ -272,6 +275,22 @@
 #series-info-right {
 	float: right;
 	width: 200px;
+}
+.series-info-episode-wrap {
+}
+.series-info-episode {
+	@extend .cf;
+	display: block;
+	padding: 5px 0;
+	color: $text-3;
+	text-decoration: none;
+	border-bottom: 1px dotted $gray-l-3;
+	&:hover {
+		color: $text;
+	}
+	& span {
+		float: right;
+	}
 }
 
 // Rating graph

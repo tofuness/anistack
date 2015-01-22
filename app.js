@@ -2,7 +2,7 @@
 var dotenv = require('dotenv');
 dotenv.load();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
 	var cluster = require('cluster');
 	if (cluster.isMaster) {
 		var cpuCores = require('os').cpus().length;
@@ -103,6 +103,7 @@ app.use(passport.session());
 if (process.env.NODE_ENV === 'development') {
 	var morgan = require('morgan');
 	app.use(morgan('dev'));
+	process.send({cmd: 'NODE_DEV', required: '/views/stacks.hbs'});
 }
 
 // Production settings

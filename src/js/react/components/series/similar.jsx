@@ -3,8 +3,9 @@ var React = require('react');
 var cx = React.addons.classSet;
 var SimilarSeries = React.createClass({
 	componentWillMount: function() {
+		var similarType = (this.props.similargenres) ? 'similargenres' : 'similar';
 		$.ajax({
-			url: '/api/' + this.props.collection + '/similar/' + this.props._id,
+			url: '/api/' + this.props.collection + '/' + similarType + '/' + this.props._id,
 			success: function(res) {
 				this.setState({
 					similarSeries: res

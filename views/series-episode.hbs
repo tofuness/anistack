@@ -1,0 +1,26 @@
+{{>header}}
+	<div id="middle">
+		<div id="episode-series-info">
+
+		</div>
+		<div id="episode-wrap">
+			<video id="episode-{{series._id}}" class="episode-video video-js vjs-sublime-skin"
+				controls
+				preload="auto"
+				width="1280"
+				height="720"
+				data-setup='{"techOrder": ["html5", "flash"]}'
+			>
+				<source src="{{episode.episode_urls.0.url}}" type='video/mp4' />
+			</video>
+			{{episode.episode_urls.0.filename}}
+		</div>
+		<div id="episode-info-wrap">
+			<div id="episode-info">
+				<div id="episode-title">
+					{{series.series_title_main}} {{episode.episode_title}}
+				</div>
+			</div>
+		</div>
+	</div>
+{{>footer}}

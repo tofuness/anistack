@@ -12,7 +12,7 @@ var ListApp = React.createClass({
 	getInitialState: function() {
 		return {
 			listFilterText: '', // Search text
-			listFilterStatus: 'all', // Which tab to display
+			listFilterStatus: 'current', // Which tab to display
 			listLoaded: false, // Display list if true
 			listPrivate: false,
 			listLastSort: 'series_title_main', // Property name from API

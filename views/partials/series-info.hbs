@@ -43,6 +43,7 @@
 					Original run 
 				</div>
 				<div class="series-info-value">
+					{{#if series.series_date_start}}
 					<a href="" class="series-info-dateinterval">
 						<span class="series-info-date-value">{{formatDate series.series_date_start '%e %B, %Y'}}</span>
 						{{#if series.series_date_end}}
@@ -56,6 +57,9 @@
 							{{/is}}
 						{{/if}}
 					</a>
+					{{else}}
+					Unknown ;(
+					{{/if}}
 				</div>
 			</div>
 			<div class="series-info-section">
@@ -83,7 +87,7 @@
 				{{else}}
 				<div id="series-info-nodesc">
 					¯\_(ツ)_/¯<br />
-					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> for the time being.
+					Sorry, we don't have a synopsis for <em>{{series.series_title_main}}</em> at the moment.
 				</div>
 				{{/if}}
 				{{#if user}}
@@ -100,18 +104,34 @@
 				</div>
 			</div>
 			{{/if}}
-			{{#if series.series_similar}}
 			<div class="series-info-section">
 				<div class="series-info-title">
 					Similar series
 				</div>
-				<div id="series-info-similar-wrap" data-id="{{series._id}}" data-collection="{{collection}}">
+				<div id="series-info-similar-wrap"
+				data-id="{{series._id}}"
+				data-collection="{{collection}}"
+				data-similargenres="{{#empty series.series_similar}}true{{else}}false{{/empty}}">
 				</div>
+			</div>
+			{{#if series.series_episodes_files}}
+			<div class="series-info-title">
+				Watch {{series.series_title_main}}
+			</div>
+			<div class="series-info-value">
+				{{#each series.series_episodes_files}}
+					<div class="series-info-episode-wrap">
+						<a class="series-info-episode" href="/{{../collection}}/{{../series.series_slug}}/{{this.episode_title}}">
+							{{this.episode_title}}
+							<span class="icon-right-open"></span>
+						</a>
+					</div>
+				{{/each}}
 			</div>
 			{{/if}}
 		</div>
 		<div id="series-info-right">
-			
+
 		</div>
 	</div>
 </div>

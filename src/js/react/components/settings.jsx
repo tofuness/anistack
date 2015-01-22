@@ -2,7 +2,7 @@ var cx = React.addons.classSet;
 var Settings = React.createClass({
 	getInitialState: function() {
 		return {
-			tab: $('#settings').data('tab') || 'basic',
+			tab: $('#settings').data('tab') || 'profile',
 			user: {},
 			loaded: false
 		};
@@ -56,7 +56,7 @@ var Settings = React.createClass({
 					</div>
 					<div id="settings-tabs">
 						{
-							['Basic', 'Password', 'Privacy'].map(function(tabName) {
+							['Profile', 'Password', 'Privacy'].map(function(tabName) {
 								return (
 								<div className={
 									cx({
@@ -75,7 +75,7 @@ var Settings = React.createClass({
 					<div className={
 						cx({
 							'setting-tab-content': true,
-							'visible': this.state.tab === 'basic'
+							'visible': this.state.tab === 'profile'
 						})
 					}>
 						<BasicSettings user={this.state.user} />
