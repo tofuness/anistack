@@ -295,6 +295,12 @@ var AnimeSchema = new Schema({
 		required: true
 	},
 	series_episodes_duration: Number,
+	series_episodes: [{
+		_id: false,
+		episode_number: Number,
+		episode_title: String,
+		episode_urls: [ String ]
+	}],
 	series_image_reference: String,
 	series_image_poster: String,
 	series_image_cover: String,
